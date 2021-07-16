@@ -1,0 +1,56 @@
+/** Hide settings **/
+
+/** common **/
+//.notadmin #id_tagshdr,
+//.notadmin #id_modstandardelshdr {
+//  display: none;
+//}
+//
+///** Forum **/
+//.notadmin #id_attachmentswordcounthdr, .notadmin #id_discussionlocking,
+// .notadmin #id_blockafterheader, .notadmin #id_grade_forum_header,
+//.notadmin #id_grade_forum_header, .notadmin #id_modstandardratings {
+//  display: none;
+//}
+//
+///** Assignment **/
+//.notadmin #id_submissionsettings, .notadmin #id_groupsubmissionsettings, .notadmin #id_notifications,
+//.notadmin #id_modstandardgrade #fitem_id_gradecat,
+//.notadmin #id_modstandardgrade #fitem_id_blindmarking,
+//.notadmin #id_modstandardgrade #fitem_id_hidegrader,
+//.notadmin #id_modstandardgrade #fitem_id_markingworkflow {
+//  display: none;
+//}
+//
+///** Scorm **/
+//.notadmin #id_displaysettings, .notadmin #id_compatibilitysettingshdr {
+//  display: none;
+//}
+//
+///** Course **/
+//.notadmin #id_courseformathdr #fitem_id_format {
+//  display: none;
+//}
+//
+//.notadmin #id_appearancehdr, .notadmin #id_filehdr, .notadmin #id_groups {
+//  display: none;
+//}
+//
+//.notadmin #page-mod-resource-mod #id_optionssection {
+//  display: none;
+//}
+//
+//.initialbar.firstinitial, .initialbar.lastinitial {
+//  display: none !important;
+//}
+
+/**** Grades ****/
+/*.notadmin .path-grade .grade-navigation a.nav-link[href*="grade/edit/tree/index.php"],
+.notadmin a[href*="grade/edit/tree/index.php"],
+.notadmin a[href*="grade/edit/letter/index.php"],
+.notadmin .action-menu-trigger a[href*="backup/import.php"],
+.notadmin .action-menu-trigger a[href*="backup/restorefile.php"],
+.notadmin .action-menu-trigger a[href*="course/reset.php"],
+.notadmin .action-menu-trigger a[href*="course/admin.php"] {
+  display: none;
+}*/

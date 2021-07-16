@@ -1,0 +1,13 @@
+
+@font-face {
+  font-family: 'IRANSans';
+  src: url([[font:theme|IRANSansWeb.eot]]) format('embedded-opentype'),
+  url([[font:theme|IRANSansWeb.woff]]) format('woff'),
+  url([[font:theme|IRANSansWeb.ttf]]) format('truetype'),
+  url([[font:theme|IRANSansWeb.svg]]) format('svg');
+
+}
+
+$font-family-sans-serif:      -apple-system,'IRANSans', BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-base:            $font-family-sans-serif !default;

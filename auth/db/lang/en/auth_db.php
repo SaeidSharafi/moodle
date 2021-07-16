@@ -77,3 +77,4 @@ $string['auth_dbcolumnlist'] = 'External table contains the following columns:<b
 $string['auth_dbupdateerror'] = 'Error updating external database.';
 $string['pluginname'] = 'External database';
 $string['privacy:metadata'] = 'The External database authentication plugin does not store any personal data.';
+$string['md5_4m'] = 'Pafco MD5';
