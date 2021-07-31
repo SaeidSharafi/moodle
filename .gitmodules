@@ -1,0 +1,3 @@
+[submodule "admin/tool/mfa"]
+	path = admin/tool/mfa
+	url = git@github.com:SaeidSharafi/moodle-tool_mfa.git

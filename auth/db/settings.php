@@ -92,7 +92,7 @@ if ($ADMIN->fulltree) {
     $passtype = array();
     $passtype["plaintext"]   = get_string("plaintext", "auth");
     $passtype["md5"]         = get_string("md5", "auth");
-    $passtype["md5_4m"]         = get_string("md5_4m", "auth");
+    $passtype["md5_4m"]      = get_string("md5_4m", "auth_db");
     $passtype["sha1"]        = get_string("sha1", "auth");
     $passtype["saltedcrypt"] = get_string("auth_dbsaltedcrypt", "auth_db");
     $passtype["internal"]    = get_string("internal", "auth");

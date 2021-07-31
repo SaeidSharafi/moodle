@@ -504,7 +504,7 @@ function theme_egkuro_lang($key = '') {
 }
 
 function theme_egkuro_get_pattern_color($css, $type = '') {
-    global $OUTPUT;
+    global $OUTPUT , $CFG;
 
     $rtl = (right_to_left()) ? '_rtl' : '';
 
