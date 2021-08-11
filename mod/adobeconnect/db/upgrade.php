@@ -241,6 +241,19 @@ function xmldb_adobeconnect_upgrade($oldversion = 0)
         // Adobeconnect savepoint reached.
         upgrade_mod_savepoint(true, 2021060800, 'adobeconnect');
     }
+    if ($oldversion < 2021081100) {
+
+        // Define field id to be added to adobeconnect.
+        $table = new xmldb_table('adobeconnect_recordings');
+        $field = new xmldb_field('deleted', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'hiderow');
+        // Conditionally launch add field id.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Adobeconnect savepoint reached.
+        upgrade_mod_savepoint(true, 2021081100, 'adobeconnect');
+    }
 
     return true;
 

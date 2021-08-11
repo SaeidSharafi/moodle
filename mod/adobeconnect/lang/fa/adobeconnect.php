@@ -32,3 +32,4 @@ $string['insession'] = 'حاضر در جلسه';
 $string['last_sync'] = 'آخرین بروزرسانی';
 $string['delete_recording'] = 'حذف جلسات ضبظ شده';
 $string['permissiondo'] = 'شما اجازه {$a} را ندارید';
+$string['deleted'] = 'این رکورد حذف شده است';

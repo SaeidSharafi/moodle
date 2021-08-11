@@ -24,7 +24,13 @@
                 {{#hiderow}}hidden{{/hiderow}}
             {{/canmanagerecordings}}
 ">
-                <td>{{ name }}</td>
+                <td>
+                    {{ name }}
+
+                    {{#deleted}}
+                        <span class="text-danger d-block pl-3">{{#str}}deleted , adobeconnect{{/str}}</span>
+                    {{/deleted}}
+                </td>
 
                 <td> {{ formated_create_date }}</td>
                 <td> {{ formated_duration }}</td>

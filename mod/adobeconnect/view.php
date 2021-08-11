@@ -363,7 +363,7 @@ echo $OUTPUT->box_start('details', 'details-adobe');
 echo "<div class='loader-full'><span class='spinner-border'></span> </div>";
 echo $renderer->display_controllers($adobeconnect,$cm->id, $scoid, $cm->groupmode, $usrprincipal, $can_view_attendees, $can_mange_recordings);
 if ($can_view_recordings) {
-    //$recording = syncRecordings($context, $meetscoids, $usrobj, $cm, $usrprincipal);
+    //$recording = syncRecordings($meetscoids,$cm->id,$groupid, $usrprincipal,false);
     $recording = getRecordings($context, $cm->id, $usrobj);
     $recordings = $recording;
     //

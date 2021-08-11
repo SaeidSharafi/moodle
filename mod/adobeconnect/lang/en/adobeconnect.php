@@ -210,3 +210,4 @@ $string['last_sync'] = 'Last sync';
 
 $string['permissiondo'] = 'You don\'t have permission for this action: {$a}';
 $string['permissionsync'] = 'You don\'t have permission for this action: {$a}';
+$string['deleted'] = 'deleted from adobe';

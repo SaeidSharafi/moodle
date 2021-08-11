@@ -1760,21 +1760,24 @@ function get_connect_username($userid) {
 }
 
 function getRecordings($context, $instanceid, $user) {
-    global $DB;
+    global $DB,$USER;
     if (!has_capability('mod/adobeconnect:viewrecordings', $context, $user->id)) {
         return null;
     }
 
     try {
         $recordings = $DB->get_records('adobeconnect_recordings', ['instanceid' => $instanceid], 'start_date DESC');
-        //$sql = "SELECT * FROM {adobeconnect_attendees} attendees
-        //          JOIN {adobeconnect_attendance} attendance
-        //          ON attendees.id = attendance.attendee_id
-        //         WHERE  instanceid = ?
-        //         ORDER BY attendees.email";
-        //$attendees = $DB->get_records_sql($sql, [$instanceid]);
 
-        return $recordings;
+        return  array_map(function($record) use ($USER){
+            $record->formated_create_date = userdate($record->create_date, get_string('strftimedaydatetime'));
+            $record->formated_duration = secondsTooTime($record->duration);
+            $record->sesskey = $USER->sesskey;
+            $record->hiderow = $record->hideonline && $record->hideoffline;
+            return $record;
+        }
+        ,$recordings);
+
+        //return $recordings;
 
     } catch (Exception $e) {
         debugging("error getting recordings" . $e, DEBUG_DEVELOPER);
@@ -1913,7 +1916,9 @@ function syncRecordings($meetscoids, $cmid, $groupmode, $usrprincipal, $isAuto) 
             }
             return array('status' => -2, 'msg' => "Ops successful, no records found", 'data' =>  json_encode($data));
         }
+
         foreach ($recordings as $recording_scos) {
+            $recording_keys = array_keys($recording_scos);
             foreach ($recording_scos as $key => $recording) {
                 $record = new stdClass();
                 $record->name = $recording->name;
@@ -1924,18 +1929,16 @@ function syncRecordings($meetscoids, $cmid, $groupmode, $usrprincipal, $isAuto) 
                 $record->start_date = strtotime($recording->startdate);
                 $record->end_date = strtotime($recording->enddate);
                 $record->create_date = strtotime($recording->createdate);
-                $record->formated_create_date = userdate($record->create_date, get_string('strftimedaydatetime'));
                 $record->modified = strtotime($recording->modified);
                 $record->duration = $recording->duration;
-                $record->formated_duration = secondsTooTime($recording->duration);
                 $record->hideoffline = 0;
                 $record->hideonline = 0;
                 $record->hiderow = 0;
+                $record->deleted = 0;
                 $record->sesskey = $USER->sesskey;
-                $row = $DB->get_record('adobeconnect_recordings',
+                $exist = $DB->record_exists('adobeconnect_recordings',
                         ['instanceid' => $cmid, 'recordingscoid' => $key]);
-
-                if (!$row->id) {
+                if (!$exist) {
                     try {
                         $transaction = $DB->start_delegated_transaction();
                         $record->id = $DB->insert_record('adobeconnect_recordings', $record, true);
@@ -1943,17 +1946,25 @@ function syncRecordings($meetscoids, $cmid, $groupmode, $usrprincipal, $isAuto) 
                     } catch (Exception $e) {
                         $transaction->rollback($e);
                     }
-                } else {
-                    $record->id = $row->id;
-                    $record->hideoffline = $row->hideoffline;
-                    $record->hideonline = $row->hideonline;
-                    $record->hiderow = ($row->hideoffline && $row->hideonline) ? 1 : 0;
                 }
                 $recordings_json[] = $record;
             }
+            try {
+
+                $transaction = $DB->start_delegated_transaction();
+                $in = "(" . implode(',',$recording_keys) . ")";
+                $sql = "UPDATE {adobeconnect_recordings} SET deleted = 1 WHERE instanceid = ? AND recordingscoid NOT IN $in";
+                $DB->execute($sql, [$cmid]);
+                $transaction->allow_commit();
+
+            } catch (Exception $e) {
+                $transaction->rollback($e);
+            }
         }
+
         $data = new stdClass();
-        $data->records = $recordings_json;
+        $recordings_db = getRecordings($context,$cmid,$USER);
+        $data->records = array_values($recordings_db);
         $data->canmanagerecordings = true;
         $data->candeleterecordings = false;
         if (has_capability('mod/adobeconnect:deleterecordings', $context, $USER->id)) {
@@ -2131,7 +2142,7 @@ function deleteRecording($cmid, $recording_scoid, $recording_id) {
     if ($recording_scoid) {
         $res = aconnect_delete_recordings($aconnect, $recording_scoid);
         aconnect_logout($aconnect);
-        if ($res['status']) {
+
             try {
                 $transaction = $DB->start_delegated_transaction();
                 $DB->delete_records('adobeconnect_recordings', ['id' => $recording_id]);
@@ -2144,6 +2155,18 @@ function deleteRecording($cmid, $recording_scoid, $recording_id) {
                 );
                 $transaction->rollback($e);
             }
+        if ($res['status']) {
+            return array(
+                    'status' => 1,
+                    'msg' => 'recording has been removed',
+                    'data' => ''
+            );
+        }else{
+            return array(
+                    'status' => 1,
+                    'msg' => 'recording not found',
+                    'data' => ''
+            );
         }
         return $res;
     }
