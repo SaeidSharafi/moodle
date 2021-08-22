@@ -37,6 +37,7 @@ if ($login) {
     $redirect = get_login_url();
 } else {
     $redirect = $CFG->wwwroot.'/';
+    //$redirect = 'http://45.135.243.83/LMS/LMSLogout.pc?token='.$pafco;
 }
 
 if (!isloggedin()) {
