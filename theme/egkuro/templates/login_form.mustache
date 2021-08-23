@@ -141,9 +141,9 @@
                         </label>
                         <div class="textbox-wrap">
                             <input type="text" name="username" id="username"
-                            class="form-control"
-                            value="{{username}}"
-                            placeholder={{#quote}}{{^canloginbyemail}}{{#str}}username{{/str}}{{/canloginbyemail}}{{#canloginbyemail}}{{#str}}usernameemail{{/str}}{{/canloginbyemail}}{{/quote}}>
+                                   class="form-control"
+                                   value="{{username}}"
+                                   placeholder={{#quote}}{{^canloginbyemail}}{{#str}}username{{/str}}{{/canloginbyemail}}{{#canloginbyemail}}{{#str}}usernameemail{{/str}}{{/canloginbyemail}}{{/quote}}>
                             <i class="fa fa-user"></i>
                         </div>
                     </div>
@@ -153,9 +153,9 @@
 
                         <div class="textbox-wrap">
                             <input type="password" name="password" id="password" value=""
-                            class="form-control"
-                            placeholder={{#quote}}{{#str}}password{{/str}}{{/quote}}
-                            {{^passwordautocomplete}}autocomplete="off"{{/passwordautocomplete}}>
+                                   class="form-control"
+                                   placeholder={{#quote}}{{#str}}password{{/str}}{{/quote}}
+                                {{^passwordautocomplete}}autocomplete="off"{{/passwordautocomplete}}>
                             <i class="fa fa-lock"></i>
                         </div>
                     </div>
@@ -189,64 +189,65 @@
                         <p class="">{{#str}}someallowguest{{/str}}</p>
                         <form action="{{loginurl}}" method="post" id="guestlogin">
                             <input type="hidden" name="logintoken" value="{{logintoken}}">
-                            <input type="hidden" name="username" value="guest" />
-                            <input type="hidden" name="password" value="guest" />
+                            <input type="hidden" name="username" value="guest"/>
+                            <input type="hidden" name="password" value="guest"/>
                             <button class="btn btn-secondary btn-block" type="submit">{{#str}}loginguest{{/str}}</button>
                         </form>
                     </div>
                 {{/canloginasguest}}
 
-            {{#hasidentityproviders}}
+                {{#hasidentityproviders}}
                     <h6 class="m-t-2">{{#str}} potentialidps, auth {{/str}}</h6>
                     <div class="potentialidplist" class="m-t-1">
-                    {{#identityproviders}}
-                        <div class="potentialidp">
-                            <a href="{{url}}" title={{#quote}}{{name}}{{/quote}} class="btn btn-secondary btn-block">
-                                {{#iconurl}}
-                                    <img src="{{iconurl}}" alt="" width="24" height="24"/>
-                                {{/iconurl}}
-                                {{name}}
-                            </a>
-                        </div>
-                    {{/identityproviders}}
+                        {{#identityproviders}}
+                            <div class="potentialidp">
+                                <a href="{{url}}" title={{#quote}}{{name}}{{/quote}} class="btn btn-secondary btn-block">
+                                    {{#iconurl}}
+                                        <img src="{{iconurl}}" alt="" width="24" height="24"/>
+                                    {{/iconurl}}
+                                    {{name}}
+                                </a>
+                            </div>
+                        {{/identityproviders}}
                     </div>
-            {{/hasidentityproviders}}
+                {{/hasidentityproviders}}
 
             </div>
         </div>
 
-        </div>
     </div>
+
 </div>
+<a href="https://pafcoerp.com" class="text-center mt-2 d-block">Pafco</a>
 
 {{#cansignup}}
-<div class="custom-signuppanel">
-    <div class="card">
-        <div class="card-block">
-            <div class="card-title">
-                <h2>{{#str}}firsttime{{/str}}</h2>
-            </div>
-            <div>
-            {{{instructions}}}
-            {{#cansignup}}
-                <form class="m-t-1" action="{{signupurl}}" method="get" id="signup">
-                    <button type="submit" class="btn btn-secondary">{{#str}}startsignup{{/str}}</button>
-                </form>
-            {{/cansignup}}
+    <div class="custom-signuppanel">
+        <div class="card">
+            <div class="card-block">
+                <div class="card-title">
+                    <h2>{{#str}}firsttime{{/str}}</h2>
+                </div>
+                <div>
+                    {{{instructions}}}
+                    {{#cansignup}}
+                        <form class="m-t-1" action="{{signupurl}}" method="get" id="signup">
+                            <button type="submit" class="btn btn-secondary">{{#str}}startsignup{{/str}}</button>
+                        </form>
+                    {{/cansignup}}
+                </div>
             </div>
         </div>
     </div>
-</div>
 {{/cansignup}}
 
 
 
 {{#hasinstructions}}
-<div class="row">
-    <div class="col-xl-6 push-xl-3 m-2-md col-sm-8 push-sm-2">
+    <div class="row">
+        <div class="col-xl-6 push-xl-3 m-2-md col-sm-8 push-sm-2">
 
+        </div>
     </div>
-</div>
 {{/hasinstructions}}
 
 
@@ -254,13 +255,13 @@
     require(['jquery', 'core/yui'], function($, Y) {
     {{#error}}
         $(function() {
-            M.util.focus_login_error(Y);
+        M.util.focus_login_error(Y);
         });
     {{/error}}
     {{^error}}
         {{#autofocusform}}
             $(function() {
-                M.util.focus_login_form(Y);
+            M.util.focus_login_form(Y);
             });
         {{/autofocusform}}
     {{/error}}
