@@ -52,3 +52,4 @@ moodle-plugin-ci.phar
 .stylelintignore
 /jsdoc
 /moodle-3.10.5.zip
+/temp/

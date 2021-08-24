@@ -160,7 +160,8 @@ class theme_egkuro_core_renderer extends theme_boost\output\core_renderer {
 
         $avatarclasses = "avatars";
         $avatarcontents = html_writer::span($opts->metadata['useravatar'], 'avatar current');
-        $usertextcontents = $opts->metadata['userfullname'] . " | " .$user->username;
+        //$usertextcontents = $opts->metadata['userfullname'] . " | " .$user->username;
+        $usertextcontents = $opts->metadata['userfullname'];
 
         // Other user.
         if (!empty($opts->metadata['asotheruser'])) {

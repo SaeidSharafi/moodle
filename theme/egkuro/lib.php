@@ -265,6 +265,7 @@ function theme_egkuro_set_fontwww($css) {
     return $css;
 }
 
+
 /**
  * Logo Image URL Fetch from theme settings
  *
