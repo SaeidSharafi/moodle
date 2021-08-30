@@ -68,7 +68,7 @@ YUI.add("moodle-mod_bigbluebuttonbn-rooms", function (e, t) {
             }
 
             return t.running && (r += this.msgStartedAt(t.info.startTime) + " ",
-                r += this.msgAttendeesIn(t.info.moderatorCount, t.info.participantCount)), e.DOM.addHTML(n, r),
+                r += this.msgAttendeesIn(t.info.moderatorCount, t.info.participantCount)),
                 e.DOM.addHTML(n, r), n
         },
         msgStartedAt: function (e) {
