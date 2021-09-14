@@ -92,11 +92,8 @@ function check_lesson($Lesson)
 
     try{
 
-        $params = [$data->idnumber,$data->shortname];
-        $sql = "idnumber = '".$data->idnumber ."' OR shortname = '". $data->shortname ."' ";
 
-        $course = $DB->get_record_select('course', $sql);
-
+        $course = $DB->get_record('course', array('idnumber' => $data->idnumber));
         if (!$course) {
             create_course($data);
         } else {
@@ -119,5 +116,7 @@ function check_lesson($Lesson)
 
     return $data->shortname;
 }
-
+echo "GetFctLmsLesson Object: <br> <pre style='padding: 20px; background: #eee; display: block; font-size: 14px; overflow: auto;'>";
+var_dump($LessonsInfo);
+echo "</pre>";
 ?>
