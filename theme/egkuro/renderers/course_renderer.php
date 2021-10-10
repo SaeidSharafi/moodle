@@ -539,13 +539,13 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
         }
         // Display course contacts. See course_in_list::get_course_contacts().
         if ($course->has_course_contacts()) {
-            $counter = 0;
+            $counter = 1;
             foreach ($course->get_course_contacts() as $userid => $coursecontact) {
                 $contact['role'] = $coursecontact['rolename'];
                 $contact['name'] = $coursecontact['username'];
                 $contact['url'] = new moodle_url('/message/index.php', array('id' => $userid));
                 array_push($contacts, $contact);
-                if ($counter > 3){
+                if ($counter > 2){
                     break;
                 }
                 $counter++;
