@@ -106,7 +106,7 @@ if (!has_any_capability(['moodle/category:manage', 'mod/bigbluebuttonbn:join'], 
 $activitystatus = bigbluebuttonbn_view_session_config($bbbsession, $id);
 
 // Output starts.
-echo $OUTPUT->header();download=
+echo $OUTPUT->header();
 
 bigbluebuttonbn_view_groups($bbbsession);
 
