@@ -414,8 +414,8 @@ echo $OUTPUT->footer();
 function checktoken($token)
 {
     global $DB, $CFG;
-    $client = new SoapClient('http://45.135.243.83/lms/lms.asmx?WSDL');
-    $StudentInfo =  $client->__soapCall( 'IsAuthenticateCustom' ,array(array('token'=>$token,'PafToken'=>'a5swoh0t69Yc+dg528QlB5n5Qk8XXtk')));
+    $client = new SoapClient('<ADRESS>');
+    $StudentInfo =  $client->__soapCall( 'IsAuthenticateCustom' ,array(array('token'=>$token,'PafToken'=>'<TOKEN>')));
 
 
     $info = $StudentInfo->IsAuthenticateCustomResult;

@@ -1,16 +1,18 @@
 <?php
-
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 //define('CLI_SCRIPT', true);
 
 require('../config.php');
 require_once $CFG->dirroot . '/course/lib.php';
 use core_course_category;
 
-$client = new SoapClient('http://45.135.243.83/lms/lms.asmx?WSDL');
+$client = new SoapClient('<ADRESS>');
 //$param = array('_AuthSoapHd'=>array('strUserName'=>'abbasi','strPassword'=>'p@fcoLMS'));
 
 //$LessonsInfo =  $client->__soapCall( 'GetFctLmsLesson' ,array('parameters' => $param));
-$LessonsInfo = $client->__soapCall('GetFctLmsLesson', array(array('PafToken' => 'a5swoh0t69Yc+dg528QlB5n5Qk8XXtk')));
+$LessonsInfo = $client->__soapCall('GetLmsLesson', array(array('PafToken' => '<TOKEN>')));
 
 $ListLessons = $LessonsInfo->GetFctLmsLessonResult->LmsLesson;
 
@@ -95,11 +97,13 @@ function check_lesson($Lesson)
 
         $course = $DB->get_record('course', array('idnumber' => $data->idnumber));
         if (!$course) {
-            create_course($data);
+            echo "creating course";
+            //create_course($data);
         } else {
 
             $data->id = $course->id;
-            update_course($data);
+            echo "updating course";
+            //update_course($data);
         }
     }catch (Exception $e){
         echo "<pre>";

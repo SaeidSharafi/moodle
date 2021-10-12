@@ -6,11 +6,11 @@ require('../config.php');
 require_once $CFG->dirroot . '/course/lib.php';
 use core_course_category;
 
-$client = new SoapClient('http://45.135.243.83/lms/lms.asmx?WSDL');
+$client = new SoapClient('<ADRESS>');
 //$param = array('_AuthSoapHd'=>array('strUserName'=>'abbasi','strPassword'=>'p@fcoLMS'));
 
 //$LessonsInfo =  $client->__soapCall( 'GetFctLmsLesson' ,array('parameters' => $param));
-$LessonsInfo = $client->__soapCall('GetFctLmsLesson', array(array('PafToken' => 'a5swoh0t69Yc+dg528QlB5n5Qk8XXtk')));
+$LessonsInfo = $client->__soapCall('GetFctLmsLesson', array(array('PafToken' => '<TOKEN>')));
 
 $ListLessons = $LessonsInfo->GetFctLmsLessonResult->LmsLesson;
 
