@@ -32,12 +32,12 @@ require_once($CFG->dirroot . "/course/renderer.php");
 
 /**
  * This class has function for core course renderer
+ *
  * @copyright  2015 onwards LMSACE Dev Team (http://www.lmsace.com)
  * @author    LMSACE Dev Team
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class theme_egkuro_core_course_renderer extends core_course_renderer
-{
+class theme_egkuro_core_course_renderer extends core_course_renderer {
 
     /**
      * Outputs contents for frontpage as configured in $CFG->frontpage or $CFG->frontpageloggedin
@@ -61,12 +61,12 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                 case FRONTPAGENEWS:
                     if ($SITE->newsitems) {
                         // Print forums only when needed.
-                        require_once($CFG->dirroot .'/mod/forum/lib.php');
+                        require_once($CFG->dirroot . '/mod/forum/lib.php');
                         if (($newsforum = forum_get_course_forum($SITE->id, 'news')) &&
-                            ($forumcontents = $this->frontpage_news($newsforum))) {
+                                ($forumcontents = $this->frontpage_news($newsforum))) {
                             $newsforumcm = get_fast_modinfo($SITE)->instances['forum'][$newsforum->id];
                             $output .= $this->frontpage_part('skipsitenews', 'site-news-forum',
-                                $newsforumcm->get_formatted_name(), $forumcontents);
+                                    $newsforumcm->get_formatted_name(), $forumcontents);
                         }
                     }
                     break;
@@ -75,8 +75,8 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                     $mycourseshtml = $this->frontpage_my_courses();
                     if (!empty($mycourseshtml)) {
                         $output .= $this->frontpage_part('skipmycourses', 'frontpage-course-list',
-                            get_string('mycourses'), $mycourseshtml);
-                    }else{
+                                get_string('mycourses'), $mycourseshtml);
+                    } else {
                         $admins = get_admins();
                         $isadmin = false;
                         global $USER;
@@ -89,7 +89,7 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                         if ($isadmin) {
                             $availablecourseshtml = $this->frontpage_available_courses();
                             $output .= $this->frontpage_part('skipavailablecourses', 'frontpage-available-course-list',
-                                get_string('availablecourses'), $availablecourseshtml);
+                                    get_string('availablecourses'), $availablecourseshtml);
                         }
                     }
                     break;
@@ -97,17 +97,17 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                 case FRONTPAGEALLCOURSELIST:
                     $availablecourseshtml = $this->frontpage_available_courses();
                     $output .= $this->frontpage_part('skipavailablecourses', 'frontpage-available-course-list',
-                        get_string('availablecourses'), $availablecourseshtml);
+                            get_string('availablecourses'), $availablecourseshtml);
                     break;
 
                 case FRONTPAGECATEGORYNAMES:
                     $output .= $this->frontpage_part('skipcategories', 'frontpage-category-names',
-                        get_string('categories'), $this->frontpage_categories_list());
+                            get_string('categories'), $this->frontpage_categories_list());
                     break;
 
                 case FRONTPAGECATEGORYCOMBO:
                     $output .= $this->frontpage_part('skipcourses', 'frontpage-category-combo',
-                        get_string('courses'), $this->frontpage_combo_list());
+                            get_string('courses'), $this->frontpage_combo_list());
                     break;
 
                 case FRONTPAGECOURSESEARCH:
@@ -123,20 +123,20 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
 
     /**
      * Renderer function for the frontpage available courses.
+     *
      * @return string
      */
-    public function frontpage_available_courses()
-    {
+    public function frontpage_available_courses() {
         /* available courses */
         global $CFG, $OUTPUT;
         // require_once($CFG->libdir. '/coursecatlib.php');.
 
         $chelper = new coursecat_helper();
         $chelper->set_show_courses(self::COURSECAT_SHOW_COURSES_EXPANDED)->set_courses_display_options(array(
-            'recursive' => true,
-            'limit' => $CFG->frontpagecourselimit,
-            'viewmoreurl' => new moodle_url('/course/index.php'),
-            'viewmoretext' => new lang_string('fulllistofcourses')
+                'recursive' => true,
+                'limit' => $CFG->frontpagecourselimit,
+                'viewmoreurl' => new moodle_url('/course/index.php'),
+                'viewmoretext' => new lang_string('fulllistofcourses')
         ));
 
         $chelper->set_attributes(array('class' => 'frontpage-course-list-all'));
@@ -147,8 +147,8 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
             if (true) {
                 if ($coursemenucontent) {
                     echo '<div class="frontpage-setting"><div class="context-header-settings-menu">' .
-                        $coursemenucontent .
-                        '</div></div>';
+                            $coursemenucontent .
+                            '</div></div>';
 
                 }
             }
@@ -184,8 +184,8 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                     foreach ($course->get_course_overviewfiles() as $file) {
                         $isimage = $file->is_valid_image();
                         $imgurl = file_encode_url("$CFG->wwwroot/pluginfile.php",
-                            '/' . $file->get_contextid() . '/' . $file->get_component() . '/' .
-                            $file->get_filearea() . $file->get_filepath() . $file->get_filename(), !$isimage);
+                                '/' . $file->get_contextid() . '/' . $file->get_component() . '/' .
+                                $file->get_filearea() . $file->get_filepath() . $file->get_filename(), !$isimage);
                         if (!$isimage) {
                             $imgurl = $noimgurl;
                         }
@@ -195,7 +195,10 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                         $imgurl = $noimgurl;
                     }
 
-                    $rowcontent .= '<div class="col-md-3 col-sm-6"><div class="fp-coursebox"><div class="fp-coursethumb"><a href="' . $courseurl . '"><img src="' . $imgurl . '" width="243" height="165" alt=""></a></div><div class="fp-courseinfo"><h5><a href="' . $courseurl . '">' . $course->get_formatted_name() . '</a></h5></div></div></div>';
+                    $rowcontent .= '<div class="col-md-3 col-sm-6"><div class="fp-coursebox"><div class="fp-coursethumb"><a href="' .
+                            $courseurl . '"><img src="' . $imgurl .
+                            '" width="243" height="165" alt=""></a></div><div class="fp-courseinfo"><h5><a href="' . $courseurl .
+                            '">' . $course->get_formatted_name() . '</a></h5></div></div></div>';
                     $content .= $rowcontent;
                 }
                 $content .= '</div>';
@@ -203,8 +206,8 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
 
             $coursehtml = $header . $content . $footer;
 
-
-            if (!$totalcount && !$this->page->user_is_editing() && has_capability('moodle/course:create', context_system::instance())) {
+            if (!$totalcount && !$this->page->user_is_editing() &&
+                    has_capability('moodle/course:create', context_system::instance())) {
                 // Print link to create a new course, for the 1st available category.
                 $coursehtml .= $this->add_new_course_button();
             }
@@ -215,10 +218,10 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
 
     /**
      * Promoted courses.
+     *
      * @return string
      */
-    public function promoted_courses()
-    {
+    public function promoted_courses() {
         global $CFG, $OUTPUT, $DB;
 
         $pcourseenable = theme_egkuro_get_setting('pcourseenable');
@@ -261,7 +264,11 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
         $promotedtitle = theme_egkuro_get_setting('promotedtitle', 'format_html');
         $promotedtitle = theme_egkuro_lang($promotedtitle);
 
-        $featuredheader = '<div class="custom-courses-list" id="Promoted-Courses"><div class="container"><div class="titlebar with-felements"><h2>' . $promotedtitle . '</h2><div class="slidenav pagenav"><button class="nav-item nav-prev slick-prev"><i class="fa fa-chevron-right"></i><i class="fa fa-chevron-left"></i></button><button class="nav-item nav-next slick-next"><i class="fa fa-chevron-right"></i><i class="fa fa-chevron-left"></i></button><div class="clearfix"></div></div><div class="clearfix"></div></div><div class="promoted_courses" data-crow="' . $totalfcourse . '">';
+        $featuredheader =
+                '<div class="custom-courses-list" id="Promoted-Courses"><div class="container"><div class="titlebar with-felements"><h2>' .
+                $promotedtitle .
+                '</h2><div class="slidenav pagenav"><button class="nav-item nav-prev slick-prev"><i class="fa fa-chevron-right"></i><i class="fa fa-chevron-left"></i></button><button class="nav-item nav-next slick-next"><i class="fa fa-chevron-right"></i><i class="fa fa-chevron-left"></i></button><div class="clearfix"></div></div><div class="clearfix"></div></div><div class="promoted_courses" data-crow="' .
+                $totalfcourse . '">';
 
         $featuredfooter = ' </div></div></div>';
 
@@ -293,8 +300,8 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                     foreach ($course->get_course_overviewfiles() as $file) {
                         $isimage = $file->is_valid_image();
                         $imgurl = file_encode_url("$CFG->wwwroot/pluginfile.php",
-                            '/' . $file->get_contextid() . '/' . $file->get_component() . '/' .
-                            $file->get_filearea() . $file->get_filepath() . $file->get_filename(), !$isimage);
+                                '/' . $file->get_contextid() . '/' . $file->get_component() . '/' .
+                                $file->get_filearea() . $file->get_filepath() . $file->get_filename(), !$isimage);
                         if (!$isimage) {
                             $imgurl = $noimgurl;
                         }
@@ -302,7 +309,10 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                     if (empty($imgurl)) {
                         $imgurl = $noimgurl;
                     }
-                    $coursehtml = '<div class="col-md-2"><div class="course-box"><div class="thumb"><a href="' . $courseurl . '"><img src="' . $imgurl . '" width="135" height="135" alt=""></a></div><div class="info"><h5><a href="' . $courseurl . '">' . $course->get_formatted_name() . '</a></h5></div></div></div>';
+                    $coursehtml = '<div class="col-md-2"><div class="course-box"><div class="thumb"><a href="' . $courseurl .
+                            '"><img src="' . $imgurl .
+                            '" width="135" height="135" alt=""></a></div><div class="info"><h5><a href="' . $courseurl . '">' .
+                            $course->get_formatted_name() . '</a></h5></div></div></div>';
 
                     $rowcontent .= $coursehtml;
                 }
@@ -313,7 +323,6 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
         $featuredcourses = $featuredheader . $featuredcontent . $featuredfooter;
         return $featuredcourses;
     }
-
 
     /**
      * Renders the list of courses
@@ -331,16 +340,15 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
      *     defaulted to count($courses)
      * @return string
      */
-    protected function coursecat_courses(coursecat_helper $chelper, $courses, $totalcount = null)
-    {
+    protected function coursecat_courses(coursecat_helper $chelper, $courses, $totalcount = null) {
 
         global $CFG;
 
-//        $theme = \theme_config::load('kuro');
-//
-//        if (!empty($theme->settings->courselistview)) {
-//           // return parent::coursecat_courses($chelper, $courses, $totalcount);
-//        }
+        //        $theme = \theme_config::load('kuro');
+        //
+        //        if (!empty($theme->settings->courselistview)) {
+        //           // return parent::coursecat_courses($chelper, $courses, $totalcount);
+        //        }
 
         if ($totalcount === null) {
             $totalcount = count($courses);
@@ -370,10 +378,10 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                 $perpage = $chelper->get_courses_display_option('limit', $CFG->coursesperpage);
                 $page = $chelper->get_courses_display_option('offset') / $perpage;
                 $pagingbar = $this->paging_bar($totalcount, $page, $perpage,
-                    $paginationurl->out(false, array('perpage' => $perpage)));
+                        $paginationurl->out(false, array('perpage' => $perpage)));
                 if ($paginationallowall) {
                     $pagingbar .= html_writer::tag('div', html_writer::link($paginationurl->out(false, array('perpage' => 'all')),
-                        get_string('showall', '', $totalcount)), array('class' => 'paging paging-showall'));
+                            get_string('showall', '', $totalcount)), array('class' => 'paging paging-showall'));
                 }
             } else if ($viewmoreurl = $chelper->get_courses_display_option('viewmoreurl')) {
                 // The option for 'View more' link was specified, display more link.
@@ -394,7 +402,7 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                 }
                 if ($isadmin) {
                     $morelink = html_writer::tag('div', html_writer::link($viewmoreurl, $viewmoretext),
-                        array('class' => 'paging paging-morelink'));
+                            array('class' => 'paging paging-morelink'));
                 } else {
                     $morelink = "";
                 }
@@ -404,15 +412,15 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
         } else if (($totalcount > $CFG->coursesperpage) && $paginationurl && $paginationallowall) {
             // There are more than one page of results and we are in 'view all' mode, suggest to go back to paginated view mode.
             $pagingbar = html_writer::tag(
-                'div',
-                html_writer::link(
-                    $paginationurl->out(
-                        false,
-                        array('perpage' => $CFG->coursesperpage)
+                    'div',
+                    html_writer::link(
+                            $paginationurl->out(
+                                    false,
+                                    array('perpage' => $CFG->coursesperpage)
+                            ),
+                            get_string('showperpage', '', $CFG->coursesperpage)
                     ),
-                    get_string('showperpage', '', $CFG->coursesperpage)
-                ),
-                array('class' => 'paging paging-showperpage')
+                    array('class' => 'paging paging-showperpage')
             );
         }
 
@@ -429,10 +437,10 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
         foreach ($courses as $course) {
             $content .= $this->coursecat_coursebox($chelper, $course);
 
-//            if ($coursecount % 4 == 0) {
-//                $content .= html_writer::end_tag('div');
-//                $content .= html_writer::start_tag('div', array('class' => 'card-deck mt-2'));
-//            }
+            //            if ($coursecount % 4 == 0) {
+            //                $content .= html_writer::end_tag('div');
+            //                $content .= html_writer::start_tag('div', array('class' => 'card-deck mt-2'));
+            //            }
 
             $coursecount++;
         }
@@ -465,8 +473,7 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
      *
      * @throws \coding_exception
      */
-    protected function coursecat_coursebox(coursecat_helper $chelper, $course, $additionalclasses = '')
-    {
+    protected function coursecat_coursebox(coursecat_helper $chelper, $course, $additionalclasses = '') {
 
         if (!isset($this->strings->summary)) {
             $this->strings->summary = get_string('summary');
@@ -488,9 +495,9 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
 
         // End coursebox.
         $content = html_writer::start_tag('div', array(
-            'class' => $classes,
-            'data-courseid' => $course->id,
-            'data-type' => self::COURSECAT_TYPE_COURSE,
+                'class' => $classes,
+                'data-courseid' => $course->id,
+                'data-type' => self::COURSECAT_TYPE_COURSE,
         ));
         //var_dump($course);
         $content .= $this->coursecat_coursebox_content($chelper, $course);
@@ -500,9 +507,7 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
         return $content;
     }
 
-
-    protected function coursecat_coursebox_content(coursecat_helper $chelper, $course)
-    {
+    protected function coursecat_coursebox_content(coursecat_helper $chelper, $course) {
         global $CFG, $OUTPUT;
         $content = '';
         $image_array = array();
@@ -511,13 +516,13 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
         $no = get_config('theme_egkuro', 'patternselect');
         $nimgp = (empty($no) || $no == "default") ? 'default/no-image' : 'cs0' . $no . '/no-image';
         $noimgurl = $OUTPUT->image_url($nimgp, 'theme');
-//        var_dump($course);
+        //        var_dump($course);
         foreach ($course->get_course_overviewfiles() as $file) {
 
             $isimage = $file->is_valid_image();
             $url = file_encode_url("$CFG->wwwroot/pluginfile.php",
-                '/' . $file->get_contextid() . '/' . $file->get_component() . '/' .
-                $file->get_filearea() . $file->get_filepath() . $file->get_filename(), !$isimage);
+                    '/' . $file->get_contextid() . '/' . $file->get_component() . '/' .
+                    $file->get_filearea() . $file->get_filepath() . $file->get_filename(), !$isimage);
 
             $courseItem['image_url'] = $url;
             //echo $url;
@@ -526,7 +531,7 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
             }
 
             array_push($image_array, $courseItem);
-//            var_dump($image_array);
+            //            var_dump($image_array);
 
         }
         if (!$image_array) {
@@ -545,24 +550,98 @@ class theme_egkuro_core_course_renderer extends core_course_renderer
                 $contact['name'] = $coursecontact['username'];
                 $contact['url'] = new moodle_url('/message/index.php', array('id' => $userid));
                 array_push($contacts, $contact);
-                if ($counter > 2){
+                if ($counter > 2) {
                     break;
                 }
                 $counter++;
             }
 
-
         }
-        $data = (object)[
-            'name' => $course->fullname,
-            'images' => $image_array,
-            'summary' => $summary,
-            'contacts' => $contacts,
-            'contact_string' => get_string('contactteacher', 'theme_egkuro'),
-            'url' => new moodle_url('/course/view.php', array('id' => $course->id))
+        $data = (object) [
+                'name' => $course->fullname,
+                'images' => $image_array,
+                'summary' => $summary,
+                'contacts' => $contacts,
+                'contact_string' => get_string('contactteacher', 'theme_egkuro'),
+                'url' => new moodle_url('/course/view.php', array('id' => $course->id))
 
         ];
         return $this->render_from_template('theme_egkuro/coursecat_coursebox_content', $data);
+    }
+
+    /**
+     * Returns HTML to print list of courses user is enrolled to for the frontpage
+     *
+     * Also lists remote courses or remote hosts if MNET authorisation is used
+     *
+     * @return string
+     */
+    public function frontpage_my_courses() {
+        global $USER, $CFG, $DB;
+
+        if (!isloggedin() or isguestuser()) {
+            return '';
+        }
+
+        $output = '';
+        $courses = enrol_get_my_courses('summary, summaryformat, enddate');
+        $rhosts = array();
+        $rcourses = array();
+        if (!empty($CFG->mnet_dispatcher_mode) && $CFG->mnet_dispatcher_mode === 'strict') {
+            $rcourses = get_my_remotecourses($USER->id);
+            $rhosts = get_my_remotehosts();
+        }
+
+        $array = array_map(function($course) {
+            if (time() < $course->enddate || $course->enddate == 0) {
+                return $course;
+            } else {
+                return false;
+            }
+        }, $courses);
+        $courses = array_filter($array);
+
+        if (!empty($courses) || !empty($rcourses) || !empty($rhosts)) {
+
+            $chelper = new coursecat_helper();
+            $totalcount = count($courses);
+            if (count($courses) > $CFG->frontpagecourselimit) {
+                // There are more enrolled courses than we can display, display link to 'My courses'.
+                $courses = array_slice($courses, 0, $CFG->frontpagecourselimit, true);
+                $chelper->set_courses_display_options(array(
+                        'viewmoreurl' => new moodle_url('/my/'),
+                        'viewmoretext' => new lang_string('mycourses')
+                ));
+            } else if (core_course_category::top()->is_uservisible()) {
+                // All enrolled courses are displayed, display link to 'All courses' if there are more courses in system.
+                $chelper->set_courses_display_options(array(
+                        'viewmoreurl' => new moodle_url('/course/index.php'),
+                        'viewmoretext' => new lang_string('fulllistofcourses')
+                ));
+                $totalcount = $DB->count_records('course') - 1;
+            }
+            $chelper->set_show_courses(self::COURSECAT_SHOW_COURSES_EXPANDED)
+                    ->set_attributes(array('class' => 'frontpage-course-list-enrolled'));
+            $output .= $this->coursecat_courses($chelper, $courses, $totalcount);
+
+            // MNET
+            if (!empty($rcourses)) {
+                // at the IDP, we know of all the remote courses
+                $output .= html_writer::start_tag('div', array('class' => 'courses'));
+                foreach ($rcourses as $course) {
+                    $output .= $this->frontpage_remote_course($course);
+                }
+                $output .= html_writer::end_tag('div'); // .courses
+            } else if (!empty($rhosts)) {
+                // non-IDP, we know of all the remote servers, but not courses
+                $output .= html_writer::start_tag('div', array('class' => 'courses'));
+                foreach ($rhosts as $host) {
+                    $output .= $this->frontpage_remote_host($host);
+                }
+                $output .= html_writer::end_tag('div'); // .courses
+            }
+        }
+        return $output;
     }
 
 }
