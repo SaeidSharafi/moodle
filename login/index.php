@@ -31,7 +31,7 @@ require_once $CFG->dirroot . '/user/lib.php';
 redirect_if_major_upgrade_required();
 
 $testsession = optional_param('testsession', 0, PARAM_INT); // test session works properly
-$anchor      = optional_param('anchor', '', PARAM_RAW);     // Used to restore hash anchor to wantsurl.
+$anchor = optional_param('anchor', '', PARAM_RAW);     // Used to restore hash anchor to wantsurl.
 
 $resendconfirmemail = optional_param('resendconfirmemail', false, PARAM_BOOL);
 
@@ -40,7 +40,7 @@ $resendconfirmemail = optional_param('resendconfirmemail', false, PARAM_BOOL);
 // If you wants to do the analysis, you may be able to remove the
 // if (BEHAT_SITE_RUNNING).
 if (defined('BEHAT_SITE_RUNNING') && BEHAT_SITE_RUNNING) {
-    $wantsurl    = optional_param('wantsurl', '', PARAM_LOCALURL);   // Overrides $SESSION->wantsurl if given.
+    $wantsurl = optional_param('wantsurl', '', PARAM_LOCALURL);   // Overrides $SESSION->wantsurl if given.
     if ($wantsurl !== '') {
         $SESSION->wantsurl = (new moodle_url($wantsurl))->out(false);
     }
@@ -61,7 +61,7 @@ if ($testsession) {
         if (isset($SESSION->wantsurl)) {
             $urltogo = $SESSION->wantsurl;
         } else {
-            $urltogo = $CFG->wwwroot.'/';
+            $urltogo = $CFG->wwwroot . '/';
         }
         unset($SESSION->wantsurl);
         redirect($urltogo);
@@ -80,13 +80,13 @@ if (!empty($SESSION->has_timed_out)) {
     $session_has_timed_out = false;
 }
 
-$frm  = false;
+$frm = false;
 $user = false;
 $db_active = false;
 $authsequence = get_enabled_auth_plugins(); // Auths, in sequence.
-foreach($authsequence as $authname) {
+foreach ($authsequence as $authname) {
     $authplugin = get_auth_plugin($authname);
-    if ($authname == 'db'){
+    if ($authname == 'db') {
         $db_active = true;
     }
     // The auth plugin's loginpage_hook() can eventually set $frm and/or $user.
@@ -108,10 +108,10 @@ $is4m = false;
 if ($user !== false or $frm !== false or $errormsg !== '') {
     // some auth plugin already supplied full user, fake form data or prevented user login with error message
 
-} else if (!empty($SESSION->wantsurl) && file_exists($CFG->dirroot.'/login/weblinkauth.php')) {
+} else if (!empty($SESSION->wantsurl) && file_exists($CFG->dirroot . '/login/weblinkauth.php')) {
     // Handles the case of another Moodle site linking into a page on this site
     //TODO: move weblink into own auth plugin
-    include($CFG->dirroot.'/login/weblinkauth.php');
+    include($CFG->dirroot . '/login/weblinkauth.php');
     if (function_exists('weblink_auth')) {
         $user = weblink_auth($SESSION->wantsurl);
     }
@@ -150,9 +150,9 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
 
     $frm->username = trim(core_text::strtolower($frm->username));
 
-    if (is_enabled_auth('none') ) {
+    if (is_enabled_auth('none')) {
         if ($frm->username !== core_user::clean_field($frm->username, 'username')) {
-            $errormsg = get_string('username').': '.get_string("invalidusername");
+            $errormsg = get_string('username') . ': ' . get_string("invalidusername");
             $errorcode = 2;
             $user = null;
         }
@@ -221,89 +221,153 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
             echo $OUTPUT->footer();
             die;
         }
+        $failed = false;
 
-    /// Let's get them all set up.
-        complete_user_login($user);
+        $vaccinated = $user->profile['vacinnated'];
+        $nid = $user->profile['NationalID'];
 
-        \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
+//        user_update_user($user, false, false);
+        if (!$nid && !$vaccinated) {
+//            echo $OUTPUT->notification('vaccine verification failed, National ID ', \core\output\notification::NOTIFY_ERROR);
+            $SESSION->loginerrormsg = "vaccine verification failed, National ID";
+            $event = \core\event\user_login_failed::create(array('other' => array('username' => $user->username,
+                'reason' => 6)));
+            $event->trigger();
+            $failed = true;
 
-        $admins = get_admins();
-        $isadmin = false;
-        foreach ($admins as $admin){
-            if ($user->id == $admin->id){
-                $isadmin = true;
-                break;
-            }
-        }
-        if (isset($_GET['token']) && $is4m && $db_active) {
-            if (!$isadmin) {
-                $user->auth = 'db';
-                user_update_user($user, false, false);
-            }
         }
 
-        // sets the username cookie
-        if (!empty($CFG->nolastloggedin)) {
-            // do not store last logged in user in cookie
-            // auth plugins can temporarily override this from loginpage_hook()
-            // do not save $CFG->nolastloggedin in database!
+        $url = "https://vaccinecard.salamat.gov.ir/63ec9ad8529061400398ac10f6410f9dac9a";
+        $base_url = "https://vcrservice95361.salamat.gov.ir/Api/Card/VaccineCardPe?vk=";
+        $parsed_url = parse_url($url);
 
-        } else if (empty($CFG->rememberusername) or ($CFG->rememberusername == 2 and empty($frm->rememberusername))) {
-            // no permanent cookies, delete old one if exists
-            set_moodle_cookie('');
+        if (!$failed && !$vaccinated)
+            if (array_key_exists('path', $parsed_url)) {
+                $path = $parsed_url['path'];
+                $key = ltrim($path, '/');
+                if (strlen($key) == 36) {
 
-        } else {
-            set_moodle_cookie($USER->username);
-        }
+                    try {
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, $base_url . $key);
+                        curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        $response = curl_exec($ch);
+                        $info = curl_getinfo($ch);
+                        $obj = json_decode($response);
+                        if ($obj->Status == 0) {
+                            if ($obj->Data->NationalID == $nid) {
+                                 $vaccinated = true;
+                                $user->profile_field_vacinnated = true;
+                                profile_save_data($user);
+                                $failed = false;
+                            }else{
+                                $event = \core\event\user_login_failed::create(array('other' => array('username' => $user->username,
+                                    'reason' => 7)));
+                                $event->trigger();
+                                $SESSION->loginerrormsg = "vaccine verification failed, No Match";
+                                $failed = true;
+                            }
+                        } else {
+                            $SESSION->loginerrormsg = 'vaccine verification failed, status ';
+                            $failed = true;
+                        }
+                    } catch (Exception $e) {
+                        echo $e->getTrace();
+                    }
 
-        $urltogo = core_login_get_return_url();
-
-    /// check if user password has expired
-    /// Currently supported only for ldap-authentication module
-        $userauth = get_auth_plugin($USER->auth);
-        if (!isguestuser() and !empty($userauth->config->expiration) and $userauth->config->expiration == 1) {
-            $externalchangepassword = false;
-            if ($userauth->can_change_password()) {
-                $passwordchangeurl = $userauth->change_password_url();
-                if (!$passwordchangeurl) {
-                    $passwordchangeurl = $CFG->wwwroot.'/login/change_password.php';
                 } else {
-                    $externalchangepassword = true;
+                    $SESSION->loginerrormsg = 'vaccine verification failed, url 1 ';
                 }
             } else {
-                $passwordchangeurl = $CFG->wwwroot.'/login/change_password.php';
+                $SESSION->loginerrormsg = 'vaccine verification failed, url 2';
             }
-            $days2expire = $userauth->password_expire($USER->username);
-            $PAGE->set_title("$site->fullname: $loginsite");
-            $PAGE->set_heading("$site->fullname");
-            if (intval($days2expire) > 0 && intval($days2expire) < intval($userauth->config->expiration_warning)) {
-                echo $OUTPUT->header();
-                echo $OUTPUT->confirm(get_string('auth_passwordwillexpire', 'auth', $days2expire), $passwordchangeurl, $urltogo);
-                echo $OUTPUT->footer();
-                exit;
-            } elseif (intval($days2expire) < 0 ) {
-                if ($externalchangepassword) {
-                    // We end the session if the change password form is external. This prevents access to the site
-                    // until the password is correctly changed.
-                    require_logout();
-                } else {
-                    // If we use the standard change password form, this user preference will be reset when the password
-                    // is changed. Until then it will prevent access to the site.
-                    set_user_preference('auth_forcepasswordchange', 1, $USER);
+
+        if (!$failed && $vaccinated) {
+            /// Let's get them all set up.
+            complete_user_login($user);
+
+            \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
+
+            $admins = get_admins();
+            $isadmin = false;
+            foreach ($admins as $admin) {
+                if ($user->id == $admin->id) {
+                    $isadmin = true;
+                    break;
                 }
-                echo $OUTPUT->header();
-                echo $OUTPUT->confirm(get_string('auth_passwordisexpired', 'auth'), $passwordchangeurl, $urltogo);
-                echo $OUTPUT->footer();
-                exit;
             }
+            if (isset($_GET['token']) && $is4m && $db_active) {
+                if (!$isadmin) {
+                    $user->auth = 'db';
+                    user_update_user($user, false, false);
+                }
+            }
+
+            // sets the username cookie
+            if (!empty($CFG->nolastloggedin)) {
+                // do not store last logged in user in cookie
+                // auth plugins can temporarily override this from loginpage_hook()
+                // do not save $CFG->nolastloggedin in database!
+
+            } else if (empty($CFG->rememberusername) or ($CFG->rememberusername == 2 and empty($frm->rememberusername))) {
+                // no permanent cookies, delete old one if exists
+                set_moodle_cookie('');
+
+            } else {
+                set_moodle_cookie($USER->username);
+            }
+
+            $urltogo = core_login_get_return_url();
+
+            /// check if user password has expired
+            /// Currently supported only for ldap-authentication module
+            $userauth = get_auth_plugin($USER->auth);
+            if (!isguestuser() and !empty($userauth->config->expiration) and $userauth->config->expiration == 1) {
+                $externalchangepassword = false;
+                if ($userauth->can_change_password()) {
+                    $passwordchangeurl = $userauth->change_password_url();
+                    if (!$passwordchangeurl) {
+                        $passwordchangeurl = $CFG->wwwroot . '/login/change_password.php';
+                    } else {
+                        $externalchangepassword = true;
+                    }
+                } else {
+                    $passwordchangeurl = $CFG->wwwroot . '/login/change_password.php';
+                }
+                $days2expire = $userauth->password_expire($USER->username);
+                $PAGE->set_title("$site->fullname: $loginsite");
+                $PAGE->set_heading("$site->fullname");
+                if (intval($days2expire) > 0 && intval($days2expire) < intval($userauth->config->expiration_warning)) {
+                    echo $OUTPUT->header();
+                    echo $OUTPUT->confirm(get_string('auth_passwordwillexpire', 'auth', $days2expire), $passwordchangeurl, $urltogo);
+                    echo $OUTPUT->footer();
+                    exit;
+                } elseif (intval($days2expire) < 0) {
+                    if ($externalchangepassword) {
+                        // We end the session if the change password form is external. This prevents access to the site
+                        // until the password is correctly changed.
+                        require_logout();
+                    } else {
+                        // If we use the standard change password form, this user preference will be reset when the password
+                        // is changed. Until then it will prevent access to the site.
+                        set_user_preference('auth_forcepasswordchange', 1, $USER);
+                    }
+                    echo $OUTPUT->header();
+                    echo $OUTPUT->confirm(get_string('auth_passwordisexpired', 'auth'), $passwordchangeurl, $urltogo);
+                    echo $OUTPUT->footer();
+                    exit;
+                }
+            }
+
+            // Discard any errors before the last redirect.
+            unset($SESSION->loginerrormsg);
+
+            // test the session actually works by redirecting to self
+            $SESSION->wantsurl = $urltogo;
+            redirect(new moodle_url(get_login_url(), array('testsession' => $USER->id)));
         }
-
-        // Discard any errors before the last redirect.
-        unset($SESSION->loginerrormsg);
-
-        // test the session actually works by redirecting to self
-        $SESSION->wantsurl = $urltogo;
-        redirect(new moodle_url(get_login_url(), array('testsession'=>$USER->id)));
 
     } else {
         if (empty($errormsg)) {
@@ -329,11 +393,11 @@ if (empty($SESSION->wantsurl)) {
     $SESSION->wantsurl = null;
     $referer = get_local_referer(false);
     if ($referer &&
-            $referer != $CFG->wwwroot &&
-            $referer != $CFG->wwwroot . '/' &&
-            $referer != $CFG->wwwroot . '/login/' &&
-            strpos($referer, $CFG->wwwroot . '/login/?') !== 0 &&
-            strpos($referer, $CFG->wwwroot . '/login/index.php') !== 0) { // There might be some extra params such as ?lang=.
+        $referer != $CFG->wwwroot &&
+        $referer != $CFG->wwwroot . '/' &&
+        $referer != $CFG->wwwroot . '/login/' &&
+        strpos($referer, $CFG->wwwroot . '/login/?') !== 0 &&
+        strpos($referer, $CFG->wwwroot . '/login/index.php') !== 0) { // There might be some extra params such as ?lang=.
         $SESSION->wantsurl = $referer;
     }
 }
@@ -399,7 +463,7 @@ echo $OUTPUT->header();
 if (isloggedin() and !isguestuser()) {
     // prevent logging when already logged in, we do not want them to relogin by accident because sesskey would be changed
     echo $OUTPUT->box_start();
-    $logout = new single_button(new moodle_url('/login/logout.php', array('sesskey'=>sesskey(),'loginpage'=>1)), get_string('logout'), 'post');
+    $logout = new single_button(new moodle_url('/login/logout.php', array('sesskey' => sesskey(), 'loginpage' => 1)), get_string('logout'), 'post');
     $continue = new single_button(new moodle_url('/'), get_string('cancel'), 'get');
     echo $OUTPUT->confirm(get_string('alreadyloggedin', 'error', fullname($USER)), $logout, $continue);
     echo $OUTPUT->box_end();
@@ -415,7 +479,7 @@ function checktoken($token)
 {
     global $DB, $CFG;
     $client = new SoapClient('<ADRESS>');
-    $StudentInfo =  $client->__soapCall( 'IsAuthenticateCustom' ,array(array('token'=>$token,'PafToken'=>'<TOKEN>')));
+    $StudentInfo = $client->__soapCall('IsAuthenticateCustom', array(array('token' => $token, 'PafToken' => '<TOKEN>')));
 
 
     $info = $StudentInfo->IsAuthenticateCustomResult;

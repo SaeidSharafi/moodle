@@ -83,6 +83,10 @@ class user_login_failed extends base {
                 return $loginfailed." '{$username}'. User is locked out (error ID '{$reasonid}').";
             case 5:
                 return $loginfailed." '{$username}'. User is not authorised (error ID '{$reasonid}').";
+            case 6:
+                return $loginfailed." '{$username}'. User vaccine card validation failed (error ID '{$reasonid}').";
+            case 7:
+                return $loginfailed." '{$username}'. User info and vaccine card info did not matched (error ID '{$reasonid}').";
             default:
                 return $loginfailed." '{$username}', error ID '{$reasonid}'.";
 

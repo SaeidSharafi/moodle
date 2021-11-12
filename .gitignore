@@ -55,3 +55,4 @@ moodle-plugin-ci.phar
 /temp/
 /admin/syncuac/
 /soap/
+/test.php
