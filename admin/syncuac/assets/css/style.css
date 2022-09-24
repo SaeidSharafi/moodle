@@ -1,0 +1,242 @@
+@font-face {
+    font-family: 'IRANSans';
+    src: url('../fonts/IRANSansWeb.eot') format('embedded-opentype'),
+    url('../fonts/IRANSansWeb.woff') format('woff'),
+    url('../fonts/IRANSansWeb.ttf') format('truetype'),
+    url('../fonts/IRANSansWeb.svg') format('svg');
+
+}
+
+*,
+body,
+a,
+h1,
+h2,
+h3,
+h4 {
+    font-family: IRANSans, Tahoma, Sans-Serif, serif;
+}
+
+.nav-tabs .nav-link {
+    border: 1px solid #d8e7ef;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #fff;
+    border-color: #d8e7ef;
+    background: #0f6fc5 linear-gradient(180deg, #0f6fc5, #d8e7ef);
+}
+
+.export-panel {
+    -webkit-border-radius: 10pt 10pt 0 0;
+    -moz-border-radius: 10pt 10pt 0 0;
+    border-radius: 10pt 10pt 0 0;
+    overflow: hidden;
+}
+
+#export {
+    direction: ltr;
+
+}
+.dataTables_wrapper{
+    padding: 10pt;
+}
+#export * {
+    direction: rtl;
+}
+
+.tab-pane {
+    background: rgba(58, 135, 173, 0.2);
+}
+
+.info,
+.info-header {
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+    padding: 5px 5px;
+    direction: rtl;
+}
+
+#pager {
+    font-size: 14px;
+    direction: rtl;
+}
+
+.info span {
+    display: inline-block;
+    white-space: pre;
+}
+
+.pager {
+    background: #39cc52;
+    text-align: center;
+    font-weight: bold;
+    padding: 5pt 0 0 0;
+}
+
+.info:nth-child(odd) {
+    background: #ececec;
+}
+
+.d-block.info.tregister {
+    background: #bed9f9;
+}
+
+.d-block.info.tregister:nth-child(odd) {
+    background: #a0c6f3;
+}
+
+.info-header {
+    background: #39cc52;
+    text-align: center;
+    font-weight: bold;
+}
+
+#export {
+    padding: 0;
+}
+
+.modal-dialog {
+    max-width: 800px;
+}
+
+.loader-container {
+    overflow: hidden;
+    z-index: 99;
+}
+
+.loader-container .loader-bg {
+    background: rgba(255, 255, 255, 0.7);
+    /*backdrop-filter: blur(2px);*/
+
+}
+.loader-holder {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    z-index: 999;
+}
+.loader {
+
+    border: 6px solid #f3f3f3; /* Light grey */
+    border-top: 6px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    animation: spin 2s linear infinite;
+}
+/*.loader-btn {
+    border: 3px solid #f3f3f3; !* Light grey *!
+    border-top: 3px solid #3498db; !* Blue *!
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    animation: spin 2s linear infinite;
+}*/
+
+.tab-content.blurred{
+    overflow: hidden;
+}
+.tab-content.blurred .tab-pane {
+    filter: blur(3px);
+}
+.counter {
+    font-weight: bold;
+    color: #000;
+    background: #313131;
+}
+
+.form-group.error label {
+    color: red;
+
+}
+
+.form-group.error input {
+    border-color: red;
+
+}
+
+.form-group {
+    display: flex;
+    margin-bottom: 3pt;
+}
+
+.form-group label {
+    flex-shrink: 0;
+    padding: 0 5px;
+    min-width: 130px;
+    display: flex;
+    align-items: center;
+}
+
+.form-group input {
+    max-width: 240px;
+}
+
+.tab-pane {
+    padding: 10pt;
+    min-height: 200px;
+    margin-bottom: 10px;
+    flex-flow: column;
+    justify-content: space-between;
+    border: 0;
+
+    -webkit-border-radius: 0 0 10pt 10pt;
+    -moz-border-radius: 0 0 10pt 10pt;
+    border-radius: 0 0 10pt 10pt;
+}
+
+.tab-pane.active {
+    display: flex;
+}
+
+input.form-control::placeholder {
+    color: #bfbfbf;
+}
+.btn.btn-cancel {
+    width: 95px;
+    display: block;
+    height: 38px;
+    text-align: center;
+}
+
+.loader-btn {
+    position: relative;
+    left: -9999px;
+    margin: 7px auto;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #fff;
+    box-shadow: 9984px 0 0 0 #fff, 9999px 0 0 0 #fff, 10014px 0 0 0 #fff;
+    animation: dotCarousel 1.5s infinite linear;
+}
+
+@keyframes dotCarousel {
+    0% {
+        box-shadow: 9984px 0 0 -1px #fff, 9999px 0 0 1px #fff, 10014px 0 0 -1px #fff;
+    }
+    50% {
+        box-shadow: 10014px 0 0 -1px #fff, 9984px 0 0 -1px #fff, 9999px 0 0 1px #fff;
+    }
+    100% {
+        box-shadow: 9999px 0 0 1px #fff, 10014px 0 0 -1px #fff, 9984px 0 0 -1px #fff;
+    }
+}
+
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

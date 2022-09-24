@@ -1,0 +1,62 @@
+<div class="recordings" id="attendances">
+    <h3>{{#str}}attendance, adobeconnect{{/str}}</h3>
+
+    <table class="w-100 table-adobe-attendance">
+        <thead>
+        <tr>
+            <th>{{#str}}email{{/str}}</th>
+            <th>{{#str}}sessain_name, adobeconnect{{/str}}</th>
+            <th>{{#str}}participant_name, adobeconnect{{/str}}</th>
+            {{#userfields}}
+                <th>{{.}}</th>
+            {{/userfields}}
+
+
+            <th>{{#str}}date{{/str}}</th>
+            <th>{{#str}}start_date, adobeconnect{{/str}}</th>
+            <th>{{#str}}end_date, adobeconnect{{/str}}</th>
+
+            <th>{{#str}}duration, adobeconnect{{/str}}</th>
+            <th>{{#str}}count_log, adobeconnect{{/str}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#rows}}
+            <tr>
+                <td style="vertical-align: top">{{ email }}</td>
+                <td style="vertical-align: top">{{ session_name }}</td>
+                <td style="vertical-align: top">{{ participant_name }}</td>
+                {{#user_fields}}
+                    <td style="vertical-align: top">{{value}}</td>
+                {{/user_fields}}
+
+                <td style="vertical-align: top">
+                    {{#join_dates }}
+                        <span class="text-nowrap">{{ . }} </span><br>
+                    {{/join_dates }}
+
+                </td>
+                <td style="vertical-align: top">
+                    {{#join_times}}
+                        <span class="text-nowrap">{{ . }} </span><br>
+                    {{/join_times }}
+
+                </td>
+                <td style="vertical-align: top">
+                    {{#end_dates }}
+                        <span class="text-nowrap">{{ . }} </span><br>
+                    {{/end_dates }}
+
+                </td>
+
+                <td style="vertical-align: top">{{ formated_duration }}</td>
+                <td style="vertical-align: top"> {{ log_count }}</td>
+            </tr>
+        {{/rows}}
+        {{^rows}}
+
+        {{/rows}}
+        </tbody>
+    </table>
+
+</div>
