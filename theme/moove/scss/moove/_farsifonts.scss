@@ -1,0 +1,26 @@
+@font-face {
+  font-family: 'IRANSans';
+  src: url([[font:theme|IRANSansWeb.eot]]) format('embedded-opentype'),
+  url([[font:theme|IRANSansWeb.woff]]) format('woff'),
+  url([[font:theme|IRANSansWeb.ttf]]) format('truetype'),
+  url([[font:theme|IRANSansWeb.svg]]) format('svg');
+
+}
+@font-face {
+  font-family: 'IRYekan';
+  src: url([[font:theme|WebYekan.eot]]) format('embedded-opentype'),
+  url([[font:theme|WebYekan.woff]]) format('woff'),
+  url([[font:theme|WebYekan.ttf]]) format('truetype'),
+  url([[font:theme|WebYekan.svg]]) format('svg');
+
+}
+.iransansfont {
+  font-family: 'IRANSans', "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+}
+
+.yekanfont {
+  font-family: 'IRYekan', "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
