@@ -21,28 +21,30 @@
  * @copyright  (C) 2015 Remote Learner.net Inc http://www.remote-learner.net
  */
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-require_once(dirname(__FILE__).'/locallib.php');
-require_once(dirname(__FILE__).'/connect_class.php');
-require_once(dirname(__FILE__).'/connect_class_dom.php');
+use mod_adobeconnect\connect_class_dom;
+use mod_adobeconnect\dto\adobe_connection_dto;
+use mod_adobeconnect\event\adobeconnect_delete_recording;
 
-$id         = required_param('id', PARAM_INT);
-$groupid    = required_param('groupid', PARAM_INT);
-$recscoid   = required_param('recording', PARAM_INT);
+require_once(dirname(__FILE__, 3).'/config.php');
+require_once(__DIR__.'/locallib.php');
+
+$id = required_param('id', PARAM_INT);
+$groupid = required_param('groupid', PARAM_INT);
+$recscoid = required_param('recording', PARAM_INT);
 
 global $CFG, $USER, $DB;
 
 // Do the usual Moodle setup
-if (! $cm = get_coursemodule_from_id('adobeconnect', $id)) {
+if (!$cm = get_coursemodule_from_id('adobeconnect', $id)) {
     print_error('Course Module ID was incorrect');
 }
 $cond = array('id' => $cm->course);
-if (! $course = $DB->get_record('course', $cond)) {
+if (!$course = $DB->get_record('course', $cond)) {
     print_error('Course is misconfigured');
 }
 
 $cond = array('id' => $cm->instance);
-if (! $adobeconnect = $DB->get_record('adobeconnect', $cond)) {
+if (!$adobeconnect = $DB->get_record('adobeconnect', $cond)) {
     print_error('Course module is incorrect');
 }
 
@@ -50,33 +52,32 @@ require_login($course, true, $cm);
 
 // ---------- //
 
-
 // Get HTTPS setting
-$https      = false;
-$protocol   = 'http://';
+$https = false;
+$protocol = 'http://';
 if (isset($configs->https) and (!empty($configs->https))) {
-    $https      = true;
-    $protocol   = 'https://';
+    $https = true;
+    $protocol = 'https://';
 }
 
 // Create a Connect Pro login session for this user
 $usrobj = new stdClass();
 $usrobj = clone($USER);
-$login  = $usrobj->username = set_username($usrobj->username, $usrobj->email);
+$login = $usrobj->username = set_username($usrobj->username, $usrobj->email);
 
 $params = array('instanceid' => $cm->instance, 'groupid' => $groupid);
 $sql = "SELECT meetingscoid FROM {adobeconnect_meeting_groups} amg WHERE ".
-       "amg.instanceid = :instanceid AND amg.groupid = :groupid";
+    "amg.instanceid = :instanceid AND amg.groupid = :groupid";
 
 $meetscoid = $DB->get_record_sql($sql, $params);
 
 // Get the Meeting recording details
-$aconnect   = aconnect_login();
-$recording  = array();
-$fldid      = aconnect_get_folder($aconnect, 'content');
+$aconnect = aconnect_login();
+$recording = array();
+$fldid = aconnect_get_folder($aconnect, 'content');
 $usrcanjoin = false;
 $context = context_module::instance($cm->id);
-$data       = aconnect_get_recordings($aconnect, $fldid, $meetscoid->meetingscoid);
+$data = aconnect_get_recordings($aconnect, $fldid, $meetscoid->meetingscoid);
 
 /// Set page global
 $url = new moodle_url('/mod/adobeconnect/view.php', array('id' => $cm->id));
@@ -112,7 +113,7 @@ if (NOGROUPS != $cm->groupmode) {
     $usrgroups = $usrgroups[0]; // Just want groups and not groupings
 
     $group_exists = false !== array_search($groupid, $usrgroups);
-    $aag          = has_capability('moodle/site:accessallgroups', $context);
+    $aag = has_capability('moodle/site:accessallgroups', $context);
 
     if ($group_exists || $aag) {
         $usrcanjoin = true;
@@ -121,7 +122,6 @@ if (NOGROUPS != $cm->groupmode) {
     $usrcanjoin = true;
 }
 
-
 if (!$usrcanjoin) {
     notice(get_string('usergrouprequired', 'adobeconnect'), $url);
 }
@@ -129,24 +129,19 @@ if (!$usrcanjoin) {
 // Trigger an event for viewing a recording.
 $params = array(
     'relateduserid' => $USER->id,
-    'courseid' => $course->id,
-    'context' => context_module::instance($id),
+    'courseid'      => $course->id,
+    'context'       => context_module::instance($id),
 );
-$event = \mod_adobeconnect\event\adobeconnect_delete_recording::create($params);
+$event = adobeconnect_delete_recording::create($params);
 $event->trigger();
 
-// Include the port number only if it is a port other than 80
-$port = '';
+$dto = new adobe_connection_dto($configs->host, $configs->port,
+    '', '', '', $https, $configs->admin_httpauth);
 
-if (!empty($configs->port) and (80 != $configs->port)) {
-    $port = ':' . $configs->port;
-}
-
-$aconnect = new connect_class_dom($configs->host, $configs->port,
-                                  '', '', '', $https, $configs->admin_httpauth);
+$aconnect = new connect_class_dom($dto);
 
 $aconnect->request_http_header_login(1, $login);
 $adobesession = $aconnect->get_cookie();
-aconnect_delete_recordings($aconnec,$fldid,$recscoid);
+aconnect_delete_recordings($aconnec, $fldid, $recscoid);
 //redirect($protocol . $configs->meethost . $port
 //                     . $recording->url . '?&pbMode=offline&page=m&session=' . $aconnect->get_cookie());

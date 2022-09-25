@@ -21,31 +21,26 @@
  * @copyright  (C) 2015 Remote Learner.net Inc http://www.remote-learner.net
  */
 
+namespace mod_adobeconnect;
+
 
 require_once('connect_class.php');
 
-class connect_class_dom extends connect_class {
+class connect_class_dom extends connect_class
+{
 
-    public function __construct($serverurl = '', $serverport = '',
-                                $username = '', $password = '',
-                                $cookie = '', $https = true, $admin_httpauth = 'my-user-id') {
-        parent::__construct($serverurl, $serverport, $username, $password, $cookie, $https , $admin_httpauth);
-
-    }
-
-    public function create_request($params = array(), $sentrequest = true) {
+    public function create_request($params = array(), $sentrequest = true)
+    {
         if (empty($params)) {
             return false;
         }
 
-
-        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom = new \DOMDocument('1.0', 'UTF-8');
 
         $root = $dom->createElement('params');
         $dom->appendChild($root);
 
-
-        foreach($params as $key => $data) {
+        foreach ($params as $key => $data) {
 
             $datahtmlent = htmlentities($data, ENT_COMPAT, 'UTF-8');
             $child = $dom->createElement('param', $datahtmlent);
@@ -68,23 +63,26 @@ class connect_class_dom extends connect_class {
 
     /**
      * Parses through xml and looks for the 'cookie' parameter
-     * @param string $xml the xml to parse through
+     *
+     * @param  string  $xml  the xml to parse through
+     *
      * @return string $sessoin returns the session id
      */
-    public function read_cookie_xml($xml = '') {
+    public function read_cookie_xml($xml = '')
+    {
         global $USER, $COURSE, $CFG;
 
         if (empty($xml)) {
             if (is_siteadmin($USER->id)) {
-                notice(get_string('adminemptyxml', 'adobeconnect') . 'read_cookie_xml',
-                       $CFG->wwwroot . '/admin/settings.php?section=modsettingadobeconnect');
+                notice(get_string('adminemptyxml', 'adobeconnect').'read_cookie_xml',
+                    $CFG->wwwroot.'/admin/settings.php?section=modsettingadobeconnect');
             } else {
                 notice(get_string('emptyxml', 'adobeconnect'),
-                       '', $COURSE);
+                    '', $COURSE);
             }
         }
 
-        $dom = new DomDocument();
+        $dom = new \DOMDocument();
         $dom->loadXML($xml);
         $domnodelist = $dom->getElementsByTagName('cookie');
 
@@ -96,31 +94,32 @@ class connect_class_dom extends connect_class {
 
     }
 
-    public function call_success($caller ="") {
+    public function call_success($caller = "")
+    {
         global $USER, $COURSE, $CFG;
 
         if (empty($this->_xmlresponse)) {
             if (is_siteadmin($USER->id)) {
-                notice(get_string('adminemptyxml', 'adobeconnect') . 'call_success #1: ' . $caller,
-                       $CFG->wwwroot . '/admin/settings.php?section=modsettingadobeconnect');
+                notice(get_string('adminemptyxml', 'adobeconnect').'call_success #1: '.$caller,
+                    $CFG->wwwroot.'/admin/settings.php?section=modsettingadobeconnect');
             } else {
                 notice(get_string('emptyxml', 'adobeconnect'),
-                       '', $COURSE);
+                    '', $COURSE);
             }
         }
 
-        $dom = new DomDocument();
+        $dom = new \DomDocument();
         $dom->loadXML($this->_xmlresponse);
 
         $domnodelist = $dom->getElementsByTagName('status');
 
         if (!is_object($domnodelist->item(0))) {
             if (is_siteadmin($USER->id)) {
-                notice(get_string('adminemptyxml', 'adobeconnect') . 'call_success #2',
-                       $CFG->wwwroot . '/admin/settings.php?section=modsettingadobeconnect');
+                notice(get_string('adminemptyxml', 'adobeconnect').'call_success #2',
+                    $CFG->wwwroot.'/admin/settings.php?section=modsettingadobeconnect');
             } else {
                 notice(get_string('emptyxml', 'adobeconnect'),
-                       '', $COURSE);
+                    '', $COURSE);
             }
         }
 
@@ -146,9 +145,11 @@ class connect_class_dom extends connect_class {
 
     /**
      * Sends the HTTP header login request and returns the response xml
-     * @param string username username to use for header x-user-id
+     *
+     * @param  string username username to use for header x-user-id
      */
-    public function request_http_header_login($return_header = 0, $username = '', $stop = false) {
+    public function request_http_header_login($return_header = 0, $username = '', $stop = false)
+    {
         global $CFG;
 
         $header = array();
@@ -157,7 +158,7 @@ class connect_class_dom extends connect_class {
         // The first parameter is 1 because we want to include the response header
         // to extract the session cookie
         if (!empty($username)) {
-            $header = array("$this->_admin_httpauth: " . $username);
+            $header = array("$this->_admin_httpauth: ".$username);
         }
 
         $this->_xmlresponse = $this->send_request($return_header, $header, $stop);
@@ -167,12 +168,14 @@ class connect_class_dom extends connect_class {
         return $this->_xmlresponse;
     }
 
-   private function create_http_head_login_xml() {
-        $params = array('action' => 'login',
-                        'external-auth' => 'use',
-                        //'login' => $username,
-                        //'password' => strtoupper(md5($USER->username . 'hossein142001')),
-                        );
+    private function create_http_head_login_xml()
+    {
+        $params = array(
+            'action'        => 'login',
+            'external-auth' => 'use',
+            //'login' => $username,
+            //'password' => strtoupper(md5($USER->username . 'hossein142001')),
+        );
 
         $this->create_request($params, false);
     }

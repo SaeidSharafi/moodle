@@ -21,8 +21,10 @@
  * @copyright  (C) 2015 Remote Learner.net Inc http://www.remote-learner.net
  */
 global $CFG;
-require_once('connect_class.php');
-require_once('connect_class_dom.php');
+
+use mod_adobeconnect\connect_class_dom;
+use mod_adobeconnect\dto\adobe_connection_dto;
+
 require_once($CFG->dirroot . '/user/profile/lib.php');
 
 define('ADOBE_VIEW_ROLE', 'view');
@@ -47,6 +49,7 @@ define('ADOBE_MEETPERM_PRIVATE', 2); // means the meeting is private, and only r
 define('ADOBE_TMZ_LENGTH', 6);
 $configs = get_config('mod_adobeconnect');
 
+
 function adobe_connection_test($emaillogin,$host = '', $port = 80, $username = '',
         $password = '', $httpheader = '',
          $https = false) {
@@ -65,13 +68,13 @@ function adobe_connection_test($emaillogin,$host = '', $port = 80, $username = '
     }
 
     $messages = array();
-
-    $aconnectDOM = new connect_class_dom($host,
+    $dto = new adobe_connection_dto($host,
             $port,
             $username,
             $password,
             '',
             $https, $configs->admin_httpauth);
+    $aconnectDOM = new connect_class_dom($dto);
 
     $params = array(
             'action' => 'common-info'
@@ -354,26 +357,15 @@ function aconnect_login() {
         }
     }
 
-    if (isset($configs->adobeconnect_port) and
-            !empty($configs->adobeconnect_port) and
-            ((80 != $configs->adobeconnect_port) and (0 != $configs->port))) {
-        $port = $configs->adobeconnect_port;
-    } else {
-        $port = 80;
-    }
+    $dto = new adobe_connection_dto($configs->host,
+        $configs->port,
+        $configs->admin_login,
+        $configs->admin_password,
+        '',
+        isset($configs->https) && !empty($configs->https),
+        $configs->admin_httpauth);
 
-    $https = false;
-
-    if (isset($configs->https) and (!empty($configs->https))) {
-        $https = true;
-    }
-
-    $aconnect = new connect_class_dom($configs->host,
-            $configs->port,
-            $configs->admin_login,
-            $configs->admin_password,
-            '',
-            $https, $configs->admin_httpauth);
+    $aconnect = new connect_class_dom($dto);
 
     $params = array(
             'action' => 'common-info'

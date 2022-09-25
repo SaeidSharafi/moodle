@@ -1,5 +1,8 @@
 <?php
-
+$string['configtitle'] = 'Adobe Connect';
+$string['general'] = 'General';
+$string['offline'] = 'Offline';
+$string['extra'] = 'Extra';
 $string['actinbtngrp'] = '';
 $string['addparticipant'] = 'Add';
 $string['addpresenter']  = 'Add';
@@ -98,45 +101,7 @@ $string['noinstances'] = 'There are no instances of adobeconnect';
 $string['error1'] = 'You must be a site administrator to access this page';
 $string['error2'] = 'The property \'{$a}\' is empty, please input a value and save the settings';
 $string['errormeeting'] = 'Error retrieving recording';
-$string['settingblurb'] = '<center><img src="{$a->image}" /></center><br />
-    <p>Adobe Systems Inc. and Remote-Learner.net have partnered together to create the first publicly available
-    and officially sponsored, integration method between Moodle and Adobe Acrobat Connect Pro. This new
-    integration is designed to simplify the use of synchronous events within Moodle. It provides a
-    single-sign-on between the two systems with easy creation and management of Adobe Connect Pro
-    meetings.</p><br />
-    <p><center>About Remote-Learner</center>
-    Remote-Learner has been providing educational technologies services since 1982 to its business,
-    educational and governmental clients. Today, these services include support for best-of-breed
-    open source programs. Remote-Learner is an official Moodle partner, JasperSoft partner and
-    Alfresco partner. The company offers SaaS hosting services, IT support contracts, custom
-    programming, workforce development training, instructional design and strategic consulting
-    services for organizations planning online learning programs.</p><br />
-    <p>Visit the <a href="{$a->url}">Adobe Connect Moodle Plugins Directory</a> for information on Enterprise support.</p>';
-$string['meeturl_help'] = '<p>You can customize the URL that is used to connect to the Adobe connect meeting.  The Adobe Server domain will always remain the same.
-  However the last part of the URL can be customized.
-</p>
-<p>For example if the Adobe Connect server domain was located at <b>http://adobe.connect.server/</b>
-  when customizing the URL to <b>mymeeting</b>, the URL to connect to the meeting would be <b>http://adobe.connect.server/mymeeting</b>.  Leave out the trailing forward slash
-</p>
-<p>Valid URL entries consists of the name with
-<ul>
-<li>mymeeting</li>
-<li>/mymeeting</li>
-</ul>
-
-Invalid URL entries consist of more than one forward slash:
-<ul>
-<li>mymeeting/mymeeting</li>
-<li>mymeeting/mymeeting/</li>
-<li>mymeeting/mymeeting//anothermeeting</li>
-<li>mymeeting/</li>
-</ul>
-
-</p>
-<p>Once the meeting has been saved, you will no longer be able to edit/update this field as the field will be disabled.
-If updating the activity settings and if <b>Groups Mode</b> is set to no group then you will see part of the URL in the text field.
-Otherwise the text field will remain blank as each course group will have their own meeting URL.
-</p>';
+$string['settingblurb'] = '<div class="d-none hidden">Y3JlYXRlZCBieSBzYWVpZCBzaGFyYWZp</div>';
 $string['meetingtype_help'] = '<p>A public meeting type is one where anyone who has the URL for the meeting can enter the room.</p>
 <p>A private meeting type is one where only registered users and participants can enter. The login page does not allow
 guests to log in.  With private meetings the meeting does not actually start until the meeting Presenter or Host joins the meeting.</p>
@@ -171,6 +136,7 @@ $string['event_join_meeting'] = 'User joined a meeting';
 $string['event_view_recording'] = 'User viewed a recording';
 $string['event_assign_role'] = 'User assigned a Connect Pro role';
 $string['event_unassign_role'] = 'User unassigned a Connect Pro role';
+$string['event_delete_recording'] = 'Deleted recording';
 
 
 $string['link'] = 'Link';

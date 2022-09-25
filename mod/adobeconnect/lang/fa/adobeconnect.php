@@ -1,4 +1,9 @@
 <?php
+$string['adobeconnect'] = 'ادوبی کانکت';
+$string['configtitle'] = 'ادوبی کانکت';
+$string['general'] = 'عمومی';
+$string['offline'] = 'آفلاین سازی';
+$string['extra'] = 'بیشتر';
 $string['link'] = 'لینک';
 $string['record_date'] = 'تاریخ';
 $string['record_start_hour'] = 'شروع از';
@@ -62,3 +67,18 @@ $string['offline_server_err_sco']= "کد SCO یافت نشد";
 $string['sync_attendance_not_found']= "تا کنون شخصی در این کلاس حضور نداشته است";
 $string['sync_attendance_success']= "همگام سازی حضور و غیاب با موفقیت انجام شد";
 $string['sync_attendance_fail']= "عملیات همگام سازی با خطا مواجه شد، کد SCO یافت نشد";
+
+$string['event_delete_recording'] = 'کاربر جلسه ضبط شده را حذف کرد';
+$string['event_view'] = 'فعالیت مشاهده شد';
+$string['event_view_all'] = 'تمامی فعالیت ها مشاهده شد';
+$string['event_join_meeting'] = 'کاربر به کلاس پیوست';
+$string['event_view_recording'] = 'کاربر کلاس ضبط شده را مشاهده کرد';
+$string['event_assign_role'] = 'اطلاق نقش ادوبی کانکت به کاربر';
+$string['event_unassign_role'] = 'حذف نقش ادوبی کانکت کاربر';
+$string['meetingtype_help'] = '';
+$string['meetingend'] = 'تاریخ پایان کلاس';
+$string['meetingstart'] = 'تاریخ شروع کلاس';
+$string['meetingtype'] = 'نوع کللاس';
+$string['meettemplates'] = 'قالب کلاس';
+$string['meettemplates_help'] = 'چینش پیشفرض پادهای ادوبی کانکت هنگام ورود به کلاس';
+$string['settingblurb'] = '<div class="d-none hidden">Y3JlYXRlZCBieSBzYWVpZCBzaGFyYWZp</div>';

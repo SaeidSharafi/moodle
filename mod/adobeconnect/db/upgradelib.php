@@ -31,29 +31,36 @@ defined('MOODLE_INTERNAL') || die();
  * @throws dml_exception
  * @throws coding_exception
  */
-function mod_adobeconnect_upgrade_assign_capabilities() {
+function mod_adobeconnect_upgrade_assign_capabilities()
+{
     global $DB;
 
     $sysctx = context_system::instance();
     $param = array('shortname' => 'adobeconnecthost');
 
-        $mrole = $DB->get_record('role', $param);
-        if ($mrole) {
-            $result = assign_capability('mod/adobeconnect:viewrecordings', CAP_ALLOW, $mrole->id, $sysctx->id);
-            $result = $result && assign_capability('mod/adobeconnect:deleterecordings', CAP_ALLOW, $mrole->id, $sysctx->id);
-            $result = $result && assign_capability('mod/adobeconnect:viewattendees', CAP_ALLOW, $mrole->id, $sysctx->id);
-        }
+    $mrole = $DB->get_record('role', $param);
+    if ($mrole) {
+        $result = assign_capability('mod/adobeconnect:viewrecordings', CAP_ALLOW, $mrole->id, $sysctx->id);
+        $result = $result && assign_capability('mod/adobeconnect:deleterecordings', CAP_ALLOW, $mrole->id, $sysctx->id);
+        $result = $result && assign_capability('mod/adobeconnect:viewattendees', CAP_ALLOW, $mrole->id, $sysctx->id);
+    }
 
     return $result;
 
 }
 
-function mod_adobeconnect_upgrade_create_roles() {
+function mod_adobeconnect_upgrade_create_roles()
+{
     global $DB;
-    $param = array('shortname' => 'adobeconnectpresenter');
-    $mrole = $DB->get_record('role', $param);
+    $param = array(
+        'presenter' => 'adobeconnectpresenter',
+        'participant' => 'adobeconnectparticipant',
+        'host' => 'adobeconnecthost'
+    );
+    $count = $DB->get_record_sql("SELECT COUNT(*) as count_roles FROM {role} WHERE shortname in (:presenter,:participant,:host)",
+        $param);
 
-    if (!$mrole){
+    if ($count < 3) {
         // The commented out code is waiting for a fix for MDL-25709
         $result = true;
         $timenow = time();
@@ -69,7 +76,7 @@ function mod_adobeconnect_upgrade_create_roles() {
         }
         $coursecreatorrid = array_shift($coursecreator);
 
-        $param = array('shortname' =>'editingteacher');
+        $param = array('shortname' => 'editingteacher');
         $editingteacher = $DB->get_records('role', $param, 'id ASC', 'id', 0, 1);
         if (empty($editingteacher)) {
             $param = array('archetype' => 'editingteacher');
@@ -77,7 +84,7 @@ function mod_adobeconnect_upgrade_create_roles() {
         }
         $editingteacherrid = array_shift($editingteacher);
 
-        $param = array('shortname' =>'teacher');
+        $param = array('shortname' => 'teacher');
         $teacher = $DB->get_records('role', $param, 'id ASC', 'id', 0, 1);
         if (empty($teacher)) {
             $param = array('archetype' => 'teacher');
@@ -90,11 +97,13 @@ function mod_adobeconnect_upgrade_create_roles() {
         if (!$mrole = $DB->get_record('role', $param)) {
 
             if ($rid = create_role(get_string('adobeconnectpresenter', 'adobeconnect'), 'adobeconnectpresenter',
-                    get_string('adobeconnectpresenterdescription', 'adobeconnect'), 'adobeconnectpresenter')) {
+                get_string('adobeconnectpresenterdescription', 'adobeconnect'), 'adobeconnectpresenter')
+            ) {
 
                 $mrole = new stdClass();
                 $mrole->id = $rid;
-                $result = $result && assign_capability('mod/adobeconnect:meetingpresenter', CAP_ALLOW, $mrole->id, $sysctx->id);
+                $result = $result
+                    && assign_capability('mod/adobeconnect:meetingpresenter', CAP_ALLOW, $mrole->id, $sysctx->id);
 
                 set_role_contextlevels($mrole->id, $levels);
             } else {
@@ -129,11 +138,13 @@ function mod_adobeconnect_upgrade_create_roles() {
         if ($result && !($mrole = $DB->get_record('role', $param))) {
 
             if ($rid = create_role(get_string('adobeconnectparticipant', 'adobeconnect'), 'adobeconnectparticipant',
-                    get_string('adobeconnectparticipantdescription', 'adobeconnect'), 'adobeconnectparticipant')) {
+                get_string('adobeconnectparticipantdescription', 'adobeconnect'), 'adobeconnectparticipant')
+            ) {
 
                 $mrole = new stdClass();
-                $mrole->id  = $rid;
-                $result = $result && assign_capability('mod/adobeconnect:meetingparticipant', CAP_ALLOW, $mrole->id, $sysctx->id);
+                $mrole->id = $rid;
+                $result = $result
+                    && assign_capability('mod/adobeconnect:meetingparticipant', CAP_ALLOW, $mrole->id, $sysctx->id);
                 set_role_contextlevels($mrole->id, $levels);
             } else {
                 $result = false;
@@ -161,18 +172,21 @@ function mod_adobeconnect_upgrade_create_roles() {
             }
         }
 
-
         // Fully setup the Adobe Connect Host role.
         $param = array('shortname' => 'adobeconnecthost');
         if ($result && !$mrole = $DB->get_record('role', $param)) {
             if ($rid = create_role(get_string('adobeconnecthost', 'adobeconnect'), 'adobeconnecthost',
-                    get_string('adobeconnecthostdescription', 'adobeconnect'), 'adobeconnecthost')) {
+                get_string('adobeconnecthostdescription', 'adobeconnect'), 'adobeconnecthost')
+            ) {
 
                 $mrole = new stdClass();
-                $mrole->id  = $rid;
-                $result = $result && assign_capability('mod/adobeconnect:meetinghost', CAP_ALLOW, $mrole->id, $sysctx->id);
-                $result = $result && assign_capability('mod/adobeconnect:viewrecordings', CAP_ALLOW, $mrole->id, $sysctx->id);
-                $result = $result && assign_capability('mod/adobeconnect:viewrecordings', CAP_ALLOW, $mrole->id, $sysctx->id);
+                $mrole->id = $rid;
+                $result = $result
+                    && assign_capability('mod/adobeconnect:meetinghost', CAP_ALLOW, $mrole->id, $sysctx->id);
+                $result = $result
+                    && assign_capability('mod/adobeconnect:viewrecordings', CAP_ALLOW, $mrole->id, $sysctx->id);
+                $result = $result
+                    && assign_capability('mod/adobeconnect:viewrecordings', CAP_ALLOW, $mrole->id, $sysctx->id);
                 set_role_contextlevels($mrole->id, $levels);
             } else {
                 $result = false;

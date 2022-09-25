@@ -14,111 +14,134 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+namespace mod_adobeconnect;
+
+use mod_adobeconnect\dto\adobe_connection_dto;
+
 /**
  * @package    mod_adobeconnect
  * @author     Akinsaya Delamarre (adelamarre@remote-learner.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @copyright  (C) 2015 Remote Learner.net Inc http://www.remote-learner.net
  */
+class connect_class
+{
+    protected adobe_connection_dto $adobeConnectionDto;
+    protected $_serverurl;
+    protected $_serverport;
+    protected $_username;
+    protected $_password;
+    protected $_cookie;
+    protected $_apicall;
+    protected $_connection;
+    protected $_https;
+    protected $_admin_httpauth;
+    public $_xmlrequest;
+    public $_xmlresponse;
 
-class connect_class {
-    var $_serverurl;
-    var $_serverport;
-    var $_username;
-    var $_password;
-    var $_cookie;
-    var $_xmlrequest;
-    var $_xmlresponse;
-    var $_apicall;
-    var $_connection;
-    var $_https;
-    var $_admin_httpauth;
+    public function __construct(
+        adobe_connection_dto $adobeConnectionDto
+    ) {
 
-    public function __construct($serverurl = '', $serverport = 80,
-                                $username = '', $password = '',
-                                $cookie = '', $https = false, $admin_httpauth='my-user-id') {
-
-        $this->_serverurl = $serverurl;
-        $this->_serverport = $serverport;
-        $this->_username = $username;
-        $this->_password = $password;
-        $this->_cookie = $cookie;
-        $this->_https = $https;
-        $this->_admin_httpauth = $admin_httpauth;
+        $this->_serverurl = $adobeConnectionDto->serverurl;
+        $this->_serverport = $adobeConnectionDto->serverport;
+        $this->_username = $adobeConnectionDto->username;
+        $this->_password = $adobeConnectionDto->password;
+        $this->_cookie = $adobeConnectionDto->cookie;
+        $this->_https = $adobeConnectionDto->https;
+        $this->_admin_httpauth = $adobeConnectionDto->admin_httpauth;
     }
 
     /**
      * Accessor methods
      */
-    public function set_serverport($serverport = '') {
+    public function set_serverport($serverport = '')
+    {
         $this->_serverport = $serverport;
     }
 
-    public function set_serverurl($serverurl = '') {
+    public function set_serverurl($serverurl = '')
+    {
         $this->_serverurl = $serverurl;
     }
 
-    public function set_username($username = '') {
+    public function set_username($username = '')
+    {
         $this->_username = $username;
     }
 
-    public function set_password($password = '') {
+    public function set_password($password = '')
+    {
         $this->_password = $password;
     }
 
-    public function set_cookie($cookie = '') {
+    public function set_cookie($cookie = '')
+    {
         $this->_cookie = $cookie;
     }
 
-    public function set_xmlrequest($xml = '') {
+    public function set_xmlrequest($xml = '')
+    {
         $this->_xmlrequest = $xml;
     }
 
-    public function set_connection($connection = 0) {
+    public function set_connection($connection = 0)
+    {
         $this->_connection = $connection;
     }
 
-    public function set_https($https = false) {
+    public function set_https($https = false)
+    {
         $this->_https = $https;
     }
 
-    public function get_serverurl() {
+    public function get_serverurl()
+    {
         return $this->_serverurl;
     }
 
-    public function get_username() {
+    public function get_username()
+    {
         return $this->_username;
     }
 
-    public function get_password() {
+    public function get_password()
+    {
         return $this->_password;
     }
 
-    public function get_cookie() {
+    public function get_cookie()
+    {
         return $this->_cookie;
     }
 
-    public function get_connection() {
+    public function get_connection()
+    {
         return $this->_connection;
     }
 
-    public function get_serverport() {
+    public function get_serverport()
+    {
         return $this->_serverport;
     }
 
-    private function get_deafult_header() {
+    private function get_deafult_header()
+    {
         return array('Content-Type: text/xml');
     }
 
-    public function get_https() {
+    public function get_https()
+    {
         return $this->_https;
     }
 
     /**
      * Adds or replaces http:// with https:// for secured connections
+     *
      * @return string - server URL with the HTTPS protocol
      */
-    private function make_https() {
+    private function make_https()
+    {
 
         $serverurl = $this->_serverurl;
         $httpsexists = strpos($this->_serverurl, 'https://');
@@ -127,19 +150,20 @@ class connect_class {
         if (false === $httpsexists and false !== $httpexists) {
             $serverurl = str_replace('http://', 'https://', $this->_serverurl);
         } elseif (false === $httpsexists) {
-            $serverurl = 'https://' . $this->_serverurl;
+            $serverurl = 'https://'.$this->_serverurl;
         }
 
         return $serverurl;
     }
 
-
     /**
      * Posts XML to the Adobe Connect server and returns the results
-     * @param int $return_header 1 to include the response header, 0 to not
-     * @param array $add_header an array of headers to add to the request
+     *
+     * @param  int  $return_header  1 to include the response header, 0 to not
+     * @param  array  $add_header  an array of headers to add to the request
      */
-    public function send_request($return_header = 0, $add_header = array(), $stop = false) {
+    public function send_request($return_header = 0, $add_header = array(), $stop = false)
+    {
         global $CFG;
 
         $ch = curl_init();
@@ -154,35 +178,33 @@ class connect_class {
             $serverurl = $this->make_https();
         }
 
-
         if ($stop) {
-//            echo $this->_serverurl . '?session='. $this->_cookie; die();
-//            https://example.com/api/xml?action=principal=list
+            //            echo $this->_serverurl . '?session='. $this->_cookie; die();
+            //            https://example.com/api/xml?action=principal=list
             curl_setopt($ch, CURLOPT_URL, $serverurl/* . '?action=login&external-auth=use'*/);
 
         } else {
 
-            $querystring = (!empty($this->_cookie)) ?  '?session='. $this->_cookie : '';
-            curl_setopt($ch, CURLOPT_URL, $serverurl . $querystring);
+            $querystring = (!empty($this->_cookie)) ? '?session='.$this->_cookie : '';
+            curl_setopt($ch, CURLOPT_URL, $serverurl.$querystring);
 
         }
 
+        // Connect through a proxy if Moodle config says we should
+        if (isset($CFG->proxyhost)) {
 
-       // Connect through a proxy if Moodle config says we should
-       if(isset($CFG->proxyhost)) {
+            curl_setopt($ch, CURLOPT_PROXY, $CFG->proxyhost);
 
-           curl_setopt($ch, CURLOPT_PROXY, $CFG->proxyhost);
+            if (isset($CFG->proxyport)) {
 
-           if(isset($CFG->proxyport)) {
-
-               curl_setopt($ch, CURLOPT_PROXYPORT, $CFG->proxyport);
-           }
-       }
+                curl_setopt($ch, CURLOPT_PROXYPORT, $CFG->proxyport);
+            }
+        }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->_xmlrequest);
         curl_setopt($ch, CURLOPT_POST, 1);
-        if(empty($_SERVER['HTTP_USER_AGENT'])) {
+        if (empty($_SERVER['HTTP_USER_AGENT'])) {
             curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER['HTTP_USER_AGENT']);
         }
 
@@ -205,9 +227,11 @@ class connect_class {
 
     /**
      * Sends the HTTP header login request and returns the response xml
-     * @param string username username to use for header x-user-id
+     *
+     * @param  string username username to use for header x-user-id
      */
-    public function request_http_header_login($return_header = 0, $username = '', $stop = false) {
+    public function request_http_header_login($return_header = 0, $username = '', $stop = false)
+    {
         global $CFG;
 
         $hearder = array();
@@ -216,7 +240,7 @@ class connect_class {
         // The first parameter is 1 because we want to include the response header
         // to extract the session cookie
         if (!empty($username)) {
-            $hearder = array("$this->_admin_httpauth: " . $username);
+            $hearder = array("$this->_admin_httpauth: ".$username);
         }
 
         $this->_xmlresponse = $this->send_request($return_header, $hearder, $stop);
@@ -226,8 +250,8 @@ class connect_class {
         return $this->_xmlresponse;
     }
 
-
-    public function create_request($params = array(), $sentrequest = true) {
+    public function create_request($params = array(), $sentrequest = true)
+    {
         if (empty($params)) {
             return false;
         }
@@ -239,7 +263,7 @@ class connect_class {
 
         $writer->startElement('params');
 
-        foreach($params as $key => $data) {
+        foreach ($params as $key => $data) {
             $writer->startElement('param');
             $writer->writeAttribute('name', $key);
             $writer->text($data);
@@ -260,20 +284,23 @@ class connect_class {
 
     /**
      * Call to common-info
-     * @param nothing
+     *
+     * @param  nothing
+     *
      * @return nothing
      */
-    public function set_session_cookie($data) {
+    public function set_session_cookie($data)
+    {
         $sessionval = false;
         $sessionstart = strpos($data, 'BREEZESESSION=');
 
         if (false !== $sessionstart) {
             $sessionend = strpos($data, ';');
-//            $sessionend = strpos($data, 'Expires:');
+            //            $sessionend = strpos($data, 'Expires:');
 
             $sessionlength = strlen('BREEZESESSION=');
             $sessionvallength = $sessionend - ($sessionstart + $sessionlength);
-            $sessionval = substr($data, $sessionstart+$sessionlength, $sessionvallength);
+            $sessionval = substr($data, $sessionstart + $sessionlength, $sessionvallength);
         }
 
         $this->_cookie = $sessionval;
@@ -285,9 +312,11 @@ class connect_class {
      * Parses through xml and looks for the 'status' parameter
      * and return true if the 'code' attribute equals 'ok' otherwise
      * false is returned
-     * @param string xml the xml to parse
+     *
+     * @param  string xml the xml to parse
      */
-    public function read_status_xml() {
+    public function read_status_xml()
+    {
         $reader = new XMLReader();
         $reader->XML($this->_xmlresponse, 'UTF-8');
         $return = false;
@@ -304,64 +333,69 @@ class connect_class {
 
         $reader->close();
 
-         return $return;
+        return $return;
 
     }
 
     /**
      * Parses through xml and looks for the 'cookie' parameter
-     * @param string $xml the xml to parse through
+     *
+     * @param  string  $xml  the xml to parse through
+     *
      * @return string $sessoin returns the session id
      */
-    public function read_cookie_xml($xml = '') {
-            global $CFG, $USER, $COURSE;
+    public function read_cookie_xml($xml = '')
+    {
+        global $CFG, $USER, $COURSE;
 
-            if (empty($xml)) {
-                if (is_siteadmin($USER->id)) {
-                    notice(get_string('adminemptyxml', 'adobeconnect') . 'read_cookie_xml #Class',
-                           $CFG->wwwroot . '/admin/settings.php?section=modsettingadobeconnect');
-                } else {
-                    notice(get_string('emptyxml', 'adobeconnect'),
-                           '', $COURSE);
+        if (empty($xml)) {
+            if (is_siteadmin($USER->id)) {
+                notice(get_string('adminemptyxml', 'adobeconnect').'read_cookie_xml #Class',
+                    $CFG->wwwroot.'/admin/settings.php?section=modsettingadobeconnect');
+            } else {
+                notice(get_string('emptyxml', 'adobeconnect'),
+                    '', $COURSE);
+            }
+        }
+
+        $session = false;
+        //            $accountid = false;
+        $reader = new XMLReader();
+        $reader->XML($xml, 'UTF-8');
+
+        while ($reader->read()) {
+            if (0 == strcmp($reader->name, 'cookie')) {
+                if (1 == $reader->nodeType) {
+                    $session = $reader->readString();
                 }
             }
+        }
 
-            $session = false;
-//            $accountid = false;
-            $reader = new XMLReader();
-            $reader->XML($xml, 'UTF-8');
+        $reader->close();
 
-            while ($reader->read()) {
-	            if (0 == strcmp($reader->name, 'cookie')) {
-                    if (1 == $reader->nodeType) {
-                        $session = $reader->readString();
-                    }
-                }
-            }
+        $this->_cookie = $session;
 
-            $reader->close();
-
-            $this->_cookie = $session;
-
-            return $session;
+        return $session;
     }
 
-    public function response_to_object() {
+    public function response_to_object()
+    {
         $xml = new SimpleXMLElement($this->_xmlresponse);
 
         return $xml;
     }
 
-    public function call_success($caller ="") {
+    public function call_success($caller = "")
+    {
         global $CFG, $USER, $COURSE;
 
         if (empty($this->_xmlresponse)) {
             if (is_siteadmin($USER->id)) {
-                notice(get_string('adminemptyxml', 'adobeconnect') . 'call_success #Class ' . $caller,
-                       $CFG->wwwroot . '/admin/settings.php?section=modsettingadobeconnect');
+                notice(get_string('adminemptyxml', 'adobeconnect').'call_success #Class '.$caller,
+                    $CFG->wwwroot.'/admin/settings.php?section=modsettingadobeconnect');
             } else {
                 notice(get_string('emptyxml', 'adobeconnect'),
-                       '', $COURSE);
+                    '', $COURSE);
             }
         }
 
@@ -374,7 +408,8 @@ class connect_class {
         }
     }
 
-    private function create_http_head_login_xml() {
+    private function create_http_head_login_xml()
+    {
         @date_default_timezone_set("GMT");
 
         $writer = new XMLWriter();

@@ -21,10 +21,11 @@
  * @copyright  (C) 2015 Remote Learner.net Inc http://www.remote-learner.net
  */
 
+use mod_adobeconnect\connect_class_dom;
+use mod_adobeconnect\dto\adobe_connection_dto;
+
 require_once(dirname(__DIR__, 2).'/config.php');
 require_once(__DIR__.'/locallib.php');
-require_once(__DIR__.'/connect_class.php');
-require_once(__DIR__.'/connect_class_dom.php');
 
 $id         = required_param('id', PARAM_INT);
 $groupid    = required_param('groupid', PARAM_INT);
@@ -143,9 +144,9 @@ $port = '';
 if (!empty($configs->port) and (80 != $configs->port)) {
     $port = ':' . $configs->port;
 }
-
-$aconnect = new connect_class_dom($configs->host, $configs->port,
-                                  '', '', '', $https, $configs->admin_httpauth);
+$dto = new adobe_connection_dto($configs->host, $configs->port,
+    '', '', '', $https, $configs->admin_httpauth);
+$aconnect = new connect_class_dom($dto);
 $validuser = true;
 $aconnect = aconnect_login();
 if (!($usrprincipal = aconnect_user_exists($aconnect, $usrobj))) {

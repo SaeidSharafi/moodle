@@ -22,24 +22,6 @@
  */
 
 function xmldb_adobeconnect_install() {
-    global $DB;
-    $url = "http://".$_SERVER[HTTP_HOST];
 
-//The data you want to send via POST
-    $fields = [
-        'idsite'      => 6,
-        'rec' => 1,
-        'action_name'         => 'install',
-        'url'         => ($url),
-        '_id'         => substr(md5(rand()),0,16),
-        'rand'         => rand(),
-        'apiv'         => 1,
-        'set_image'   => 0,
-        'e_c'   => 'Adobe',
-        'e_a'   => 'Install',
-        'e_n'   => 'install.php',
-    ];
-    $fields_string = http_build_query($fields);
-    $url = 'http://analytics.eight.ir/matomo.php?'.$fields_string;
-    echo "<img src='{$url}' style='border:0' alt='' />";
+
 }

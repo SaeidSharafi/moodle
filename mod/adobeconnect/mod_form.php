@@ -26,7 +26,7 @@ if (!defined('MOODLE_INTERNAL')) {
 }
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
-require_once($CFG->dirroot.'/mod/adobeconnect/locallib.php');
+require_once('locallib.php');
 
 class mod_adobeconnect_mod_form extends moodleform_mod
 {

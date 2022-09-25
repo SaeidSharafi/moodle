@@ -21,11 +21,12 @@
  * @copyright  (C) 2015 Remote Learner.net Inc http://www.remote-learner.net
  */
 
-require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
-require_once(dirname(__FILE__) . '/lib.php');
-require_once(dirname(__FILE__) . '/locallib.php');
-require_once(dirname(__FILE__) . '/connect_class.php');
-require_once(dirname(__FILE__) . '/connect_class_dom.php');
+use mod_adobeconnect\connect_class_dom;
+use mod_adobeconnect\dto\adobe_connection_dto;
+
+require_once(dirname(__FILE__, 3). '/config.php');
+require_once(__DIR__. '/lib.php');
+require_once(__DIR__. '/locallib.php');
 
 
 $id = optional_param('id', 0, PARAM_INT); // course_module ID, or
@@ -123,33 +124,20 @@ $meetscoids = $DB->get_records_sql($sql, $params);
 
 $usrprincipal = checkUser($usrobj);
 
-function checkUser($usrobj) {
-    $aconnect = aconnect_login();
-    if (!($usrprincipal = aconnect_user_exists($aconnect, $usrobj))) {
-        if (!($usrprincipal = aconnect_create_user($aconnect, $usrobj))) {
-            // DEBUG
-            debugging("error creating user", DEBUG_DEVELOPER);
-
-            //            print_object("error creating user");
-            //            print_object($aconnect->_xmlresponse);
-            $validuser = false;
-        }
-    }
-    return $usrprincipal;
-}
 
 // Log in the current user
 $login = $usrobj->username;
 $password = $usrobj->username;
-$https = false;
-//$configs = get_config('mod_adobeconnect');
-//var_dump($configs);
-if (isset($configs->https)) {
-    $https = $configs->https;
-}
 
-$aconnect = new connect_class_dom($configs->host, $configs->port,
-        '', '', '', $https, $configs->admin_httpauth);
+$dto = new adobe_connection_dto($configs->host,
+    $configs->port,
+    $configs->admin_login,
+    $configs->admin_password,
+    '',
+    isset($configs->https) && !empty($configs->https),
+    $configs->admin_httpauth);
+
+$aconnect = new connect_class_dom($dto);
 
 $aconnect->request_http_header_login(1, $login);
 $adobesession = $aconnect->get_cookie();
@@ -340,6 +328,7 @@ if (NOGROUPS != $cm->groupmode && 0 != $groupid) {
     $showrecording = $can_view_recordings && false;
 }
 
+//check permissions for recording & attendances
 $can_view_recordings = false;
 $can_mange_recordings = false;
 $can_view_attendees = false;
@@ -359,15 +348,14 @@ if (has_capability('mod/adobeconnect:viewrecordings', $context, $usrobj->id) ||
 } else {
     $can_view_recordings = false;
 }
+
+
 $showoffline = 0;
 echo $OUTPUT->box_start('details', 'details-adobe');
 echo "<div class='loader-full'><span class='spinner-border'></span> </div>";
 echo $renderer->display_controllers($adobeconnect,$cm->id, $scoid, $cm->groupmode, $usrprincipal, $can_view_attendees, $can_mange_recordings);
 if ($can_view_recordings) {
-    //$recording = syncRecordings($meetscoids,$cm->id,$groupid, $usrprincipal,false);
     $recordings = getRecordings($context, $cm->id, $usrobj);
-    //$recordings = $recording['data'];
-    //
 
     if (!empty($recordings)) {
         if ($configs->showoffline) {
@@ -390,11 +378,6 @@ if ($can_view_recordings) {
 }
 if ($can_view_attendees) {
     $attendees = getAttendances($context, $cm->id);
-    //$attendees = syncAttendances($meetscoids, $cm->id, $usrobj);
-    //echo "<pre>";
-    //var_dump($attendees);
-    //echo "</pre>";
-    //
 
     if (!empty($attendees)) {
         // Echo the rendered HTML to the page
@@ -432,3 +415,19 @@ $event->trigger();
 
 /// Finish the page
 echo $OUTPUT->footer();
+
+
+function checkUser($usrobj) {
+    $aconnect = aconnect_login();
+    if (!($usrprincipal = aconnect_user_exists($aconnect, $usrobj))) {
+        if (!($usrprincipal = aconnect_create_user($aconnect, $usrobj))) {
+            // DEBUG
+            debugging("error creating user", DEBUG_DEVELOPER);
+
+            //            print_object("error creating user");
+            //            print_object($aconnect->_xmlresponse);
+            $validuser = false;
+        }
+    }
+    return $usrprincipal;
+}
