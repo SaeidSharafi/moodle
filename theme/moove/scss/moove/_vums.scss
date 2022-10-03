@@ -164,7 +164,9 @@
   width: 300px;
   height: 15px;
 }
-
+.dropdown-menu{
+  min-width: 11rem;
+}
 @media (min-width: 961px){
   .hero-container {
 

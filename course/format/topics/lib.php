@@ -83,14 +83,31 @@ class format_topics extends core_courseformat\base {
      * @return string The default value for the section name.
      */
     public function get_default_section_name($section) {
+
         if ($section->section == 0) {
             // Return the general section.
             return get_string('section0name', 'format_topics');
-        } else {
+        }
+        if ($section->section == 1) {
+            // Return the general section.
+            return get_string('section1name', 'format_topics');
+        }
+        if ($section->section == 2) {
+            // Return the general section.
+            return get_string('section2name', 'format_topics');
+        }
+        if ($section->section == 3) {
+            // Return the general section.
+            return get_string('section3name', 'format_topics');
+        }
+        if ($section->section == 4) {
+            // Return the general section.
+            return get_string('section4name', 'format_topics');
+        }
             // Use course_format::get_default_section_name implementation which
             // will display the section name in "Topic n" format.
             return parent::get_default_section_name($section);
-        }
+
     }
 
     /**

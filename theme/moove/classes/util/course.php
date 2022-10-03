@@ -70,7 +70,8 @@ class course {
             }
         }
 
-        return $OUTPUT->get_generated_image_for_id($this->course->id);
+
+        return $CFG->wwwroot.'/theme/moove/pix/navid-laptop-3d.png';
     }
 
     /**
