@@ -176,8 +176,9 @@ $string['privacy:accessibilitystyles_sitecolorclass'] = 'The current preference 
 $string['privacy:thememoovesettings_fonttype'] = 'The current preference for the font type is: {$a}.';
 $string['privacy:thememoovesettings_enableaccessibilitytoolbar'] = 'The current preference for enable accessibility toolbar is to show it.';
 
-$string['login'] = 'Sign in';
+$string['login_btn'] = 'Sign in';
 $string['contact_support'] = 'Support';
 $string['blog_title'] = 'News & Announcements';
 $string['view_all'] = 'View All';
-$string['university'] ='دانشگاه علوم پزشکی تهران';
+$string['university'] ='Tehran University of Medical Sciences';
+$string['navid_title'] = 'What is NAVID?';

@@ -177,8 +177,9 @@ $string['privacy:thememoovesettings_enableaccessibilitytoolbar'] = 'تنظیما
 
 
 
-$string['login'] = 'ورود';
+$string['login_btn'] = 'ورود';
 $string['contact_support'] = 'تماس با پشتیبان';
 $string['blog_title'] = 'اخبار و اطلاعیه‌ها';
 $string['view_all'] = 'مشاهده همه';
 $string['university'] ='دانشگاه علوم پزشکی تهران';
+$string['navid_title'] = 'نوید چیست؟';

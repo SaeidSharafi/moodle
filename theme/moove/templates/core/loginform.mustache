@@ -96,7 +96,7 @@
     <div class="{{#hastwocolumns}}col-lg-6 col-md-12 left-column{{/hastwocolumns}}{{^hastwocolumns}}col{{/hastwocolumns}}">
         {{#logourl}}
             <div id="loginlogo" class="login-logo">
-                <img id="logoimage" src="{{logourl}}" class="img-fluid" alt="{{sitename}}"/>
+                <img id="logoimage" src="{{logourl}}" class="w-100 h-auto mx-auto" alt="{{sitename}}"/>
                 <h1 class="login-heading sr-only">{{#str}} loginto, core, {{sitename}} {{/str}}</h1>
             </div>
         {{/logourl}}
@@ -168,11 +168,6 @@
                         {{>core/action_menu}}
                     </div>
                 {{/languagemenu}}
-                <button type="button" class="ml-auto btn btn-link" {{!
-                }} data-modal="alert"{{!
-                }} data-modal-title-str='["cookiesenabled", "core"]' {{!
-                }} data-modal-content-str='["cookiesenabled_help_html", "core"]'{{!
-                }}><i class="fa fa-question-circle"></i> {{#str}}cookiesnotice{{/str}}</button>
             </div>
         {{/hastwocolumns}}
     </div>
@@ -212,11 +207,6 @@
                             {{>core/action_menu}}
                         </div>
                     {{/languagemenu}}
-                    <button type="button" class="ml-auto btn btn-link" {{!
-                    }} data-modal="alert"{{!
-                    }} data-modal-title-str='["cookiesenabled", "core"]' {{!
-                    }} data-modal-content-str='["cookiesenabled_help_html", "core"]'{{!
-                    }}><i class="fa fa-question-circle"></i> {{#str}}cookiesnotice{{/str}}</button>
                 </div>
             </div>
         </div>
