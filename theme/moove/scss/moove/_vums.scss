@@ -1,0 +1,146 @@
+.hero-container {
+  background-image: linear-gradient(180deg, #3a68bb94, #fff), url('[[pix:theme|shape-background]]');
+  background-size: cover;
+}
+.text--title {
+  font-size: 28px;
+  line-height: 60px;
+}
+.shadowy-text {
+  color: #3A527E;
+  text-shadow: 2px 2px 5px #8fa5cc;
+}
+.theme--light.v-image {
+  color: rgba(0,0,0,.87);
+}
+.flip--front {
+  z-index: 3;
+}
+.flip--front, .flip--back {
+  position: absolute;
+  transition: all 0.5s;
+  backface-visibility: hidden;
+}
+.v-responsive__sizer {
+  transition: padding-bottom .2s cubic-bezier(.25,.8,.5,1);
+  flex: 1 0 0px;
+}
+.v-responsive__content {
+  flex: 1 0 0px;
+  max-width: 100%;
+}
+.v-application--is-rtl .v-responsive__sizer~.v-responsive__content {
+  margin-right: -100%;
+}
+.v-image__image, .v-image__placeholder {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.v-image__image--contain {
+  background-size: contain;
+}
+.v-image__image {
+  background-repeat: no-repeat;
+}
+.liner {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.liner:after {
+  content: "";
+  flex-grow: 1;
+  height: 1px;
+  min-width: 20px;
+  margin: auto;
+  margin-left: 20px;
+  -moz-background-size: 100% 2px;
+  background-size: 99% 2px;
+  background-position: 0 0, 0 100%;
+  background-repeat: no-repeat;
+  background-image: -webkit-gradient( linear, 0 0, 0 100%, from(rgb(67, 70, 109)), to(transparent) );
+  background-image: -webkit-linear-gradient( 180deg, rgb(67, 70, 109), transparent );
+  background-image: -moz-linear-gradient(180deg, rgb(67, 70, 109), transparent);
+  background-image: -o-linear-gradient(180deg, rgb(67, 70, 109), transparent);
+  background-image: linear-gradient(90deg,transparent, rgb(251 143 32));
+}
+.liner:after {
+  margin-left: 20px;
+}
+.v-btn__content {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: inherit;
+  line-height: normal;
+  position: relative;
+  transition: inherit;
+  transition-property: opacity;
+}
+.view-all{
+  padding: 0 16px;
+  font-size: .875rem;
+}
+
+/**
+ * Card
+ */
+.v-card {
+  border-width: thin;
+  display: block;
+  max-width: 100%;
+  outline: none;
+  text-decoration: none;
+  transition-property: box-shadow,opacity;
+  overflow-wrap: break-word;
+  position: relative;
+  white-space: normal;
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 5px 8px 0 rgba(0,0,0,.14),0 1px 14px 0 rgba(0,0,0,.12)!important;
+}
+.transition_smooth {
+  transition: all 0.2s ease;
+}
+.v-card:hover{
+  box-shadow: 0 7px 8px -4px rgba(0,0,0,.2),0 12px 17px 2px rgba(0,0,0,.14),0 5px 22px 4px rgba(0,0,0,.12)!important;
+
+}
+.rounded-lg {
+  border-radius: 8px!important;
+}
+.theme--light.v-sheet {
+  background-color: #fff;
+  border-color: #fff;
+  color: rgba(0,0,0,.87);
+}
+.v-sheet:not(.v-sheet--outlined) {
+  box-shadow: 0 0 0 0 rgb(0 0 0 / 20%), 0 0 0 0 rgb(0 0 0 / 14%), 0 0 0 0 rgb(0 0 0 / 12%);
+}
+.theme--light.v-card {
+  background-color: #fff;
+  color: rgba(0,0,0,.87);
+}
+.v-sheet.v-card {
+  border-radius: 4px;
+}
+.v-sheet.v-card:not(.v-sheet--outlined) {
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
+.btn-footer-popover,.tool_dataprivacy{
+  display: none;
+}
+@media (min-width: 961px){
+  .hero-container {
+
+  }
+}
+@media (min-width: 600px) {
+  .text--title {
+    font-size: 32px;
+  }
+}

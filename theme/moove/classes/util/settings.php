@@ -131,6 +131,7 @@ class settings {
             $this->frontpage_slideshow(),
             $this->frontpage_marketingboxes(),
             $this->frontpage_numbers(),
+            $this->blog_entries(),
             $this->faq()
         );
     }
@@ -206,6 +207,20 @@ class settings {
 
         return $templatecontext;
     }
+
+    /**
+     * Get config theme slideshow
+     *
+     * @return array
+     */
+    public function blog_entries() {
+        global $DB;
+
+        $templatecontext['news'] = array_values($DB->get_records_sql('SELECT id,subject,summary,created FROM {post} ORDER BY created DESC LIMIT 5'));
+
+        return $templatecontext;
+    }
+
 
     /**
      * Get config theme slideshow

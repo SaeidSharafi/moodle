@@ -33,7 +33,7 @@ $plugin->component = 'theme_moove';
 $plugin->version = 2022092507;
 
 // This is the named version.
-$plugin->release = '4.0.7-pafco';
+$plugin->release = '4.0.7-vums';
 
 // This is a stable release.
 $plugin->maturity = MATURITY_STABLE;

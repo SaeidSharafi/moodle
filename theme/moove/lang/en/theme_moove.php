@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Pafco';
-$string['configtitle'] = 'Pafco';
-$string['choosereadme'] = 'Pafco is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4. (based on Moove theme)';
+$string['pluginname'] = 'VUMS';
+$string['configtitle'] = 'VUMS';
+$string['choosereadme'] = 'VUMS is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4. (based on Moove theme)';
 
 $string['currentinparentheses'] = '(current)';
 $string['region-side-pre'] = 'Right';
@@ -175,3 +175,9 @@ $string['privacy:accessibilitystyles_fontsizeclass'] = 'The current preference f
 $string['privacy:accessibilitystyles_sitecolorclass'] = 'The current preference for the site color is: {$a}.';
 $string['privacy:thememoovesettings_fonttype'] = 'The current preference for the font type is: {$a}.';
 $string['privacy:thememoovesettings_enableaccessibilitytoolbar'] = 'The current preference for enable accessibility toolbar is to show it.';
+
+$string['login'] = 'Sign in';
+$string['contact_support'] = 'Support';
+$string['blog_title'] = 'News & Announcements';
+$string['view_all'] = 'View All';
+$string['university'] ='دانشگاه علوم پزشکی تهران';
