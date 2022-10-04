@@ -216,7 +216,7 @@ class settings {
     public function blog_entries() {
         global $DB;
 
-        $templatecontext['news'] = array_values($DB->get_records_sql('SELECT id,subject,summary,created FROM {post} ORDER BY created DESC LIMIT 5'));
+        $templatecontext['news'] = array_values($DB->get_records_sql('SELECT id,subject,summary,created FROM {post} ORDER BY created DESC',null,0,6));
 
         return $templatecontext;
     }
