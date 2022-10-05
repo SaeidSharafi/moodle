@@ -180,5 +180,5 @@ $string['login_btn'] = 'Sign in';
 $string['contact_support'] = 'Support';
 $string['blog_title'] = 'News & Announcements';
 $string['view_all'] = 'View All';
-$string['university'] ='Tehran University of Medical Sciences';
+$string['university'] ='Smart University of Medical Sciences';
 $string['navid_title'] = 'What is NAVID?';
