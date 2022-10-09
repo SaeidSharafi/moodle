@@ -813,15 +813,15 @@ function aconnect_get_attendance($aconnect, $folderscoid, $sourcescoid) {
 
                             // Check if the SCO item is a recording or uploaded document.  We only want to display recordings
 
-                            $j = (int) $domnode->nodeValue;
+                            $key =(string) (!is_null($meetingdetail->getElementsByTagName('login'))) ?
+                                $meetingdetail->getElementsByTagName('login')->item(0)->nodeValue : '';
+
+                            $j = $key ?: (int) $domnode->nodeValue;
                             if (!array_key_exists($j, $attendances)) {
                                 $attendances[$j] = new stdClass();
                             }
 
-                            $value = (!is_null($meetingdetail->getElementsByTagName('login'))) ?
-                                    $meetingdetail->getElementsByTagName('login')->item(0)->nodeValue : '';
-
-                            $attendances[$j]->name = (string) $value;
+                            $attendances[$j]->name = $key;
 
                             $value = (!is_null($meetingdetail->getElementsByTagName('session-name'))) ?
                                     $meetingdetail->getElementsByTagName('session-name')->item(0)->nodeValue : '';
