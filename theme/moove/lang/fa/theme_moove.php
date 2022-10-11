@@ -105,7 +105,8 @@ $string['numbersfrontpagecontentdefault'] = '<h2>Trusted by 25,000+ happy custom
                         within few minutes.</p>';
 $string['numbersusers'] = 'دانشجوی فعال';
 $string['numberscourses'] = 'درس ارائه شده';
-
+$string['numbersteachers'] = 'استاد فعال';
+$string['numbersactivties'] = 'محتوای آموزشی';
 $string['faq'] = 'سوالات متداول';
 $string['faqcount'] = 'تعدا سوالات پرتکرار';
 $string['faqcountdesc'] = 'تعداد سوالاتی که باید اضاضه شود را وارد و <strong>سپس روی دکمه ذخیره کلیک کنید</strong> تا مقادیر ورودی اعمال شود.<br> درصورتی نیاز به سوالات پرتکرار ندارید، ۰ را انتخاب کنید';

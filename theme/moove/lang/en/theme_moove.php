@@ -105,9 +105,10 @@ $string['numbersfrontpagecontentdefault'] = '<h2>Trusted by 25,000+ happy custom
                     <p>With lots of unique blocks, you can easily build <br class="d-none d-sm-block d-md-none d-xl-block">
                         a page without coding. Build your next website <br class="d-none d-sm-block d-md-none d-xl-block">
                         within few minutes.</p>';
-$string['numbersusers'] = 'Active users accessing our amazing resources';
-$string['numberscourses'] = 'Courses made for your that you can trust!';
-
+$string['numbersusers'] = 'Active students';
+$string['numberscourses'] = 'Lessons provided';
+$string['numbersteachers'] = 'Active teachers';
+$string['numbersactivties'] = 'Educational contents';
 $string['faq'] = 'FAQ';
 $string['faqcount'] = 'FAQ questions';
 $string['faqcountdesc'] = 'Select how many questions you want to add <strong>then click SAVE</strong> to load the input fields.<br>If you don\'t want a FAQ, just select 0.';

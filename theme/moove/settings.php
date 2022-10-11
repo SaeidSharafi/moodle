@@ -115,6 +115,9 @@ if ($ADMIN->fulltree) {
 
     $fontsarr = [
         'IranSans' => 'IranSans',
+        'IRANSansBold' => 'IRANSansBold',
+        'IRANSansFaNum' => 'IRANSansFaNum',
+        'IRANSansFaNumBold' => 'IRANSansFaNumBold',
         'IRYekan' => 'IRYekan',
         'Roboto' => 'Roboto',
         'Poppins' => 'Poppins',
