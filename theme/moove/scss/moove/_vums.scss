@@ -1,3 +1,6 @@
+div#page {
+  min-height: 95vh;
+}
 .hero-container {
   background-image: linear-gradient(180deg, #3a68bb94, #fff), url('[[pix:theme|shape-background]]');
   background-size: cover;
@@ -165,7 +168,63 @@
   height: 15px;
 }
 .dropdown-menu{
-  min-width: 11rem;
+  min-width: 12rem;
+}
+#page-footer{
+  background-color: rgb(236, 242, 255);
+  border-color: rgb(236, 242, 255);
+  color: #000000 !important;
+  a,li{
+    color: #000000 !important;
+  }
+
+}
+.footer-columns li{
+  line-height: 2em;
+  color: #000000 !important;
+  padding: 0 5px;
+
+  &:hover{
+    background: rgb(228 233 246)!important;
+  }
+
+  a{
+    display: block;
+
+    &:hover{
+      text-decoration: none;
+    }
+  }
+}
+
+.nav-item.myhome,
+.list-group-item.list-group-item-action.myhome{
+  display: none;
+}
+#faq {
+  padding: 0;
+  width: 100%;
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+ .accordion {
+   width: 100%;
+
+   .card {
+     margin-top: 1rem;
+     border-radius: 0.5rem;
+   }
+   .card:first-of-type {
+     margin-top: 0;
+   }
+   .card .card-header {
+     background-color: #026669;
+   }
+   .card .card-header .btn-link {
+     color: #fff;
+   }
+ }
 }
 @media (min-width: 961px){
   .hero-container {

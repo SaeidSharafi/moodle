@@ -319,7 +319,7 @@ if ($ADMIN->fulltree) {
     $description = get_string('faqcountdesc', 'theme_moove');
     $default = 0;
     $options = array();
-    for ($i = 0; $i < 11; $i++) {
+    for ($i = 0; $i < 16; $i++) {
         $options[$i] = $i;
     }
     $setting = new admin_setting_configselect($name, $title, $description, $default, $options);
