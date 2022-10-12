@@ -60,7 +60,7 @@ class core_blog_renderer extends plugin_renderer_base {
         $o .= $this->output->user_picture($entry->renderable->user);
         $o .= $this->output->container_end();
 
-        $o .= $this->output->container_start('topic starter header clearfix');
+        $o .= $this->output->container_start('topic starter header');
 
         // Title.
         $titlelink = html_writer::link(new moodle_url('/blog/index.php',
@@ -72,10 +72,10 @@ class core_blog_renderer extends plugin_renderer_base {
         $by = new stdClass();
         $fullname = fullname($entry->renderable->user, has_capability('moodle/site:viewfullnames', $syscontext));
         $userurlparams = array('id' => $entry->renderable->user->id, 'course' => $this->page->course->id);
-        $by->name = html_writer::link(new moodle_url('/user/view.php', $userurlparams), $fullname);
+        //$by->name = html_writer::link(new moodle_url('/user/view.php', $userurlparams), $fullname);
 
         $by->date = userdate($entry->created);
-        $o .= $this->output->container(get_string('bynameondate', 'forum', $by), 'author');
+        $o .= $this->output->container($by->date, 'author');
 
         // Adding external blog link.
         if (!empty($entry->renderable->externalblogtext)) {
@@ -108,7 +108,7 @@ class core_blog_renderer extends plugin_renderer_base {
                 break;
 
         }
-        $o .= $this->output->container($blogtype, 'audience');
+        //$o .= $this->output->container($blogtype, 'audience');
 
         // Attachments.
         $attachmentsoutputs = array();
@@ -185,18 +185,18 @@ class core_blog_renderer extends plugin_renderer_base {
             }
             $o .= html_writer::link(new moodle_url('/blog/edit.php',
                                                     array('action' => 'delete', 'entryid' => $entry->id)),
-                                                    $strdelete) . ' | ';
+                                                    $strdelete);
         }
 
-        $entryurl = new moodle_url('/blog/index.php', array('entryid' => $entry->id));
-        $o .= html_writer::link($entryurl, get_string('permalink', 'blog'));
+        //$entryurl = new moodle_url('/blog/index.php', array('entryid' => $entry->id));
+        //$o .= html_writer::link($entryurl, get_string('permalink', 'blog'));
 
         $o .= $this->output->container_end();
 
         // Last modification.
-        if ($entry->created != $entry->lastmodified) {
-            $o .= $this->output->container(' [ '.get_string('modified').': '.userdate($entry->lastmodified).' ]');
-        }
+        //if ($entry->created != $entry->lastmodified) {
+        //    $o .= $this->output->container(' [ '.get_string('modified').': '.userdate($entry->lastmodified).' ]');
+        //}
 
         // Comments.
         if (!empty($entry->renderable->comment)) {

@@ -6,37 +6,31 @@ html[lang="en"] body {
   font-family: $font-family-sans-serif-en;
 }
 #page-site-index.notloggedin #numbers .user-rating-box-area {
-  .rate-box h3{
-    color: #000 !important;
-  }
-  .rate-box p{
-    color: #202020;
-  }
   .bg-courses {
-    background: rgb(186, 114, 254);
-    border-color: rgb(186, 114, 254);
-    box-shadow: 0 6px 0 rgb(186 114 254 / 65%);
+    background: #003863;
+    border-color: #003863;
+    box-shadow: 0 6px 0 rgb(0 56 99 / 65%);
 
   }
 
   .bg-teachers {
-    background-color: rgb(252, 186, 114);
-    border-color: rgb(252, 186, 114);
-    box-shadow: 0 6px 0 rgb(252 186 114 / 65%);
+    background-color: #095995;
+    border-color: #095995;
+    box-shadow: 0 6px 0 rgb(9 89 149 / 65%);
 
   }
 
   .bg-students {
-    background-color: rgb(142, 205, 167);
-    border-color: rgb(142, 205, 167);
-    box-shadow: 0 6px 0 rgb(142 205 167 / 65%);
+    background-color: #2f76ac;
+    border-color: #2f76ac;
+    box-shadow: 0 6px 0 rgb(48 118 172 / 65%);
 
   }
 
   .bg-contents {
-    background-color: rgb(144, 166, 206);
-    border-color: rgb(144, 166, 206);
-    box-shadow: 0 6px 0 rgb(144 166 206 / 65%);
+    background-color: #0878cc;
+    border-color: #0878cc;
+    box-shadow: 0 6px 0 rgb(8 120 204 / 65%);
 
   }
 }
@@ -306,7 +300,48 @@ html[lang="en"] body {
     }
   }
 }
+/*
+ * Blog
+ */
+#page-blog-index {
+  &.single-post{
+    .page-header-headings{
+      display: none;
+    }
+    #region-main {
+      h2 {
+        display: none;
+      }
+      .forumpost.blog_entry {
+        border: none;
+      }
+    }
+  }
 
+  #region-main {
+    overflow: initial;
+
+    .forumpost.blog_entry {
+
+      .left.picture.header {
+        display: none;
+      }
+      .topic.starter.header {
+        display: flex;
+        justify-content: space-between;
+      }
+      .maincontent{
+        .no-overflow.content{
+          overflow: initial;
+
+          .audience{
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
 @media (min-width: 961px) {
   .hero-container {
 

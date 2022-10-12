@@ -59,6 +59,7 @@ if (!empty($tag)) {
 // Set the userid to the entry author if we have the entry ID.
 if ($entryid and !isset($userid)) {
     $entry = new blog_entry($entryid);
+    $PAGE->add_body_class('single-post');
     $userid = $entry->userid;
 }
 
