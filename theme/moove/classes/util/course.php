@@ -71,7 +71,7 @@ class course {
         }
 
 
-        return $CFG->wwwroot.'/theme/moove/pix/navid-laptop-3d.png';
+        return $CFG->wwwroot.'/theme/moove/pix/course-default.jpg';
     }
 
     /**

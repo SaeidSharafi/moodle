@@ -201,8 +201,18 @@ class settings {
 
         if ($templatecontext['numbersfrontpage'] = $this->numbersfrontpage) {
             $templatecontext['numberscontent'] = $this->numbersfrontpagecontent ? format_text($this->numbersfrontpagecontent) : '';
-            $templatecontext['numbersusers'] = $DB->count_records('user', ['deleted' => 0, 'suspended' => 0]) - 1;
+            $templatecontext['numbersusers'] = $DB->count_records_sql(
+                'SELECT COUNT(DISTINCT userid) 
+                    FROM {role_assignments}
+                    WHERE roleid = 5'
+            );
             $templatecontext['numberscourses'] = $DB->count_records('course', ['visible' => 1]) - 1;
+            $templatecontext['numbersteachers'] = $DB->count_records_sql(
+                'SELECT COUNT(DISTINCT userid) 
+                    FROM {role_assignments}
+                    WHERE roleid = 3'
+            );
+            $templatecontext['numbersactivties'] = $DB->count_records('course_modules', ['visible' => 1]) - 1;
         }
 
         return $templatecontext;

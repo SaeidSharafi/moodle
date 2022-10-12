@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'پافکو';
-$string['configtitle'] = 'پافکو';
-$string['choosereadme'] = 'قالب پافکو یک قالب مدرن و منعطف است. این قالب به صورت مستقیم یا به عنوان قالب والد قابل استفاده است. (بر اساس قالب Moove)';
+$string['pluginname'] = 'VUMS';
+$string['configtitle'] = 'VUMS';
+$string['choosereadme'] = 'قالب VUMS یک قالب مدرن و منعطف است. این قالب به صورت مستقیم یا به عنوان قالب والد قابل استفاده است. (بر اساس قالب Moove)';
 
 $string['currentinparentheses'] = '(فعلی)';
 $string['region-side-pre'] = 'راست';
@@ -105,8 +105,9 @@ $string['numbersfrontpagecontentdefault'] = '<h2>Trusted by 25,000+ happy custom
                         within few minutes.</p>';
 $string['numbersusers'] = 'دانشجوی فعال';
 $string['numberscourses'] = 'درس ارائه شده';
-
-$string['faq'] = 'سوالات پرتکرار';
+$string['numbersteachers'] = 'استاد فعال';
+$string['numbersactivties'] = 'محتوای آموزشی';
+$string['faq'] = 'سوالات متداول';
 $string['faqcount'] = 'تعدا سوالات پرتکرار';
 $string['faqcountdesc'] = 'تعداد سوالاتی که باید اضاضه شود را وارد و <strong>سپس روی دکمه ذخیره کلیک کنید</strong> تا مقادیر ورودی اعمال شود.<br> درصورتی نیاز به سوالات پرتکرار ندارید، ۰ را انتخاب کنید';
 $string['faqquestion'] = 'سوال پرتکرار {$a}';
@@ -183,3 +184,8 @@ $string['blog_title'] = 'اخبار و اطلاعیه‌ها';
 $string['view_all'] = 'مشاهده همه';
 $string['university'] ='دانشگاه علوم پزشکی هوشمند';
 $string['navid_title'] = 'نوید چیست؟';
+$string['contact_us']='ارتباط با پشتیبان';
+$string['unesco']='جایزه ملی یونسکو';
+$string['behdasht']='وزارت بهداشت، درمان و آموزش پزشکی';
+$string['arman']='آرمان (آموزش رایانه ای ملی انبوه و نوین)';
+$string['copyright']='کلیه حقوق مادی و معنوی محتوای سامانه متعلق به دانشگاه علوم پزشکی هوشمند می‌باشد.';

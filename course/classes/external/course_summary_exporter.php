@@ -57,7 +57,8 @@ class course_summary_exporter extends \core\external\exporter {
         global $CFG;
         $courseimage = self::get_course_image($this->data);
         if (!$courseimage) {
-            $courseimage = $output->get_generated_image_for_id($this->data->id);
+            //$courseimage = $output->get_generated_image_for_id($this->data->id);
+            $courseimage = $CFG->wwwroot.'/theme/moove/pix/course-default.jpg';
         }
         $progress = self::get_course_progress($this->data);
         $hasprogress = false;

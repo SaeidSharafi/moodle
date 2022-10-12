@@ -36,128 +36,49 @@
     <div class="moove-container-fluid footer-columns">
         <div class="row">
             <div class="col-md-4 column-left">
-                <div class="contact">
-                    <h3 class="footer-title">{{#str}}contactus, theme_moove{{/str}}</h3>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="/vums/faq.php" target="_blank" class="">
+                            {{#str}}faq, theme_moove{{/str}}
+                        </a>
+                    </li>
 
-                    <ul>
-                        {{#website}}
-                            <li>
-                                <a href="{{{website}}}" target="_blank" class="website btn btn-link">
-                                    <i class="fa fa-globe"></i>
-                                </a>
-                            </li>
-                        {{/website}}
-                        {{#mobile}}
-                            <li>
-                                <a href="tel:{{{mobile}}}" target="_blank" class="mobile btn btn-link">
-                                    <i class="fa fa-phone"></i>
-                                </a>
-                            </li>
-                        {{/mobile}}
-                        {{#mail}}
-                            <li>
-                                <a href="mailto:{{{mail}}}" target="_blank" class="mail btn btn-link">
-                                    <i class="fa fa-envelope"></i>
-                                </a>
-                            </li>
-                        {{/mail}}
-                    </ul>
-                </div>
+                    <li>
+                        <a href="/user/contactsitesupport.php" target="_blank" class="">
+                            {{#str}}contact_us, theme_moove{{/str}}
+                        </a>
+                    </li>
 
-                <div class="socialnetworks">
-                    <h3 class="footer-title">{{#str}}followus, theme_moove{{/str}}</h3>
+                    <li>
+                        <a href="/vums/unesco.php" target="_blank" class="">
+                            {{#str}}unesco, theme_moove{{/str}}
+                        </a>
+                    </li>
 
-                    <ul class="mb-0">
-                        {{#facebook}}
-                            <li>
-                                <a href="{{{facebook}}}" target="_blank" class="facebook btn btn-link btn-rounded">
-                                    <i class="fa fa-facebook"></i>
-                                </a>
-                            </li>
-                        {{/facebook}}
+                </ul>
 
-                        {{#twitter}}
-                            <li>
-                                <a href="{{{twitter}}}" target="_blank" class="twitter btn btn-link btn-rounded">
-                                    <i class="fa fa-twitter"></i>
-                                </a>
-                            </li>
-                        {{/twitter}}
-
-                        {{#linkedin}}
-                            <li>
-                                <a href="{{{linkedin}}}" target="_blank" class="linkedin btn btn-link btn-rounded">
-                                    <i class="fa fa-linkedin"></i>
-                                </a>
-                            </li>
-                        {{/linkedin}}
-
-                        {{#youtube}}
-                            <li>
-                                <a href="{{{youtube}}}" target="_blank" class="youtube btn btn-link btn-rounded">
-                                    <i class="fa fa-youtube"></i>
-                                </a>
-                            </li>
-                        {{/youtube}}
-
-                        {{#instagram}}
-                            <li>
-                                <a href="{{{instagram}}}" target="_blank" class="instagram btn btn-link btn-rounded">
-                                    <i class="fa fa-instagram"></i>
-                                </a>
-                            </li>
-                        {{/instagram}}
-
-                        {{#whatsapp}}
-                            <li>
-                                <a href="https://api.whatsapp.com/send?phone={{{whatsapp}}}" target="_blank" class="whatsapp btn btn-link btn-rounded">
-                                <i class="fa fa-whatsapp"></i>
-                                </a>
-                            </li>
-                        {{/whatsapp}}
-
-                        {{#telegram}}
-                            <li>
-                                <a href="{{{telegram}}}" target="_blank" class="telegram btn btn-link btn-rounded">
-                                    <i class="fa fa-telegram"></i>
-                                </a>
-                            </li>
-                        {{/telegram}}
-                    </ul>
-                </div>
             </div>
-            <div class="col-md-4 column-center">
-                {{# output.supportemail }}
-                    <div class="supportemail">{{{ output.supportemail }}}</div>
-                {{/ output.supportemail }}
+            <div class="col-md-4">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="https://behdasht.gov.ir/" target="_blank" class="">
+                            {{#str}}behdasht, theme_moove{{/str}}
+                        </a>
+                    </li>
 
-                {{{ output.login_info }}}
+                    <li>
+                        <a href="https://arman.vums.ac.ir/?AspxAutoDetectCookieSupport=1" target="_blank" class="">
+                            {{#str}}arman, theme_moove{{/str}}
+                        </a>
+                    </li>
 
-                {{{ output.standard_footer_html }}}
-
-                <div class="tool_usertours-resettourcontainer"></div>
+                </ul>
             </div>
-            <div class="col-md-4 column-right">
-                {{#enablemobilewebservice}}
-                    {{#mobilesetuplink}}
-                        <a href="{{{mobilesetuplink}}}">{{#str}}getmoodleonyourmobile, tool_mobile{{/str}}</a>
-                    {{/mobilesetuplink}}
-                    {{^mobilesetuplink}}
-                        <h3 class="footer-title">{{#str}}getmoodleonyourmobile, tool_mobile{{/str}}</h3>
-                    {{/mobilesetuplink}}
-                    <div class="stores">
-                        {{#androidappid}}
-                            <a href="https://play.google.com/store/apps/details?id={{androidappid}}">
-                            <img src="{{config.wwwroot}}/theme/moove/pix/store_google.svg" alt="Play Store">
-                            </a>
-                        {{/androidappid}}
-                        {{#iosappid}}
-                            <a class="mt-1" href="https://apps.apple.com/app/id{{iosappid}}">
-                                <img src="{{config.wwwroot}}/theme/moove/pix/store_apple.svg" alt="App Store">
-                            </a>
-                        {{/iosappid}}
-                    </div>
-                {{/enablemobilewebservice}}
+            <div class="col-md-4 d-flex flex-column align-items-center">
+                <img src="/theme/moove/pix/vums.png" class="w-100" style="max-width: 150px;">
+                <span class="text-center px-2">
+                    {{#str}}copyright, theme_moove{{/str}}
+                    </span>
             </div>
         </div>
     </div>
