@@ -6,6 +6,10 @@ html[lang="en"] body {
   font-family: $font-family-sans-serif-en;
 }
 #page-site-index.notloggedin #numbers .user-rating-box-area {
+  .rate-box{
+    text-align: center;
+  }
+
   .bg-courses {
     background: #003863;
     border-color: #003863;
@@ -370,5 +374,10 @@ html[lang="en"] body {
   .stand1,
   .stand2 {
     display: none !important;
+  }
+}
+@media (max-width: 768px) {
+  .column-left{
+    text-align: center;
   }
 }
