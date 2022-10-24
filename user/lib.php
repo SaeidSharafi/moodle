@@ -878,12 +878,12 @@ function user_get_user_navigation_info($user, $page, $options = array()) {
     }
 
     // Links: Preferences.
-    $preferences = new stdClass();
-    $preferences->itemtype = 'link';
-    $preferences->url = new moodle_url('/user/preferences.php');
-    $preferences->title = get_string('preferences');
-    $preferences->titleidentifier = 'preferences,moodle';
-    $returnobject->navitems[] = $preferences;
+    //$preferences = new stdClass();
+    //$preferences->itemtype = 'link';
+    //$preferences->url = new moodle_url('/user/preferences.php');
+    //$preferences->title = get_string('preferences');
+    //$preferences->titleidentifier = 'preferences,moodle';
+    //$returnobject->navitems[] = $preferences;
 
 
     if (is_role_switched($course->id)) {
