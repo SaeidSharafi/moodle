@@ -26,7 +26,8 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'VUMS';
 $string['configtitle'] = 'VUMS';
-$string['choosereadme'] = 'VUMS is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4. (based on Moove theme)';
+$string['choosereadme']
+    = 'VUMS is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4. (based on Moove theme)';
 
 $string['currentinparentheses'] = '(current)';
 $string['region-side-pre'] = 'Right';
@@ -48,7 +49,8 @@ $string['favicondesc'] = 'Upload your own favicon.  It should be an .ico file.';
 $string['preset'] = 'Theme preset';
 $string['preset_desc'] = 'Pick a preset to broadly change the look of the theme.';
 $string['presetfiles'] = 'Additional theme preset files';
-$string['presetfiles_desc'] = 'Preset files can be used to dramatically alter the appearance of the theme. See <a href="https://docs.moodle.org/dev/Boost_Presets">Boost presets</a> for information on creating and sharing your own preset files.';
+$string['presetfiles_desc']
+    = 'Preset files can be used to dramatically alter the appearance of the theme. See <a href="https://docs.moodle.org/dev/Boost_Presets">Boost presets</a> for information on creating and sharing your own preset files.';
 $string['loginbgimg'] = 'Login page background';
 $string['loginbgimg_desc'] = 'Upload your custom background image for the login page.';
 $string['brandcolor'] = 'Brand colour';
@@ -60,23 +62,28 @@ $string['navbarbg_desc'] = 'The left navbar color';
 $string['navbarbghover'] = 'Navbar hover color';
 $string['navbarbghover_desc'] = 'The left navbar hover color';
 $string['fontsite'] = 'Site font';
-$string['fontsite_desc'] = 'Default font site. You can try out the fonts on <a href="https://fonts.google.com">Google Fonts site</a>.';
+$string['fontsite_desc']
+    = 'Default font site. You can try out the fonts on <a href="https://fonts.google.com">Google Fonts site</a>.';
 $string['enablecourseindex'] = 'Enable course index';
 $string['enablecourseindex_desc'] = 'You can show/hide course index navigation';
 
 // Advanced settings tab.
 $string['advancedsettings'] = 'Advanced';
 $string['rawscsspre'] = 'Raw initial SCSS';
-$string['rawscsspre_desc'] = 'In this field you can provide initialising SCSS code, it will be injected before everything else. Most of the time you will use this setting to define variables.';
+$string['rawscsspre_desc']
+    = 'In this field you can provide initialising SCSS code, it will be injected before everything else. Most of the time you will use this setting to define variables.';
 $string['rawscss'] = 'Raw SCSS';
-$string['rawscss_desc'] = 'Use this field to provide SCSS or CSS code which will be injected at the end of the style sheet.';
+$string['rawscss_desc']
+    = 'Use this field to provide SCSS or CSS code which will be injected at the end of the style sheet.';
 $string['googleanalytics'] = 'Google Analytics V4 Code';
-$string['googleanalyticsdesc'] = 'Please enter your Google Analytics V4 code to enable analytics on your website. The code format shold be like [G-XXXXXXXXXX]';
+$string['googleanalyticsdesc']
+    = 'Please enter your Google Analytics V4 code to enable analytics on your website. The code format shold be like [G-XXXXXXXXXX]';
 
 // Frontpage settings tab.
 $string['frontpagesettings'] = 'Frontpage';
 $string['displaymarketingboxes'] = 'Show front page marketing boxes';
-$string['displaymarketingboxesdesc'] = 'If you want to see the boxes, select yes <strong>then click SAVE</strong> to load the input fields.';
+$string['displaymarketingboxesdesc']
+    = 'If you want to see the boxes, select yes <strong>then click SAVE</strong> to load the input fields.';
 $string['marketingsectionheading'] = 'Marketing section heading title';
 $string['marketingsectioncontent'] = 'Marketing section content';
 $string['marketingicon'] = 'Marketing Icon {$a}';
@@ -87,9 +94,11 @@ $string['disableteacherspic'] = 'Disable teachers picture';
 $string['disableteacherspicdesc'] = 'This setting hides the teachers\' pictures from the course cards.';
 
 $string['sliderfrontpageloggedin'] = 'Show slideshow in frontpage after login?';
-$string['sliderfrontpageloggedindesc'] = 'If enabled, the slideshow will be showed in the frontpage page replacing the header image.';
+$string['sliderfrontpageloggedindesc']
+    = 'If enabled, the slideshow will be showed in the frontpage page replacing the header image.';
 $string['slidercount'] = 'Slider count';
-$string['slidercountdesc'] = 'Select how many slides you want to add <strong>then click SAVE</strong> to load the input fields.';
+$string['slidercountdesc']
+    = 'Select how many slides you want to add <strong>then click SAVE</strong> to load the input fields.';
 $string['sliderimage'] = 'Slider picture';
 $string['sliderimagedesc'] = 'Add an image for your slide. Recommended size is 1500px x 540px or higher.';
 $string['slidertitle'] = 'Slide title';
@@ -111,7 +120,8 @@ $string['numbersteachers'] = 'Active teachers';
 $string['numbersactivties'] = 'Educational contents';
 $string['faq'] = 'FAQ';
 $string['faqcount'] = 'FAQ questions';
-$string['faqcountdesc'] = 'Select how many questions you want to add <strong>then click SAVE</strong> to load the input fields.<br>If you don\'t want a FAQ, just select 0.';
+$string['faqcountdesc']
+    = 'Select how many questions you want to add <strong>then click SAVE</strong> to load the input fields.<br>If you don\'t want a FAQ, just select 0.';
 $string['faqquestion'] = 'FAQ question {$a}';
 $string['faqanswer'] = 'FAQ answer {$a}';
 
@@ -170,21 +180,38 @@ $string['accessibility:sitecolor4'] = 'High contrast';
 $string['privacy:metadata:preference:accessibilitystyles_fontsizeclass'] = 'The user\'s preference for font size.';
 $string['privacy:metadata:preference:accessibilitystyles_sitecolorclass'] = 'The user\'s preference for site color.';
 $string['privacy:metadata:preference:thememoovesettings_fonttype'] = 'The user\'s preference for font type.';
-$string['privacy:metadata:preference:thememoovesettings_enableaccessibilitytoolbar'] = 'The user\'s preference for enable the accessibility toolbar.';
+$string['privacy:metadata:preference:thememoovesettings_enableaccessibilitytoolbar']
+    = 'The user\'s preference for enable the accessibility toolbar.';
 
 $string['privacy:accessibilitystyles_fontsizeclass'] = 'The current preference for the font size is: {$a}.';
 $string['privacy:accessibilitystyles_sitecolorclass'] = 'The current preference for the site color is: {$a}.';
 $string['privacy:thememoovesettings_fonttype'] = 'The current preference for the font type is: {$a}.';
-$string['privacy:thememoovesettings_enableaccessibilitytoolbar'] = 'The current preference for enable accessibility toolbar is to show it.';
+$string['privacy:thememoovesettings_enableaccessibilitytoolbar']
+    = 'The current preference for enable accessibility toolbar is to show it.';
 
 $string['login_btn'] = 'Sign in';
 $string['contact_support'] = 'Support';
 $string['blog_title'] = 'News & Announcements';
 $string['view_all'] = 'View All';
-$string['university'] ='Smart University of Medical Sciences';
+$string['university'] = 'Smart University of Medical Sciences';
 $string['navid_title'] = 'What is NAVID?';
-$string['contact_us']='Support';
-$string['unesco']='UNESCO National Award';
-$string['behdasht']='Ministery of Health and Medical Education';
-$string['arman']='ARMAN';
-$string['copyright']='';
+$string['contact_us'] = 'Support';
+$string['unesco'] = 'UNESCO National Award';
+$string['behdasht'] = 'Ministery of Health and Medical Education';
+$string['arman'] = 'ARMAN';
+$string['copyright'] = '';
+
+$string['navid_front'] = '
+<p>
+<span class="text-danger">NAVID</span> project was a major milestone for VUMS as a responsible body to create national Learning Management System,
+ a project initiated in 2016 when the new reformation package by ministry of Health and Medical Education was announced.
+  During the project’s consultation phase,
+   team of experts was engaged with their peers to determine the pedagogical and functional requirements for supporting
+    teaching and learning. Design, development and implementation of key features of NAVID was the 2nd phase of project.
+     During 2017 fall semester <span class="text-danger">NAVID</span>  was evaluated by faculty, staff,
+      and students through pilot courses in Alborz University of Medical Sciences as a partner University with VUMS.
+       Since 2018 spring semester <span class="text-danger">NAVID</span>  (version Beta) has been used by 20 other Medical Universities all around country.
+        In NAVID , instructors can share materials (text or multimedia),
+         enable student collaboration and discussion, manage assignments and quizzes, and assign grades.
+          New feature will be add to <span class="text-danger">NAVID</span>  according to project timetable.</p>
+';

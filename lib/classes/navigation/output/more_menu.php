@@ -87,7 +87,7 @@ class more_menu implements renderable, templatable
                     $this->content->children->remove('coursereuse');
                     $this->content->children->add($item, 'editsettings');
                 }
-                if ($item = $children->get('grades')){
+                if ($item = $children->get('coursereports')){
                     $this->content->children->remove('coursereports');
                     $this->content->children->add($item, 'editsettings');
                 }

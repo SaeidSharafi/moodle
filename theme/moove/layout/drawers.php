@@ -50,6 +50,16 @@ $extraclasses = ['uses-drawers'];
 if ($courseindexopen) {
     $extraclasses[] = 'drawer-open-index';
 }
+$roles = [];
+if ($USER && $USER->id) {
+    $roles = get_user_roles(context_system::instance(), $USER->id);
+
+    $roles = array_map(function ($item) {
+        return $item->shortname;
+    }, $roles);
+}
+
+$extraclasses = array_merge(['uses-drawers'],$roles);
 
 $blockshtml = $OUTPUT->blocks('side-pre');
 $hasblocks = (strpos($blockshtml, 'data-block=') !== false || !empty($addblockbutton));
