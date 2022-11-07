@@ -104,6 +104,10 @@ class format_topics extends core_courseformat\base {
             // Return the general section.
             return get_string('section4name', 'format_topics');
         }
+        if ($section->section == 5) {
+            // Return the general section.
+            return get_string('section5name', 'format_topics');
+        }
             // Use course_format::get_default_section_name implementation which
             // will display the section name in "Topic n" format.
             return parent::get_default_section_name($section);

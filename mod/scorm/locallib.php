@@ -994,10 +994,10 @@ function scorm_print_launch ($user, $scorm, $action, $cm) {
                                                         'method' => 'post',
                                                         'action' => $CFG->wwwroot.'/mod/scorm/player.php'));
         if ($scorm->hidebrowse == 0) {
-            echo html_writer::tag('button', get_string('browse', 'scorm'),
-                    ['class' => 'btn btn-secondary mr-1', 'name' => 'mode',
-                        'type' => 'submit', 'id' => 'b', 'value' => 'browse'])
-                . html_writer::end_tag('button');
+            //echo html_writer::tag('button', get_string('browse', 'scorm'),
+            //        ['class' => 'btn btn-secondary mr-1', 'name' => 'mode',
+            //            'type' => 'submit', 'id' => 'b', 'value' => 'browse'])
+            //    . html_writer::end_tag('button');
         } else {
             echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'mode', 'value' => 'normal'));
         }
@@ -1011,10 +1011,10 @@ function scorm_print_launch ($user, $scorm, $action, $cm) {
                 echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'newattempt', 'value' => 'on'));
             }
         } else if (!empty($attemptcount) && ($incomplete === false) && (($result->attemptleft > 0)||($scorm->maxattempt == 0))) {
-            echo html_writer::start_div('pt-1');
-            echo html_writer::checkbox('newattempt', 'on', false, '', array('id' => 'a'));
-            echo html_writer::label(get_string('newattempt', 'scorm'), 'a', true, ['class' => 'pl-1']);
-            echo html_writer::end_div();
+            //echo html_writer::start_div('pt-1');
+            //echo html_writer::checkbox('newattempt', 'on', false, '', array('id' => 'a'));
+            //echo html_writer::label(get_string('newattempt', 'scorm'), 'a', true, ['class' => 'pl-1']);
+            //echo html_writer::end_div();
         }
         if (!empty($scorm->popup)) {
             echo html_writer::empty_tag('input', array('type' => 'hidden', 'name' => 'display', 'value' => 'popup'));
@@ -1341,7 +1341,8 @@ function scorm_get_attempt_status($user, $scorm, $cm='') {
         }
     }
 
-    return $result;
+    return '';
+    //return $result;
 }
 
 /**

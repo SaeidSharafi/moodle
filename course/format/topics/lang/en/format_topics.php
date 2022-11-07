@@ -35,6 +35,7 @@ $string['section1name'] = 'Quiz';
 $string['section2name'] = 'Classes';
 $string['section3name'] = 'Assignments';
 $string['section4name'] = 'Forums';
+$string['section5name'] = 'Resources';
 $string['page-course-view-topics'] = 'Any course main page in topics format';
 $string['page-course-view-topics-x'] = 'Any course page in topics format';
 $string['hidefromothers'] = 'Hide topic';
