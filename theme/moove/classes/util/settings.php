@@ -226,6 +226,11 @@ class settings {
     public function blog_entries() {
         global $DB;
 
+        if (current_language() !== 'fa'){
+            $templatecontext['no_news']=true;
+            return $templatecontext;
+        }
+
         $templatecontext['news'] = array_values($DB->get_records_sql('SELECT id,subject,summary,created FROM {post} ORDER BY created DESC',null,0,6));
 
         return $templatecontext;
