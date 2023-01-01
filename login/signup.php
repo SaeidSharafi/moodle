@@ -94,7 +94,7 @@ if ($mform_signup->is_cancelled()) {
 }
 
 
-$newaccount = get_string('newaccount');
+$newaccount = get_string('smsforgottenpassword','auth_sms');
 $login      = get_string('login');
 
 $PAGE->navbar->add($login);
