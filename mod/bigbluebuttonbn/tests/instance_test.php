@@ -461,6 +461,47 @@ class instance_test extends advanced_testcase {
     }
 
     /**
+     * Ensure that the get_current_user_role function works as expected.
+     *
+     * @dataProvider get_current_user_role_provider
+     * @param bool $isadmin
+     * @param bool $ismoderator
+     * @param bool $expectedmodrole
+     * @covers ::get_current_user_role
+     */
+    public function test_get_current_user_role(bool $isadmin, bool $ismoderator, bool $expectedmodrole): void {
+        $stub = $this->getMockBuilder(instance::class)
+            ->setMethods([
+                'is_admin',
+                'is_moderator',
+            ])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $stub->method('is_admin')->willReturn($isadmin);
+        $stub->method('is_moderator')->willReturn($ismoderator);
+
+        if ($expectedmodrole) {
+            $this->assertEquals('MODERATOR', $stub->get_current_user_role());
+        } else {
+            $this->assertEquals('VIEWER', $stub->get_current_user_role());
+        }
+    }
+
+    /**
+     * Data provider for the get_current_user_role function.
+     *
+     * @return array
+     */
+    public function get_current_user_role_provider(): array {
+        return [
+            'Admin is a moderator' => [true, false, true],
+            'Moderator is a moderator' => [false, true, true],
+            'Others are a viewer' => [false, false, false],
+        ];
+    }
+
+    /**
      * Tests for the allow_recording_start_stop function.
      *
      * @dataProvider allow_recording_start_stop_provider
@@ -499,6 +540,66 @@ class instance_test extends advanced_testcase {
             'Meeting recorded, Buttons shown: Allow' => [true, true, true],
             'Meeting recorded, Buttons not shown: Deny' => [true, false, false],
         ];
+    }
+
+
+    /**
+     * Test get user id (guest or current user)
+     * @covers \mod_bigbluebuttonbn\instance::get_user_id
+     */
+    public function test_get_user_id(): void {
+        $this->resetAfterTest();
+        $this->setUser(null);
+        ['record' => $record ] = $this->get_test_instance();
+        $instance = instance::get_from_instanceid($record->id);
+        $this->assertEquals(0, $instance->get_user_id());
+        $user = $this->getDataGenerator()->create_user();
+        $this->setUser($user);
+        $this->assertEquals($user->id, $instance->get_user_id());
+    }
+
+    /**
+     * Test guest access URL
+     *
+     * @covers ::get_guest_access_url
+     */
+    public function test_get_guest_access_url() {
+        global $CFG;
+        $this->resetAfterTest();
+        ['record' => $record ] = $this->get_test_instance(['guestallowed' => true]);
+        $CFG->bigbluebuttonbn['guestaccess_enabled'] = 1;
+        $instance = instance::get_from_instanceid($record->id);
+        $this->assertNotEmpty($instance->get_guest_access_url());
+    }
+
+    /**
+     * Test guest allowed flag
+     *
+     * @covers ::is_guest_allowed
+     */
+    public function test_is_guest_allowed() {
+        global $CFG;
+        $this->resetAfterTest();
+        ['record' => $record ] = $this->get_test_instance(['guestallowed' => true]);
+        $CFG->bigbluebuttonbn['guestaccess_enabled'] = 1;
+        $instance = instance::get_from_instanceid($record->id);
+        $this->assertTrue($instance->is_guest_allowed());
+        $CFG->bigbluebuttonbn['guestaccess_enabled'] = 0;
+        $this->assertFalse($instance->is_guest_allowed());
+    }
+
+    /**
+     * Test guest access password
+     *
+     * @covers ::get_guest_access_password
+     */
+    public function get_guest_access_password() {
+        global $CFG;
+        $this->resetAfterTest();
+        ['record' => $record ] = $this->get_test_instance(['guestallowed' => true]);
+        $CFG->bigbluebuttonbn['guestaccess_enabled'] = 1;
+        $instance = instance::get_from_instanceid($record->id);
+        $this->assertNotEmpty($instance->get_guest_access_password());
     }
 
 }

@@ -271,7 +271,7 @@ class quiz {
     /**
      * Get the quiz context.
      *
-     * @return context the module context for this quiz.
+     * @return context_module the module context for this quiz.
      */
     public function get_context() {
         return $this->context;
@@ -1849,7 +1849,7 @@ class quiz_attempt {
      */
     public function render_question_for_commenting($slot) {
         $options = $this->get_display_options(true);
-        $options->hide_all_feedback();
+        $options->generalfeedback = question_display_options::HIDDEN;
         $options->manualcomment = question_display_options::EDITABLE;
         return $this->quba->render_question($slot, $options,
                 $this->get_question_number($slot));
@@ -2386,22 +2386,31 @@ class quiz_attempt {
 
         $transaction = $DB->start_delegated_transaction();
 
-        // If there is only a very small amount of time left, there is no point trying
-        // to show the student another page of the quiz. Just finish now.
-        $graceperiodmin = null;
+        // Get key times.
         $accessmanager = $this->get_access_manager($timenow);
         $timeclose = $accessmanager->get_end_time($this->get_attempt());
+        $graceperiodmin = get_config('quiz', 'graceperiodmin');
 
         // Don't enforce timeclose for previews.
         if ($this->is_preview()) {
             $timeclose = false;
         }
+
+        // Check where we are in relation to the end time, if there is one.
         $toolate = false;
-        if ($timeclose !== false && $timenow > $timeclose - QUIZ_MIN_TIME_TO_CONTINUE) {
-            $timeup = true;
-            $graceperiodmin = get_config('quiz', 'graceperiodmin');
-            if ($timenow > $timeclose + $graceperiodmin) {
-                $toolate = true;
+        if ($timeclose !== false) {
+            if ($timenow > $timeclose - QUIZ_MIN_TIME_TO_CONTINUE) {
+                // If there is only a very small amount of time left, there is no point trying
+                // to show the student another page of the quiz. Just finish now.
+                $timeup = true;
+                if ($timenow > $timeclose + $graceperiodmin) {
+                    $toolate = true;
+                }
+            } else {
+                // If time is not close to expiring, then ignore the client-side timer's opinion
+                // about whether time has expired. This can happen if the time limit has changed
+                // since the student's previous interaction.
+                $timeup = false;
             }
         }
 
@@ -2410,9 +2419,6 @@ class quiz_attempt {
         $becomingabandoned = false;
         if ($timeup) {
             if ($this->get_quiz()->overduehandling === 'graceperiod') {
-                if (is_null($graceperiodmin)) {
-                    $graceperiodmin = get_config('quiz', 'graceperiodmin');
-                }
                 if ($timenow > $timeclose + $this->get_quiz()->graceperiod + $graceperiodmin) {
                     // Grace period has run out.
                     $finishattempt = true;
@@ -2705,6 +2711,22 @@ class quiz_attempt {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Get the total number of unanswered questions in the attempt.
+     *
+     * @return int
+     */
+    public function get_number_of_unanswered_questions(): int {
+        $totalunanswered = 0;
+        foreach ($this->get_slots() as $slot) {
+            $questionstate = $this->get_question_state($slot);
+            if ($questionstate == question_state::$todo || $questionstate == question_state::$invalid) {
+                $totalunanswered++;
+            }
+        }
+        return $totalunanswered;
     }
 }
 

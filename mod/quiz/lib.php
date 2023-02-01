@@ -28,6 +28,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+use mod_quiz\question\bank\custom_view;
+use core_question\statistics\questions\all_calculated_for_qubaid_condition;
+
 require_once($CFG->dirroot . '/calendar/lib.php');
 
 
@@ -2382,14 +2385,14 @@ function mod_quiz_output_fragment_quiz_question_bank($args) {
     // Build the required resources. The $params are all cleaned as
     // part of this process.
     list($thispageurl, $contexts, $cmid, $cm, $quiz, $pagevars) =
-            question_build_edit_resources('editq', '/mod/quiz/edit.php', $params);
+            question_build_edit_resources('editq', '/mod/quiz/edit.php', $params, custom_view::DEFAULT_PAGE_SIZE);
 
     // Get the course object and related bits.
     $course = $DB->get_record('course', array('id' => $quiz->course), '*', MUST_EXIST);
     require_capability('mod/quiz:manage', $contexts->lowest());
 
     // Create quiz question bank view.
-    $questionbank = new mod_quiz\question\bank\custom_view($contexts, $thispageurl, $course, $cm, $quiz);
+    $questionbank = new custom_view($contexts, $thispageurl, $course, $cm, $quiz);
     $questionbank->set_quiz_has_attempts(quiz_has_attempts($quiz->id));
 
     // Output.
@@ -2482,4 +2485,20 @@ function quiz_delete_references($quizid): void {
         // Delete any references.
         $DB->delete_records('question_references', $params);
     }
+}
+
+/**
+ * Implement the calculate_question_stats callback.
+ *
+ * This enables quiz statistics to be shown in statistics columns in the database.
+ *
+ * @param context $context return the statistics related to this context (which will be a quiz context).
+ * @return all_calculated_for_qubaid_condition|null The statistics for this quiz, if any, else null.
+ */
+function mod_quiz_calculate_question_stats(context $context): ?all_calculated_for_qubaid_condition {
+    global $CFG;
+    require_once($CFG->dirroot . '/mod/quiz/report/statistics/report.php');
+    $cm = get_coursemodule_from_id('quiz', $context->instanceid);
+    $report = new quiz_statistics_report();
+    return $report->calculate_questions_stats_for_question_bank($cm->instance);
 }

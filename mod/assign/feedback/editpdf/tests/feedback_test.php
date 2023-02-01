@@ -47,7 +47,14 @@ class feedback_test extends \advanced_testcase {
         }
     }
 
-    protected function add_file_submission($student, $assign) {
+    /**
+     * Helper method to add a file to a submission.
+     *
+     * @param stdClass $student Student submitting.
+     * @param assign   $assign Assignment being submitted.
+     * @param bool     $textfile Use textfile fixture instead of pdf.
+     */
+    protected function add_file_submission($student, $assign, $textfile = false) {
         global $CFG;
 
         $this->setUser($student);
@@ -56,16 +63,16 @@ class feedback_test extends \advanced_testcase {
         $submission = $assign->get_user_submission($student->id, true);
 
         $fs = get_file_storage();
-        $pdfsubmission = (object) array(
+        $filerecord = (object) array(
             'contextid' => $assign->get_context()->id,
             'component' => 'assignsubmission_file',
             'filearea' => ASSIGNSUBMISSION_FILE_FILEAREA,
             'itemid' => $submission->id,
             'filepath' => '/',
-            'filename' => 'submission.pdf'
+            'filename' => $textfile ? 'submission.txt' : 'submission.pdf'
         );
-        $sourcefile = $CFG->dirroot.'/mod/assign/feedback/editpdf/tests/fixtures/submission.pdf';
-        $fs->create_file_from_pathname($pdfsubmission, $sourcefile);
+        $sourcefile = $CFG->dirroot . '/mod/assign/feedback/editpdf/tests/fixtures/submission.' . ($textfile ? 'txt' : 'pdf');
+        $fs->create_file_from_pathname($filerecord, $sourcefile);
 
         $data = new \stdClass();
         $plugin = $assign->get_submission_plugin_by_type('file');
@@ -329,13 +336,15 @@ class feedback_test extends \advanced_testcase {
         $this->assertEmpty($file3);
     }
 
+    /**
+     * Test Convert submission ad-hoc task.
+     *
+     * @covers \assignfeedback_editpdf\task\convert_submission
+     */
     public function test_conversion_task() {
-        global $DB;
         $this->require_ghostscript();
         $this->resetAfterTest();
         cron_setup_user();
-
-        $task = new \assignfeedback_editpdf\task\convert_submissions;
 
         $course = $this->getDataGenerator()->create_course();
         $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
@@ -351,39 +360,35 @@ class feedback_test extends \advanced_testcase {
         $this->add_file_submission($student, $assign);
 
         // Run the conversion task.
+        $task = \core\task\manager::get_next_adhoc_task(time());
         ob_start();
         $task->execute();
+        \core\task\manager::adhoc_task_complete($task);
         $output = ob_get_clean();
 
-        // Verify it acted on both submissions in the queue.
-        $this->assertStringContainsString("Convert 1 submission attempt(s) for assignment {$assign->get_instance()->id}", $output);
-        $this->assertEquals(0, $DB->count_records('assignfeedback_editpdf_queue'));
-
-        // Set a known limit.
-        set_config('conversionattemptlimit', 3);
+        // Confirm, that submission has been converted and the task queue is now empty.
+        $this->assertStringContainsString('Converting submission for user id ' . $student->id, $output);
+        $this->assertStringContainsString('The document has been successfully converted', $output);
+        $this->assertNull(\core\task\manager::get_next_adhoc_task(time()));
 
         // Trigger a re-queue by 'updating' a submission.
         $submission = $assign->get_user_submission($student->id, true);
         $plugin = $assign->get_submission_plugin_by_type('file');
         $plugin->save($submission, (new \stdClass));
 
+        $task = \core\task\manager::get_next_adhoc_task(time());
         // Verify that queued a conversion task.
-        $this->assertEquals(1, $DB->count_records('assignfeedback_editpdf_queue'));
-
-        // Fake some failed attempts for it.
-        $queuerecord = $DB->get_record('assignfeedback_editpdf_queue', ['submissionid' => $submission->id]);
-        $queuerecord->attemptedconversions = 3;
-        $DB->update_record('assignfeedback_editpdf_queue', $queuerecord);
+        $this->assertNotNull($task);
 
         ob_start();
         $task->execute();
+        \core\task\manager::adhoc_task_complete($task);
         $output = ob_get_clean();
 
-        // Verify that the cron task skipped the submission.
-        $this->assertStringNotContainsString("Convert 1 submission attempt(s) for assignment {$assign->get_instance()->id}", $output);
-        // And it removed it from the queue.
-        $this->assertEquals(0, $DB->count_records('assignfeedback_editpdf_queue'));
-
+        // Confirm, that submission has been converted and the task queue is now empty.
+        $this->assertStringContainsString('Converting submission for user id ' . $student->id, $output);
+        $this->assertStringContainsString('The document has been successfully converted', $output);
+        $this->assertNull(\core\task\manager::get_next_adhoc_task(time()));
     }
 
     /**
@@ -519,39 +524,58 @@ class feedback_test extends \advanced_testcase {
     }
 
     /**
-     * Test Convert submissions scheduled task limit.
+     * Test that overwriting a submission file deletes any associated conversions.
      *
-     * @covers \assignfeedback_editpdf\task\convert_submissions
+     * @covers \core_files\conversion::get_conversions_for_file
      */
-    public function test_conversion_task_limit() {
-        global $DB;
-        $this->require_ghostscript();
+    public function test_submission_file_overridden() {
         $this->resetAfterTest();
-        cron_setup_user();
-
         $course = $this->getDataGenerator()->create_course();
-        $assignopts = [
+        $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
+        $assign = $this->create_instance($course, [
+            'assignsubmission_onlinetext_enabled' => 1,
             'assignsubmission_file_enabled' => 1,
             'assignsubmission_file_maxfiles' => 1,
             'assignfeedback_editpdf_enabled' => 1,
             'assignsubmission_file_maxsizebytes' => 1000000,
+        ]);
+
+        $this->add_file_submission($student, $assign, true);
+        $submission = $assign->get_user_submission($student->id, true);
+
+        $fs = get_file_storage();
+        $sourcefile = $fs->get_file(
+            $assign->get_context()->id,
+            'assignsubmission_file',
+            ASSIGNSUBMISSION_FILE_FILEAREA,
+            $submission->id,
+            '/',
+            'submission.txt'
+        );
+
+        $conversion = new \core_files\conversion(0, (object)[
+            'sourcefileid' => $sourcefile->get_id(),
+            'targetformat' => 'pdf'
+        ]);
+        $conversion->create();
+
+        $conversions = \core_files\conversion::get_conversions_for_file($sourcefile, 'pdf');
+        $this->assertCount(1, $conversions);
+
+        $filerecord = (object)[
+            'contextid' => $assign->get_context()->id,
+            'component' => 'core',
+            'filearea'  => 'unittest',
+            'itemid'    => $submission->id,
+            'filepath'  => '/',
+            'filename'  => 'submission.txt'
         ];
-        $assign = $this->create_instance($course, $assignopts);
 
-        // Generate 110 submissions.
-        for ($i = 0; $i < 110; $i++) {
-            $student = $this->getDataGenerator()->create_and_enrol($course, 'student');
-            $this->add_file_submission($student, $assign);
-        }
-        $this->assertEquals(110, $DB->count_records('assignfeedback_editpdf_queue'));
+        $fs = get_file_storage();
+        $newfile = $fs->create_file_from_string($filerecord, 'something totally different');
+        $sourcefile->replace_file_with($newfile);
 
-        // Run the conversion task.
-        $task = new \assignfeedback_editpdf\task\convert_submissions;
-        ob_start();
-        $task->execute();
-        ob_end_clean();
-
-        // Confirm, that 100 records were processed and 10 were left for the next task run.
-        $this->assertEquals(10, $DB->count_records('assignfeedback_editpdf_queue'));
+        $conversions = \core_files\conversion::get_conversions_for_file($sourcefile, 'pdf');
+        $this->assertCount(0, $conversions);
     }
 }
