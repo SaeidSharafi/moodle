@@ -249,7 +249,7 @@ if ($ADMIN->fulltree) {
     $name = 'theme_moove/displaymarketingbox';
     $title = get_string('displaymarketingboxes', 'theme_moove');
     $description = get_string('displaymarketingboxesdesc', 'theme_moove');
-    $default = 1;
+    $default = 0;
     $choices = array(0 => get_string('no'), 1 => get_string('yes'));
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
     $page->add($setting);

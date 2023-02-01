@@ -188,3 +188,18 @@ $string['unesco']='UNESCO National Award';
 $string['behdasht']='Ministery of Health and Medical Education';
 $string['arman']='ARMAN';
 $string['copyright']='';
+
+$string['navid_front'] = '
+<p>
+<span class="text-danger">NAVID</span> project was a major milestone for VUMS as a responsible body to create national Learning Management System,
+ a project initiated in 2016 when the new reformation package by ministry of Health and Medical Education was announced.
+  During the project’s consultation phase,
+   team of experts was engaged with their peers to determine the pedagogical and functional requirements for supporting
+    teaching and learning. Design, development and implementation of key features of NAVID was the 2nd phase of project.
+     During 2017 fall semester <span class="text-danger">NAVID</span>  was evaluated by faculty, staff,
+      and students through pilot courses in Alborz University of Medical Sciences as a partner University with VUMS.
+       Since 2018 spring semester <span class="text-danger">NAVID</span>  (version Beta) has been used by 20 other Medical Universities all around country.
+        In NAVID , instructors can share materials (text or multimedia),
+         enable student collaboration and discussion, manage assignments and quizzes, and assign grades.
+          New feature will be add to <span class="text-danger">NAVID</span>  according to project timetable.</p>
+';
