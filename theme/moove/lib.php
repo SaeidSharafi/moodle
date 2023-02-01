@@ -25,12 +25,10 @@
 /**
  * Returns the main SCSS content.
  *
- * @param  theme_config  $theme  The theme config object.
- *
+ * @param theme_config $theme The theme config object.
  * @return string
  */
-function theme_moove_get_main_scss_content($theme)
-{
+function theme_moove_get_main_scss_content($theme) {
     global $CFG;
 
     $scss = '';
@@ -39,22 +37,22 @@ function theme_moove_get_main_scss_content($theme)
 
     $context = context_system::instance();
     if ($filename == 'default.scss') {
-        $scss .= file_get_contents($CFG->dirroot.'/theme/boost/scss/preset/default.scss');
-    } elseif ($filename == 'plain.scss') {
-        $scss .= file_get_contents($CFG->dirroot.'/theme/boost/scss/preset/plain.scss');
-    } elseif ($filename && ($presetfile = $fs->get_file($context->id, 'theme_moove', 'preset', 0, '/', $filename))) {
+        $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
+    } else if ($filename == 'plain.scss') {
+        $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/plain.scss');
+    } else if ($filename && ($presetfile = $fs->get_file($context->id, 'theme_moove', 'preset', 0, '/', $filename))) {
         $scss .= $presetfile->get_content();
     } else {
         // Safety fallback - maybe new installs etc.
-        $scss .= file_get_contents($CFG->dirroot.'/theme/boost/scss/preset/default.scss');
+        $scss .= file_get_contents($CFG->dirroot . '/theme/boost/scss/preset/default.scss');
     }
 
     // Moove scss.
-    $moovevariables = file_get_contents($CFG->dirroot.'/theme/moove/scss/moove/_variables.scss');
-    $moove = file_get_contents($CFG->dirroot.'/theme/moove/scss/default.scss');
+    $moovevariables = file_get_contents($CFG->dirroot . '/theme/moove/scss/moove/_variables.scss');
+    $moove = file_get_contents($CFG->dirroot . '/theme/moove/scss/default.scss');
 
     // Combine them together.
-    $allscss = $moovevariables."\n".$scss."\n".$moove;
+    $allscss = $moovevariables . "\n" . $scss . "\n" . $moove;
 
     return $allscss;
 }
@@ -62,12 +60,10 @@ function theme_moove_get_main_scss_content($theme)
 /**
  * Inject additional SCSS.
  *
- * @param  theme_config  $theme  The theme config object.
- *
+ * @param theme_config $theme The theme config object.
  * @return string
  */
-function theme_moove_get_extra_scss($theme)
-{
+function theme_moove_get_extra_scss($theme) {
     $content = '';
 
     // Sets the login background image.
@@ -79,24 +75,22 @@ function theme_moove_get_extra_scss($theme)
     }
 
     // Always return the background image with the scss when we have it.
-    return !empty($theme->settings->scss) ? $theme->settings->scss.' '.$content : $content;
+    return !empty($theme->settings->scss) ? $theme->settings->scss . ' ' . $content : $content;
 }
 
 /**
  * Get SCSS to prepend.
  *
- * @param  theme_config  $theme  The theme config object.
- *
+ * @param theme_config $theme The theme config object.
  * @return string
  */
-function theme_moove_get_pre_scss($theme)
-{
+function theme_moove_get_pre_scss($theme) {
     $scss = '';
     $configurable = [
         // Config key => [variableName, ...].
-        'brandcolor'         => ['brand-primary'],
+        'brandcolor' => ['brand-primary'],
         'secondarymenucolor' => 'secondary-menu-color',
-        'fontsite'           => 'font-family-sans-serif',
+        'fontsite' => 'font-family-sans-serif'
     ];
 
     // Prepend variables first.
@@ -128,33 +122,29 @@ function theme_moove_get_pre_scss($theme)
  *
  * @return string compiled css
  */
-function theme_moove_get_precompiled_css()
-{
+function theme_moove_get_precompiled_css() {
     global $CFG;
 
-    return file_get_contents($CFG->dirroot.'/theme/moove/style/moodle.css');
+    return file_get_contents($CFG->dirroot . '/theme/moove/style/moodle.css');
 }
 
 /**
  * Serves any files associated with the theme settings.
  *
- * @param  stdClass  $course
- * @param  stdClass  $cm
- * @param  context  $context
- * @param  string  $filearea
- * @param  array  $args
- * @param  bool  $forcedownload
- * @param  array  $options
- *
+ * @param stdClass $course
+ * @param stdClass $cm
+ * @param context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @param array $options
  * @return mixed
  */
-function theme_moove_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array())
-{
+function theme_moove_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
     $theme = theme_config::load('moove');
 
-    if ($context->contextlevel == CONTEXT_SYSTEM
-        && ($filearea === 'logo' || $filearea === 'loginbgimg' || $filearea == 'favicon')
-    ) {
+    if ($context->contextlevel == CONTEXT_SYSTEM &&
+        ($filearea === 'logo' || $filearea === 'loginbgimg' || $filearea == 'favicon')) {
         $theme = theme_config::load('moove');
         // By default, theme files must be cache-able by both browsers and proxies.
         if (!array_key_exists('cacheability', $options)) {

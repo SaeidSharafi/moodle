@@ -26,6 +26,8 @@
  * @category output
  */
 
+use temp\moove\classes\output\core_renderer;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir.'/outputcomponents.php');

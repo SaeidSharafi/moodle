@@ -442,14 +442,6 @@ class secondary extends view {
                     self::TYPE_COURSE, null, 'coursehome'), reset($nodekeys)
             );
         }
-
-        // Add the respective first node, provided there are other nodes included.
-        if (!empty($nodekeys = $rootnode->children->get_key_list())) {
-            $rootnode->add_node(
-                navigation_node::create($firstnodeidentifier, new \moodle_url('/course/view.php', ['id' => $course->id]),
-                    self::TYPE_COURSE, null, 'coursehome'), reset($nodekeys)
-            );
-        }
     }
 
     /**
