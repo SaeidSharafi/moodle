@@ -32,7 +32,7 @@
     }
 }}
 
-<footer id="page-footer">
+<footer id="page-footer py-2">
     <div class="moove-container-fluid footer-columns">
         <div class="row">
             <div class="col-md-4 column-left">
@@ -58,7 +58,7 @@
                 </ul>
 
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 column-left">
                 <ul class="list-unstyled">
                     <li>
                         <a href="https://behdasht.gov.ir/" target="_blank" class="">
@@ -75,7 +75,9 @@
                 </ul>
             </div>
             <div class="col-md-4 d-flex flex-column align-items-center">
+                <a href="https://vums.ac.ir" target="_blank">
                 <img src="/theme/moove/pix/vums.png" class="w-100" style="max-width: 150px;">
+                </a>
                 <span class="text-center px-2">
                     {{#str}}copyright, theme_moove{{/str}}
                     </span>
@@ -94,7 +96,7 @@
             {{#pix}}e/question, core{{/pix}}
         </button>
     </div>
-    <div class="footer-content-popover container" data-region="footer-content-popover">
+    <div class="footer-content-popover container d-none" data-region="footer-content-popover">
         {{# output.has_popover_links }}
             <div class="footer-section p-3 border-bottom">
                 {{# output.page_doc_link }}

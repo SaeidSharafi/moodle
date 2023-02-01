@@ -28,3 +28,4 @@ $string['section1name'] = 'خودآزمونها';
 $string['section2name'] = 'کلاس ها';
 $string['section3name'] = 'تکالیف';
 $string['section4name'] = 'گفتگوها';
+$string['section5name'] = 'محتوا و منابع مطالعه بیشتر';

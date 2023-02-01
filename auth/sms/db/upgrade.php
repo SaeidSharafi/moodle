@@ -15,18 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Link to CSV course upload.
+ * No authentication plugin upgrade code
  *
- * @package    tool_uploadcourse
- * @copyright  2011 Piers Harding
+ * @package    auth_sms
+ * @copyright  2021 Morteza Ahmadi <m.ahmadi.ma@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-//if ($hassiteconfig) {
-$ADMIN->add('courses', new admin_externalpage('tooluploadcourse',
-    get_string('uploadcourses', 'tool_uploadcourse'),
-    "$CFG->wwwroot/$CFG->admin/tool/uploadcourse/index.php",
-    'moodle/course:create'));
-//}
+/**
+ * Function to upgrade auth_sms.
+ * @param int $oldversion the version we are upgrading from
+ * @return bool result
+ */
+function xmldb_auth_sms_upgrade($oldversion) {
+    global $CFG, $DB;
+
+    return true;
+}

@@ -98,7 +98,7 @@
                     <img src="{{config.wwwroot}}/theme/moove/pix/navid-laptop-3d.png" class="w-100" style="max-width: 600px">
                 </div>
                 <div class="d-flex justify-content-center align-items-center flex-column col-md-6 col-12">
-                    <img src="{{config.wwwroot}}/theme/moove/pix/vums.png" class="w-100" style="max-width: 150px; opacity: 0.5;">
+                    <img src="{{config.wwwroot}}/theme/moove/pix/vums.png" class="w-100" style="max-width: 150px;">
 
                     <span class="shadowy-text text--title text-center px-2">
                         {{#str}}university, theme_moove{{/str}}
@@ -120,80 +120,80 @@
                 </div>
             </div>
         </section>
+        {{^no_news}}
         <section id="blog" class="pt-5 px-md-2">
-            <div class="row align-items-end">
-                <div class="p-0 col-sm-9 col-md-11 col-12">
-                    <div class="liner mt-4">
-                        <h3 class="mx-1 shadowy-text font--20 text-center">
-                            {{#str}}blog_title, theme_moove{{/str}}
-                        </h3></div>
-                </div>
-                <div class="pa-0 col-sm-3 col-md-1 col-12">
-                    <a href="/blog/index.php" class="px-2 mt-3 font-weight-bold btn view-all" style="height: auto;">
-                        <div class="v-btn__content">
-                            <span class="flex-shrink-0">{{#str}}view_all, theme_moove{{/str}}</span>
-                            <i aria-hidden="true" class="fa fa-arrow-left ml-2"></i>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="row justify-content-center align-items-stretch">
-                {{#news}}
-                    <div class="col-sm-6 col-lg-4 col-12 mb-2">
-                        <a href="/blog/index.php?entryid={{id}}"
-                        class="mx-auto py-2 px-4 v-card v-card--link v-sheet theme--light" style="position: relative;">
-                        <div class="row justify-center">
-                            <div class="d-none d-sm-flex col-md-5 col-12">
-                                <div class="v-avatar my-4 mx-auto rounded-0" style="height: 120px; min-width: 120px; width: 120px;">
-                                    <img src="{{config.wwwroot}}/theme/moove/pix/news.png" class="w-100">
-                                </div>
+            <div class="moove-container-fluid">
+                <div class="row align-items-end">
+                    <div class="p-0 col-sm-9 col-md-11 col-12">
+                        <div class="liner mt-4">
+                            <h3 class="mx-1 shadowy-text font--20 text-center">
+                                {{#str}}blog_title, theme_moove{{/str}}
+                            </h3></div>
+                    </div>
+                    <div class="pa-0 col-sm-3 col-md-1 col-12">
+                        <a href="/blog/index.php" class="px-2 mt-3 font-weight-bold btn view-all" style="height: auto;">
+                            <div class="v-btn__content">
+                                <span class="flex-shrink-0">{{#str}}view_all, theme_moove{{/str}}</span>
+                                <i aria-hidden="true" class="fa fa-arrow-left ml-2"></i>
                             </div>
-                            <div class="align-items-center col-12 col-md-6 d-flex mb-5">
-                                <div class="mt-3">
-                                    <h3 class="mt-3 text-justify" style="line-height: 1.5rem;font-size: 1rem">
-                                        {{subject}}
-                                    </h3>
-                                </div>
-                            </div>
-                        </div>
                         </a>
                     </div>
-                {{/news}}
+                </div>
+                <div class="row justify-content-center align-items-stretch">
+                    {{#news}}
+                        <div class="col-sm-6 col-lg-4 col-12 mb-2">
+                            <a href="/blog/index.php?entryid={{id}}"
+                            class="mx-auto py-2 px-4 v-card v-card--link v-sheet theme--light" style="position: relative;">
+                            <div class="row justify-center">
+                                <div class="d-none d-sm-flex col-md-5 col-12">
+                                    <div class="v-avatar my-4 mx-auto rounded-0" style="height: 120px; min-width: 120px; width: 120px;">
+                                        <img src="{{config.wwwroot}}/theme/moove/pix/news.png" class="w-100">
+                                    </div>
+                                </div>
+                                <div class="align-items-center col-12 col-md-6 d-flex mb-5">
+                                    <div class="mt-3">
+                                        <h3 class="mt-3 text-justify" style="line-height: 1.5rem;font-size: 1rem">
+                                            {{subject}}
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                    {{/news}}
+                </div>
             </div>
         </section>
+        {{/no_news}}
         <section id="navid" class="pt-5 px-md-2">
-            <div class="row align-items-end">
-                <div class="p-0 col-12">
-                    <div class="liner mt-4">
-                        <h3 class="mx-1 shadowy-text font--20 text-center">
-                            {{#str}}navid_title, theme_moove{{/str}}
-                        </h3>
+            <div class="moove-container-fluid">
+                <div class="row align-items-end">
+                    <div class="p-0 col-12">
+                        <div class="liner mt-4">
+                            <h3 class="mx-1 shadowy-text font--20 text-center">
+                                {{#str}}navid_title, theme_moove{{/str}}
+                            </h3>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row justify-content-center align-items-stretch">
-                <div class="col-md-4 col-lg-6 col-12 py-2">
-                    <div class="text-justify" style="line-height: 1.75rem;">
-                        <p>
-                            سیستم های مدیریت یادگیری (LMS یا Learning Management System) زیرساخت کلیدی و ضروری برای استقرار و توسعه یادگیری الکترونیکی محسوب می شوند. این سیستم های
-                            نرم افزاری امور مربوط به به کارگیری، ثبت نام، ‌مدیریت، پیگیری، ارزشیابی، ارائه برنامه ها، ‌برقراری تعامل بین فراگیران و محتوای برنامه و بین فراگیران و
-                            استادان را انجام می دهند. لذا یکی از الزامات "بسته توسعه آموزش مجازی در علوم پزشکی" راه اندازی LMS کشوری با عنوان "نوید" (نرم افزار ویژه یادگیری
-                            دانشگاهی) بود که انجام آن به دانشگاه علوم پزشکی مجازی واگذار شد. کارگروه تخصصی شامل متخصصان آموزش مجازی و فنی، طراحی آموزشی و اجرای نرم افزار را به عهده
-                            گرفتند. بالاخره نسخه اول "نوید" در مرداد ماه 1396 به بهره برداری رسید. بعد از پایلوت در دو دانشگاه در نیمسال اول سال تحصیلی 97-96، به تدریج از نیمسال
-                            دوم این نرم افزار برای استفاده در اختیار تمام دانشگاه های علوم پزشکی متقاضی قرار می گیرد. برای آگاهی بیشتر از روند طراحی و آماده سازی "نوید"، می توانید
-                            به مطلب منتشر شده در خبرنامه شماره بهمن ماه 1396 انجمن یادگیری الکترونیکی ایران مراجعه نمایید.</p></div>
+                <div class="row justify-content-center align-items-stretch">
+                    <div class="col-md-4 col-lg-6 col-12 py-2">
+                        <div class="text-justify" style="line-height: 1.75rem;">
+                            {{#str}}navid_front,theme_moove{{/str}}
+                        </div>
 
-                </div>
-                <div class="order-first order-md-last col-md-8 col-lg-6 col-12 py-2">
-                    <div class="d-flex justify-content-center">
-                        <div class="stand d-flex flex-column align-items-center" style="--right-before:185px; --right-after:110px;">
-                            <div class="monitor">
-                                <video controls="controls" poster="https://tumsnavid.vums.ac.ir/Content/Image/navid-intro-poster.png" __idm_id__="1597441">
-                                    <source src="https://tumsnavid.vums.ac.ir/Content/Image/intro-edited.mp4" type="video/mp4">
-                                </video>
+                    </div>
+                    <div class="order-first order-md-last col-md-8 col-lg-6 col-12 py-2">
+                        <div class="d-flex justify-content-center">
+                            <div class="stand d-flex flex-column align-items-center" style="--right-before:185px; --right-after:110px;">
+                                <div class="monitor">
+                                    <video controls="controls" poster="https://tumsnavid.vums.ac.ir/Content/Image/navid-intro-poster.png" __idm_id__="1597441">
+                                        <source src="https://tumsnavid.vums.ac.ir/Content/Image/intro-edited.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                                <div class="stand1"></div>
+                                <div class="stand2"></div>
                             </div>
-                            <div class="stand1"></div>
-                            <div class="stand2"></div>
                         </div>
                     </div>
                 </div>
@@ -244,14 +244,6 @@
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6 col-sm-6 col-xs-8 mb-3">
-                            <div class="h-100 rate-box rate-box-2 bg-courses">
-                                <h3>
-                                    {{{numberscourses}}}
-                                </h3>
-                                <p>{{#str}}numberscourses, theme_moove{{/str}}</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-8 mb-3">
                             <div class="h-100 rate-box rate-box-2 bg-teachers">
                                 <h3>
                                     {{{numbersteachers}}}
@@ -267,6 +259,14 @@
                                 <p>{{#str}}numbersactivties, theme_moove{{/str}}</p>
                             </div>
 
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-8 mb-3">
+                            <div class="h-100 rate-box rate-box-2 bg-courses">
+                                <h3>
+                                    {{{numberscourses}}}
+                                </h3>
+                                <p>{{#str}}numberscourses, theme_moove{{/str}}</p>
+                            </div>
                         </div>
                     </div>
                 </div>

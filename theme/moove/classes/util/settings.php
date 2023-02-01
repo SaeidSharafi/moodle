@@ -202,13 +202,13 @@ class settings {
         if ($templatecontext['numbersfrontpage'] = $this->numbersfrontpage) {
             $templatecontext['numberscontent'] = $this->numbersfrontpagecontent ? format_text($this->numbersfrontpagecontent) : '';
             $templatecontext['numbersusers'] = $DB->count_records_sql(
-                'SELECT COUNT(DISTINCT userid) 
+                'SELECT COUNT(DISTINCT userid)
                     FROM {role_assignments}
                     WHERE roleid = 5'
             );
             $templatecontext['numberscourses'] = $DB->count_records('course', ['visible' => 1]) - 1;
             $templatecontext['numbersteachers'] = $DB->count_records_sql(
-                'SELECT COUNT(DISTINCT userid) 
+                'SELECT COUNT(DISTINCT userid)
                     FROM {role_assignments}
                     WHERE roleid = 3'
             );
@@ -225,6 +225,11 @@ class settings {
      */
     public function blog_entries() {
         global $DB;
+
+        if (current_language() !== 'fa'){
+            $templatecontext['no_news']=true;
+            return $templatecontext;
+        }
 
         $templatecontext['news'] = array_values($DB->get_records_sql('SELECT id,subject,summary,created FROM {post} ORDER BY created DESC',null,0,6));
 
