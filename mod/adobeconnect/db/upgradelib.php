@@ -60,7 +60,7 @@ function mod_adobeconnect_upgrade_create_roles()
     $count = $DB->get_record_sql("SELECT COUNT(*) as count_roles FROM {role} WHERE shortname in (:presenter,:participant,:host)",
         $param);
 
-    if ($count < 3) {
+    if ($count->count_roles < 3) {
         // The commented out code is waiting for a fix for MDL-25709
         $result = true;
         $timenow = time();
