@@ -180,11 +180,11 @@ class general_action_bar extends action_bar {
         }
 
         if (!empty($setupgroup)) {
-            $menu[][get_string('setup', 'grades')] = $setupgroup;
+            //$menu[][get_string('setup', 'grades')] = $setupgroup;
         }
 
         if (!empty($moregroup)) {
-            $menu[][get_string('moremenu')] = $moregroup;
+            //$menu[][get_string('moremenu')] = $moregroup;
         }
 
         $selectmenu = new select_menu('gradesactionselect', $menu, $this->activeurl->out(false));
