@@ -353,6 +353,7 @@ class course_output implements \renderable, \templatable {
         if (!get_config('format_tiles', 'allowsubtilesview')) {
             $data['courseusesubtiles'] = 0;
         }
+
         return $data;
     }
 
@@ -445,7 +446,9 @@ class course_output implements \renderable, \templatable {
      */
     private function append_multi_section_page_data($data) {
         $data['is_multi_section'] = true;
-
+        $icons =[
+            'pencil-square-o','flipchart','file-text-o','comments-o','list',
+        ];
         // If using completion tracking, get the data.
         if ($this->completionenabled) {
             $data['overall_progress']['num_complete'] = 0;
@@ -472,6 +475,7 @@ class course_output implements \renderable, \templatable {
         $previoustiletitle = '';
         $countincludedsections = 0;
         $uselinebreakfilter = get_config('format_tiles', 'enablelinebreakfilter');
+
         foreach ($this->modinfo->get_section_info_all() as $sectionnum => $section) {
             // Show the section if the user is permitted to access it, OR if it's not available
             // but there is some available info text which explains the reason & should display,
@@ -515,12 +519,15 @@ class course_output implements \renderable, \templatable {
                 }
 
                 $longtitlelength = 65;
-
+                $icon = $section->tileicon;
+                if ($sectionnum !== 0 && $sectionnum < 6){
+                    $icon = $icons[$sectionnum-1];
+                }
                 $newtile = array(
                     'tileid' => $section->section,
                     'secid' => $section->id,
                     'title' => $title,
-                    'tileicon' => $section->tileicon,
+                    'tileicon' => $icon,
                     'current' => course_get_format($this->course)->is_section_current($section),
                     'hidden' => !$section->visible,
                     'visible' => $section->visible,

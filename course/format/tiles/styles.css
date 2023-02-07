@@ -227,8 +227,8 @@
 }
 .format-tiles .course-content ul.tiles .tile {
     display: flex;
-    flex-basis: 225px;
-    max-width: 260px;
+    flex-basis: 220px;
+    max-width: 220px;
     flex-grow: 1;
     margin: 7px;
     max-height: 175px;
@@ -316,7 +316,7 @@
 }
 
 .format-tiles ul.tiles .tile-top {
-    height: 55px;
+    height: 50px;
     width: 100%;
 }
 
@@ -376,19 +376,19 @@
     display: inline-block;
     text-align: left;
     vertical-align: top;
-    width: 55px;
-    height: 55px;
+    width: 35px;
+    height: 35px;
     font-size: 1em;
 }
 .format-tiles .tileiconcontainer.hasphoto {
     width: 85px;
 }
 .format-tiles .tileiconcontainer .icon {
-    width: 55px;
-    height: 55px;
+    width: 35px;
+    height: 35px;
 }
 .format-tiles .tileiconcontainer .icon.fa {
-    font-size: 55px;
+    font-size: 35px;
 }
 .format-tiles:not(.editing) .course-content .icon,
 .format-tiles .iconpickericons .icon,
@@ -467,7 +467,7 @@
 .format-tiles ul.tiles .tile .tile-text {
     text-align: left;
     width: 100%;
-    height: 105px;
+    height: 75px;
     line-height: 100px;
     padding-top: 5px;
     position: relative;
@@ -903,7 +903,7 @@ body.format-tiles.jsenabled .course-content .headerabovetiles {
     .format-tiles li.activity.subtile {
         /* stylelint-disable-next-line declaration-no-important */
         flex-basis: 160px !important;
-        min-height: 210px;
+        min-height: 150px;
         position: relative;
         /* stylelint-disable-next-line declaration-no-important */
         margin: 0 5px 3px 0 !important;
@@ -1002,7 +1002,7 @@ allow tiles to be taller and thinner so can fit two side by side in portrait on 
         margin: 5px;
     }
     .format-tiles .course-content ul.tiles .tile:not(.spacer) {
-        min-height: 210px;
+        min-height: 130px;
         /* stylelint-disable-next-line declaration-no-important */
         padding: 7px 2px 5px 7px !important;
     }
@@ -1011,7 +1011,7 @@ allow tiles to be taller and thinner so can fit two side by side in portrait on 
         width: 150px !important;
     }
     .format-tiles ul.tiles .tile .tile-text {
-        height: 130px;
+        height: 60px;
     }
     .format-tiles .collapsiblesec0.expanded .buttonhidesec0 {
         /* stylelint-disable-next-line declaration-no-important */
@@ -1166,18 +1166,18 @@ allow tiles to be taller and thinner so can fit two side by side in portrait on 
 }
 .format-tiles li.activity.subtile {
     display: flex;
-    flex-basis: 225px;
-    max-width: 240px;
+    flex-basis: 220px;
+    max-width: 220px;
     flex-grow: 1;
-    height: 200px;
+    height: 150px;
     vertical-align: top;
     padding: 0 5px 0 5px;
     margin: 5px;
     background-repeat: no-repeat;
     background-position: 50% 70%;
     -webkit-background-size: 38px auto;
-    background-size: 48px auto;
-    background-color: #f9f9f9;
+    background-size: 35px auto;
+    background-color: #e1e1e1;
     border: 1px solid #eceeef;
     border-top: #cfcfcf 0.3em solid;
     transition: background-size 0.5s ease-in-out;
