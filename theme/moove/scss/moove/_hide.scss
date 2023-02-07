@@ -1,0 +1,36 @@
+.changenumsections {
+    display: none;
+    pointer-events: none;
+}
+
+#section-0 {
+    display: none;
+}
+
+.coursecontentblocks {
+    display: none;
+}
+
+.user-grade {
+    .column-weight,
+    .column-range,
+    .column-feedback,
+    .column-contributiontocoursetotal,
+    {
+        display: none;
+    }
+}
+
+#sortingdropdown {
+    display: none;
+}
+
+@media screen and (max-width: 680px) {
+    .mycourse-nav-selector {
+        width: 100%;
+
+        button {
+            width: 100%;
+        }
+    }
+}
