@@ -558,7 +558,7 @@ function scorm_insert_track($userid, $scormid, $scoid, $attempt, $element, $valu
          && in_array($track->value, array('completed', 'passed')))) {
         $scorm = $DB->get_record('scorm', array('id' => $scormid));
         include_once($CFG->dirroot.'/mod/scorm/lib.php');
-        scorm_update_grades($scorm, $userid);
+        //scorm_update_grades($scorm, $userid);
     }
 
     // Trigger CMI element events.
@@ -1253,6 +1253,7 @@ function scorm_element_cmp($a, $b) {
  * @return string - Attempt status string
  */
 function scorm_get_attempt_status($user, $scorm, $cm='') {
+    return '';
     global $DB, $PAGE, $OUTPUT;
 
     $attempts = scorm_get_attempt_count($user->id, $scorm, true);
@@ -1474,7 +1475,7 @@ function scorm_delete_attempt($userid, $scorm, $attemptid) {
     $event->trigger();
 
     include_once('lib.php');
-    scorm_update_grades($scorm, $userid, true);
+    //scorm_update_grades($scorm, $userid, true);
     return true;
 }
 

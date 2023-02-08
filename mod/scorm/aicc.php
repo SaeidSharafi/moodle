@@ -412,7 +412,7 @@ if (!empty($command)) {
                             $track->timemodified = time();
                             $id = $DB->insert_record('scorm_scoes_track', $track);
                         }
-                        scorm_update_grades($scorm, $aiccuser->id);
+                        //scorm_update_grades($scorm, $aiccuser->id);
                     }
                     $scormsession->scormstatus = 'Terminated';
                     $scormsession->session_time = '';

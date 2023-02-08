@@ -170,7 +170,7 @@ function scorm_add_instance($scorm, $mform=null) {
 
     scorm_parse($record, true);
 
-    scorm_grade_item_update($record);
+    //scorm_grade_item_update($record);
     scorm_update_calendar($record, $cmid);
     if (!empty($scorm->completionexpected)) {
         \core_completion\api::update_completion_date_event($cmid, 'scorm', $record, $scorm->completionexpected);
@@ -265,8 +265,8 @@ function scorm_update_instance($scorm, $mform=null) {
 
     scorm_parse($scorm, (bool)$scorm->updatefreq);
 
-    scorm_grade_item_update($scorm);
-    scorm_update_grades($scorm);
+    //scorm_grade_item_update($scorm);
+    //scorm_update_grades($scorm);
     scorm_update_calendar($scorm, $cmid);
     \core_completion\api::update_completion_date_event($cmid, 'scorm', $scorm, $completionexpected);
 
@@ -631,26 +631,26 @@ function scorm_get_user_grades($scorm, $userid=0) {
  * @param int $userid specific user only, 0 mean all
  * @param bool $nullifnone
  */
-function scorm_update_grades($scorm, $userid=0, $nullifnone=true) {
+/*function scorm_update_grades($scorm, $userid=0, $nullifnone=true) {
     global $CFG;
     require_once($CFG->libdir.'/gradelib.php');
     require_once($CFG->libdir.'/completionlib.php');
 
     if ($grades = scorm_get_user_grades($scorm, $userid)) {
-        scorm_grade_item_update($scorm, $grades);
+        //scorm_grade_item_update($scorm, $grades);
         // Set complete.
         scorm_set_completion($scorm, $userid, COMPLETION_COMPLETE, $grades);
     } else if ($userid and $nullifnone) {
         $grade = new stdClass();
         $grade->userid   = $userid;
         $grade->rawgrade = null;
-        scorm_grade_item_update($scorm, $grade);
+        //scorm_grade_item_update($scorm, $grade);
         // Set incomplete.
         scorm_set_completion($scorm, $userid, COMPLETION_INCOMPLETE);
     } else {
-        scorm_grade_item_update($scorm);
+        //scorm_grade_item_update($scorm);
     }
-}
+}*/
 
 /**
  * Update/create grade item for given scorm
@@ -662,7 +662,7 @@ function scorm_update_grades($scorm, $userid=0, $nullifnone=true) {
  * @param mixed $grades optional array/object of grade(s); 'reset' means reset grades in gradebook
  * @return object grade_item
  */
-function scorm_grade_item_update($scorm, $grades=null) {
+/*function scorm_grade_item_update($scorm, $grades=null) {
     global $CFG, $DB;
     require_once($CFG->dirroot.'/mod/scorm/locallib.php');
     if (!function_exists('grade_update')) { // Workaround for buggy PHP versions.
@@ -696,7 +696,7 @@ function scorm_grade_item_update($scorm, $grades=null) {
     }
 
     return grade_update('mod/scorm', $scorm->course, 'mod', 'scorm', $scorm->id, 0, $grades, $params);
-}
+}*/
 
 /**
  * Delete grade item for given scorm
@@ -803,11 +803,11 @@ function scorm_reset_gradebook($courseid, $type='') {
               FROM {scorm} s, {course_modules} cm, {modules} m
              WHERE m.name='scorm' AND m.id=cm.module AND cm.instance=s.id AND s.course=?";
 
-    if ($scorms = $DB->get_records_sql($sql, array($courseid))) {
-        foreach ($scorms as $scorm) {
-            scorm_grade_item_update($scorm, 'reset');
-        }
-    }
+    //if ($scorms = $DB->get_records_sql($sql, array($courseid))) {
+    //    foreach ($scorms as $scorm) {
+    //        //scorm_grade_item_update($scorm, 'reset');
+    //    }
+    //}
 }
 
 /**
@@ -1036,8 +1036,8 @@ function scorm_supports($feature) {
         case FEATURE_MOD_INTRO:               return true;
         case FEATURE_COMPLETION_TRACKS_VIEWS: return true;
         case FEATURE_COMPLETION_HAS_RULES:    return true;
-        case FEATURE_GRADE_HAS_GRADE:         return true;
-        case FEATURE_GRADE_OUTCOMES:          return true;
+        case FEATURE_GRADE_HAS_GRADE:         return false;
+        case FEATURE_GRADE_OUTCOMES:          return false;
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return true;
         case FEATURE_MOD_PURPOSE:             return MOD_PURPOSE_CONTENT;

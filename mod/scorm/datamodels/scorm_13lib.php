@@ -392,7 +392,7 @@ function scorm_seq_set($what, $scoid, $userid, $attempt=0, $value='true') {
 
     // Update grades in gradebook.
     $scorm = $DB->get_record('scorm', array('id' => $sco->scorm));
-    scorm_update_grades($scorm, $userid, true);
+    //scorm_update_grades($scorm, $userid, true);
 }
 
 function scorm_evaluate_condition ($rollupruleconds, $sco, $userid) {
