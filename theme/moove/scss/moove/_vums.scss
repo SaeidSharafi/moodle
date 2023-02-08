@@ -306,14 +306,24 @@ html[lang="en"] body {
     }
   }
 }
-
+#page-login-index #page-content{
+    margin: auto;
+}
+#page-navbar .breadcrumb{
+    padding: 0 10px;
+}
 @media (min-width: 961px) {
-  .hero-container {
 
-  }
 }
 
 @media (min-width: 600px) {
+    #page-login-index #page-content{
+        margin: initial;
+    }
+    #page-login-index #page-content.row{
+        margin-left: -15px;
+        margin-right: -15px;
+    }
   .text--title {
     font-size: 32px;
   }
