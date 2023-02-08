@@ -45,7 +45,9 @@ class section extends section_base {
     public function export_for_template(\renderer_base $output): \stdClass {
         global $DB;
         $data = parent::export_for_template($output);
-
+        $icons =[
+            'pencil-square-o','flipchart','file-text-o','comments-o','list',
+        ];
         // TODO class to handle this.
         $data->hasphoto = 0;
         // If photo tile backgrounds are allowed by site admin, prepare the image for this section.
@@ -69,9 +71,13 @@ class section extends section_base {
             $data->tileicon = $DB->get_field(
                 'course_format_options', 'value', ['format' => 'tiles', 'sectionid' => $this->section->id, 'name' => 'tileicon']
             );
+            $icon =  $data->tileicon;
+            if ($this->section->section !== 0 && $this->section->section < 6){
+                $icon = $icons[$this->section->section-1];
+            }
             if (!$data->tileicon) {
                 $formatoptions = $this->format->get_format_options();
-                $data->tileicon = $formatoptions['defaulttileicon'];
+                $data->tileicon = $icon;
             }
         }
 

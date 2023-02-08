@@ -133,7 +133,7 @@ class update_course extends external_api {
         $actions = new $actionsclass();
 
         if (!is_callable([$actions, $action])) {
-            throw new moodle_exception("Invalid course state action $action in ".get_class($actions));
+            //throw new moodle_exception("Invalid course state action $action in ".get_class($actions));
         }
 
         $course = $courseformat->get_course();

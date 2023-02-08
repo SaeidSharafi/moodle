@@ -24,7 +24,9 @@
 #sortingdropdown {
     display: none;
 }
-
+.courseindex-section[data-number="0"]{
+    display: none;
+}
 #id_tagshdr,
 #id_display,
 #id_competenciessection {

@@ -58,14 +58,14 @@ class content extends content_base {
             if (get_config('format_tiles', 'allowsubtilesview')
             && isset($courseformatoptions['courseusesubtiles']) && $courseformatoptions['courseusesubtiles']) {
                 // TODO for now (Beta version) we warn editor about sub tiles only appearing in non-edit view.
-                $messgage = get_string('editoradvicesubtiles', 'format_tiles');
-                if (has_capability('moodle/site:config', \context_system::instance())) {
-                    $messgage .= ' (' . get_string('version', 'format_tiles', self::get_tiles_plugin_release()) . ')';
-                }
-                $data->editoradvice[] = [
-                    'text' => $messgage,
-                    'icon' => 'info-circle', 'class' => 'secondary'
-                ];
+                //$messgage = get_string('editoradvicesubtiles', 'format_tiles');
+                //if (has_capability('moodle/site:config', \context_system::instance())) {
+                //    $messgage .= ' (' . get_string('version', 'format_tiles', self::get_tiles_plugin_release()) . ')';
+                //}
+                //$data->editoradvice[] = [
+                //    'text' => $messgage,
+                //    'icon' => 'info-circle', 'class' => 'secondary'
+                //];
             }
             // If completion tracking is on but nothing to track at activity level, display help to teacher.
             $hasnotrackableactivities = $DB->record_exists('course_modules', ['course' => $course->id, 'visible' => 1])

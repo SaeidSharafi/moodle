@@ -50,7 +50,11 @@ html[lang="en"] body {
   font-size: 28px;
   line-height: 60px;
 }
-
+body.dir-rtl {
+    &.format-tiles .progress-indic svg text {
+        transform: translateX(20px);
+    }
+}
 .shadowy-text {
   color: #3A527E;
   text-shadow: 2px 2px 5px #8fa5cc;
