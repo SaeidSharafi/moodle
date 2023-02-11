@@ -15,33 +15,22 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Moove.
+ * User key auth method caps.
  *
- * @package    theme_moove
- * @copyright  2022 Willian Mano - https://conecti.me
+ * @package    auth_userkey
+ * @copyright  2016 Dmitrii Metelkin (dmitriim@catalyst-au.net)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// This line protects the file from being accessed by a URL directly.
 defined('MOODLE_INTERNAL') || die();
 
-// This is the component name of the plugin - it always starts with 'theme_'
-// for themes and should be the same as the name of the folder.
-$plugin->component = 'theme_moove';
+$capabilities = array(
+    'auth/userkey:generatekey' => array(
+        'riskbitmask' => RISK_PERSONAL | RISK_SPAM | RISK_XSS ,
 
-// This is the version of the plugin.
-$plugin->version = 2022112801;
-
-// This is the named version.
-$plugin->release = '4.1.1-jedu';
-
-// This is a stable release.
-$plugin->maturity = MATURITY_STABLE;
-
-// This is the version of Moodle this plugin requires.
-$plugin->requires = 2022112800;
-
-// This is a list of plugins, this plugin depends on (and their versions).
-$plugin->dependencies = [
-    'theme_boost' => 2022041900
-];
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+        ),
+    ),
+);

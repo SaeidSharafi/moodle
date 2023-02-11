@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'VUMS';
-$string['configtitle'] = 'VUMS';
-$string['choosereadme'] = 'VUMS is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4. (based on Moove theme)';
+$string['pluginname'] = 'Jedu';
+$string['configtitle'] = 'Jedu';
+$string['choosereadme'] = 'Jedu is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4. (based on Moove theme)';
 
 $string['currentinparentheses'] = '(current)';
 $string['region-side-pre'] = 'Right';

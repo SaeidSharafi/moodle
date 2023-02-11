@@ -15,28 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Contact site support.
+ * Logout page for auth_userkey.
  *
- * @copyright 2022 Simey Lameze <simey@moodle.com>
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @package core_user
+ * @package    auth_userkey
+ * @copyright  2016 Dmitrii Metelkin (dmitriim@catalyst-au.net)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once('../config.php');
 
+require_once(dirname(__FILE__) . '/../../config.php');
 
-$PAGE->set_context(context_system::instance());
-$PAGE->set_url('/vums/faq.php');
-$PAGE->set_title(get_string('faq', 'theme_moove'));
-$PAGE->set_heading(get_string('faq', 'theme_moove'));
-$PAGE->set_pagelayout('standard');
+if (!is_enabled_auth('userkey')) {
+    throw new moodle_exception(get_string('pluginisdisabled', 'auth_userkey'));
+}
 
-$renderer = $PAGE->get_renderer('core');
-$themesettings = new \theme_moove\util\settings();
-$templatecontext = $themesettings->frontpage();
-
-
-echo $OUTPUT->header();
-
-echo $OUTPUT->render_from_template('theme_moove/faq', $templatecontext);
-
-echo $OUTPUT->footer();
+get_auth_plugin('userkey')->user_logout_userkey();

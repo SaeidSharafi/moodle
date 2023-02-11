@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'VUMS';
-$string['configtitle'] = 'VUMS';
-$string['choosereadme'] = 'قالب VUMS یک قالب مدرن و منعطف است. این قالب به صورت مستقیم یا به عنوان قالب والد قابل استفاده است. (بر اساس قالب Moove)';
+$string['pluginname'] = 'Jedu';
+$string['configtitle'] = 'Jedu';
+$string['choosereadme'] = 'قالب JEDU یک قالب مدرن و منعطف است. این قالب به صورت مستقیم یا به عنوان قالب والد قابل استفاده است. (بر اساس قالب Moove)';
 
 $string['currentinparentheses'] = '(فعلی)';
 $string['region-side-pre'] = 'راست';
@@ -182,13 +182,13 @@ $string['login_btn'] = 'ورود';
 $string['contact_support'] = 'تماس با پشتیبان';
 $string['blog_title'] = 'اخبار و اطلاعیه‌ها';
 $string['view_all'] = 'مشاهده همه';
-$string['university'] ='دانشگاه علوم پزشکی هوشمند';
+$string['university'] ='جهاد دانشگاهی استان قزوین';
 $string['navid_title'] = 'نوید چیست؟';
 $string['contact_us']='ارتباط با پشتیبان';
 $string['unesco']='جایزه ملی یونسکو';
 $string['behdasht']='وزارت بهداشت، درمان و آموزش پزشکی';
 $string['arman']='آرمان (آموزش رایانه ای ملی انبوه و نوین)';
-$string['copyright']='کلیه حقوق مادی و معنوی محتوای سامانه متعلق به دانشگاه علوم پزشکی هوشمند می‌باشد.';
+$string['copyright']='کلیه حقوق مادی و معنوی محتوای سامانه متعلق به جهاد دانشگاهی استان قزوین می‌باشد.';
 $string['navid_front'] = '<p>
                                 سیستم های مدیریت یادگیری (LMS یا Learning Management System) زیرساخت کلیدی و ضروری برای استقرار و توسعه یادگیری الکترونیکی محسوب می شوند. این سیستم
                                 های

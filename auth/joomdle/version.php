@@ -15,33 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Moove.
+ * Joomdle version file
  *
- * @package    theme_moove
- * @copyright  2022 Willian Mano - https://conecti.me
+ * @package    auth_joomdle
+ * @copyright  2009 Qontori Pte Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// This line protects the file from being accessed by a URL directly.
-defined('MOODLE_INTERNAL') || die();
 
-// This is the component name of the plugin - it always starts with 'theme_'
-// for themes and should be the same as the name of the folder.
-$plugin->component = 'theme_moove';
-
-// This is the version of the plugin.
-$plugin->version = 2022112801;
-
-// This is the named version.
-$plugin->release = '4.1.1-jedu';
-
-// This is a stable release.
+$plugin->version  = 2008080300;
+$plugin->requires = 2018120300;
 $plugin->maturity = MATURITY_STABLE;
-
-// This is the version of Moodle this plugin requires.
-$plugin->requires = 2022112800;
-
-// This is a list of plugins, this plugin depends on (and their versions).
-$plugin->dependencies = [
-    'theme_boost' => 2022041900
-];
+$plugin->release = "1.2.7";
+$plugin->component = 'auth_joomdle';

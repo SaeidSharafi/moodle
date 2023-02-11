@@ -25,9 +25,9 @@ require_once('../config.php');
 
 
 $PAGE->set_context(context_system::instance());
-$PAGE->set_url('/vums/unesco.php');
-$PAGE->set_title(get_string('unesco', 'theme_moove'));
-$PAGE->set_heading(get_string('unesco', 'theme_moove'));
+$PAGE->set_url('/jedu/faq.php');
+$PAGE->set_title(get_string('faq', 'theme_moove'));
+$PAGE->set_heading(get_string('faq', 'theme_moove'));
 $PAGE->set_pagelayout('standard');
 
 $renderer = $PAGE->get_renderer('core');
@@ -37,6 +37,6 @@ $templatecontext = $themesettings->frontpage();
 
 echo $OUTPUT->header();
 
-echo $OUTPUT->render_from_template('theme_moove/unesco', $templatecontext);
+echo $OUTPUT->render_from_template('theme_moove/faq', $templatecontext);
 
 echo $OUTPUT->footer();
