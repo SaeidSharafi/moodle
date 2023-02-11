@@ -130,7 +130,7 @@ function xmldb_adobeconnect_upgrade($oldversion = 0)
             $dbman->add_field($table, $field);
         }
 
-        $field = new xmldb_field('last_sync_attendance', XMLDB_TYPE_INTEGER, '10', null, null, null, 0, 'last_sync_attendance');
+        $field = new xmldb_field('last_sync_attendance', XMLDB_TYPE_INTEGER, '10', null, null, null, 0, 'last_sync_record');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
@@ -163,7 +163,7 @@ function xmldb_adobeconnect_upgrade($oldversion = 0)
             $dbman->add_field($table, $field);
         }
 
-        $field = new xmldb_field('create_date', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'end_dates');
+        $field = new xmldb_field('create_date', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'end_date');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
