@@ -25,12 +25,26 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Tiles filter bar course setting - show no filters.
+ */
 const FORMAT_TILES_FILTERBAR_NONE = 0;
+/**
+ * Tiles filter bar course setting - show tile number filter buttons only.
+ */
 const FORMAT_TILES_FILTERBAR_NUMBERS = 1;
+
+/**
+ * Tiles filter bar course setting - show outcome filter buttons only.
+ */
 const FORMAT_TILES_FILTERBAR_OUTCOMES = 2;
+
+/**
+ * Tiles filter bar course setting - show filter buttons for tile numbers and outcomes.
+ */
 const FORMAT_TILES_FILTERBAR_BOTH = 3;
 
-require_once($CFG->dirroot.'/course/format/lib.php');
+require_once($CFG->dirroot . '/course/format/lib.php');
 
 /**
  * Main class for the course format Tiles
@@ -40,19 +54,17 @@ require_once($CFG->dirroot.'/course/format/lib.php');
  * @copyright 2016 David Watson {@link http://evolutioncode.uk}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class format_tiles extends core_courseformat\base
-{
+class format_tiles extends core_courseformat\base {
 
     /**
      * Creates a new instance of class
      *
      * Please use {@see course_get_format($courseorid)} to get an instance of the format class
      *
-     * @param  string  $format
-     * @param  int  $courseid
+     * @param string $format
+     * @param int $courseid
      */
-    protected function __construct($format, $courseid)
-    {
+    protected function __construct($format, $courseid) {
         if ($courseid === 0) {
             global $COURSE;
             $courseid = $COURSE->id;  // Save lots of global $COURSE as we will never be the site course.
@@ -65,18 +77,15 @@ class format_tiles extends core_courseformat\base
      *
      * @return bool
      */
-    public function uses_sections()
-    {
+    public function uses_sections() {
         return true;
     }
 
     /**
      * Returns true if this course format uses activity indentation.
-     *
      * @return bool
      */
-    public function uses_indentation(): bool
-    {
+    public function uses_indentation(): bool {
         return false;
     }
 
@@ -88,8 +97,7 @@ class format_tiles extends core_courseformat\base
      *
      * @return bool
      */
-    public function uses_course_index()
-    {
+    public function uses_course_index() {
         global $PAGE;
         return $PAGE->user_is_editing();
     }
@@ -99,13 +107,11 @@ class format_tiles extends core_courseformat\base
      *
      * Use section name is specified by user. Otherwise use default ("Topic #")
      *
-     * @param  int|stdClass  $section  Section object from database or just field section.section
-     *
+     * @param int|stdClass $section Section object from database or just field section.section
      * @return string Display name that the course format prefers, e.g. "Topic 2"
      * @throws moodle_exception
      */
-    public function get_section_name($section)
-    {
+    public function get_section_name($section) {
         $section = $this->get_section($section);
         if ((string) $section->name !== '') {
             return format_string($section->name, true,
@@ -146,15 +152,11 @@ class format_tiles extends core_courseformat\base
      * If the section number is not 0, the base implementation of format_base::get_default_section_name which uses
      * the string with the key = 'sectionname' from the course format's lang file + the section number will be used.
      *
-     * @param  stdClass  $section  Section object from database or just field course_sections section
-     *
+     * @param stdClass $section Section object from database or just field course_sections section
      * @return string The default value for the section name.
      * @throws coding_exception
      */
-    public
-    function get_default_section_name(
-        $section
-    ) {
+    public function get_default_section_name($section) {
         if ($section->section == 0) {
             // Return the general section.
             return get_string('section0name', 'format_tiles');
@@ -170,9 +172,7 @@ class format_tiles extends core_courseformat\base
      *
      * @return bool
      */
-    public
-    function supports_news()
-    {
+    public function supports_news() {
         return true;
     }
 
@@ -181,29 +181,22 @@ class format_tiles extends core_courseformat\base
      *
      * @return bool
      */
-    public
-    function supports_components()
-    {
+    public function supports_components() {
         return true;
     }
 
     /**
      * The URL to use for the specified course (with section)
      *
-     * @param  int|stdClass  $section  Section object from database or just field course_sections.section
+     * @param int|stdClass $section Section object from database or just field course_sections.section
      *     if omitted the course view page is returned
-     * @param  array  $options  options for view URL. At the moment core uses:
+     * @param array $options options for view URL. At the moment core uses:
      *     'navigation' (bool) if true and section has no separate page, the function returns null
      *     'sr' (int) used by multipage formats to specify to which section to return
-     *
      * @return null|moodle_url
      * @throws moodle_exception
      */
-    public
-    function get_view_url(
-        $section,
-        $options = array()
-    ) {
+    public function get_view_url($section, $options = array()) {
         $course = $this->get_course();
         $url = new moodle_url('/course/view.php', array('id' => $course->id));
 
@@ -226,7 +219,7 @@ class format_tiles extends core_courseformat\base
                 if (!empty($options['navigation'])) {
                     return null;
                 }
-                $url->set_anchor('section-'.$sectionno);
+                $url->set_anchor('section-' . $sectionno);
             }
         }
         return $url;
@@ -240,9 +233,7 @@ class format_tiles extends core_courseformat\base
      *
      * @return stdClass
      */
-    public
-    function supports_ajax()
-    {
+    public function supports_ajax() {
         $ajaxsupport = new stdClass();
         $ajaxsupport->capable = true;
         return $ajaxsupport;
@@ -251,22 +242,16 @@ class format_tiles extends core_courseformat\base
     /**
      * Override if you need to perform some extra validation of the format options
      *
-     * @param  array  $data  array of ("fieldname"=>value) of submitted data
-     * @param  array  $files  array of uploaded files "element_name"=>tmp_file_path
-     * @param  array  $errors  errors already discovered in edit form validation
-     *
+     * @param array $data array of ("fieldname"=>value) of submitted data
+     * @param array $files array of uploaded files "element_name"=>tmp_file_path
+     * @param array $errors errors already discovered in edit form validation
      * @return array of "element_name"=>"error_description" if there are errors,
      *         or an empty array if everything is OK.
      *         Do not repeat errors from $errors param here
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public
-    function edit_form_validation(
-        $data,
-        $files,
-        $errors
-    ) {
+    public function edit_form_validation($data, $files, $errors) {
         $courseid = $data['id'];
         $reterrors = array();
         if (!$data['enablecompletion'] && $data['courseshowtileprogress']) {
@@ -274,13 +259,12 @@ class format_tiles extends core_courseformat\base
         }
         if (($data['displayfilterbar'] == FORMAT_TILES_FILTERBAR_OUTCOMES
                 || $data['displayfilterbar'] == FORMAT_TILES_FILTERBAR_BOTH)
-            && empty($this->format_tiles_get_course_outcomes($courseid))
-        ) {
+            && empty($this->format_tiles_get_course_outcomes($courseid))) {
             $outcomeslink = html_writer::link(
                 new moodle_url('/grade/edit/outcome/course.php', array('id' => $courseid)),
                 new lang_string('outcomes', 'format_tiles')
             );
-            $reterrors['displayfilterbar'] = get_string('displayfilterbar_error', 'format_tiles').' '.$outcomeslink;
+            $reterrors['displayfilterbar'] = get_string('displayfilterbar_error', 'format_tiles') . ' ' . $outcomeslink;
         }
         return $reterrors;
     }
@@ -288,25 +272,19 @@ class format_tiles extends core_courseformat\base
     /**
      * Loads all of the course sections into the navigation
      *
-     * @param  global_navigation  $navigation
-     * @param  navigation_node  $node  The course node within the navigation
-     *
+     * @param global_navigation $navigation
+     * @param navigation_node $node The course node within the navigation
      * @return void
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public
-    function extend_course_navigation(
-        $navigation,
-        navigation_node $node
-    ) {
+    public function extend_course_navigation($navigation, navigation_node $node) {
         global $PAGE;
         // If section is specified in course/view.php, make sure it is expanded in navigation.
         if ($navigation->includesectionnum === false) {
             $selectedsection = optional_param('section', null, PARAM_INT);
-            if ($selectedsection !== null && (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0')
-                && $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)
-            ) {
+            if ($selectedsection !== null && (!defined('AJAX_SCRIPT') || AJAX_SCRIPT == '0') &&
+                $PAGE->url->compare(new moodle_url('/course/view.php'), URL_MATCH_BASE)) {
                 $navigation->includesectionnum = $selectedsection;
             }
         }
@@ -336,9 +314,7 @@ class format_tiles extends core_courseformat\base
      * @return array This will be passed in ajax response
      * @throws moodle_exception
      */
-    public
-    function ajax_section_move()
-    {
+    public function ajax_section_move() {
         global $PAGE;
         $titles = array();
         $course = $this->get_course();
@@ -358,28 +334,23 @@ class format_tiles extends core_courseformat\base
      * @return array of default blocks, must contain two keys BLOCK_POS_LEFT and BLOCK_POS_RIGHT
      *     each of values is an array of block names (for left and right side columns)
      */
-    public
-    function get_default_blocks()
-    {
+    public function get_default_blocks() {
         return array(
-            BLOCK_POS_LEFT  => array(),
+            BLOCK_POS_LEFT => array(),
             BLOCK_POS_RIGHT => array()
         );
     }
 
     /**
      * Iterates through all the colours entered by the administrator under the plugin settings page
-     *
      * @return array list of all the colours and their names for use in the settings forms
      * @throws dml_exception
      */
-    private
-    function format_tiles_get_tiles_palette()
-    {
+    private function format_tiles_get_tiles_palette() {
         $palette = array();
         for ($i = 1; $i <= 10; $i++) {
-            $colourname = get_config('format_tiles', 'colourname'.$i);
-            $tilecolour = get_config('format_tiles', 'tilecolour'.$i);
+            $colourname = get_config('format_tiles', 'colourname' . $i);
+            $tilecolour = get_config('format_tiles', 'tilecolour' . $i);
             if ($tilecolour != '' && $tilecolour != '#000') {
                 $palette[$tilecolour] = $colourname;
             }
@@ -393,31 +364,23 @@ class format_tiles extends core_courseformat\base
      * 'deletesection' inside the format.
      * Do not call this function directly, instead use {@see course_can_delete_section()}
      *
-     * @param  int|stdClass|section_info  $section
-     *
+     * @param int|stdClass|section_info $section
      * @return bool
      */
-    public
-    function can_delete_section(
-        $section
-    ) {
+    public function can_delete_section($section) {
         return true;
     }
 
     /**
      * Definitions of the additional options that this course format uses for course
      *
-     * @param  bool  $foreditform
-     *
+     * @param bool $foreditform
      * @return array of options
      * @throws coding_exception
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public
-    function course_format_options(
-        $foreditform = false
-    ) {
+    public function course_format_options($foreditform = false) {
         static $courseformatoptions = false;
         if ($courseformatoptions === false) {
             $courseformatoptions = array(
@@ -599,15 +562,11 @@ class format_tiles extends core_courseformat\base
      * $this->get_format_options($section);
      *
      * @param  bool  $foreditform
-     *
      * @return array
      * @throws coding_exception
      * @throws moodle_exception
      */
-    public
-    function section_format_options(
-        $foreditform = false
-    ) {
+    public function section_format_options($foreditform = false) {
         $course = $this->get_course();
         $sectionformatoptions = array(
             'tileicon' => array(
@@ -616,8 +575,7 @@ class format_tiles extends core_courseformat\base
             ),
         );
         if ($course->displayfilterbar == FORMAT_TILES_FILTERBAR_OUTCOMES
-            || $course->displayfilterbar == FORMAT_TILES_FILTERBAR_BOTH
-        ) {
+            || $course->displayfilterbar == FORMAT_TILES_FILTERBAR_BOTH) {
             $sectionformatoptions['tileoutcomeid'] = array(
                 'default' => 0,
                 'type'    => PARAM_INT,
@@ -647,8 +605,7 @@ class format_tiles extends core_courseformat\base
             );
 
             if ($course->displayfilterbar == FORMAT_TILES_FILTERBAR_OUTCOMES
-                || $course->displayfilterbar == FORMAT_TILES_FILTERBAR_BOTH
-            ) {
+                || $course->displayfilterbar == FORMAT_TILES_FILTERBAR_BOTH) {
                 $outcomeslink = html_writer::link(
                     new moodle_url('/grade/edit/outcome/course.php', array('id' => $course->id)),
                     '('.new lang_string('outcomes', 'format_tiles').')'
@@ -684,17 +641,12 @@ class format_tiles extends core_courseformat\base
      *
      * @param  MoodleQuickForm  $mform  form the elements are added to.
      * @param  bool  $forsection  'true' if this is a section edit form, 'false' if this is course edit form.
-     *
      * @return array array of references to the added form elements.
      * @throws HTML_QuickForm_Error
      * @throws coding_exception
      * @throws dml_exception
      */
-    public
-    function create_edit_form_elements(
-        &$mform,
-        $forsection = false
-    ) {
+    public function create_edit_form_elements(&$mform, $forsection = false) {
         global $COURSE, $PAGE, $DB, $USER;
         $elements = parent::create_edit_form_elements($mform, $forsection);
 
@@ -747,17 +699,12 @@ class format_tiles extends core_courseformat\base
      * @param  stdClass|array  $data  return value from {@see moodleform::get_data()} or array with data
      * @param  stdClass  $oldcourse  if this function is called from {@see update_course()}
      *     this object contains information about the course before update
-     *
      * @return bool whether there were any changes to the options values
      * @throws coding_exception
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public
-    function update_course_format_options(
-        $data,
-        $oldcourse = null
-    ) {
+    public function update_course_format_options($data, $oldcourse = null) {
         global $DB, $USER;
         $data = (array) $data;
         if ($oldcourse !== null) {
@@ -858,14 +805,10 @@ class format_tiles extends core_courseformat\base
      * If $data does not contain property with the option name, the option will not be updated
      *
      * @param  stdClass|array  $data  return value from {@see moodleform::get_data()} or array with data
-     *
      * @return bool whether there were any changes to the options values
      * @throws dml_exception
      */
-    public
-    function update_section_format_options(
-        $data
-    ) {
+    public function update_section_format_options($data) {
         global $DB;
         $data = (array) $data;
         $oldvalues = array(
@@ -875,10 +818,7 @@ class format_tiles extends core_courseformat\base
             ),
             'outcomethistile' => $DB->get_record(
                 'course_format_options',
-                [
-                    'courseid' => $this->courseid, 'format' => 'tiles', 'sectionid' => $data['id'],
-                    'name'     => 'tileoutcomeid'
-                ]
+                ['courseid' => $this->courseid, 'format' => 'tiles', 'sectionid' => $data['id'], 'name' => 'tileoutcomeid']
             ),
             'photothistile'   => \format_tiles\tile_photo::get_course_format_option_value($data['id'], $this->courseid)
         );
@@ -925,7 +865,6 @@ class format_tiles extends core_courseformat\base
         }
         return $result;
     }
-
     /**
      * Returns the format options stored for this course or course section
      *
@@ -936,13 +875,9 @@ class format_tiles extends core_courseformat\base
      * @param  null|int|stdClass|section_info  $section  if null the course format options will be returned
      *     otherwise options for specified section will be returned. This can be either
      *     section object or relative section number (field course_sections.section)
-     *
      * @return array
      */
-    public
-    function get_format_options(
-        $section = null
-    ) {
+    public function get_format_options($section = null) {
         $options = parent::get_format_options($section);
         if ($section === null) {
             $options['coursedisplay'] = COURSE_DISPLAY_MULTIPAGE;
@@ -958,18 +893,11 @@ class format_tiles extends core_courseformat\base
      * @param  bool  $editable
      * @param  null|lang_string|string  $edithint
      * @param  null|lang_string|string  $editlabel
-     *
      * @return \core\output\inplace_editable
      * @throws coding_exception
      */
-    public
-    function inplace_editable_render_section_name(
-        $section,
-        $linkifneeded = false,
-        $editable = null,
-        $edithint = null,
-        $editlabel = null
-    ) {
+    public function inplace_editable_render_section_name($section, $linkifneeded = false,
+                                                         $editable = null, $edithint = null, $editlabel = null) {
         if (empty($edithint)) {
             $edithint = new lang_string('editsectionname', 'format_tiles');
         }
@@ -980,20 +908,16 @@ class format_tiles extends core_courseformat\base
         return parent::inplace_editable_render_section_name($section, $linkifneeded, $editable, $edithint, $editlabel);
     }
 
+
     /**
      * Get an array of all the Outcomes set for this course by the teacher, so that they can
      * be attached to individual Tiles, and then used to filter tiles by Outcome
-     *
-     * @param  int  $courseid
-     *
-     * @return array|null
      * @see get_filter_outcome_buttons()
      * @see course_format_options() and the displayfilterbar option
+     * @param int $courseid
+     * @return array|null
      */
-    public
-    function format_tiles_get_course_outcomes(
-        $courseid
-    ) {
+    public function format_tiles_get_course_outcomes($courseid) {
         global $CFG;
         if (!empty($CFG->enableoutcomes)) {
             require_once($CFG->libdir.'/gradelib.php');
@@ -1016,14 +940,9 @@ class format_tiles extends core_courseformat\base
      *
      * @param  stdClass|cm_info  $cm  course module (may be null if we are displaying a form for adding a module)
      * @param  stdClass|section_info  $section  section where this module is located or will be added to
-     *
      * @return bool
      */
-    public
-    function allow_stealth_module_visibility(
-        $cm,
-        $section
-    ) {
+    public function allow_stealth_module_visibility($cm, $section) {
         // Allow the third visibility state inside visible sections or in section 0.
         return !$section->section || $section->visible;
     }
@@ -1039,17 +958,11 @@ class format_tiles extends core_courseformat\base
      * @param  stdClass|section_info  $section
      * @param  string  $action
      * @param  int  $sr
-     *
      * @return null|array|stdClass any data for the Javascript post-processor (must be json-encodeable)
      * @throws moodle_exception
      * @throws required_capability_exception
      */
-    public
-    function section_action(
-        $section,
-        $action,
-        $sr
-    ) {
+    public function section_action($section, $action, $sr) {
         global $PAGE;
 
         if ($section->section && ($action === 'setmarker' || $action === 'removemarker')) {
@@ -1073,15 +986,12 @@ class format_tiles extends core_courseformat\base
      * and change the setting if so
      *
      * @param  moodle_page  $page  instance of page calling set_course
-     *
      * @throws coding_exception
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public
-    function page_set_course(
-        moodle_page $page
-    ) {
+    public function page_set_course(moodle_page $page) {
+        global $SESSION;
         if (get_config('format_tiles', 'usejavascriptnav')) {
             if (optional_param('stopjsnav', 0, PARAM_INT) == 1) {
                 // User is toggling JS nav setting.
@@ -1097,6 +1007,7 @@ class format_tiles extends core_courseformat\base
                 if ($page->course->id) {
                     redirect(new moodle_url('/course/view.php', array('id' => $page->course->id)));
                 }
+                unset($SESSION->format_tiles_jssuccessfullyused);
             }
         }
     }
@@ -1108,30 +1019,25 @@ class format_tiles extends core_courseformat\base
  * @param  string  $itemtype
  * @param  int  $itemid
  * @param  mixed  $newvalue
- *
  * @return \core\output\inplace_editable | null
  * @throws dml_exception
  */
-function format_tiles_inplace_editable($itemtype, $itemid, $newvalue)
-{
+function format_tiles_inplace_editable($itemtype, $itemid, $newvalue) {
     global $DB, $CFG;
     require_once($CFG->dirroot.'/course/lib.php');
     if ($itemtype === 'sectionname' || $itemtype === 'sectionnamenl') {
         $section = $DB->get_record_sql(
             'SELECT s.* FROM {course_sections} s JOIN {course} c ON s.course = c.id WHERE s.id = ? AND c.format = ?',
             array($itemid, 'tiles'), MUST_EXIST);
-        return course_get_format($section->course)->inplace_editable_update_section_name($section, $itemtype,
-            $newvalue);
+        return course_get_format($section->course)->inplace_editable_update_section_name($section, $itemtype, $newvalue);
     }
 }
 
 /**
  * Get icon mapping for font-awesome.
- *
  * @return array the icons for which theme should use font awesome.
  */
-function format_tiles_get_fontawesome_icon_map()
-{
+function format_tiles_get_fontawesome_icon_map() {
     $iconset = new format_tiles\icon_set();
     return $iconset->get_font_awesome_icon_map();
 }
@@ -1147,11 +1053,9 @@ function format_tiles_get_fontawesome_icon_map()
  * @param  array  $args
  * @param  bool  $forcedownload
  * @param  array  $options
- *
  * @return void
  */
-function format_tiles_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array())
-{
+function format_tiles_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array()) {
     if ($context->contextlevel != CONTEXT_COURSE && $context->contextlevel != CONTEXT_SYSTEM) {
         send_file_not_found();
     }
