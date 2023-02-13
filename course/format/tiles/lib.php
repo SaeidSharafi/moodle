@@ -446,7 +446,7 @@ class format_tiles extends core_courseformat\base
                     'type'    => PARAM_INT
                 ),
                 'courseshowtileprogress'  => array(
-                    'default' => 0,
+                    'default' => 1,
                     'type'    => PARAM_INT,
                 ),
                 'displayfilterbar'        => array(
