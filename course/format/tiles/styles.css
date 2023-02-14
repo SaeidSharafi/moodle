@@ -500,7 +500,7 @@
     -moz-outline-radius: 0;
 }
 
-.format-tiles .single-section  .navigation-arrow:hover {
+.format-tiles .single-section  .navigation-arrow:not(.dimmed):hover {
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
@@ -519,6 +519,9 @@
 }
 .format-tiles .single-section .navigation-arrow .icon {
     font-size: 35px;
+    height: 35px;
+    width: 35px;
+    padding: 2px 3px 2px 3px;
 }
 .format-tiles .single-section .navigation-arrow.dimmed {
     opacity: 0.5;
@@ -1177,7 +1180,7 @@ allow tiles to be taller and thinner so can fit two side by side in portrait on 
     background-position: 50% 70%;
     -webkit-background-size: 38px auto;
     background-size: 35px auto;
-    background-color: #e1e1e1;
+    background-color: #f9f9f9;
     border: 1px solid #eceeef;
     border-top: #cfcfcf 0.3em solid;
     transition: background-size 0.5s ease-in-out;
