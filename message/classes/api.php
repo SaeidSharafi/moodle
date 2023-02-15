@@ -339,11 +339,14 @@ class api {
 
         foreach ($getnoncontactusers(0, $batchlimit) as $users) {
             foreach ($users as $id => $user) {
-                // User visibility checks: only return users who are visible to the user performing the search.
-                // Which visibility check to use depends on the 'messagingallusers' (site wide messaging) setting:
-                // - If enabled, return matched users whose profiles are visible to the current user anywhere (site or course).
-                // - If disabled, only return matched users whose course profiles are visible to the current user.
-                $userdetails = \core_message\helper::search_get_user_details($user, $fields);
+                if (user_has_roles_assignment($id, [3,4])
+                    || user_has_roles_assignment($userid, [3,4])
+                ) {
+                    // User visibility checks: only return users who are visible to the user performing the search.
+                    // Which visibility check to use depends on the 'messagingallusers' (site wide messaging) setting:
+                    // - If enabled, return matched users whose profiles are visible to the current user anywhere (site or course).
+                    // - If disabled, only return matched users whose course profiles are visible to the current user.
+                    $userdetails = \core_message\helper::search_get_user_details($user, $fields);
 
                 // Return the user only if the searched field is returned.
                 // Otherwise it means that the $USER was not allowed to search the returned user.
@@ -363,6 +366,7 @@ class api {
                         break 2;
                     }
                     $noofvalidseenrecords++;
+                }
                 }
             }
         }

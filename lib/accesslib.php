@@ -4451,6 +4451,16 @@ function user_has_role_assignment($userid, $roleid, $contextid = 0) {
     }
 }
 
+function user_has_roles_assignment($userid, $roleids) {
+    global $DB;
+    $sql = 'SELECT COUNT(ra.id)
+                  FROM {role_assignments} ra
+                 WHERE ra.userid = :userid AND ra.roleid IN ('.implode(',', $roleids).')';
+
+    $count =  $DB->get_field_sql($sql,['userid' => $userid]);
+    return ($count > 0);
+
+}
 /**
  * Get localised role name or alias if exists and format the text.
  *
