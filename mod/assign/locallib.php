@@ -5906,7 +5906,7 @@ class assign {
         }
 
         if ($this->can_view_grades()) {
-            $actionbuttons = new \mod_assign\output\actionmenu($this->get_course_module()->id);
+            $actionbuttons = new \mod_assign\output\actionmenu($this->get_course_module()->id,$this->get_course_module()->instance,$this->get_course_module()->course);
             $o .= $this->get_renderer()->submission_actionmenu($actionbuttons);
 
             $summary = $this->get_assign_grading_summary_renderable();
