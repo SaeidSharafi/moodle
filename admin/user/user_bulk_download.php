@@ -39,23 +39,26 @@ if (empty($SESSION->bulk_users)) {
 }
 
 if ($dataformat) {
-    $originfields = array('id'        => 'id',
-                    'username'  => 'username',
-                    'email'     => 'email',
-                    'firstname' => 'firstname',
-                    'lastname'  => 'lastname',
-                    'idnumber'  => 'idnumber',
-                    'institution' => 'institution',
-                    'department' => 'department',
-                    'phone1'    => 'phone1',
-                    'phone2'    => 'phone2',
-                    'city'      => 'city',
-                    'country'   => 'country');
+    $originfields = array(
+        'id'          => 'id',
+        'username'    => 'username',
+        'email'       => 'email',
+        'firstname'   => 'firstname',
+        'lastname'    => 'lastname',
+        'idnumber'    => 'idnumber',
+        'institution' => 'institution',
+        'department'  => 'department',
+        'phone1'      => 'phone1',
+        'phone2'      => 'phone2',
+        'city'        => 'city',
+        'country'     => 'country',
+        'course'     => 'course',
+    );
 
     $extrafields = profile_get_user_fields_with_data(0);
     $profilefields = [];
     foreach ($extrafields as $formfield) {
-        $profilefields[fields::PROFILE_FIELD_PREFIX . $formfield->get_shortname()] = fields::PROFILE_FIELD_PREFIX .
+        $profilefields[fields::PROFILE_FIELD_PREFIX.$formfield->get_shortname()] = fields::PROFILE_FIELD_PREFIX.
             $formfield->get_shortname();
     }
 
@@ -65,42 +68,61 @@ if ($dataformat) {
     $iterator = $downloadusers->getIterator();
 
     \core\dataformat::download_data($filename, $dataformat, array_merge($originfields, $profilefields), $iterator,
-            function($userid, $supportshtml) use ($originfields) {
+        function ($userid, $supportshtml) use ($originfields) {
 
-        global $DB;
+            global $DB, $SESSION;
 
-        if (!$user = $DB->get_record('user', array('id' => $userid))) {
-            return null;
-        }
-
-        $userprofiledata = array();
-        foreach ($originfields as $field) {
-            // Custom user profile textarea fields come in an array
-            // The first element is the text and the second is the format.
-            // We only take the text.
-            if (is_array($user->$field)) {
-                $userprofiledata[$field] = reset($user->$field);
-            } else if ($supportshtml) {
-                $userprofiledata[$field] = s($user->$field);
-            } else {
-                $userprofiledata[$field] = $user->$field;
+            if (!$user = $DB->get_record('user', array('id' => $userid))) {
+                return null;
             }
-        }
 
 
-        // Formatting extra field if transform is true.
-        $extrafields = profile_get_user_fields_with_data($userid);
-        foreach ($extrafields as $field) {
-            $fieldkey = fields::PROFILE_FIELD_PREFIX . $field->get_shortname();
-            if ($field->is_transform_supported()) {
-                $userprofiledata[$fieldkey] = $field->display_data();
-            } else {
-                $userprofiledata[$fieldkey] = $field->data;
+            $userprofiledata = array();
+            foreach ($originfields as $field) {
+                // Custom user profile textarea fields come in an array
+                // The first element is the text and the second is the format.
+                // We only take the text.
+                if ($field === 'course'){
+                    continue;
+                }
+                if (is_array($user->$field)) {
+                    $userprofiledata[$field] = reset($user->$field);
+                } elseif ($supportshtml) {
+                    $userprofiledata[$field] = s($user->$field);
+                } else {
+                    $userprofiledata[$field] = $user->$field;
+                }
             }
-        }
 
-        return $userprofiledata;
-    });
+            // Formatting extra field if transform is true.
+            $extrafields = profile_get_user_fields_with_data($userid);
+            foreach ($extrafields as $field) {
+                $fieldkey = fields::PROFILE_FIELD_PREFIX.$field->get_shortname();
+                if ($field->is_transform_supported()) {
+                    $userprofiledata[$fieldkey] = $field->display_data();
+                } else {
+                    $userprofiledata[$fieldkey] = $field->data;
+                }
+            }
+            $categories = [];
+            if ($SESSION->user_filtering && array_key_exists('courserole', $SESSION->user_filtering)) {
+                foreach ($SESSION->user_filtering['courserole'] as $course_role) {
+                    $categories[] = $course_role['categoryid'];
+                }
+            }
+            if ($categories) {
+                $courses = enrol_get_users_courses($userid);
+                $course_names = "";
+                foreach ($courses as $key => $course) {
+                    if (in_array($course->category, $categories)) {
+                        $course_names .= "{$course->fullname}|";
+                    }
+                }
+                $userprofiledata['courses'] = $course_names;
+            }
+
+            return $userprofiledata;
+        });
 
     exit;
 }
