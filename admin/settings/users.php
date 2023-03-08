@@ -215,7 +215,7 @@ if ($hassiteconfig
         // Smith from Science faculty') and any custom profile fields.
         $temp->add(new admin_setting_configmulticheckbox('showuseridentity',
                 new lang_string('showuseridentity', 'admin'),
-                new lang_string('showuseridentity_desc', 'admin'), ['email' => 1],
+                new lang_string('showuseridentity_desc', 'admin'), ['email' => 1,'username' => 1],
                 function() {
                     global $CFG;
                     require_once($CFG->dirroot.'/user/profile/lib.php');
