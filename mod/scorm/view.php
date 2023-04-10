@@ -153,7 +153,7 @@ if (!empty($action) && confirm_sesskey() && has_capability('mod/scorm:deleteownr
     } else if ($action == 'deleteconfirm') {
         // Delete this users attempts.
         $DB->delete_records('scorm_scoes_track', array('userid' => $USER->id, 'scormid' => $scorm->id));
-        //scorm_update_grades($scorm, $USER->id, true);
+        scorm_update_grades($scorm, $USER->id, true);
         echo $OUTPUT->notification(get_string('scormresponsedeleted', 'scorm'), 'notifysuccess');
     }
 }

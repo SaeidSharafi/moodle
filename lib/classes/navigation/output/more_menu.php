@@ -29,8 +29,7 @@ use custom_menu;
  * @copyright   2021 onwards Adrian Greeve
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class more_menu implements renderable, templatable
-{
+class more_menu implements renderable, templatable {
 
     protected $content;
     protected $navbarstyle;
@@ -40,14 +39,13 @@ class more_menu implements renderable, templatable
     /**
      * Constructor for this class.
      *
-     * @param  object  $content  Navigation objects.
-     * @param  string  $navbarstyle  class name.
-     * @param  bool  $haschildren  The content has children.
-     * @param  bool  $istablist  When true, the more menu should be rendered and behave with a tablist ARIA role.
+     * @param object $content Navigation objects.
+     * @param string $navbarstyle class name.
+     * @param bool $haschildren The content has children.
+     * @param bool $istablist When true, the more menu should be rendered and behave with a tablist ARIA role.
      *                        If false, it's rendered with a menubar ARIA role. Defaults to false.
      */
-    public function __construct(object $content, string $navbarstyle, bool $haschildren = true, bool $istablist = false)
-    {
+    public function __construct(object $content, string $navbarstyle, bool $haschildren = true, bool $istablist = false) {
         $this->content = $content;
         $this->navbarstyle = $navbarstyle;
         $this->haschildren = $haschildren;
@@ -57,15 +55,13 @@ class more_menu implements renderable, templatable
     /**
      * Return data for rendering a template.
      *
-     * @param  renderer_base  $output  The output
-     *
+     * @param renderer_base $output The output
      * @return array Data for rendering a template
      */
-    public function export_for_template(renderer_base $output): array
-    {
+    public function export_for_template(renderer_base $output): array {
         $data = [
             'navbarstyle' => $this->navbarstyle,
-            'istablist'   => $this->istablist,
+            'istablist' => $this->istablist,
         ];
         if ($this->haschildren) {
             // The node collection doesn't have anything to render so exit now.
@@ -76,41 +72,14 @@ class more_menu implements renderable, templatable
             // For each of these nodes we would like to display a dropdown menu and in order to achieve that
             // (as required by the template) we need to set the node's property 'moremenuid' to a new unique value and
             // 'haschildren' to true.
-
-            if ($this->content->children->get('participants')){
-                $children = clone $this->content->children;
-                if ($item = $children->get('participants')){
-                    $this->content->children->remove('participants');
-                    $this->content->children->add($item, 'editsettings');
-                }
-                if ($item = $children->get('coursereuse')){
-                    $this->content->children->remove('coursereuse');
-                    $this->content->children->add($item, 'editsettings');
-                }
-                if ($item = $children->get('coursereports')){
-                    $this->content->children->remove('coursereports');
-                    $this->content->children->add($item, 'editsettings');
-                }
-                if ($item = $children->get('grades')){
-                    $this->content->children->remove('grades');
-                    $this->content->children->add($item, 'editsettings');
-                }
-                $children = null;
-            }
-
-
-            foreach ($this->content->children as $key => &$item) {
-
-                if ($item->key == 'coursereuse') {
-                    $item->forceintomoremenu = false;
-                }
-                if ($item->showchildreninsubmenu && isset($this->content->children)
-                    && count($this->content->children) > 0
-                ) {
+            foreach ($this->content->children as &$item) {
+                if ($item->showchildreninsubmenu && isset($this->content->children) &&
+                        count($this->content->children) > 0) {
                     $item->moremenuid = uniqid();
                     $item->haschildren = true;
                 }
             }
+
             $data['nodecollection'] = $this->content;
         } else {
             $data['nodearray'] = (array) $this->content;

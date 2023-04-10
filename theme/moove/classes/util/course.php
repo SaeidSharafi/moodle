@@ -70,8 +70,7 @@ class course {
             }
         }
 
-
-        return $CFG->wwwroot.'/theme/moove/pix/course-default.jpg';
+        return $OUTPUT->get_generated_image_for_id($this->course->id);
     }
 
     /**

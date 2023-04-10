@@ -71,8 +71,7 @@ if ($form->is_cancelled()) {
         redirect($CFG->wwwroot, get_string('supportmessagesent', 'user'), 3, $level);
     }
 } else {
-    //$output = $form->render();
-    $output = $renderer->render_from_template('user/contact_site_support',[]);
+    $output = $form->render();
 }
 
 echo $OUTPUT->header();

@@ -114,11 +114,6 @@ if ($ADMIN->fulltree) {
     $page->add($setting);
 
     $fontsarr = [
-        'IranSans' => 'IranSans',
-        'IRANSansBold' => 'IRANSansBold',
-        'IRANSansFaNum' => 'IRANSansFaNum',
-        'IRANSansFaNumBold' => 'IRANSansFaNumBold',
-        'IRYekan' => 'IRYekan',
         'Roboto' => 'Roboto',
         'Poppins' => 'Poppins',
         'Montserrat' => 'Montserrat',
@@ -138,7 +133,7 @@ if ($ADMIN->fulltree) {
     $name = 'theme_moove/fontsite';
     $title = get_string('fontsite', 'theme_moove');
     $description = get_string('fontsite_desc', 'theme_moove');
-    $setting = new admin_setting_configselect($name, $title, $description, 'IranSans', $fontsarr);
+    $setting = new admin_setting_configselect($name, $title, $description, 'Roboto', $fontsarr);
     $setting->set_updatedcallback('theme_reset_all_caches');
     $page->add($setting);
 
@@ -249,7 +244,7 @@ if ($ADMIN->fulltree) {
     $name = 'theme_moove/displaymarketingbox';
     $title = get_string('displaymarketingboxes', 'theme_moove');
     $description = get_string('displaymarketingboxesdesc', 'theme_moove');
-    $default = 0;
+    $default = 1;
     $choices = array(0 => get_string('no'), 1 => get_string('yes'));
     $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
     $page->add($setting);
@@ -322,7 +317,7 @@ if ($ADMIN->fulltree) {
     $description = get_string('faqcountdesc', 'theme_moove');
     $default = 0;
     $options = array();
-    for ($i = 0; $i < 16; $i++) {
+    for ($i = 0; $i < 11; $i++) {
         $options[$i] = $i;
     }
     $setting = new admin_setting_configselect($name, $title, $description, $default, $options);
@@ -355,14 +350,6 @@ if ($ADMIN->fulltree) {
     * --------------------
     */
     $page = new admin_settingpage('theme_moove_footer', get_string('footersettings', 'theme_moove'));
-
-    // Copyright
-    $name = 'theme_moove/enablecopyright';
-    $title = get_string('enablecopyright', 'theme_moove');
-    $default = 1;
-    $choices = array(0 => get_string('no'), 1 => get_string('yes'));
-    $setting = new admin_setting_configselect($name, $title, '', $default, $choices);
-    $page->add($setting);
 
     // Website.
     $name = 'theme_moove/website';

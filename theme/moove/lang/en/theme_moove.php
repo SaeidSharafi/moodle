@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'VUMS';
-$string['configtitle'] = 'VUMS';
-$string['choosereadme'] = 'VUMS is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4. (based on Moove theme)';
+$string['pluginname'] = 'Moove';
+$string['configtitle'] = 'Moove';
+$string['choosereadme'] = 'Moove is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4.';
 
 $string['currentinparentheses'] = '(current)';
 $string['region-side-pre'] = 'Right';
@@ -105,10 +105,9 @@ $string['numbersfrontpagecontentdefault'] = '<h2>Trusted by 25,000+ happy custom
                     <p>With lots of unique blocks, you can easily build <br class="d-none d-sm-block d-md-none d-xl-block">
                         a page without coding. Build your next website <br class="d-none d-sm-block d-md-none d-xl-block">
                         within few minutes.</p>';
-$string['numbersusers'] = 'Active students';
-$string['numberscourses'] = 'Lessons provided';
-$string['numbersteachers'] = 'Active teachers';
-$string['numbersactivties'] = 'Educational contents';
+$string['numbersusers'] = 'Active users accessing our amazing resources';
+$string['numberscourses'] = 'Courses made for you that you can trust!';
+
 $string['faq'] = 'FAQ';
 $string['faqcount'] = 'FAQ questions';
 $string['faqcountdesc'] = 'Select how many questions you want to add <strong>then click SAVE</strong> to load the input fields.<br>If you don\'t want a FAQ, just select 0.';
@@ -117,7 +116,6 @@ $string['faqanswer'] = 'FAQ answer {$a}';
 
 // Footer settings tab.
 $string['footersettings'] = 'Footer';
-$string['enablecopyright'] = 'Show Copyright';
 $string['website'] = 'Website URL';
 $string['websitedesc'] = 'Main company Website';
 $string['mobile'] = 'Mobile';
@@ -176,30 +174,3 @@ $string['privacy:accessibilitystyles_fontsizeclass'] = 'The current preference f
 $string['privacy:accessibilitystyles_sitecolorclass'] = 'The current preference for the site color is: {$a}.';
 $string['privacy:thememoovesettings_fonttype'] = 'The current preference for the font type is: {$a}.';
 $string['privacy:thememoovesettings_enableaccessibilitytoolbar'] = 'The current preference for enable accessibility toolbar is to show it.';
-
-$string['login_btn'] = 'Sign in';
-$string['contact_support'] = 'Support';
-$string['blog_title'] = 'News & Announcements';
-$string['view_all'] = 'View All';
-$string['university'] ='Smart University of Medical Sciences';
-$string['navid_title'] = 'What is NAVID?';
-$string['contact_us']='Support';
-$string['unesco']='UNESCO National Award';
-$string['behdasht']='Ministery of Health and Medical Education';
-$string['arman']='ARMAN';
-$string['copyright']='';
-
-$string['navid_front'] = '
-<p>
-<span class="text-danger">NAVID</span> project was a major milestone for VUMS as a responsible body to create national Learning Management System,
- a project initiated in 2016 when the new reformation package by ministry of Health and Medical Education was announced.
-  During the project’s consultation phase,
-   team of experts was engaged with their peers to determine the pedagogical and functional requirements for supporting
-    teaching and learning. Design, development and implementation of key features of NAVID was the 2nd phase of project.
-     During 2017 fall semester <span class="text-danger">NAVID</span>  was evaluated by faculty, staff,
-      and students through pilot courses in Alborz University of Medical Sciences as a partner University with VUMS.
-       Since 2018 spring semester <span class="text-danger">NAVID</span>  (version Beta) has been used by 20 other Medical Universities all around country.
-        In NAVID , instructors can share materials (text or multimedia),
-         enable student collaboration and discussion, manage assignments and quizzes, and assign grades.
-          New feature will be add to <span class="text-danger">NAVID</span>  according to project timetable.</p>
-';
