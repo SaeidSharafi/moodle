@@ -93,6 +93,12 @@ class settings {
             $templatecontext[$setting] = $this->$setting;
         }
 
+        $copyright = get_config('theme_moove', 'enablecopyright');
+        if ($copyright) {
+            $templatecontext['enablecopyright'] = $copyright;
+        }
+
+
         $templatecontext['enablemobilewebservice'] = $CFG->enablemobilewebservice;
 
         if ($CFG->enablemobilewebservice) {
