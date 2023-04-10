@@ -672,12 +672,21 @@ class enrol_database_plugin extends enrol_plugin {
         $table     = $this->get_config('newcoursetable');
         $fullname  = trim($this->get_config('newcoursefullname'));
         $shortname = trim($this->get_config('newcourseshortname'));
+
+        // Pafco categories for 4m
+        $cat0 = trim($this->get_config('newcoursecat0'));
+        $cat1 = trim($this->get_config('newcoursecat1'));
+
         $idnumber  = trim($this->get_config('newcourseidnumber'));
         $category  = trim($this->get_config('newcoursecategory'));
 
         // Lowercased versions - necessary because we normalise the resultset with array_change_key_case().
         $fullname_l  = strtolower($fullname);
         $shortname_l = strtolower($shortname);
+
+        $cat0_l = strtolower($cat0);
+        $cat1_l = strtolower($cat1);
+
         $idnumber_l  = strtolower($idnumber);
         $category_l  = strtolower($category);
 
@@ -691,7 +700,16 @@ class enrol_database_plugin extends enrol_plugin {
             $defaultcategory = $first->id;
         }
 
-        $sqlfields = array($fullname, $shortname);
+        //remove shortname check for pafco categories
+        $sqlfields = array($fullname);
+
+        if ($cat0) {
+            $sqlfields[] = $cat0;
+        }
+        if ($cat1) {
+            $sqlfields[] = $cat1;
+        }
+
         if ($category) {
             $sqlfields[] = $category;
         }
@@ -709,31 +727,71 @@ class enrol_database_plugin extends enrol_plugin {
                         $trace->output('error: invalid external course record, shortname and fullname are mandatory: ' . json_encode($fields), 1); // Hopefully every geek can read JS, right?
                         continue;
                     }
-                    if ($DB->record_exists('course', array('shortname'=>$fields[$shortname_l]))) {
-                        // Already exists, skip.
+
+                    //Pafco 4m category hierarchy
+                    $level0 = null;
+                    $level1 = null;
+
+                    if ($cat0) {
+                        $trace->output('Creating Category Level 0');
+                        $level0 = $this->check_category($fields[$cat0_l], 0,$trace);
+                    }
+                    if ($cat1) {
+                        $trace->output('Creating Category Level 1');
+                        $level1 = $this->check_category($fields[$cat1_l], $level0,$trace);
+                    }
+                    if ($level1 == null){
+                        $level1 = $level0;
+                    }
+                    $course = null;
+                    //Pafco 4m course shortname format
+                    $course_shortname =  $fields[$fullname_l] . "-" . $fields[$idnumber_l];
+                    if ($DB->record_exists('course', array('shortname'=> $course_shortname))) {
+                        // Already exists, get the record.
+                        require_once("$CFG->dirroot/course/lib.php");
+                        $course = $DB->get_record('course', array('shortname'=> $course_shortname));
+                        if ($category) {
+                            if (empty($fields[$category_l])) {
+                                // Empty category means use default.
+                                $course->category = $defaultcategory;
+                                /** removed elseif for Pafco 4m category system*/
+                            } else {
+                                /** changed for Pafco 4m category system*/
+                                $lesson_category = $this->check_category($fields[$category_l], $level1,$trace);
+                                $course->category = $lesson_category;
+                            }
+                        } else {
+                            $course->category = $defaultcategory;
+                        }
+                        update_course($course);
+                        $trace->output('Course' . $course_shortname. ' Exist. Updating Category to ' .  $course->category);
                         continue;
                     }
+
                     // Allow empty idnumber but not duplicates.
-                    if ($idnumber and $fields[$idnumber_l] !== '' and $fields[$idnumber_l] !== null and $DB->record_exists('course', array('idnumber'=>$fields[$idnumber_l]))) {
-                        $trace->output('error: duplicate idnumber, can not create course: '.$fields[$shortname_l].' ['.$fields[$idnumber_l].']', 1);
+                    if ($idnumber and $fields[$idnumber_l] !== '' and $fields[$idnumber_l] !== null
+                            and $DB->record_exists('course', array('idnumber' => $fields[$idnumber_l]))
+                        ) {
+                            $trace->output('error: duplicate idnumber, can not create course: '.$course_shortname.' ['
+                                .$fields[$idnumber_l].']', 1);
                         continue;
                     }
+                    $trace->output('Creating course : '.$course_shortname);
                     $course = new stdClass();
                     $course->fullname  = $fields[$fullname_l];
-                    $course->shortname = $fields[$shortname_l];
+                    $course->shortname = $course_shortname;
                     $course->idnumber  = $idnumber ? $fields[$idnumber_l] : '';
+
+
                     if ($category) {
                         if (empty($fields[$category_l])) {
                             // Empty category means use default.
                             $course->category = $defaultcategory;
-                        } else if ($coursecategory = $DB->get_record('course_categories', array($localcategoryfield=>$fields[$category_l]), 'id')) {
-                            // Yay, correctly specified category!
-                            $course->category = $coursecategory->id;
-                            unset($coursecategory);
+                            /** removed elseif for Pafco 4m category system*/
                         } else {
-                            // Bad luck, better not continue because unwanted ppl might get access to course in different category.
-                            $trace->output('error: invalid category '.$localcategoryfield.', can not create course: '.$fields[$shortname_l], 1);
-                            continue;
+                            /** changed for Pafco 4m category system*/
+                            $lesson_category = $this->check_category($fields[$category_l], $level1,$trace);
+                            $course->category = $lesson_category;
                         }
                     } else {
                         $course->category = $defaultcategory;
@@ -822,6 +880,23 @@ class enrol_database_plugin extends enrol_plugin {
         $trace->finished();
 
         return 0;
+    }
+    protected function check_category($catname, $parent,progress_trace $trace)
+    {
+        global $DB;
+
+        $category = $DB->get_record('course_categories', array('name' => $catname, 'parent' => $parent));
+        if (!$category) {
+            $data = new stdClass();
+            $data->parent = $parent;
+            $data->name = $catname;
+            $trace->output('Creating Category ');
+
+            $category =core_course_category::create($data);
+
+        }
+        $trace->output('Category id => ' . $category->id);
+        return $category->id;
     }
 
     protected function db_get_sql($table, array $conditions, array $fields, $distinct = false, $sort = "") {

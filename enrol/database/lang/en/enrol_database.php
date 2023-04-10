@@ -75,3 +75,7 @@ $string['remoteuserfield_desc'] = 'The name of the field in the remote table tha
 $string['templatecourse'] = 'New course template';
 $string['templatecourse_desc'] = 'Optional: auto-created courses can copy their settings from a template course. Type here the shortname of the template course.';
 $string['privacy:metadata'] = 'The External database enrolment plugin does not store any personal data.';
+$string['newcoursecat0'] = 'Level 0 Category (top parent) Field';
+$string['newcoursecat0_desc'] = 'Top parent category field in external database table';
+$string['newcoursecat1'] = 'Level 1 Category (middle) Field';
+$string['newcoursecat1_desc'] = 'Middle category field in external database table, if left empty it will be ignored and only 2 category will be created';

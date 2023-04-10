@@ -26,6 +26,7 @@
 
 require('../config.php');
 require_once('lib.php');
+require_once $CFG->dirroot . '/user/lib.php';
 
 redirect_if_major_upgrade_required();
 
@@ -81,10 +82,13 @@ if (!empty($SESSION->has_timed_out)) {
 
 $frm  = false;
 $user = false;
-
+$db_active = false;
 $authsequence = get_enabled_auth_plugins(); // Auths, in sequence.
 foreach($authsequence as $authname) {
     $authplugin = get_auth_plugin($authname);
+    if ($authname == 'db'){
+        $db_active = true;
+    }
     // The auth plugin's loginpage_hook() can eventually set $frm and/or $user.
     $authplugin->loginpage_hook();
 }
@@ -99,6 +103,7 @@ $site = get_site();
 $PAGE->navbar->ignore_active();
 $loginsite = get_string("loginsite");
 $PAGE->navbar->add($loginsite);
+$is4m = false;
 
 if ($user !== false or $frm !== false or $errormsg !== '') {
     // some auth plugin already supplied full user, fake form data or prevented user login with error message
@@ -115,6 +120,16 @@ if ($user !== false or $frm !== false or $errormsg !== '') {
     } else {
         $frm = data_submitted();
     }
+
+} elseif (isset($_GET['token'])) {
+
+    $pafcouser = checktoken($_GET['token']);
+    if ($pafcouser) {
+        $is4m = true;
+        $frm = $DB->get_record('user', array('username' => $pafcouser->username));
+    }
+    $frm->password = $pafcouser->password;
+
 
 } else {
     $frm = data_submitted();
@@ -211,6 +226,21 @@ if ($frm and isset($frm->username)) {                             // Login WITH 
         complete_user_login($user);
 
         \core\session\manager::apply_concurrent_login_limit($user->id, session_id());
+
+        $admins = get_admins();
+        $isadmin = false;
+        foreach ($admins as $admin){
+            if ($user->id == $admin->id){
+                $isadmin = true;
+                break;
+            }
+        }
+        if (isset($_GET['token']) && $is4m && $db_active) {
+            if (!$isadmin) {
+                $user->auth = 'db';
+                user_update_user($user, false, false);
+            }
+        }
 
         // sets the username cookie
         if (!empty($CFG->nolastloggedin)) {
@@ -380,3 +410,48 @@ if (isloggedin() and !isguestuser()) {
 }
 
 echo $OUTPUT->footer();
+
+function checktoken($token)
+{
+    global $DB, $CFG;
+    $client = new SoapClient('<ADRESS>');
+    $StudentInfo =  $client->__soapCall( 'IsAuthenticateCustom' ,array(array('token'=>$token,'PafToken'=>'<TOKEN>')));
+
+
+    $info = $StudentInfo->IsAuthenticateCustomResult;
+    if (is_object($info)) {
+        $_SESSION['token'] = $token;
+
+        //create a user
+        $user = new stdClass();
+        $user->auth = 'manual';
+        $user->confirmed = 1;
+        $user->deleted = 0;
+        $user->lang = 'fa';
+        $user->country = 'IR';
+        $user->descriptionformat = 1;
+        $user->ajax = 0;
+        $user->mnethostid = $CFG->mnet_localhost_id; // always local user
+        $user->username = trim($info->UserName);
+        $user->password = trim($info->UserName) . trim($info->Mail);
+        $user->firstname = trim($info->Name);
+        $user->lastname = trim($info->Family);
+        $user->email = trim($info->Mail);
+        //$user->phone2 = trim($info->Mobile);
+        //$user->phone1 = trim($info->Tel);
+        $user->city = 'تهران';
+        //print_r($user);exit;
+        $olduser = $DB->get_record('user', array('username' => $user->username));
+        if ($olduser) {
+            $user->id = $olduser->id;
+            user_update_user($user);
+        } else {
+            $user->id = user_create_user($user);
+        }
+        // notice(print_r($user));
+        $user->password = trim($info->UserName) . trim($info->Mail);
+        return $user;
+    } else {
+        notice('خطا در ورود توکن');
+    }
+}
