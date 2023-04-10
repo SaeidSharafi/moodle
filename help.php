@@ -26,8 +26,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use temp\moove\classes\output\core_renderer;
-
 define('NO_MOODLE_COOKIES', true);
 
 require_once(__DIR__ . '/config.php');
