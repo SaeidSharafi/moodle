@@ -1172,12 +1172,12 @@ allow tiles to be taller and thinner so can fit two side by side in portrait on 
     flex-basis: 220px;
     max-width: 220px;
     flex-grow: 1;
-    height: 150px;
+    height: 190px;
     vertical-align: top;
     padding: 0 5px 0 5px;
     margin: 5px;
     background-repeat: no-repeat;
-    background-position: 50% 70%;
+    background-position: 50% 80%;
     -webkit-background-size: 38px auto;
     background-size: 35px auto;
     background-color: #f9f9f9;

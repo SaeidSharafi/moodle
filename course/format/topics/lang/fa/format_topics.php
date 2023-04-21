@@ -23,9 +23,10 @@
  */
 
 
-$string['section0name'] = 'محتواها و منابع';
-$string['section1name'] = 'خودآزمونها';
-$string['section2name'] = 'کلاس ها';
-$string['section3name'] = 'تکالیف';
-$string['section4name'] = 'گفتگوها';
-$string['section5name'] = 'محتوا و منابع مطالعه بیشتر';
+$string['section0name'] = 'منابع درس';
+$string['section1name'] = 'منابع درس';
+$string['section2name'] = 'خودآزمونها';
+$string['section3name'] = 'کلاس ها';
+$string['section4name'] = 'تکالیف';
+$string['section5name'] = 'گفتگوها';
+$string['section6name'] = 'محتوا و منابع مطالعه بیشتر';

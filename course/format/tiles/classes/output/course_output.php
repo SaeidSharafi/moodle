@@ -21,13 +21,14 @@
  * @copyright 2018 David Watson {@link http://evolutioncode.uk}
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace format_tiles\output;
 
 use format_tiles\tile_photo;
 
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
-require_once($CFG->dirroot .'/course/format/lib.php');
+require_once($CFG->dirroot . '/course/format/lib.php');
 require_once("$CFG->libdir/resourcelib.php");  // To import RESOURCELIB_DISPLAY_POPUP.
 
 /**
@@ -35,7 +36,8 @@ require_once("$CFG->libdir/resourcelib.php");  // To import RESOURCELIB_DISPLAY_
  * @copyright 2018 David Watson
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class course_output implements \renderable, \templatable {
+class course_output implements \renderable, \templatable
+{
 
     /**
      * Course object for this class
@@ -131,7 +133,8 @@ class course_output implements \renderable, \templatable {
      * @param int $sectionnum the id of the current section
      * @param \renderer_base|null $courserenderer
      */
-    public function __construct($course, $fromajax = false, $sectionnum = null, \renderer_base $courserenderer = null) {
+    public function __construct($course, $fromajax = false, $sectionnum = null, \renderer_base $courserenderer = null)
+    {
         $this->course = $course;
         $this->fromajax = $fromajax;
         $this->sectionnum = $sectionnum;
@@ -163,7 +166,8 @@ class course_output implements \renderable, \templatable {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    public function export_for_template(\renderer_base $output) {
+    public function export_for_template(\renderer_base $output)
+    {
         global $PAGE;
         if (!$this->courserenderer) {
             $this->courserenderer = $output;
@@ -203,7 +207,8 @@ class course_output implements \renderable, \templatable {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    private function get_basic_data() {
+    private function get_basic_data()
+    {
         global $SESSION, $USER;
         $data = [];
         $data['canedit'] = has_capability('moodle/course:update', $this->coursecontext);
@@ -242,7 +247,8 @@ class course_output implements \renderable, \templatable {
      * @param object $section
      * @return string
      */
-    private function temp_format_summary_text($section) {
+    private function temp_format_summary_text($section)
+    {
         $summarytext = file_rewrite_pluginfile_urls($section->summary, 'pluginfile.php',
             $this->coursecontext->id, 'course', 'section', $section->id);
 
@@ -258,7 +264,8 @@ class course_output implements \renderable, \templatable {
      * @return string|bool
      * @throws \coding_exception
      */
-    private function temp_section_activity_summary($section) {
+    private function temp_section_activity_summary($section)
+    {
         $widgetclass = $this->format->get_output_classname('content\\section\\cmsummary');
         $widget = new $widgetclass($this->format, $section);
         return $this->courserenderer->render($widget);
@@ -270,7 +277,8 @@ class course_output implements \renderable, \templatable {
      * @return bool|string
      * @throws \coding_exception
      */
-    private function temp_section_availability_message($section) {
+    private function temp_section_availability_message($section)
+    {
         $widgetclass = $this->format->get_output_classname('content\\section\\availability');
         $widget = new $widgetclass($this->format, $section);
         return $this->courserenderer->render($widget);
@@ -282,7 +290,8 @@ class course_output implements \renderable, \templatable {
      * @return bool|string
      * @throws \coding_exception
      */
-    private function temp_course_section_cm_availability($mod) {
+    private function temp_course_section_cm_availability($mod)
+    {
         $availabilityclass = $this->format->get_output_classname('content\\cm\\availability');
         $availability = new $availabilityclass(
             $this->format,
@@ -301,7 +310,8 @@ class course_output implements \renderable, \templatable {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    private function append_section_zero_data($data, $output) {
+    private function append_section_zero_data($data, $output)
+    {
         $seczero = $this->modinfo->get_section_info(0);
         $coursemods = $this->section_course_mods($seczero, $output);
         $data['section_zero']['summary'] = self::temp_format_summary_text($seczero);
@@ -334,7 +344,8 @@ class course_output implements \renderable, \templatable {
      * @param bool $fromajax is this request from AJAX.
      * @return array
      */
-    private function get_course_format_options($fromajax) {
+    private function get_course_format_options($fromajax)
+    {
         // Custom course settings not in course object if called from AJAX, so make sure we get them.
         $options = [
             'defaulttileicon', 'basecolour', 'courseusesubtiles', 'courseshowtileprogress',
@@ -367,7 +378,8 @@ class course_output implements \renderable, \templatable {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    private function append_single_section_page_data($output, $data) {
+    private function append_single_section_page_data($output, $data)
+    {
         // If we have nothing to output, don't.
         if (!($thissection = $this->modinfo->get_section_info($this->sectionnum))) {
             // This section doesn't exist.
@@ -423,8 +435,8 @@ class course_output implements \renderable, \templatable {
         }
         if (!$this->fromajax) {
             $previousnext = $this->get_previous_next_section_numbers($thissection->section);
-        $data['previous_tile_id'] = $previousnext['previous'];
-        $data['next_tile_id'] = $previousnext['next'];
+            $data['previous_tile_id'] = $previousnext['previous'];
+            $data['next_tile_id'] = $previousnext['next'];
         }
 
         $data['visible'] = $thissection->visible;
@@ -445,10 +457,11 @@ class course_output implements \renderable, \templatable {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    private function append_multi_section_page_data($data) {
+    private function append_multi_section_page_data($data)
+    {
         $data['is_multi_section'] = true;
-        $icons =[
-            'pencil-square-o','flipchart','file-text-o','comments-o','list',
+        $icons = [
+            'pencil-square-o', 'flipchart', 'file-text-o', 'comments-o', 'list',
         ];
         // If using completion tracking, get the data.
         if ($this->completionenabled) {
@@ -520,8 +533,8 @@ class course_output implements \renderable, \templatable {
 
                 $longtitlelength = 65;
                 $icon = $section->tileicon;
-                if ($sectionnum !== 0 && $sectionnum < 6){
-                    $icon = $icons[$sectionnum-1];
+                if ($sectionnum !== 0 && $sectionnum < 6) {
+                    $icon = $icons[$sectionnum - 1];
                 }
                 $newtile = array(
                     'tileid' => $section->section,
@@ -656,7 +669,8 @@ class course_output implements \renderable, \templatable {
      * @param array $coursecms the course module objects for this course
      * @return array with the completion data x items complete out of y
      */
-    public function section_progress($sectioncmids, $coursecms) {
+    public function section_progress($sectioncmids, $coursecms)
+    {
         $completed = 0;
         $outof = 0;
         foreach ($sectioncmids as $cmid) {
@@ -680,11 +694,12 @@ class course_output implements \renderable, \templatable {
      * Get the details of the filter buttons to be displayed at the top of this course
      * where the teacher has selected to use numbered filter buttons e.g. button 1 might
      * filter to tiles 1-3, button 2 to tiles 4-6 etc
-     * @see get_button_map() which calls this function
      * @param array $tiles the tiles which relate to filters
      * @return array the button details
+     * @see get_button_map() which calls this function
      */
-    private function get_filter_numbered_buttons_data($tiles) {
+    private function get_filter_numbered_buttons_data($tiles)
+    {
         $numberoftiles = count($tiles);
         if ($numberoftiles == 0) {
             return array();
@@ -741,10 +756,11 @@ class course_output implements \renderable, \templatable {
      * @param array $tiles the tiles output object showing the outcome ID for each tile
      * @param array $outcomenames the course outcome names to display
      * @param int $firstbuttonid first button id so it follows on from last one
-     * @see get_filter_numbered_buttons()
      * @return array the button details
+     * @see get_filter_numbered_buttons()
      */
-    private function get_filter_outcome_buttons_data($tiles, $outcomenames, $firstbuttonid = 1) {
+    private function get_filter_outcome_buttons_data($tiles, $outcomenames, $firstbuttonid = 1)
+    {
         $outcomebuttons = [];
         if ($outcomenames) {
             // Build array showing, for each outcome, which sections of the course use it.
@@ -780,7 +796,8 @@ class course_output implements \renderable, \templatable {
      * @param array $tile the tile output data
      * @return string HTML to output.
      */
-    private function get_stated_tile_num($tile) {
+    private function get_stated_tile_num($tile)
+    {
         if (!$tile['title']) {
             return $tile['tileid'];
         } else {
@@ -803,7 +820,8 @@ class course_output implements \renderable, \templatable {
      * @param string $title to truncated
      * @return string truncated
      */
-    private function truncate_title($title) {
+    private function truncate_title($title)
+    {
         $maxtitlelength = 75;
         if (strlen($title) >= $maxtitlelength) {
             $lastspace = strripos(substr($title, 0, $maxtitlelength), ' ');
@@ -820,7 +838,8 @@ class course_output implements \renderable, \templatable {
      * @param bool $remove if we want just to remove the flag (no need to line break), pass true.
      * @return string
      */
-    private function apply_linebreak_filter(string $text, $remove = false) {
+    private function apply_linebreak_filter(string $text, $remove = false)
+    {
         $zerowidthspace = '&#8288;';
         $maxwidthfortilechars = 15;
         if (!$remove && strlen($text) > $maxwidthfortilechars) {
@@ -836,16 +855,17 @@ class course_output implements \renderable, \templatable {
      * Gets the data (context) to be used with the activityinstance template
      * @param object $section the section object we want content for
      * @param \renderer_base $output
-     * @see \cm_info for full detail of $mod instance variables
-     * @see \core_completion\manager::get_activities() which covers similar ground
-     * @see \core_course_renderer::course_section_cm_completion() which covers similar ground
-     * In the snap theme, course_renderer::course_section_cm_list_item() covers similar ground
      * @return object
      * @throws \coding_exception
      * @throws \dml_exception
      * @throws \moodle_exception
+     * @see \core_completion\manager::get_activities() which covers similar ground
+     * @see \core_course_renderer::course_section_cm_completion() which covers similar ground
+     * In the snap theme, course_renderer::course_section_cm_list_item() covers similar ground
+     * @see \cm_info for full detail of $mod instance variables
      */
-    private function section_course_mods($section, $output): object {
+    private function section_course_mods($section, $output): object
+    {
         global $PAGE;
         $result = (object)['mods' => [], 'jsfooter' => ''];
         if (!isset($section->section)) {
@@ -912,7 +932,8 @@ class course_output implements \renderable, \templatable {
      * @throws \dml_exception
      * @throws \moodle_exception
      */
-    private function course_module_data($mod, $section, $previouswaslabel, $isfirst, $output) {
+    private function course_module_data($mod, $section, $previouswaslabel, $isfirst, $output)
+    {
         global $PAGE, $CFG, $DB, $USER;
         $displayoptions = [];
         $obj = new \core_courseformat\output\local\content\section\cmitem($this->format, $section, $mod, $displayoptions);
@@ -929,6 +950,17 @@ class course_output implements \renderable, \templatable {
             $moduleobject['uservisible'] = $mod->is_visible_on_course_page();
             $moduleobject['clickable'] = $mod->uservisible;
         }
+        $activitydates = \core\activity_dates::get_dates_for_module($mod, $USER->id);
+        $moduleobject['activitydates'] = [];
+        foreach ($activitydates as $activitydate) {
+            if (!array_key_exists('datestring', $activitydate)) {
+                if (array_key_exists('timestamp', $activitydate)) {
+                    $activitydate['datestring'] = userdate($activitydate['timestamp'],format: '%Y/%m/%d, %H:%M');
+                }
+            }
+            $moduleobject['activitydates'][] = $activitydate;
+        }
+
         // From Moodle 3.11 onwards, we may have extra completion conditions info to display under activities.
         if (class_exists('\core\activity_dates') && isset($this->showcompletionconditions)
             && $this->showcompletionconditions) {
@@ -985,17 +1017,20 @@ class course_output implements \renderable, \templatable {
 
         // Specific handling for embedded resource items (e.g. PDFs)  as allowed by site admin.
         if ($mod->modname == 'resource') {
-            if (in_array($moduleobject['modResourceType'], $this->usemodalsforcoursemodules['resources'])) {
-                $moduleobject['isEmbeddedResource'] = 1;
-                $moduleobject['launchtype'] = 'resource-modal';
-                $moduleobject['pluginfileUrl'] = $this->plugin_file_url($mod);
-            } else {
-                // We are not using modal, so add the standard moodle onclick event to the link to launch pop up if appropriate.
-                if ($mod->onclick) {
-                    $moduleobject['onclick'] = htmlspecialchars_decode($mod->onclick, ENT_QUOTES);
-                    $moduleobject['launchtype'] = 'standard';
-                }
-            }
+            $moduleobject['isEmbeddedResource'] = 1;
+            $moduleobject['launchtype'] = 'resource-modal';
+            $moduleobject['pluginfileUrl'] = $this->plugin_file_url($mod);
+//            if (in_array($moduleobject['modResourceType'], $this->usemodalsforcoursemodules['resources'])) {
+//                $moduleobject['isEmbeddedResource'] = 1;
+//                $moduleobject['launchtype'] = 'resource-modal';
+//                $moduleobject['pluginfileUrl'] = $this->plugin_file_url($mod);
+//            } else {
+//                // We are not using modal, so add the standard moodle onclick event to the link to launch pop up if appropriate.
+//                if ($mod->onclick) {
+//                    $moduleobject['onclick'] = htmlspecialchars_decode($mod->onclick, ENT_QUOTES);
+//                    $moduleobject['launchtype'] = 'standard';
+//                }
+//            }
         }
 
         // Issue 67 handling for LTI set to open in new window.
@@ -1162,12 +1197,13 @@ class course_output implements \renderable, \templatable {
      * Get resource file type e.g. 'doc' from the icon URL e.g. 'document-24.png'
      * Not ideal but we already have icon name so it's efficient
      * Adapted from Snap theme
-     * @see mod_displayname() which gets the display name for the type
-     *
      * @param \cm_info $mod the mod info object we are checking
      * @return string the type e.g. 'doc'
+     * @see mod_displayname() which gets the display name for the type
+     *
      */
-    private function get_resource_filetype(\cm_info $mod) {
+    private function get_resource_filetype(\cm_info $mod)
+    {
         if ($mod->modname === 'resource') {
             $fs = get_file_storage();
             $files = $fs->get_area_files($mod->context->id, 'mod_resource', 'content');
@@ -1201,7 +1237,8 @@ class course_output implements \renderable, \templatable {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    private function plugin_file_url($cm) {
+    private function plugin_file_url($cm)
+    {
         global $DB, $CFG;
         $context = \context_module::instance($cm->id);
         $resource = $DB->get_record('resource', array('id' => $cm->instance), '*', MUST_EXIST);
@@ -1209,7 +1246,7 @@ class course_output implements \renderable, \templatable {
         $files = $fs->get_area_files(
             $context->id, 'mod_resource', 'content', 0, 'sortorder DESC, id ASC', false
         );
-        if (count($files) >= 1 ) {
+        if (count($files) >= 1) {
             $file = reset($files);
             unset($files);
             $resource->mainfile = $file->get_filename();
@@ -1227,10 +1264,11 @@ class course_output implements \renderable, \templatable {
      * @param string $modname the name of the module e.g. 'resource'
      * @param string|null $resourcetype if this is a resource, the specific type eg. 'xls' or 'pdf'
      * @return string to be displayed on tile
-     * @see get_resource_filetype()
      * @throws \coding_exception
+     * @see get_resource_filetype()
      */
-    private function mod_displayname($modname, $resourcetype = null) {
+    private function mod_displayname($modname, $resourcetype = null)
+    {
         if ($modname == 'resource') {
             if (isset($this->resourcedisplaynames[$resourcetype])) {
                 return $this->resourcedisplaynames[$resourcetype];
@@ -1253,7 +1291,8 @@ class course_output implements \renderable, \templatable {
      * @param int $currentsectionnum the section number of the section we are in.
      * @return array previous and next section numbers.
      */
-    private function get_previous_next_section_numbers(int $currentsectionnum): array {
+    private function get_previous_next_section_numbers(int $currentsectionnum): array
+    {
         $visiblesectionnums = [];
         $currentsectionarrayindex = -1;
         foreach ($this->modinfo->get_section_info_all() as $section) {
@@ -1261,8 +1300,8 @@ class course_output implements \renderable, \templatable {
                 $visiblesectionnums[] = $section->section;
                 if ($section->section <= $currentsectionnum) {
                     $currentsectionarrayindex++;
+                }
             }
-        }
         }
 
         // If $currentsectionarrayindex is zero, this means we are on the first available section so there is no "previous".
@@ -1283,7 +1322,8 @@ class course_output implements \renderable, \templatable {
      * @param boolean $isoverall whether this is an overall course completion indicator
      * @return array data for output template
      */
-    public function completion_indicator($numcomplete, $numoutof, $aspercent, $isoverall) {
+    public function completion_indicator($numcomplete, $numoutof, $aspercent, $isoverall)
+    {
         $percentcomplete = $numoutof == 0 ? 0 : round(($numcomplete / $numoutof) * 100, 0);
         $progressdata = array(
             'numComplete' => $numcomplete,
@@ -1309,10 +1349,11 @@ class course_output implements \renderable, \templatable {
      * @param string $url
      * @return string|boolean string the URL if it was en embed video URL, false if not.
      */
-    private function check_modify_embedded_url(string $url) {
+    private function check_modify_embedded_url(string $url)
+    {
         // Youtube.
         $matches = null;
-        $pattern  = '/^(http(s)??\:\/\/)?(www\.)?((youtube\.com\/watch\?v=)|(youtu.be\/))([a-zA-Z0-9\-_]+)(\?t=[0-9]+)*$/';
+        $pattern = '/^(http(s)??\:\/\/)?(www\.)?((youtube\.com\/watch\?v=)|(youtu.be\/))([a-zA-Z0-9\-_]+)(\?t=[0-9]+)*$/';
         preg_match($pattern, $url, $matches);
         if ($matches && isset($matches[7])) {
             if (isset($matches[8])) {
@@ -1326,7 +1367,7 @@ class course_output implements \renderable, \templatable {
 
         // Vimeo.
         $matches = null;
-        $pattern  = '/^(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})([?]?.*)$/';
+        $pattern = '/^(https?:\/\/)?(www.)?(player.)?vimeo.com\/([a-z]*\/)*([0-9]{6,11})([?]?.*)$/';
         preg_match($pattern, $url, $matches);
         if ($matches && isset($matches[5])) {
             if (isset($matches[6])) {
