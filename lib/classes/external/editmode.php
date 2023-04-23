@@ -66,6 +66,7 @@ class editmode extends external_api {
         self::validate_context($context);
 
         $USER->editing = $params['setmode'];
+        $USER->editing_switch = $params['setmode'];
 
         return ['success' => true];
     }

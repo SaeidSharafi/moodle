@@ -35,5 +35,6 @@ $context = \context_helper::instance_by_id($contextid);
 $PAGE->set_context($context);
 
 $USER->editing = $setmode;
+$USER->editing_switch = $setmode;
 
 redirect($pageurl);
