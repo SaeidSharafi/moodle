@@ -98,8 +98,10 @@ class format_tiles extends core_courseformat\base {
      * @return bool
      */
     public function uses_course_index() {
-        global $PAGE;
-        return $PAGE->user_is_editing();
+        if (!get_config('format_tiles', 'enablecourseindex')) {
+            return false;
+        }
+        return true;
     }
 
     /**

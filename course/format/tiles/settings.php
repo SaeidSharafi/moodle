@@ -323,6 +323,12 @@ if ($ADMIN->fulltree) {
     $default = 1;
     $page->add(new admin_setting_configcheckbox($name, $title, $description, $default));
 
+    $name = 'format_tiles/enablecourseindex';
+    $title = get_string('enablecourseindex', 'format_tiles');
+    $description = get_string('enablecourseindex_desc', 'format_tiles');
+    $default = 0;
+    $page->add(new admin_setting_configcheckbox($name, $title, $description, $default));
+
     $settingscategory->add($page);
 
     $ADMIN->add('formatsettings', $settingscategory);
