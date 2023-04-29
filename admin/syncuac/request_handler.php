@@ -7,7 +7,7 @@ set_time_limit(-1);
 include_once "classes/Handler.php";
 include_once "classes/SyncData.php";
 include_once "classes/utils.php";
-
+require_once('../../config.php');
 
 use Synchronizer\Classes\Status;
 use Synchronizer\Settings;
@@ -20,7 +20,7 @@ use Synchronizer\Settings;
 
 function callIt($action, $params)
 {
-    global $USER;
+    global $USER,$CFG;
 
     $systemcontext = context_system::instance();
     if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334") {
@@ -33,6 +33,14 @@ function callIt($action, $params)
         $params = $_POST['data'];
     }
 
+    if (!$CFG->samauser || !$CFG->samapass || !$CFG->samaurl){
+        $msg = 'لطفا فیلدهای مربوط به سامانه را در فایل config.php وارد کنید'. '<br>';
+        $msg .= '$CFG->samaurl : ' . ($CFG->samaurl ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
+        $msg .= '$CFG->samauser : ' . ($CFG->samauser ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
+        $msg .= '$CFG->samapass : ' . ($CFG->pass ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
+        echo json_encode(array('status' => Status::ERROR, 'response' => $msg, 'details' => false), JSON_UNESCAPED_UNICODE);
+        return;
+    }
     $handler = new \Synchronizer\Classes\Handler();
 
     if (!$handler->login_success){

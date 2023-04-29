@@ -2,16 +2,24 @@
 
 
 
-
+require_once('../../config.php');
 function login()
 {
+    global $CFG;
+    if (!$CFG->samauser || !$CFG->samapass || !$CFG->samaurl){
+        echo 'لطفا فیلدهای مربوط به سامانه را در فایل config.php وارد کنید'. '<br>';
+        echo '$CFG->samaurl : ' . ($CFG->samaurl ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
+        echo '$CFG->samauser : ' . ($CFG->samauser ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
+        echo '$CFG->samapass : ' . ($CFG->pass ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
+        return;
+    }
     $data = array(
-            'username' => 'TabrizLms',
-            'password' => 'tabriz123'
+            'username' => $CFG->samauser,
+            'password' => $CFG->samapass
     );
 
     $params = http_build_query($data, null, "&");
-    $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/AuthenticationService.svc/web/Login?' . $params;
+    $url = $CFG->samaurl.'/services/AuthenticationService.svc/web/Login?' . $params;
 
 
     $ch = curl_init($url);

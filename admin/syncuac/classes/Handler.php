@@ -31,7 +31,7 @@ class Handler {
     }
 
     public function getStudents($study_level, $page, $items_per_page = 100) {
-
+        global $CFG;
         //        $auth = $this->login();
         //$page = $page == 1 ? 500 : 1000;
         $data = array(
@@ -42,7 +42,7 @@ class Handler {
         $params = http_build_query($data, null, '&');
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/StudentService.svc/web/GetStudentsPersonInfo?' . $params;
+        $url = $CFG->samaurl.'/services/StudentService.svc/web/GetStudentsPersonInfo?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -127,7 +127,7 @@ class Handler {
     }
 
     public function getStudent($student_id, $study_levels, $items_per_page = 100) {
-
+        global $CFG;
         //        $auth = $this->login();
         //$page = $page == 1 ? 500 : 1000;
         $data = array(
@@ -136,7 +136,7 @@ class Handler {
         $params = http_build_query($data, null, '&');
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/StudentService.svc/web/GetStudentPersonInfo?' . $params;
+        $url = $CFG->samaurl.'/services/StudentService.svc/web/GetStudentPersonInfo?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -230,7 +230,7 @@ class Handler {
     }
 
     public function getTeachers($term, $page, $items_per_page = 1000) {
-        //        $this->login();
+        global $CFG;
 
         $data = array(
                 'pageNumber' => $page,
@@ -239,7 +239,7 @@ class Handler {
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/ProfessorService.svc/web/2019/01/GetProfessorList?' .
+        $url = $CFG->samaurl.'/services/ProfessorService.svc/web/2019/01/GetProfessorList?' .
                 $params;
 
         // Create a new cURL resource
@@ -326,7 +326,7 @@ class Handler {
     }
 
     public function getLessons($term, $studyLevelId, $page, $items_per_page = 1000) {
-
+        global $CFG;
         //        $auth = $this->login();
 
         $data = array(
@@ -338,7 +338,7 @@ class Handler {
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/EducationService.svc/web/GetTermLessonList?' . $params;
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/GetTermLessonList?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -459,7 +459,7 @@ class Handler {
     }
 
     public function getLessonEnrollments($term, $lesson_id, $group_id, $roleid = null) {
-
+        global $CFG;
         //      $auth = $this->login();
 
         $data = array(
@@ -474,7 +474,7 @@ class Handler {
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/EducationService.svc/web/2019/01/GetStudentsOfTermLesson?' .
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetStudentsOfTermLesson?' .
                 $params;
 
         // Create a new cURL resource
@@ -537,7 +537,7 @@ class Handler {
     }
 
     public function getLessonTeachers($term, $lesson_id, $group_id, $roleid = null) {
-
+        global $CFG;
         //      $auth = $this->login();
 
         $idnumber = $term . "-" .
@@ -552,7 +552,7 @@ class Handler {
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/EducationService.svc/web/GetOfferedTermLesson?' . $params;
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/GetOfferedTermLesson?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -610,7 +610,7 @@ class Handler {
     }
 
     public function getStudentEnrollments($term, $studentNumber, $roleid = null) {
-
+        global $CFG;
         //        $auth = $this->login();
 
         $data = array(
@@ -622,7 +622,7 @@ class Handler {
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/StudentService.svc/web/GetStudentLessonList?' . $params;
+        $url = $CFG->samaurl.'/services/StudentService.svc/web/GetStudentLessonList?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -678,7 +678,7 @@ class Handler {
     }
 
     public function getEnrollments($term, $course_idnumber, $roleid = null) {
-
+        global $CFG;
         //        $auth = $this->login();
 
         $idnumber_parts = explode("-", $course_idnumber);
@@ -698,7 +698,7 @@ class Handler {
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/EducationService.svc/web/2019/01/GetStudentsOfTermLesson?' .
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetStudentsOfTermLesson?' .
                 $params;
 
         // Create a new cURL resource
@@ -758,7 +758,8 @@ class Handler {
     }
 
     public function getProfessorInfo($term, $teacher_code, $roleid = null) {
-        //        $auth = $this->login();
+        global $CFG;
+
         if (!$roleid) {
             $roleid = Settings::$teacher_role_id;
         }
@@ -770,7 +771,7 @@ class Handler {
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/ProfessorService.svc/web/GetProfessorLessonList?' . $params;
+        $url = $CFG->samaurl.'/services/ProfessorService.svc/web/GetProfessorLessonList?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -834,7 +835,7 @@ class Handler {
     }
 
     public function getLessonInfo($term, $lesson, $group) {
-        //        $auth = $this->login();
+        global $CFG;
 
         $data = array(
                 'termCode' => $term,
@@ -844,7 +845,7 @@ class Handler {
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/EducationService.svc/web/GetOfferedTermLesson?' . $params;
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/GetOfferedTermLesson?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -939,13 +940,15 @@ class Handler {
     }
 
     public function login() {
+        global $CFG;
+
         $data = array(
-                'username' => 'TabrizLms',
-                'password' => 'tabriz123'
+                'username' => $CFG->samauser,
+                'password' => $CFG->samapass
         );
 
         $params = http_build_query($data, null, "&");
-        $url = 'https://amozesh.tabrizu.ac.ir/samawebservices/services/AuthenticationService.svc/web/Login?' . $params;
+        $url = $CFG->samaurl.'/services/AuthenticationService.svc/web/Login?' . $params;
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, 1);
