@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die;
  * @return bool always true
  */
 function xmldb_customcert_upgrade($oldversion) {
-    global $DB;
+    global $DB,$CFG;
 
     $dbman = $DB->get_manager();
 
@@ -175,8 +175,51 @@ function xmldb_customcert_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        upgrade_mod_savepoint(true, 2020110901, 'customcert');
+        upgrade_mod_savepoint(true, 2020110901, 'customcert','Check directory permissions');
     }
 
+    $failed = add_persian_fonts($CFG);
+    if ($failed){
+        throw new upgrade_exception('costomcert',2020110901);
+    }
     return true;
+
+}
+
+function add_persian_fonts($CFG)
+{
+    include($CFG->dirroot . '/lib/tcpdf/tcpdf.php');
+    $pdf = new \TCPDF_FONTS('P', 'mm', 'A4', true, 'UTF-8', false);
+    $filenames = [
+        'Shabnam.ttf',
+        'Shabnam-Bold.ttf',
+        'Shabnam-Light.ttf',
+        'Shabnam-Medium.ttf',
+        'Shabnam-Thin.ttf',
+        'Vazir.ttf',
+        'Vazir-Black.ttf',
+        'Vazir-Bold.ttf',
+        'Vazir-Light.ttf',
+        'Vazir-Medium.ttf',
+        'Vazir-Thin.ttf',
+    ];
+    $failed = false;
+    foreach ($filenames as $filename) {
+        if (!file_exists($CFG->dirroot . '/lib/tcpdf/fonts/' . $filename)) {
+            $localfont = $CFG->dirroot .'/mod/customcert/fonts/' . $filename;
+
+            $tcpdffont = $CFG->dirroot . '/lib/tcpdf/fonts/' . $filename;
+            $cp = copy($localfont, $tcpdffont);
+            if ($cp) {
+                $pdf->addTTFfont($tcpdffont, 'TrueTypeUnicode');
+                echo "Copying font $tcpdffont";
+                $failed = false;
+                continue;
+            }
+            $failed = true;
+            continue;
+        }
+        echo "Font exist, Skipping";
+    }
+    return $failed;
 }
