@@ -193,7 +193,7 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
 
             <div class="tab-pane fade" id="professors" role="tabpanel" aria-labelledby="professors-tab">
 
-                <p>
+                <p class="d-none">
                     <i class="fa fa-info-circle text-danger"></i>
                     <span class="text-danger">
                         در حال حاضر به دلیل مشکل در وب سرویس سامانه سما، ممکن است برخی دروس با استفاده این روش دریافت نشوند، لطفا قبل از ثبت، از صحت اطلاعات دریافتی اطمینان حاصل نمایید
