@@ -212,14 +212,14 @@ function add_persian_fonts($CFG)
             $cp = copy($localfont, $tcpdffont);
             if ($cp) {
                 $pdf->addTTFfont($tcpdffont, 'TrueTypeUnicode');
-                echo "Copying font $tcpdffont";
+                echo "Copying font $tcpdffont \n";
                 $failed = false;
                 continue;
             }
             $failed = true;
             continue;
         }
-        echo "Font exist, Skipping";
+        echo "Font exist, Skipping \n";
     }
     return $failed;
 }
