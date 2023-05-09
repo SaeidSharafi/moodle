@@ -26,6 +26,7 @@ require_once('../../config.php');
 
 $login = optional_param('login', '', PARAM_TEXT);
 
+$login_token = \core\session\manager::get_login_token();
 // Normal login to Moodle.
 if ($login == 'moodle') {
 ?>
@@ -36,6 +37,7 @@ if ($login == 'moodle') {
 <body>
 <h3>Joomdle - Moodle Login</h3>
 <FORM action="<?php echo $CFG->wwwroot; ?>/login/index.php" method="POST">
+<input type="hidden" name="logintoken" value="<?php echo $login_token; ?>">
 Username: <input type=text name="username">
 <br>
 Password: <input type=password name="password">

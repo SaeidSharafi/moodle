@@ -245,6 +245,13 @@ if (strlen($result) > 0) {
         // Enrol user
         $plugin->enrol_user($plugin_instance, $user->id, $plugin_instance->roleid, $timestart, $timeend);
 
+        if ($plugin_instance->customint2) {
+            if (!groups_is_member($plugin_instance->customint2, $user->id)) {
+                if ($group = $DB->get_record('groups', array('id'=>$plugin_instance->customint2, 'courseid'=>$plugin_instance->courseid))) {
+                    groups_add_member($group->id, $user->id, 'enrol_paypal', $plugin_instance->id);
+                }
+            }
+        }
         // Pass $view=true to filter hidden caps if the user cannot see them
         if ($users = get_users_by_capability($context, 'moodle/course:update', 'u.*', 'u.id ASC',
                                              '', '', '', '', false, true)) {

@@ -342,10 +342,29 @@ class enrol_paypal_plugin extends enrol_plugin {
         $mform->setDefault('enrolenddate', 0);
         $mform->addHelpButton('enrolenddate', 'enrolenddate', 'enrol_paypal');
 
+        $groups = $this->get_group_options($context);
+        $mform->addElement('select', 'customint2', get_string('addgroup', 'enrol_cohort'), $groups);
+
         if (enrol_accessing_via_instance($instance)) {
             $warningtext = get_string('instanceeditselfwarningtext', 'core_enrol');
             $mform->addElement('static', 'selfwarn', get_string('instanceeditselfwarning', 'core_enrol'), $warningtext);
         }
+    }
+
+    /**
+     * Return an array of valid options for the groups.
+     *
+     * @param context $coursecontext
+     * @return array
+     */
+    protected function get_group_options($coursecontext) {
+        $groups = array(0 => get_string('none'));
+
+        foreach (groups_get_all_groups($coursecontext->instanceid) as $group) {
+            $groups[$group->id] = format_string($group->name, true, array('context' => $coursecontext));
+        }
+
+        return $groups;
     }
 
     /**

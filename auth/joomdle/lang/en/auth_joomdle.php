@@ -22,7 +22,7 @@
 
 
 $string['pluginname'] = 'Joomdle';
-$string['auth_joomdledescription'] = 'This method uses Joomdle web services to know whether a user has a valid session in Joomla, version 1.2.7';
+$string['auth_joomdledescription'] = 'This method uses Joomdle web services to know whether a user has a valid session in Joomla';
 
 $string['joomla_sp_name'] = 'Joomdle';
 $string['joomla_sp_description'] = 'Services for Joomla Integration<br>';
@@ -70,3 +70,7 @@ $string['auth_joomla_logout_with_redirect'] = 'Use logout with redirect';
 $string['auth_joomla_logout_with_redirect_description'] = 'Required only for cross-domain and "remember me" set';
 $string['auth_joomla_single_log_out'] = 'Single log out';
 $string['auth_joomla_single_log_out_description'] = 'Log out from Joomla when logging out of Moodle';
+$string['auth_joomla_ws_protocol'] = 'Web services protocol';
+$string['auth_joomla_ws_protocol_description'] = 'Web services protocol for communications';
+$string['cantwritecurlfile'] = 'Cannot write CURL file: {$a}';
+$string['cantopencurlfile'] = 'Cannot open CURL file: {$a}';
