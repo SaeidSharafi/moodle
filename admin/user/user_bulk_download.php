@@ -39,7 +39,8 @@ if (empty($SESSION->bulk_users)) {
 }
 
 if ($dataformat) {
-    $originfields = array('id'        => 'id',
+    $originfields = array(
+        'id'          => 'id',
                     'username'  => 'username',
                     'email'     => 'email',
                     'firstname' => 'firstname',
@@ -50,7 +51,9 @@ if ($dataformat) {
                     'phone1'    => 'phone1',
                     'phone2'    => 'phone2',
                     'city'      => 'city',
-                    'country'   => 'country');
+        'country'     => 'country',
+        'course'     => 'course',
+    );
 
     $extrafields = profile_get_user_fields_with_data(0);
     $profilefields = [];
@@ -67,7 +70,7 @@ if ($dataformat) {
     \core\dataformat::download_data($filename, $dataformat, array_merge($originfields, $profilefields), $iterator,
             function($userid, $supportshtml) use ($originfields) {
 
-        global $DB;
+            global $DB, $SESSION;
 
         if (!$user = $DB->get_record('user', array('id' => $userid))) {
             return null;
@@ -78,6 +81,9 @@ if ($dataformat) {
             // Custom user profile textarea fields come in an array
             // The first element is the text and the second is the format.
             // We only take the text.
+                if ($field === 'course'){
+                    continue;
+                }
             if (is_array($user->$field)) {
                 $userprofiledata[$field] = reset($user->$field);
             } else if ($supportshtml) {
@@ -98,6 +104,22 @@ if ($dataformat) {
                 $userprofiledata[$fieldkey] = $field->data;
             }
         }
+            $categories = [];
+            if ($SESSION->user_filtering && array_key_exists('courserole', $SESSION->user_filtering)) {
+                foreach ($SESSION->user_filtering['courserole'] as $course_role) {
+                    $categories[] = $course_role['categoryid'];
+                }
+            }
+            if ($categories) {
+                $courses = enrol_get_users_courses($userid);
+                $course_names = "";
+                foreach ($courses as $key => $course) {
+                    if (in_array($course->category, $categories)) {
+                        $course_names .= "{$course->fullname}|";
+                    }
+                }
+                $userprofiledata['courses'] = $course_names;
+            }
 
         return $userprofiledata;
     });

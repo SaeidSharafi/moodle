@@ -143,6 +143,10 @@ class format_tiles extends core_courseformat\base {
             // Return the general section.
             return get_string('section5name', 'format_topics');
         }
+        if ($section->section == 6) {
+            // Return the general section.
+            return get_string('section6name', 'format_topics');
+        }
         return get_string('sectionname', 'format_tiles').' '.$section->section;
 
     }

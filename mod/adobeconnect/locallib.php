@@ -2640,7 +2640,7 @@ function get_custom_fields() {
     $fieldsets = [];
     foreach ($fields as $field) {
         $field = trim($field);
-        if (array_key_exists($field, $custom_fields)) {
+        if ($custom_fields && array_key_exists($field, $custom_fields)) {
             $fieldsets[] = $custom_fields[$field];
         }
 

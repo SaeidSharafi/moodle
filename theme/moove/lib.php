@@ -99,11 +99,12 @@ function theme_moove_get_pre_scss($theme) {
         if (empty($value)) {
             continue;
         }
-        array_map(function($target) use (&$scss, $value) {
-            if ($target == 'fontsite') {
-                $scss .= '$' . $target . ': "' . $value . '", sans-serif !default' .";\n";
+        array_map(function ($target) use (&$scss, $value, $configkey) {
+            if ($configkey == 'fontsite') {
+                $scss .= '$'.$target.': "'.$value.'", Roboto, sans-serif !default'.";\n";
+                $scss .= '$'.$target.'-en: Roboto, "'.$value.'", sans-serif !default'.";\n";
             } else {
-                $scss .= '$' . $target . ': ' . $value . ";\n";
+                $scss .= '$'.$target.': '.$value.";\n";
             }
         }, (array) $targets);
     }

@@ -339,6 +339,9 @@ class api {
 
         foreach ($getnoncontactusers(0, $batchlimit) as $users) {
             foreach ($users as $id => $user) {
+                if ($CFG->message_no_restrict || (user_has_roles_assignment($id, [3,4])
+                    || user_has_roles_assignment($userid, [3,4]))
+                ) {
                 // User visibility checks: only return users who are visible to the user performing the search.
                 // Which visibility check to use depends on the 'messagingallusers' (site wide messaging) setting:
                 // - If enabled, return matched users whose profiles are visible to the current user anywhere (site or course).
@@ -365,6 +368,7 @@ class api {
                     $noofvalidseenrecords++;
                 }
             }
+        }
         }
         $foundusers = $returnedusers;
 

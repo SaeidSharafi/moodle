@@ -929,6 +929,17 @@ class course_output implements \renderable, \templatable {
             $moduleobject['uservisible'] = $mod->is_visible_on_course_page();
             $moduleobject['clickable'] = $mod->uservisible;
         }
+        $activitydates = \core\activity_dates::get_dates_for_module($mod, $USER->id);
+        $moduleobject['activitydates'] = [];
+        foreach ($activitydates as $activitydate) {
+            if (!array_key_exists('datestring', $activitydate)) {
+                if (array_key_exists('timestamp', $activitydate)) {
+                    $activitydate['datestring'] = userdate($activitydate['timestamp'],format: '%Y/%m/%d, %H:%M');
+                }
+            }
+            $moduleobject['activitydates'][] = $activitydate;
+        }
+
         // From Moodle 3.11 onwards, we may have extra completion conditions info to display under activities.
         if (class_exists('\core\activity_dates') && isset($this->showcompletionconditions)
             && $this->showcompletionconditions) {
@@ -985,17 +996,20 @@ class course_output implements \renderable, \templatable {
 
         // Specific handling for embedded resource items (e.g. PDFs)  as allowed by site admin.
         if ($mod->modname == 'resource') {
-            if (in_array($moduleobject['modResourceType'], $this->usemodalsforcoursemodules['resources'])) {
                 $moduleobject['isEmbeddedResource'] = 1;
                 $moduleobject['launchtype'] = 'resource-modal';
                 $moduleobject['pluginfileUrl'] = $this->plugin_file_url($mod);
-            } else {
-                // We are not using modal, so add the standard moodle onclick event to the link to launch pop up if appropriate.
-                if ($mod->onclick) {
-                    $moduleobject['onclick'] = htmlspecialchars_decode($mod->onclick, ENT_QUOTES);
-                    $moduleobject['launchtype'] = 'standard';
-                }
-            }
+//            if (in_array($moduleobject['modResourceType'], $this->usemodalsforcoursemodules['resources'])) {
+//                $moduleobject['isEmbeddedResource'] = 1;
+//                $moduleobject['launchtype'] = 'resource-modal';
+//                $moduleobject['pluginfileUrl'] = $this->plugin_file_url($mod);
+//            } else {
+//                // We are not using modal, so add the standard moodle onclick event to the link to launch pop up if appropriate.
+//                if ($mod->onclick) {
+//                    $moduleobject['onclick'] = htmlspecialchars_decode($mod->onclick, ENT_QUOTES);
+//                    $moduleobject['launchtype'] = 'standard';
+//                }
+//            }
         }
 
         // Issue 67 handling for LTI set to open in new window.

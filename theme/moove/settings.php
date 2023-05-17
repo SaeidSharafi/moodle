@@ -189,6 +189,30 @@ if ($ADMIN->fulltree) {
     */
     $page = new admin_settingpage('theme_moove_frontpage', get_string('frontpagesettings', 'theme_moove'));
 
+    $name = 'theme_moove/frontpagetitle';
+    $title = get_string('frontpagetitle', 'theme_moove');
+//    $description = get_string('frontpagetitledesc', 'theme_moove');
+    $default = get_string('frontpagetitledefault', 'theme_moove');
+    $setting = new admin_setting_configtext($name, $title, '', $default);
+    $page->add($setting);
+
+    $name = 'theme_moove/frontpagecontent';
+    $title = get_string('frontpagecontent', 'theme_moove');
+//    $description = get_string('frontpagecontentdesc', 'theme_moove');
+    $default = get_string('frontpagecontentdefault', 'theme_moove');
+    $setting = new admin_setting_confightmleditor($name, $title, '', $default);
+    $page->add($setting);
+
+    $name = 'theme_moove/frontpagevideo';
+    $title = get_string('frontpagevideo', 'theme_moove');
+//    $description = get_string('frontpagevideodesc', 'theme_moove');
+    $setting = new admin_setting_configtext($name, $title, '', '');
+    $page->add($setting);
+
+
+    $setting = new admin_setting_heading('contentseparator', '', '<hr>');
+    $page->add($setting);
+
     // Disable teachers from cards.
     $name = 'theme_moove/disableteacherspic';
     $title = get_string('disableteacherspic', 'theme_moove');

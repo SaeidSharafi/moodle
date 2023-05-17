@@ -40,13 +40,18 @@ class actionmenu implements templatable, renderable {
     /** @var int The course module ID. */
     private $cmid;
 
+    private $course_id;
+    private $instance;
+
     /**
      * Constructor for this object.
      *
      * @param int $cmid The course module ID.
      */
-    public function __construct(int $cmid) {
+    public function __construct(int $cmid,int $instance = null,int $course_id = null) {
         $this->cmid = $cmid;
+        $this->course_id = $course_id;
+        $this->instance = $instance;
     }
 
     /**
@@ -56,10 +61,14 @@ class actionmenu implements templatable, renderable {
      * @return array Data to be used for a template.
      */
     public function export_for_template(\renderer_base $output): array {
-        return [
+        $actions = [
             'submissionlink' => (new moodle_url('/mod/assign/view.php', ['id' => $this->cmid, 'action' => 'grading']))->out(false),
             'gradelink' => (new moodle_url('/mod/assign/view.php', ['id' => $this->cmid, 'action' => 'grader']))->out(false)
         ];
+        if ($this->course_id && $this->instance){
+            $actions['exportlink'] =(new moodle_url('/report/assign/index.php', ['id'=>$this->course_id,'assign' => $this->instance, 'export' => 1]))->out(false);
+        }
+        return $actions;
     }
 
 }

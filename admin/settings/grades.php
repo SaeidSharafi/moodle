@@ -60,7 +60,7 @@ if (has_capability('moodle/grade:manage', $systemcontext)
         $setting = new admin_setting_configtext('grade_export_userprofilefields',
             new lang_string('gradeexportuserprofilefields', 'grades'),
             new lang_string('gradeexportuserprofilefields_desc', 'grades'),
-            'firstname,lastname,idnumber,institution,department,email', PARAM_TEXT);
+            'firstname,lastname,username,email,idnumber,institution,department,email', PARAM_TEXT);
         $setting->set_force_ltr(true);
         $temp->add($setting);
 
