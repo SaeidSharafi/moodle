@@ -31,6 +31,7 @@ require_once($CFG->dirroot . '/auth/sms/locallib.php');
 require_once($CFG->dirroot . '/auth/sms/panel/sms.ir/SmsIR_VerificationCode.php');
 require_once($CFG->dirroot . '/auth/sms/panel/sms.ir/new_verification_code.php');
 require_once($CFG->dirroot . '/auth/sms/panel/magfa/magfa.php');
+require_once($CFG->dirroot . '/auth/sms/panel/rangine/rangine.php');
 require_once($CFG->dirroot . '/login/lib.php');
 
 if (!$authplugin = signup_is_enabled()) {

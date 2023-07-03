@@ -32,6 +32,7 @@ require_once($CFG->dirroot . '/auth/sms/locallib.php');
 
 class login_signup_form extends moodleform implements renderable, templatable {
 
+    private $test;
     function definition() {
         global $USER, $CFG, $SESSION;
         $mform = $this->_form;
@@ -43,9 +44,11 @@ class login_signup_form extends moodleform implements renderable, templatable {
             $mform->addRule('phone2', '', 'required', null, 'client');
 
             if(isset($config->smsforgottenpassword) && $config->smsforgottenpassword) {
-                //$mform->addElement('checkbox', 'forgotten_password', get_string('forgotten', 'core'));
-                $mform->setDefault('forgotten_password', 1);
-                $mform->addElement('hidden', 'forgotten_password');
+                 if(isset($_GET['forgotten_password'])) {
+                     $this->test +=1;
+                    $mform->setDefault('forgotten_password', 1);
+                    $mform->addElement('hidden', 'forgotten_password');
+                }
                 //if(isset($_GET['forgotten_password'])) {
                 //    $mform->setDefault('forgotten_password', 1);
                 //}
@@ -156,6 +159,7 @@ class login_signup_form extends moodleform implements renderable, templatable {
     public function validation($data, $files) {
         global $SESSION, $DB;
         $errors = parent::validation($data, $files);
+
         if (signup_captcha_enabled()) {
             $recaptchaelement = $this->_form->getElement('recaptcha_element');
             if (!empty($this->_form->_submitValues['g-recaptcha-response'])) {
@@ -167,6 +171,7 @@ class login_signup_form extends moodleform implements renderable, templatable {
                 $errors['recaptcha_element'] = get_string('missingrecaptchachallengefield');
             }
         }
+
         if($data['type'] == 'phone2') {
             if(isset($data['forgotten_password']) && $data['forgotten_password']) {
                 // check mobile exist (mobile must be exist)
@@ -292,6 +297,69 @@ class login_signup_form extends moodleform implements renderable, templatable {
             } else {
                 auth_sms_clear_session();
                 print_error(print_r($result, true));
+                exit;
+            }
+        }else if($config->smstype == 'rangine') {
+            $username = $config->smsrangineusername;
+            $password = $config->smsranginepassword;
+            $domain = $config->smsranginedomain;
+            $line_number = $config->smsranginelinenumber;
+            $template_id = $config->smsranginetemplateid;
+            $Code = $SESSION->activation_code;
+            try {
+                $result = rangine_send($username, $password, $domain, $template_id, $line_number, [$SESSION->phone2],$Code);
+
+            }catch (Exception $exception){
+                auth_sms_clear_session();
+                throw $exception;
+            }
+            if(is_array($result)) {
+                $code = $result[0];
+                $msg = $result[1];
+                if($code == 3) {
+                    auth_sms_clear_session();
+                    print_error("خط به شما تعلق ندارد.");
+                    exit;
+                }
+                if($code == 5) {
+                    auth_sms_clear_session();
+                    print_error("اعتبار کافی نیست.");
+                    exit;
+                }
+                if($code == 962) {
+                    auth_sms_clear_session();
+                    print_error("نام کاربری و رمز عبور اشتباه است");
+                    exit;
+                }
+                if($code == 963) {
+                    auth_sms_clear_session();
+                    print_error("پترن ارسالی نامعتبر است.");
+                    exit;
+                }
+                if($code == 971) {
+                    auth_sms_clear_session();
+                    print_error("پترن ارسالی نامعتبر است");
+                    exit;
+                }
+                if($code == 970) {
+                    auth_sms_clear_session();
+                    print_error("پارامتر های ارسالی برای پترن نامعتبر است.");
+                    exit;
+                }
+                if($code == 996) {
+                    auth_sms_clear_session();
+                    print_error("پترن فعال نیست.");
+                    exit;
+                }
+                if ($code <= 1005){
+                    auth_sms_clear_session();
+                    print_error($msg);
+                    exit;
+                }
+            }elseif(!is_number($result)){
+                auth_sms_clear_session();
+
+                print_error("خطای ناشناخته" . " : " . print_r($result,true));
                 exit;
             }
         } else {

@@ -54,6 +54,7 @@ if ($ADMIN->fulltree){
 			[
 				'sms.ir' => 'sms.ir',
 				'magfa.com' => 'magfa.com',
+				'rangine' => 'rangine',
 			]
 		));
 
@@ -95,6 +96,28 @@ if ($ADMIN->fulltree){
 		$settings->add(new admin_setting_end_section('auth_sms/smsir_end_section'));
 	}
 
+    if(true) {
+        $settings->add(new admin_setting_begin_section('auth_sms/rangine_begin_section',
+            new lang_string('settings', 'core_plugin') . ' (rangine)',
+            ''));
+
+        $settings->add(new admin_setting_configtext('auth_sms/smsrangineusername', get_string('username', 'core'),
+            '', '', PARAM_RAW));
+
+        $settings->add(new admin_setting_configpasswordunmask('auth_sms/smsranginepassword', get_string('password', 'core'),
+            get_string('smsranginepassword_desc', 'auth_sms'), '', PARAM_RAW));
+
+        $settings->add(new admin_setting_configtext('auth_sms/smsranginedomain', get_string('smsranginedomain', 'auth_sms'),
+            get_string('smsranginedomain_desc', 'auth_sms'), '', PARAM_RAW));
+
+        $settings->add(new admin_setting_configtext('auth_sms/smsranginelinenumber', get_string('smsranginelinenumber', 'auth_sms'),
+            get_string('smsranginelinenumber_desc', 'auth_sms'), '', PARAM_RAW));
+
+        $settings->add(new admin_setting_configtext('auth_sms/smsranginetemplateid', get_string('smsranginetemplateid', 'auth_sms'),
+            get_string('smsranginetemplateid_desc', 'auth_sms'), '', PARAM_RAW));
+
+        $settings->add(new admin_setting_end_section('auth_sms/rangine_end_section'));
+    }
 	//magfa.com
 	if(true) {
 		$settings->add(new admin_setting_begin_section('auth_sms/magfa_begin_section',

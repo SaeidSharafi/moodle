@@ -24,17 +24,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/authlib.php');
+require_once($CFG->libdir . '/authlib.php');
 
 /**
  * Plugin for no authentication.
  */
-class auth_plugin_sms extends auth_plugin_base {
+class auth_plugin_sms extends auth_plugin_base
+{
 
     /**
      * Constructor.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->authtype = 'sms';
         $this->config = get_config('auth_sms');
     }
@@ -44,7 +46,8 @@ class auth_plugin_sms extends auth_plugin_base {
      *
      * @deprecated since Moodle 3.1
      */
-    public function auth_plugin_sms() {
+    public function auth_plugin_sms()
+    {
         debugging('Use of class name as constructor is deprecated', DEBUG_DEVELOPER);
         self::__construct();
     }
@@ -57,15 +60,17 @@ class auth_plugin_sms extends auth_plugin_base {
      * @param string $password The password
      * @return bool Authentication success or failure.
      */
-    function user_login ($username, $password) {
+    function user_login($username, $password)
+    {
         global $CFG, $DB;
-        if ($user = $DB->get_record('user', array('username'=>$username, 'mnethostid'=>$CFG->mnet_localhost_id))) {
+        if ($user = $DB->get_record('user', array('username' => $username, 'mnethostid' => $CFG->mnet_localhost_id))) {
             return validate_internal_user_password($user, $password);
         }
         return false;
     }
 
-    function can_signup() {
+    function can_signup()
+    {
         return true;
     }
 
@@ -74,7 +79,8 @@ class auth_plugin_sms extends auth_plugin_base {
      *
      * @return bool
      */
-    function can_confirm() {
+    function can_confirm()
+    {
         //override if needed
         return true;
     }
@@ -84,12 +90,13 @@ class auth_plugin_sms extends auth_plugin_base {
      *
      * called when the user password is updated.
      *
-     * @param  object  $user        User table object
-     * @param  string  $newpassword Plaintext password
+     * @param object $user User table object
+     * @param string $newpassword Plaintext password
      * @return boolean result
      *
      */
-    function user_update_password($user, $newpassword) {
+    function user_update_password($user, $newpassword)
+    {
         $user = get_complete_user_data('id', $user->id);
         // This will also update the stored hash to the latest algorithm
         // if the existing hash is using an out-of-date algorithm (or the
@@ -97,7 +104,8 @@ class auth_plugin_sms extends auth_plugin_base {
         return update_internal_user_password($user, $newpassword);
     }
 
-    function prevent_local_passwords() {
+    function prevent_local_passwords()
+    {
         return false;
     }
 
@@ -106,7 +114,8 @@ class auth_plugin_sms extends auth_plugin_base {
      *
      * @return bool
      */
-    function is_internal() {
+    function is_internal()
+    {
         return true;
     }
 
@@ -116,7 +125,8 @@ class auth_plugin_sms extends auth_plugin_base {
      *
      * @return bool
      */
-    function can_change_password() {
+    function can_change_password()
+    {
         return true;
     }
 
@@ -126,7 +136,8 @@ class auth_plugin_sms extends auth_plugin_base {
      *
      * @return moodle_url
      */
-    function change_password_url() {
+    function change_password_url()
+    {
         return null;
     }
 
@@ -135,7 +146,8 @@ class auth_plugin_sms extends auth_plugin_base {
      *
      * @return bool
      */
-    function can_reset_password() {
+    function can_reset_password()
+    {
         return true;
     }
 
@@ -144,7 +156,8 @@ class auth_plugin_sms extends auth_plugin_base {
      *
      * @return bool
      */
-    function can_be_manually_set() {
+    function can_be_manually_set()
+    {
         return true;
     }
 
@@ -153,11 +166,15 @@ class auth_plugin_sms extends auth_plugin_base {
      * This is used in /login/signup.php.
      * @return moodle_form A form which edits a record from the user table.
      */
-    function signup_form() {
+    function signup_form()
+    {
         global $CFG;
-
+        $forgotten="";
+        if (isset($_GET['forgotten_password'])) {
+            $forgotten = "?forgotten_password=1";
+        }
         require_once($CFG->dirroot . '/auth/sms/forms/mobile_form.php');
-        return new login_signup_form("$CFG->wwwroot/auth/sms/forms/mobile.php", null, 'post', '', array('autocomplete' => 'on'));
+        return new login_signup_form("$CFG->wwwroot/auth/sms/forms/mobile.php$forgotten", ["test" => 12], 'post', '', array('autocomplete' => 'on'));
     }
 
     /**
@@ -167,10 +184,11 @@ class auth_plugin_sms extends auth_plugin_base {
      * @param object $user new user object
      * @param boolean $notify print notice with link and terminate
      */
-    function user_signup($user, $notify=true) {
+    function user_signup($user, $notify = true)
+    {
         global $CFG, $DB, $SESSION, $PAGE, $OUTPUT;
-        require_once($CFG->dirroot.'/user/profile/lib.php');
-        require_once($CFG->dirroot.'/user/lib.php');
+        require_once($CFG->dirroot . '/user/profile/lib.php');
+        require_once($CFG->dirroot . '/user/lib.php');
 
         $plainpassword = $user->password;
         $user->password = hash_internal_user_password($user->password);

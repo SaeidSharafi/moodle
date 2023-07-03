@@ -42,11 +42,20 @@ $string['smsmagfadomain'] = 'دامنه';
 $string['smsmagfadomain_desc'] = 'معمولا کلمه "magfa".';
 $string['smsmagfalinenumber'] = 'شماره خط';
 $string['smsmagfalinenumber_desc'] = '3000xxxxxxxx';
+$string['smsmagfatemplatetext'] = 'قالب پیام';
+$string['smsmagfatemplatetext_desc'] = 'این متن برای کاربر ارسال می شود. شما می توانید از متغیر "{code}" استفاده نمایید.';
+
+$string['smsranginepassword_desc'] = 'کلمه عبور وب سرویس (از rangine)';
+$string['smsranginedomain'] = 'دامنه';
+$string['smsranginedomain_desc'] = 'معمولا کلمه "rangine".';
+$string['smsranginelinenumber'] = 'شماره خط';
+$string['smsranginelinenumber_desc'] = '3000xxxxxxxx';
+$string['smsranginetemplateid'] = 'کد قالب پیام';
+$string['smsranginetemplateid_desc'] = 'از بخش ارسال بر اساس پترن https://sms.rangine.ir/ دریافت کنید.';
 $string['smstype'] = 'نوع';
 $string['smsphoneplace'] = 'مکان ذخیره سازی تلفن همراه';
 $string['smsphoneplace_desc'] = 'تلفن همراه می تواند به عنوان تلفن همراه یا در مشخصه های اضافی کاربران ذخیره شود.';
-$string['smsmagfatemplatetext'] = 'قالب پیام';
-$string['smsmagfatemplatetext_desc'] = 'این متن برای کاربر ارسال می شود. شما می توانید از متغیر "{code}" استفاده نمایید.';
+
 $string['not_exist_error'] = 'وجود ندارد.';
 $string['password_mismatch_error'] = 'عدم تطابق رمز عبور';
 $string['change_password_success'] = 'رمز عبور شما با موفقیت تغییر کرد.';
