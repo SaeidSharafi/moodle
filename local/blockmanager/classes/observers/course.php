@@ -53,6 +53,19 @@ class course {
 
         $DB->insert_record('block_instances', $block);
 
+        // Add cocoon_course_details (enrolment) block to the course
+        $block = new \stdClass();
+        $block->blockname = 'cocoon_course_details';
+        $block->parentcontextid = $DB->get_field('context', 'id', array('contextlevel' => CONTEXT_COURSE, 'instanceid' => $courseid));
+        $block->pagetypepattern = 'course-view-*';
+        $block->defaultregion = 'side-pre';
+        $block->showinsubcontexts = 0;
+        $block->defaultweight = 0;
+        $block->configdata = 'Tzo4OiJzdGRDbGFzcyI6MTY6e3M6NToiaXRlbXMiO3M6MToiNiI7czoxNDoiY2NuX21hcmdpbl90b3AiO3M6MToiMCI7czoxNzoiY2NuX21hcmdpbl9ib3R0b20iO3M6MToiMCI7czoxMzoiY2NuX2Nzc19jbGFzcyI7czowOiIiO3M6MTE6Iml0ZW1fdGl0bGUxIjtzOjExOiIxMSDYrNmE2LPZhyI7czoxMDoiaXRlbV9pY29uMSI7czoyMjoiZmxhdGljb24tcGxheS1idXR0b24tMSI7czoxMToiaXRlbV90aXRsZTIiO3M6MjY6ItmB2KfbjNmEINmH2KfbjCDYttmF24zZhdmHIjtzOjEwOiJpdGVtX2ljb24yIjtzOjE3OiJmbGF0aWNvbi1kb3dubG9hZCI7czoxMToiaXRlbV90aXRsZTMiO3M6Mzg6Itiv2LPYqtix2LPbjCDYr9in2KbZhduMINio2Ycg2K/ZiNix2YcgIjtzOjEwOiJpdGVtX2ljb24zIjtzOjE0OiJmbGF0aWNvbi1rZXktMSI7czoxMToiaXRlbV90aXRsZTQiO3M6NjE6ItmC2KfYqNmE24zYqiDYr9iz2KrYsdiz24wg2K/YsSDYr9iz2Krar9in2Ycg2YfYp9uMINmF2K7YqtmE2YEiO3M6MTA6Iml0ZW1faWNvbjQiO3M6MTk6ImZsYXRpY29uLXJlc3BvbnNpdmUiO3M6MTE6Iml0ZW1fdGl0bGU1IjtzOjI3OiLZh9mF2LHYp9mHINio2Kcg2KrZhdix24zZhiAiO3M6MTA6Iml0ZW1faWNvbjUiO3M6MTQ6ImZsYXRpY29uLWZsYXNoIjtzOjExOiJpdGVtX3RpdGxlNiI7czo0ODoi2YXYr9ix2qkg2YXYudiq2KjYsSDYqNinINmC2KfYqNmE24zYqiDYqtix2KzZhdmHIjtzOjEwOiJpdGVtX2ljb242IjtzOjE0OiJmbGF0aWNvbi1tZWRhbCI7fQ==';
+        $block->timemodified = $block->timecreated = time();
+
+        $DB->insert_record('block_instances', $block);
+
         // Add cocoon_course_overview block to the course
         $block = new \stdClass();
         $block->blockname = 'cocoon_course_overview';
