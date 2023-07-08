@@ -100,7 +100,7 @@ class block_cocoon_course_details extends block_base
         } elseif($ccnCourse->hasPrice == '1') {
             $this->content->text .='
             <div class="price">
-              <i class="fa fa-credit-card"></i><span>'. get_string('course_price', 'theme_edumy') .'</span> ' . $ccnCourse->price .' <small>'. array_values($ccnCourse->priceMethods)[0]->currency .'</small>
+              <i class="fa fa-credit-card"></i><span>'. get_string('course_price', 'theme_edumy') .'</span> ' . number_format(preg_replace("/[^0-9]/", '', $ccnCourse->price)) .' <small>'. get_string(array_values($ccnCourse->priceMethods)[0]->currency,'core_currencies') .'</small>
             </div>';
            $this->content->text .='
           <a href="'. $ccnCourse->enrolmentLink .'" class="cart_btnss">'. get_string('course_enrolment', 'theme_edumy') .'</a>

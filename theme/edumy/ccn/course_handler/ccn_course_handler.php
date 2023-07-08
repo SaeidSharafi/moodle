@@ -148,7 +148,11 @@ class ccnCourseHandler {
         $coursePriceFormat9 .= $ccnString.$ccnEnrolmentCosts[$key]->currencySymbol . $ccnEnrolmentCosts[$key]->cost . $ccnEnrolmentCosts[$key]->currency;
         if (class_exists('NumberFormatter')) {
           /* @ccnBreak: these are duplicates of the 0-3 without NumberFormatter */
-          $coursePriceFormat10 .= $ccnString.$ccnEnrolmentCosts[$key]->currency . ' ' . $ccnEnrolmentCosts[$key]->cost;
+            if ($ccnString.$ccnEnrolmentCosts[$key]->currency == 'IRR'){
+                $coursePriceFormat10 .=  number_format($ccnEnrolmentCosts[$key]->cost) . ' ' . get_string($ccnString.$ccnEnrolmentCosts[$key]->currency,'core_currencies') ;
+            }else{
+                $coursePriceFormat10 .= get_string($ccnString.$ccnEnrolmentCosts[$key]->currency,'core_currencies') . ' ' . $ccnEnrolmentCosts[$key]->cost;
+            }
           $coursePriceFormat11 .= $ccnString.$ccnEnrolmentCosts[$key]->currency . $ccnEnrolmentCosts[$key]->cost;
           $coursePriceFormat12 .= $ccnString.$ccnEnrolmentCosts[$key]->cost . $ccnEnrolmentCosts[$key]->currency;
           $coursePriceFormat13 .= $ccnString.$ccnEnrolmentCosts[$key]->cost . ' ' . $ccnEnrolmentCosts[$key]->currency;
