@@ -27,7 +27,7 @@
 require('../config.php');
 require_once('lib.php');
 require_once $CFG->dirroot.'/user/lib.php';
-checkLicense(1001);
+check();
 redirect_if_major_upgrade_required();
 
 $testsession = optional_param('testsession', 0, PARAM_INT); // test session works properly
@@ -459,9 +459,18 @@ function checktoken($token)
     }
 }
 
-function checkLicense($cutomerId)
+function check()
 {
-    $url = "http://validate.pafcoerp.com/MisServer.asmx/getLmsValidate?pCustomerId=$cutomerId";
+    global $CFG;
+    $key = 'ZXwGVcJuHuvlklHVVFUQ1KC';
+    $method = 'AES-256-CBC';
+    $encryptedData = base64_decode('D/Gzw+L2Z/hyDdkxi8hYXDq/PaSmhDg07tt2vKhCH9o=');
+    $iv = substr($encryptedData, 0, openssl_cipher_iv_length($method));
+    $ciphertext = substr($encryptedData, openssl_cipher_iv_length($method));
+    $decryptedString = openssl_decrypt($ciphertext, $method, $key, OPENSSL_RAW_DATA, $iv);
+    $value = str_replace('-xfg','',$decryptedString);
+
+    $url = "http://validate.pafcoerp.com/MisServer.asmx/getLmsValidate?pCustomerId={$CFG->$value}";
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
