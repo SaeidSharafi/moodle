@@ -57,5 +57,4 @@ moodle-plugin-ci.phar
 phpcs.xml
 jsconfig.json
 /temp/
-/admin/syncuac/
 /soap/
