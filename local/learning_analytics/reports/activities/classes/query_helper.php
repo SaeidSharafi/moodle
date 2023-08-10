@@ -47,7 +47,7 @@ class query_helper {
 
         $query = <<<SQL
         SELECT
-            cm.id AS cmid, 
+            cm.id AS cmid,
             m.name AS modname,
             COUNT(log.id) hits
         FROM {modules} m
@@ -68,15 +68,20 @@ SQL;
     }
 
     public static function preview_query_most_clicked_activity(int $courseid, $privacythreshold) {
-        global $DB;
+        global $CFG,$DB;
 
         $date = new \DateTime();
         $date->setTime(23, 59, 59); // Include today.
         $date->modify('-1 week');
         $oneweekago = $date->getTimestamp();
+        $top = $limit = '';
+        if ($CFG->dbtype === 'sqlsrv')
+            $top = 'TOP 3';
+        else
+            $limit = 'LIMIT 3';
 
         $query = <<<SQL
-        SELECT
+        SELECT {$top}
             cm.id AS cmid,
             m.name as modname,
             COUNT(*) AS hits
@@ -94,7 +99,7 @@ SQL;
         GROUP BY cm.id, m.name
         HAVING count(*) >= ?
         ORDER BY hits DESC
-        LIMIT 3
+        {$limit}
 SQL;
 
         return $DB->get_records_sql($query, [$courseid, $oneweekago, max(1, $privacythreshold)]);

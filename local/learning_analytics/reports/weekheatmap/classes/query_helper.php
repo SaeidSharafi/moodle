@@ -32,17 +32,25 @@ use local_learning_analytics\report_base;
 use context_course;
 use \DateTime;
 
-class query_helper {
+class query_helper
+{
 
-    public static function query_heatmap(int $courseid): array {
+    public static function query_heatmap(int $courseid): array
+    {
         global $DB, $CFG;
 
         $weekstatement = "FROM_UNIXTIME(l.timecreated, '%w-%k')";
+        $group_by = 'heatpoint';
 
         if ($CFG->dbtype === 'pgsql') {
-            $date = new DateTime();        
+            $date = new DateTime();
             $timezone = $date->getTimezone()->getName();
             $weekstatement = "TO_CHAR(TO_TIMESTAMP(l.timecreated) at time zone '".$timezone."', 'D-HH24')";
+        } elseif ($CFG->dbtype === 'sqlsrv') {
+            # T-SQL (which is SQL Server's syntax) cannot GROUP BY column aliases
+            $weekstatement
+                = "CONCAT(DATEPART(weekday, DATEADD(SECOND, l.timecreated, '1970-01-01')) - 1, '-', DATEPART(hour, DATEADD(SECOND, l.timecreated + 3600, '1970-01-01')))";
+            $group_by = $weekstatement;
         }
 
         // MySQL returns points where 0-00 => Sun,0-1am; 0-01 => Sun,1-2am; ...
@@ -53,7 +61,7 @@ class query_helper {
             COUNT(1) AS value
         FROM {logstore_lanalytics_log} AS l
             WHERE l.courseid = ?
-        GROUP BY heatpoint
+        GROUP BY {$group_by}
         ORDER BY heatpoint
 SQL;
 
@@ -65,10 +73,10 @@ SQL;
                 $split = explode('-', $row->heatpoint);
                 $week = $split[0] - 1;
                 $hour = (int) $split[1]; // remove leading 0
-                $newheatpoint = $week . '-' . $hour;
+                $newheatpoint = $week.'-'.$hour;
                 $returnrecords[$newheatpoint] = (object) array(
                     'heatpoint' => $newheatpoint,
-                    'value' => $row->value,
+                    'value'     => $row->value,
                 );
             }
         } else {
@@ -78,7 +86,8 @@ SQL;
         return $returnrecords;
     }
 
-    private static function click_count_helper(int $courseid, int $from, int $to = null) {
+    private static function click_count_helper(int $courseid, int $from, int $to = null)
+    {
         global $DB;
 
         $query = <<<SQL
@@ -95,7 +104,8 @@ SQL;
         return reset($res);
     }
 
-    public static function preview_query_click_count(int $courseid) : array {
+    public static function preview_query_click_count(int $courseid): array
+    {
 
         $date = new \DateTime();
         $date->setTime(23, 59, 59); // Include today.

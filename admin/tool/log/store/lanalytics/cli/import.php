@@ -85,8 +85,12 @@ function truncate_logs() {
 
 // returns true if there is more data
 function check_for_rows(int $offsetid) {
-    global $DB;
-    $row = $DB->get_records_sql("SELECT id FROM {logstore_standard_log} WHERE id > ? LIMIT 1", [$offsetid]);
+    global $CFG,$DB;
+    if ($CFG->dbtype === 'sqlsrv')
+        $top = 'TOP 1';
+    else
+        $limit = 'LIMIT 1';
+    $row = $DB->get_records_sql("SELECT {$top} id FROM {logstore_standard_log} WHERE id > ? {$limit}", [$offsetid]);
     return count($row) !== 0;
 }
 
@@ -103,7 +107,7 @@ function identify_events(int $offsetid, int $limitid) {
             AND e.id IS NULL
 SQL;
     $rows = $DB->get_records_sql($sql, [$offsetid, $limitid]);
-    
+
     if (count($rows) !== 0) { // insert event names into table
         $eventid = $DB->insert_records('logstore_lanalytics_evtname', $rows);
     }
@@ -111,7 +115,7 @@ SQL;
 
 function copy_rows(int $offsetid, int $limitid) {
     global $DB;
-    
+
     $sql = <<<SQL
         INSERT INTO {logstore_lanalytics_log}
             (eventid, timecreated, courseid, contextid, device)
