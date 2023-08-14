@@ -32,6 +32,12 @@ global $CFG;  // This is necessary here for PHPUnit execution
 $CFG = new stdClass();
 
 //=========================================================================
+// 0. Customer License
+//=========================================================================
+
+$CFG->customerId = 110;
+
+//=========================================================================
 // 1. DATABASE SETUP
 //=========================================================================
 // First, you need to configure the database where all Moodle data       //
