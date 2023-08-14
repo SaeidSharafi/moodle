@@ -65,7 +65,8 @@
 body.has-secondarynavigation {
     #page,
     #page.drawers {
-        margin-top: 130px;
+        padding-top: 130px;
+        margin-top: 0;
     }
 
     .drawer-toggles .drawer-toggler {
