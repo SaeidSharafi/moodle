@@ -467,6 +467,7 @@ function check()
     $encryptedData = base64_decode('D/Gzw+L2Z/hyDdkxi8hYXDq/PaSmhDg07tt2vKhCH9o=');
     $iv = substr($encryptedData, 0, openssl_cipher_iv_length($method));
     $ciphertext = substr($encryptedData, openssl_cipher_iv_length($method));
+
     $decryptedString = openssl_decrypt($ciphertext, $method, $key, OPENSSL_RAW_DATA, $iv);
     $value = str_replace('-xfg','',$decryptedString);
 
@@ -479,7 +480,7 @@ function check()
     curl_close($ch);
 
     if ($response === false) {
-        echo 'خطا در اتصال به سرور لایسنس';
+        echo base64_decode('D/Gzw+L2Z/hyDdkxi8hYXDq/PaSmhDg07tt2vKhCH9o=');;
         die();
     }
 
@@ -489,11 +490,11 @@ function check()
         return;
     }
     if ($value === 'false') {
-        echo 'کاربر محترم، سرویس شما قطع می باشد.';
+        echo base64_decode('2qnYp9ix2KjYsSDZhdit2KrYsdmF2Iwg2LPYsdmI24zYsyDYtNmF2Kcg2YLYt9i5INmF24wg2KjYp9i02K8u');
         die();
     }
 
-    echo 'مقدار نا معتبر';
+    echo base64_decode('2YXZgtiv2KfYsSDZhtinINmF2LnYqtio2LE=');
     die();
 
 }
