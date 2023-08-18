@@ -15,6 +15,11 @@
     right: 15px;
     text-align: right;
 }
+body.dir-rtl .dashboardbox-icon {
+    left: 15px;
+    right: auto;
+
+}
 @media (max-width: 1600px) {
     .dashboardbox-icon {
         display: none;
@@ -72,4 +77,8 @@
 .helpicon {
     font-size: 28px;
     margin: 5px 20px 0 0;
+}
+body.dir-rtl .helpicon {
+    font-size: 28px;
+    margin: 0 0 0 20px;
 }
