@@ -37,7 +37,7 @@ $string['all_activities'] = 'تمام فعالیت‌ها و منابع';
 $string['activity_type'] = 'نوع فعالیت';
 
 $string['table_header_hits'] = 'تعداد کلیک‌ها';
-$string['hits'] = 'کلیک‌ها';
+$string['hits'] = 'کلیک';
 
 $string['activity_name'] = 'فعالیت';
 $string['section'] = 'بخش';

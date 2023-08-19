@@ -26,7 +26,7 @@ $string['pluginname'] = 'داشبورد آنالیتیکس یادگیری';
 
 $string['privacy:metadata'] = 'این افزونه هیچ داده شخصی را ذخیره نمی‌کند.';
 
-$string['clicks'] = 'کلیک‌ها';
+$string['clicks'] = 'کلیک‌';
 $string['sessions'] = 'نشست‌ها';
 $string['learners'] = 'شرکت‌کنندگان';
 
