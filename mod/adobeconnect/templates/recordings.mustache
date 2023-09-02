@@ -88,7 +88,17 @@
                                     <i class="icon fa fa-eye fa-fw color1" title="{{#str}}hide{{/str}}" aria-label="{{#str}}hide{{/str}}"></i>
                                 </a>
                             {{/canmanagerecordings}}
-                            {{/url_offline }}
+                            {{/url_offline}}
+                            {{^url_offline}}
+                                {{#canmanagerecordings}}
+                                    <a href="#" class="d-inline-block del-recording" data-action="setforofflinerecordings"
+                                       data-recordingid="{{recording_id}}"
+                                       data-recordingscoid="{{recording_scoid}}">
+                                        <i class="icon fa fa-trash fa-fw color1" title="{{#str}}delete{{/str}}" aria-label="{{#str}}add_to_offline{{/str}}"></i>
+                                        <i class="spinner-border spinner-border-sm"></i>
+                                    </a>
+                                {{/canmanagerecordings}}
+                            {{/url_offline}}
                         {{/hideoffline}}
                     </td>
                 {{/showoffline}}

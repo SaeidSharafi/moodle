@@ -11,6 +11,7 @@ const Selectors = {
     syncRecordings: '[data-action="syncrecordings"]',
     syncAttendance: '[data-action="syncattendance"]',
     deleteRecording: '[data-action="deleterecording"]',
+    setForOfflineRecordings: '[data-action="setforofflinerecordings"]',
     toggleDisplayOnline: '[data-action="toggledisplayonline"]',
     toggleDisplayOffline: '[data-action="toggledisplayoffline"]',
     toggleDisplayRow: '[data-action="toggledisplayrow"]',
@@ -201,6 +202,53 @@ const registerEventListeners = (localized_strings, locale, contextId, scoid, gro
                 notification.exception(ex);
             });
             // window.console.log(toggleDisplayOffline.dataset.recordingid);
+        }
+        const addToOfflineRecorder = e.target.closest(Selectors.setForOfflineRecordings);
+        if (addToOfflineRecorder) {
+            e.preventDefault();
+            syncBoth = false;
+            addToOfflineRecorder.classList.add('loading');
+            notification.confirm(localized_strings['delete'], localized_strings['confirmdelete'],
+                localized_strings['yes'], localized_strings['no'], function () {
+                    let query = '#recording-' + addToOfflineRecorder.dataset.recordingid;
+                    let row = document.querySelector(query);
+                    row.classList.add('disabled');
+                    var res = Ajax.call([{
+                        methodname: "adobeconnect_set_for_offline",
+                        args: {
+                            cmid: contextId,
+                            recording_scoid: addToOfflineRecorder.dataset.recordingscoid,
+                            recording_id: addToOfflineRecorder.dataset.recordingid
+                        }
+                    }]);
+                    res[0].done(function (response) {
+                        // window.console.log("Response: ");
+                        if (response.status == 1) {
+                            showNotification(response, "success");
+                            addToOfflineRecorder.classList.remove('loading');
+                        } else {
+                            if (response.status == -1) {
+                                notification.alert("خطا", response.msg);
+                            } else {
+                                showNotification(response, "success");
+                            }
+
+                            row.classList.remove('disabled');
+                            addToOfflineRecorder.classList.remove('loading');
+                            return;
+                        }
+
+                    }).fail(function (ex) {
+                        // do something with the exception
+                        row.classList.remove('disabled');
+                        addToOfflineRecorder.classList.remove('loading');
+                        // window.console.log("Failed");
+                        // window.console.log(ex);
+                        notification.exception(ex);
+                    });
+                }, function () {
+                    addToOfflineRecorder.classList.remove('loading');
+                });
         }
 
         const toggleDisplayRow = e.target.closest(Selectors.toggleDisplayRow);

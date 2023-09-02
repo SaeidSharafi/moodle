@@ -2291,6 +2291,49 @@ function getOfflineRecordings($meetscoids, $instanceid, $manager = false) {
         );
     }
 }
+function setForOfflineRecordings($scoid) {
+    if (!empty($scoid)) {
+        $use = get_config('mod_adobeconnect')->use_offline;
+        if (!$use) {
+            return array('status' => -1, 'is_notification' => 0, 'msg' => "Offline server is not enabled", 'data' => '');
+        }
+        $host = get_config('mod_adobeconnect')->offline_host;
+        $secret = get_config('mod_adobeconnect')->offline_host_secret;
+        $url = "{$host}/connect/rest.php?secret={$secret}";
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array('action' => 'make_offline', 'scoid' => $scoid));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $response = curl_exec($ch);
+            try {
+                $res = json_decode($response);
+                return array('status' => 1, 'is_notification' => 0, 'msg' => $res->message, 'daWIPta' => $response);
+            } catch (Exception $exception) {
+                return array('status' => 1, 'is_notification' => 0, 'msg' => $exception->getMessage(), 'data' => $response);
+            }
+
+        } catch (Exception $e) {
+            return array(
+                'status' => 0,
+                'is_notification' => 0,
+                'msg' => get_string('offline_server_err_reach', 'adobeconnect'),
+                'data' => ''
+            );
+        }
+
+    } else {
+        return array(
+            'status' => 0,
+            'is_notification' => 0,
+            'msg' => get_string('offline_server_err_sco', 'adobeconnect'),
+            'data' => ''
+        );
+    }
+}
 
 function deleteOfflineRecordings($scoid) {
     if (!empty($scoid)) {

@@ -48,6 +48,12 @@ class mod_adobeconnect_external extends external_api {
         return $res;
     }
 
+    public static function set_for_offline($cmid, $recording_scoid, $recording_id) {
+
+        $res = setForOfflineRecordings($cmid, $recording_scoid, $recording_id);
+        return $res;
+    }
+
     public static function hide_online($cmid, $recordingId, $hide) {
 
 
@@ -96,6 +102,14 @@ class mod_adobeconnect_external extends external_api {
         ));
     }
 
+    public static function set_for_offline_parameters() {
+        return new external_function_parameters(array(
+            'cmid' => new external_value(PARAM_RAW, 'Adobe meeting sco id'),
+            'recording_scoid' => new external_value(PARAM_INT, 'adobeconnect recording scoid id'),
+            'recording_id' => new external_value(PARAM_INT, 'adobeconnect recording id in moodle'),
+        ));
+    }
+
     public static function hide_online_parameters() {
         return new external_function_parameters(array(
                 'cmid' => new external_value(PARAM_RAW, 'adobeconnect activity instance id'),
@@ -135,6 +149,15 @@ class mod_adobeconnect_external extends external_api {
                 'is_notification' => new external_value(PARAM_INT, 'Show message as notification'),
                 'msg' => new external_value(PARAM_TEXT, 'message'),
                 'data' => new external_value(PARAM_RAW, 'data to confirm delete'),
+        ));
+    }
+
+    public static function set_for_offline_returns() {
+        return new external_single_structure(array(
+            'status' => new external_value(PARAM_INT, 'Whether or not operation was successful'),
+            'is_notification' => new external_value(PARAM_INT, 'Show message as notification'),
+            'msg' => new external_value(PARAM_TEXT, 'message'),
+            'data' => new external_value(PARAM_RAW, 'data to confirm delete'),
         ));
     }
 
