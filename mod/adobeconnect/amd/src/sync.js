@@ -11,7 +11,7 @@ const Selectors = {
     syncRecordings: '[data-action="syncrecordings"]',
     syncAttendance: '[data-action="syncattendance"]',
     deleteRecording: '[data-action="deleterecording"]',
-    setForOfflineRecordings: '[data-action="setforofflinerecordings"]',
+    addToOfflineQueue: '[data-action="addToOfflineQueue"]',
     toggleDisplayOnline: '[data-action="toggledisplayonline"]',
     toggleDisplayOffline: '[data-action="toggledisplayoffline"]',
     toggleDisplayRow: '[data-action="toggledisplayrow"]',
@@ -203,7 +203,7 @@ const registerEventListeners = (localized_strings, locale, contextId, scoid, gro
             });
             // window.console.log(toggleDisplayOffline.dataset.recordingid);
         }
-        const addToOfflineRecorder = e.target.closest(Selectors.setForOfflineRecordings);
+        const addToOfflineRecorder = e.target.closest(Selectors.addToOfflineQueue);
         if (addToOfflineRecorder) {
             e.preventDefault();
             syncBoth = false;
@@ -214,7 +214,7 @@ const registerEventListeners = (localized_strings, locale, contextId, scoid, gro
                     let row = document.querySelector(query);
                     row.classList.add('disabled');
                     var res = Ajax.call([{
-                        methodname: "adobeconnect_set_for_offline",
+                        methodname: "adobeconnect_add_to_offline_queue",
                         args: {
                             cmid: contextId,
                             recording_scoid: addToOfflineRecorder.dataset.recordingscoid,
@@ -226,6 +226,8 @@ const registerEventListeners = (localized_strings, locale, contextId, scoid, gro
                         if (response.status == 1) {
                             row.classList.remove('disabled');
                             showNotification(response, "success");
+                            synchronizeRecords(localized_strings, locale, contextId, scoid, groupmode,
+                                usrprincipal, showoffline, syncRecordings);
                         } else {
                             if (response.status == -1) {
                                 notification.alert("خطا", response.msg);
@@ -605,7 +607,7 @@ const generateRecordingsFields = (items, groupid, contextId) => {
         row.hiderow = (item.hiderow == 1) ? 1 : null;
         row.sesskey = item.sesskey;
         row.deleted = (item.deleted == 1) ? 1 : null;
-        row.offline_queue = (item.offline_queue == 1) ? 1 : null;
+        row.in_offline_queue = (item.in_offline_queue == 1) ? 1 : null;
         row.formated_create_date = item.formated_create_date;
         row.formated_duration = item.formated_duration;
 

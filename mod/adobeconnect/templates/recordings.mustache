@@ -91,16 +91,16 @@
                             {{/url_offline}}
                             {{^url_offline}}
                                 {{#canmanagerecordings}}
-                                    {{#offline_queue}}
+                                    {{#in_offline_queue}}
                                         {{#str}}in_offline_queue, adobeconnect{{/str}}
-                                    {{/offline_queue}}
-                                {{^offline_queue}}
-                                    <a href="#" class="d-inline-block offline-recording" data-action="setforofflinerecordings"
+                                    {{/in_offline_queue}}
+                                {{^in_offline_queue}}
+                                    <a href="#" class="d-inline-block offline-recording" data-action="addToOfflineQueue"
                                        data-recordingid="{{recording_id}}"
                                        data-recordingscoid="{{recording_scoid}}">
-                                        {{#str}}add_to_offline,adobeconnect{{/str}}
+                                        {{#str}}add_to_offline_queue,adobeconnect{{/str}}
                                     </a>
-                                {{/offline_queue}}
+                                {{/in_offline_queue}}
                                 {{/canmanagerecordings}}
                             {{/url_offline}}
                         {{/hideoffline}}

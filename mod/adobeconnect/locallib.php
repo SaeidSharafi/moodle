@@ -1788,7 +1788,7 @@ function getRecordings($context, $instanceid, $user) {
         if ($offline_recordings['status'] == 1) {
             try {
                 $urls = json_decode($offline_recordings['data']);
-                $offline_recordings['data'] = $urls->data[0];
+                $offline_recordings['data'] = $urls->data? $urls->data[0] : [];
             } catch (Exception $exception) {
                 debugging("error getting offline recordings" . $exception, DEBUG_DEVELOPER);
             }
@@ -1801,11 +1801,15 @@ function getRecordings($context, $instanceid, $user) {
         $array_records = array_map(function($record) use ($USER, $offline_recordings, $adobe_offline) {
             $scoid = $record->recordingscoid;
             $url_offline = null;
+            $in_queue = false;
 
             if ($offline_recordings['status'] == 1) {
                 $url_obj = $offline_recordings['data'];
                 if ($url_obj->$scoid) {
                     $of_record = $url_obj->$scoid;
+                    if ($of_record->in_queue === true){
+                        $in_queue = true;
+                    }
                     if ($of_record->downloaded === true && $of_record->file_exist === true) {
                         $url_offline = $of_record->url;
                     }
@@ -1816,6 +1820,7 @@ function getRecordings($context, $instanceid, $user) {
             $record->formated_create_date = userdate($record->create_date, get_string('strftimedaydatetime'));
             $record->formated_duration = secondsTooTime($record->duration);
             $record->url_offline = $url_offline;
+            $record->in_offline_queue = $in_queue;
             $record->sesskey = $USER->sesskey;
             $record->hiderow = $record->hideonline && $record->hideoffline;
             return $record;
@@ -2293,12 +2298,17 @@ function getOfflineRecordings($meetscoids, $instanceid, $manager = false) {
         );
     }
 }
-function setForOfflineRecordings($scoid,$cmid,$recording_id) {
-    global $DB;
+function addToOfflineQueue($cmid,$scoid,$recording_id) {
+    global $DB,$USER;
+    $context = context_module::instance($cmid);
+    $isNotification = false;
+    if (has_capability('mod/adobeconnect:managerecordings', $context, $USER->id)) {
+        $isNotification = true;
+    }
     if (!empty($scoid)) {
         $use = get_config('mod_adobeconnect')->use_offline;
         if (!$use) {
-            return array('status' => -1, 'is_notification' => 0, 'msg' => "Offline server is not enabled", 'data' => '');
+            return array('status' => -1, 'is_notification' => $isNotification, 'msg' => "Offline server is not enabled", 'data' => '');
         }
         $host = get_config('mod_adobeconnect')->offline_host;
         $secret = get_config('mod_adobeconnect')->offline_host_secret;
@@ -2312,10 +2322,12 @@ function setForOfflineRecordings($scoid,$cmid,$recording_id) {
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             $response = curl_exec($ch);
+            $info = curl_getinfo($ch);
+
             if (empty($info['http_code']) || $info['http_code'] != 200) {
                 return array(
                     'status' => 0,
-                    'is_notification' => 1,
+                    'is_notification' => $isNotification,
                     'msg' => get_string('offline_server_err_reach', 'adobeconnect'),
                     'data' => ''
                 );
@@ -2324,26 +2336,22 @@ function setForOfflineRecordings($scoid,$cmid,$recording_id) {
             if ($response == "UNAUTHORIZED ACCESS") {
                 return array(
                     'status' => 0,
-                    'is_notification' => 1,
+                    'is_notification' => $isNotification,
                     'msg' => get_string('offline_server_err_auth', 'adobeconnect'),
                     'data' => ''
                 );
             }
             try {
                 $res = json_decode($response);
-                $transaction = $DB->start_delegated_transaction();
-                $sql = "UPDATE {adobeconnect_recordings} SET offline_queue = 1 WHERE id = ?";
-                $DB->execute($sql, [$recording_id]);
-                $transaction->allow_commit();
-                return array('status' => 1, 'is_notification' => 0, 'msg' => $res->message, 'data' => $response);
+                return array('status' => 1, 'is_notification' => $isNotification, 'msg' => $res->message ?: '', 'data' => $response);
             } catch (Exception $exception) {
-                return array('status' => 1, 'is_notification' => 0, 'msg' => $exception->getMessage(), 'data' => $response);
+                return array('status' => 1, 'is_notification' => $isNotification, 'msg' => $exception->getMessage(), 'data' => $response);
             }
 
         } catch (Exception $e) {
             return array(
                 'status' => 0,
-                'is_notification' => 0,
+                'is_notification' => $isNotification,
                 'msg' => get_string('offline_server_err_reach', 'adobeconnect'),
                 'data' => ''
             );
@@ -2352,7 +2360,7 @@ function setForOfflineRecordings($scoid,$cmid,$recording_id) {
     } else {
         return array(
             'status' => 0,
-            'is_notification' => 0,
+            'is_notification' => $isNotification,
             'msg' => get_string('offline_server_err_sco', 'adobeconnect'),
             'data' => ''
         );

@@ -48,9 +48,9 @@ class mod_adobeconnect_external extends external_api {
         return $res;
     }
 
-    public static function set_for_offline($cmid, $recording_scoid, $recording_id) {
+    public static function add_to_offline_queue($cmid, $recording_scoid, $recording_id) {
 
-        $res = setForOfflineRecordings($cmid, $recording_scoid, $recording_id);
+        $res = addToOfflineQueue($cmid, $recording_scoid, $recording_id);
         return $res;
     }
 
@@ -102,7 +102,7 @@ class mod_adobeconnect_external extends external_api {
         ));
     }
 
-    public static function set_for_offline_parameters() {
+    public static function add_to_offline_queue_parameters() {
         return new external_function_parameters(array(
             'cmid' => new external_value(PARAM_RAW, 'Adobe meeting sco id'),
             'recording_scoid' => new external_value(PARAM_INT, 'adobeconnect recording scoid id'),
@@ -152,7 +152,7 @@ class mod_adobeconnect_external extends external_api {
         ));
     }
 
-    public static function set_for_offline_returns() {
+    public static function add_to_offline_queue_returns() {
         return new external_single_structure(array(
             'status' => new external_value(PARAM_INT, 'Whether or not operation was successful'),
             'is_notification' => new external_value(PARAM_INT, 'Show message as notification'),

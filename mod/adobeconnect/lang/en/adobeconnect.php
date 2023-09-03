@@ -198,7 +198,7 @@ $string['removed_error_db']= "recording removed from Adobe connect but removing 
 $string['offline_server_err_reach']= "Offline server cannot be reached";
 $string['offline_server_err_auth']= "Offline server secret code is not correct";
 $string['offline_server_err_sco']= "no SCO id provided";
-$string['add_to_offline'] = 'Offline';
+$string['add_to_offline_queue'] = 'Offline';
 $string['in_offline_queue'] = 'In Offline Queue';
 
 

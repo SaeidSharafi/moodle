@@ -259,7 +259,7 @@ function xmldb_adobeconnect_upgrade($oldversion = 0)
 
         // Define field id to be added to adobeconnect.
         $table = new xmldb_table('adobeconnect_recordings');
-        $field = new xmldb_field('offline_queue', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'deleted');
+        $field = new xmldb_field('in_offline_queue', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'deleted');
         // Conditionally launch add field id.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);

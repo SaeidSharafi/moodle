@@ -177,7 +177,7 @@ class mod_adobeconnect_renderer extends plugin_renderer_base
                 'hideonline'           => $recording->hideonline,
                 'hiderow'              => $recording->hideonline && $recording->hideoffline,
                 'deleted'              => $recording->deleted,
-                'offline_queue'        => $recording->offline_queue,
+                'in_offline_queue'        => $recording->in_offline_queue,
                 'sesskey'              => $USER->sesskey,
                 'startdate'            => $this->convertDate($recording->start_date),
                 'enddate'              => $this->convertDate($recording->end_date),
