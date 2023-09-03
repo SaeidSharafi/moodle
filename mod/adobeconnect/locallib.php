@@ -2607,8 +2607,8 @@ function toNestedObject($data) {
 }
 
 function compareDate($firstDate, $secondDate) {
-    $timestamp1 = ($firstDate);
-    $timestamp2 = ($secondDate);
+    $timestamp1 = (int)($firstDate);
+    $timestamp2 = (int)($secondDate);
     $date1 = date('Y-m-d', $timestamp1);
     $date2 = date('Y-m-d', $timestamp2);
     return ($date1 == $date2);
@@ -2675,7 +2675,7 @@ function get_profile_fields() {
     global $DB;
     $order = $DB->sql_order_by_text('name');
     if (!$fields = $DB->get_records_menu('user_info_field', null, $order, 'shortname, name')) {
-        return null;
+        return [];
     }
 
     return $fields;
