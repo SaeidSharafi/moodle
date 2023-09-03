@@ -224,8 +224,8 @@ const registerEventListeners = (localized_strings, locale, contextId, scoid, gro
                     res[0].done(function (response) {
                         // window.console.log("Response: ");
                         if (response.status == 1) {
+                            row.classList.remove('disabled');
                             showNotification(response, "success");
-                            addToOfflineRecorder.classList.remove('loading');
                         } else {
                             if (response.status == -1) {
                                 notification.alert("خطا", response.msg);
@@ -605,6 +605,7 @@ const generateRecordingsFields = (items, groupid, contextId) => {
         row.hiderow = (item.hiderow == 1) ? 1 : null;
         row.sesskey = item.sesskey;
         row.deleted = (item.deleted == 1) ? 1 : null;
+        row.offline_queue = (item.offline_queue == 1) ? 1 : null;
         row.formated_create_date = item.formated_create_date;
         row.formated_duration = item.formated_duration;
 

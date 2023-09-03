@@ -157,7 +157,7 @@ class mod_adobeconnect_external extends external_api {
             'status' => new external_value(PARAM_INT, 'Whether or not operation was successful'),
             'is_notification' => new external_value(PARAM_INT, 'Show message as notification'),
             'msg' => new external_value(PARAM_TEXT, 'message'),
-            'data' => new external_value(PARAM_RAW, 'data to confirm delete'),
+            'data' => new external_value(PARAM_RAW, 'data to confirm queue'),
         ));
     }
 

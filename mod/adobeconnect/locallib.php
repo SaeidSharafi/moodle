@@ -1303,7 +1303,9 @@ function aconnect_create_user($aconnect, $usrdata) {
     );
 
     $aconnect->create_request($params);
-
+echo '<pre>';
+var_dump($aconnect->_xmlresponse);
+echo '</pre>';
     if ($aconnect->call_success('aconnect_create_user')) {
         $dom = new DomDocument();
         $dom->loadXML($aconnect->_xmlresponse);
@@ -2243,7 +2245,7 @@ function getOfflineRecordings($meetscoids, $instanceid, $manager = false) {
         try {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
+            //curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, array('action' => 'get', 'scoid' => json_encode($meetscoids)));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -2291,7 +2293,8 @@ function getOfflineRecordings($meetscoids, $instanceid, $manager = false) {
         );
     }
 }
-function setForOfflineRecordings($scoid) {
+function setForOfflineRecordings($scoid,$cmid,$recording_id) {
+    global $DB;
     if (!empty($scoid)) {
         $use = get_config('mod_adobeconnect')->use_offline;
         if (!$use) {
@@ -2303,15 +2306,36 @@ function setForOfflineRecordings($scoid) {
         try {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
+            //curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, array('action' => 'make_offline', 'scoid' => $scoid));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             $response = curl_exec($ch);
+            if (empty($info['http_code']) || $info['http_code'] != 200) {
+                return array(
+                    'status' => 0,
+                    'is_notification' => 1,
+                    'msg' => get_string('offline_server_err_reach', 'adobeconnect'),
+                    'data' => ''
+                );
+            }
+
+            if ($response == "UNAUTHORIZED ACCESS") {
+                return array(
+                    'status' => 0,
+                    'is_notification' => 1,
+                    'msg' => get_string('offline_server_err_auth', 'adobeconnect'),
+                    'data' => ''
+                );
+            }
             try {
                 $res = json_decode($response);
-                return array('status' => 1, 'is_notification' => 0, 'msg' => $res->message, 'daWIPta' => $response);
+                $transaction = $DB->start_delegated_transaction();
+                $sql = "UPDATE {adobeconnect_recordings} SET offline_queue = 1 WHERE id = ?";
+                $DB->execute($sql, [$recording_id]);
+                $transaction->allow_commit();
+                return array('status' => 1, 'is_notification' => 0, 'msg' => $res->message, 'data' => $response);
             } catch (Exception $exception) {
                 return array('status' => 1, 'is_notification' => 0, 'msg' => $exception->getMessage(), 'data' => $response);
             }
@@ -2650,8 +2674,8 @@ function toNestedObject($data) {
 }
 
 function compareDate($firstDate, $secondDate) {
-    $timestamp1 = ($firstDate);
-    $timestamp2 = ($secondDate);
+    $timestamp1 = (int)($firstDate);
+    $timestamp2 = (int)($secondDate);
     $date1 = date('Y-m-d', $timestamp1);
     $date2 = date('Y-m-d', $timestamp2);
     return ($date1 == $date2);

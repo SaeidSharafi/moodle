@@ -63,6 +63,8 @@ $string['removed_error_db']= "جلسه ضبط شده از سرور ادوبی ح
 $string['offline_server_err_reach']= "سرور آفلاین ساز در دسترس نمی باشد.";
 $string['offline_server_err_auth']= "کد شناسایی سرور آفلاین سازی صحیح نمی باشد";
 $string['offline_server_err_sco']= "کد SCO یافت نشد";
+$string['add_to_offline'] = 'ایجاد آفلاین';
+$string['in_offline_queue'] = 'در صف تبدیل';
 
 $string['sync_attendance_not_found']= "تا کنون شخصی در این کلاس حضور نداشته است";
 $string['sync_attendance_success']= "همگام سازی حضور و غیاب با موفقیت انجام شد";
