@@ -607,6 +607,7 @@ const generateRecordingsFields = (items, groupid, contextId) => {
         row.hiderow = (item.hiderow == 1) ? 1 : null;
         row.sesskey = item.sesskey;
         row.deleted = (item.deleted == 1) ? 1 : null;
+        row.in_offline_server = (item.in_offline_server == 1) ? 1 : null;
         row.in_offline_queue = (item.in_offline_queue == 1) ? 1 : null;
         row.formated_create_date = item.formated_create_date;
         row.formated_duration = item.formated_duration;

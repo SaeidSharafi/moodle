@@ -1802,11 +1802,15 @@ function getRecordings($context, $instanceid, $user) {
             $scoid = $record->recordingscoid;
             $url_offline = null;
             $in_queue = false;
+            $in_server = false;
 
             if ($offline_recordings['status'] == 1) {
                 $url_obj = $offline_recordings['data'];
                 if ($url_obj->$scoid) {
                     $of_record = $url_obj->$scoid;
+                    if ($of_record->in_server === true){
+                        $in_server = true;
+                    }
                     if ($of_record->in_queue === true){
                         $in_queue = true;
                     }
@@ -1821,6 +1825,7 @@ function getRecordings($context, $instanceid, $user) {
             $record->formated_duration = secondsTooTime($record->duration);
             $record->url_offline = $url_offline;
             $record->in_offline_queue = $in_queue;
+            $record->in_offline_server = $in_server;
             $record->sesskey = $USER->sesskey;
             $record->hiderow = $record->hideonline && $record->hideoffline;
             return $record;
