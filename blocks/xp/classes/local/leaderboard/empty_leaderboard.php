@@ -43,7 +43,7 @@ class empty_leaderboard implements leaderboard {
     /**
      * Constructor.
      *
-     * @param array $columns The columns.
+     * @param array The columns.
      */
     public function __construct(array $columns) {
         $this->columns = $columns;

@@ -74,7 +74,7 @@ interface user_indicator {
      * Whether the user has the flag.
      *
      * @param int $userid The user ID.
-     * @param string $flag The flag name.
+     * @param string $key The flag key.
      * @return bool
      */
     public function user_has_flag($userid, $flag);

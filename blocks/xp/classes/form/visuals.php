@@ -27,8 +27,6 @@ namespace block_xp\form;
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
 
-use block_xp\di;
-use html_writer;
 use moodleform;
 
 /**
@@ -44,21 +42,9 @@ class visuals extends moodleform {
      * The definition.
      */
     public function definition() {
-        $renderer = di::get('renderer');
-
         $mform = $this->_form;
         $mform->addElement('filemanager', 'badges', get_string('levelbadges', 'block_xp'), null, $this->_customdata['fmoptions']);
-        $mform->addHelpButton('badges', 'levelbadges', 'block_xp');
-
-        if ($this->_customdata['showpromo'] ?? true) {
-            $addonrequired = $renderer->render_from_template('block_xp/addon-required', [
-                'promourl' => $this->_customdata['promourl'],
-            ]);
-            $mform->addElement('select', 'currencytheme', get_string('currencysign', 'block_xp') . ' ' . $addonrequired,
-                ['' => get_string('currencysignxp', 'block_xp')], ['disabled' => 'disabled']);
-            $mform->addHelpButton('currencytheme', 'currencysign', 'block_xp');
-        }
-
+        $mform->addElement('static', '', '', get_string('levelbadgesformhelp', 'block_xp'));
         $this->add_action_buttons();
     }
 

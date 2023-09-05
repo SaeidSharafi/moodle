@@ -50,31 +50,22 @@ class default_course_world_factory implements course_world_factory {
     protected $db;
     /** @var bool For the whole site? */
     protected $forwholesite = false;
-    /** @var badge_url_resolver_course_world_factory The badge URL resolver factory. */
+    /** @var badge_url_resolver_course_world_factory Resolver. */
     protected $urlresolverfactory;
     /** @var course_world[] World cache. */
     protected $worlds = [];
-    /** @var levels_info_factory The levels info factory. */
-    protected $levelsinfofactory;
 
     /**
      * Constructor.
      *
      * @param config $adminconfig The admin config.
      * @param moodle_database $db The DB.
-     * @param badge_url_resolver_course_world_factory $urlresolverfactory The badge URL resolver factory.
-     * @param config $adminconfiglocked The locked config.
-     * @param levels_info_factory $levelsinfofactory The levels info factory.
      */
     public function __construct(config $adminconfig, moodle_database $db,
-            badge_url_resolver_course_world_factory $urlresolverfactory,
-            config $adminconfiglocked,
-            levels_info_factory $levelsinfofactory) {
-
+            badge_url_resolver_course_world_factory $urlresolverfactory, config $adminconfiglocked) {
         $this->adminconfig = $adminconfig;
         $this->db = $db;
         $this->urlresolverfactory = $urlresolverfactory;
-        $this->levelsinfofactory = $levelsinfofactory;
         if ($adminconfig->get('context') == CONTEXT_SYSTEM) {
             $this->forwholesite = true;
         }
@@ -105,8 +96,7 @@ class default_course_world_factory implements course_world_factory {
             $courseconfig = new course_world_config($this->adminconfig, $this->db, $courseid);
             $config = new config_stack([$this->configoverrides, $courseconfig]);
 
-            $this->worlds[$courseid] = new \block_xp\local\course_world($config, $this->db, $courseid, $this->urlresolverfactory,
-                $this->levelsinfofactory);
+            $this->worlds[$courseid] = new \block_xp\local\course_world($config, $this->db, $courseid, $this->urlresolverfactory);
         }
         return $this->worlds[$courseid];
     }

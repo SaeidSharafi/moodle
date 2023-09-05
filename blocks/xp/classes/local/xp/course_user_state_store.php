@@ -39,10 +39,9 @@ use block_xp\local\utils\user_utils;
 /**
  * User state course store.
  *
- * This is a repository of XP of each user.
- *
- * It also used to store the level of each user in the 'lvl' column, for ordering purposes,
- * but no longer does. When levels_info were changed, the levels had to be updated.
+ * This is a repository of XP of each user. It also stores the level of
+ * each user in the 'lvl' column, that only for ordering purposes. When
+ * you change the levels_info, you must update the stored levels.
  *
  * @package    block_xp
  * @copyright  2017 Frédéric Massart
@@ -73,7 +72,7 @@ class course_user_state_store implements course_state_store,
      * @param moodle_database $db The DB.
      * @param levels_info $levelsinfo The levels info.
      * @param int $courseid The course ID.
-     * @param reason_collection_logger $logger The reason logger.
+     * @param logger $logger The reason logger.
      * @param level_up_state_store_observer $observer The observer.
      * @param points_increased_state_store_observer $pointsobserver The observer.
      */
@@ -111,7 +110,7 @@ class course_user_state_store implements course_state_store,
         $params = [
             'contextlevel' => CONTEXT_USER,
             'courseid' => $this->courseid,
-            'userid' => $id,
+            'userid' => $id
         ];
 
         return $this->make_state_from_record($this->db->get_record_sql($sql, $params, MUST_EXIST));
@@ -168,9 +167,16 @@ class course_user_state_store implements course_state_store,
             $params = [
                 'xp' => $amount,
                 'courseid' => $this->courseid,
-                'userid' => $id,
+                'userid' => $id
             ];
             $this->db->execute($sql, $params);
+
+            // Non-atomic level update. We best guess what the XP should be, and go from there.
+            $newxp = $record->xp + $amount;
+            $newlevel = $this->levelsinfo->get_level_from_xp($newxp)->get_level();
+            if ($record->lvl != $newlevel) {
+                $this->db->set_field($this->table, 'lvl', $newlevel, ['courseid' => $this->courseid, 'userid' => $id]);
+            }
         } else {
             $this->insert($id, $amount);
         }
@@ -201,6 +207,7 @@ class course_user_state_store implements course_state_store,
         $record->courseid = $this->courseid;
         $record->userid = $id;
         $record->xp = $amount;
+        $record->lvl = $this->levelsinfo->get_level_from_xp($amount)->get_level();
         $this->db->insert_record($this->table, $record);
     }
 
@@ -267,11 +274,18 @@ class course_user_state_store implements course_state_store,
      *
      * Remember, these values are used for ordering only.
      *
-     * @deprecated Since Level Up XP 3.15 without replacement.
      * @return void
      */
     public function recalculate_levels() {
-        debugging('Reclaculating levels has been deprecated and made ineffective, do not use.', DEBUG_DEVELOPER);
+        $rows = $this->db->get_recordset($this->table, ['courseid' => $this->courseid]);
+        foreach ($rows as $row) {
+            $level = $this->levelsinfo->get_level_from_xp($row->xp)->get_level();
+            if ($level != $row->lvl) {
+                $row->lvl = $level;
+                $this->db->update_record($this->table, $row);
+            }
+        }
+        $rows->close();
     }
 
     /**
@@ -301,7 +315,7 @@ class course_user_state_store implements course_state_store,
 
         $params = [
             'courseid' => $this->courseid,
-            'groupid' => $groupid,
+            'groupid' => $groupid
         ];
 
         $this->db->execute($sql, $params);
@@ -323,16 +337,18 @@ class course_user_state_store implements course_state_store,
 
         if ($record = $this->exists($id)) {
             $prexp = $record->xp;
-            $postxp = $amount;
+            $postxp = $prexp + $amount;
 
             $sql = "UPDATE {{$this->table}}
-                       SET xp = :xp
+                       SET xp = :xp,
+                           lvl = :lvl
                      WHERE courseid = :courseid
                        AND userid = :userid";
             $params = [
                 'xp' => $amount,
                 'courseid' => $this->courseid,
                 'userid' => $id,
+                'lvl' => $this->levelsinfo->get_level_from_xp($amount)->get_level()
             ];
             $this->db->execute($sql, $params);
         } else {

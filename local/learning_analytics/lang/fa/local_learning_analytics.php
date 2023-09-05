@@ -22,12 +22,12 @@
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'آنالیتیکس یادگیری';
+$string['pluginname'] = 'آنالیز  یادگیری';
 
 $string['privacy:metadata'] = 'این افزونه هیچ داده شخصی‌ای را ذخیره نمی‌کند.';
 
-$string['learning_analytics'] = 'آنالیتیکس یادگیری';
-$string['navigationlink'] = 'آمار استفاده';
+$string['learning_analytics'] = 'آنالیز  یادگیری';
+$string['navigationlink'] = 'آنالیز یادگیری';
 
 $string['subplugintype_lareport'] = 'گزارش آ.ی.';
 $string['subplugintype_lareport_plural'] = 'گزارش‌های آ.ی.';

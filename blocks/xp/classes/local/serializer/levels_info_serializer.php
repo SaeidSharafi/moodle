@@ -25,10 +25,10 @@
 
 namespace block_xp\local\serializer;
 
-use block_xp\external\external_multiple_structure;
-use block_xp\external\external_single_structure;
-use block_xp\external\external_value;
-use block_xp\local\xp\levels_info_with_algo;
+use external_single_structure;
+use external_value;
+use external_multiple_structure;
+use block_xp\local\xp\algo_levels_info;
 
 /**
  * Serializer.
@@ -45,8 +45,6 @@ class levels_info_serializer implements serializer_with_read_structure {
 
     /**
      * Constructor.
-     *
-     * @param level_serializer $levelserializer The level serializer
      */
     public function __construct(level_serializer $levelserializer) {
         $this->levelserializer = $levelserializer;
@@ -63,12 +61,11 @@ class levels_info_serializer implements serializer_with_read_structure {
             'count' => $info->get_count(),
             // Use array_values() to drop the indexes for json_encode to later create an array.
             'levels' => array_values(array_map([$this->levelserializer, 'serialize'], $info->get_levels())),
-            'algo' => $info instanceof levels_info_with_algo ? [
+            'algo' => $info instanceof algo_levels_info ? [
+                'enabled' => $info->get_use_algo(),
                 'base' => $info->get_base(),
-                'coef' => $info->get_coef(),
-                'incr' => $info->get_incr(),
-                'method' => $info->get_method(),
-            ] : null,
+                'coef' => $info->get_coef()
+            ] : null
         ];
     }
 
@@ -87,11 +84,10 @@ class levels_info_serializer implements serializer_with_read_structure {
                 $this->levelserializer->get_read_structure()
             ),
             'algo' => new external_single_structure([
-                'method' => new external_value(PARAM_ALPHAEXT),
+                'enabled' => new external_value(PARAM_BOOL),
                 'base' => new external_value(PARAM_INT),
                 'coef' => new external_value(PARAM_FLOAT),
-                'incr' => new external_value(PARAM_INT),
-            ], VALUE_OPTIONAL, null),
+            ], VALUE_OPTIONAL, null)
         ], '', $required, $default);
     }
 

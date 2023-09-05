@@ -52,10 +52,7 @@ class admin_visuals_controller extends admin_route_controller {
      * @return moodleform
      */
     protected function define_form() {
-        return new \block_xp\form\visuals($this->pageurl->out(false), [
-            'fmoptions' => $this->get_filemanager_options(),
-            'promourl' => $this->urlresolver->reverse('admin/promo'),
-        ]);
+        return new \block_xp\form\visuals($this->pageurl->out(false), ['fmoptions' => $this->get_filemanager_options()]);
     }
 
     /**
@@ -102,7 +99,7 @@ class admin_visuals_controller extends admin_route_controller {
             0, $this->get_filemanager_options());
 
         return [
-            'badges' => $draftitemid,
+            'badges' => $draftitemid
         ];
     }
 
@@ -138,14 +135,12 @@ class admin_visuals_controller extends admin_route_controller {
 
         echo $output->heading(get_string('defaultvisuals', 'block_xp'));
 
-        $this->page_warning_editing_defaults('visuals');
-
         $this->intro();
 
         $form->display();
 
         // Preview.
-        echo $output->heading_with_divider(get_string('preview', 'core'));
+        echo $output->heading(get_string('preview'), 3);
         $this->preview();
     }
 

@@ -38,7 +38,6 @@ interface state_anonymiser {
     /**
      * Return an anonymised state.
      *
-     * @param state $state The state.
      * @return state
      */
     public function anonymise_state(state $state);

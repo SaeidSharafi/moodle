@@ -46,8 +46,6 @@ class event_lister {
 
     /** @var cache The cache store. */
     protected $cache;
-    /** @var bool Whether is used site site. */
-    protected $forwholesite;
 
     /**
      * Constructor.
@@ -75,12 +73,12 @@ class event_lister {
                 if ($infos) {
                     $carry[$infos['eventname']] = get_string('colon', 'block_xp', (object) [
                         'a' => $prefix,
-                        'b' => $infos['name'],
+                        'b' => $infos['name']
                     ]);
                 }
                 return $carry;
             }, []));
-        }, []), ];
+        }, [])];
 
         // Get module events.
         $list = array_merge($list, self::get_events_list_from_plugintype('mod'));
@@ -99,7 +97,7 @@ class event_lister {
         // Add some system events.
         $eventclasses = [get_string('course') => [
             '\\core\\event\\course_viewed',
-        ], ];
+        ]];
 
         return $eventclasses;
     }
@@ -241,7 +239,7 @@ class event_lister {
 
             $carry[$infos['eventname']] = get_string('colon', 'block_xp', [
                 'a' => $plugininfo->displayname,
-                'b' => $infos['name'],
+                'b' => $infos['name']
             ]);
             return $carry;
         }, []);
@@ -271,7 +269,7 @@ class event_lister {
             if (!empty($events)) {
                 $pluginmanager = core_plugin_manager::instance();
                 $plugininfo = $pluginmanager->get_plugin_info($component);
-                $list[] = [$plugininfo->displayname => $events];
+                $list[] = array($plugininfo->displayname => $events);
             }
         }
 

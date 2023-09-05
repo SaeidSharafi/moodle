@@ -25,8 +25,8 @@
 
 namespace block_xp\local\serializer;
 
-use block_xp\external\external_single_structure;
-use block_xp\external\external_value;
+use external_single_structure;
+use external_value;
 use block_xp\local\xp\level_with_badge;
 use block_xp\local\xp\level_with_description;
 use block_xp\local\xp\level_with_name;
@@ -46,8 +46,6 @@ class level_serializer implements serializer_with_read_structure {
 
     /**
      * Constructor.
-     *
-     * @param url_serializer $urlserializer The URL serializer.
      */
     public function __construct(url_serializer $urlserializer) {
         $this->urlserializer = $urlserializer;
@@ -66,7 +64,7 @@ class level_serializer implements serializer_with_read_structure {
             'xprequired' => $level->get_xp_required(),
             'badgeurl' => $url ? $this->urlserializer->serialize($url) : $url,
             'name' => $level instanceof level_with_name ? $level->get_name() : null,
-            'description' => $level instanceof level_with_description ? $level->get_description() : null,
+            'description' => $level instanceof level_with_description ? $level->get_description() : null
         ];
     }
 

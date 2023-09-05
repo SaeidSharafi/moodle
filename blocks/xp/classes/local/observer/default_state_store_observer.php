@@ -53,7 +53,6 @@ class default_state_store_observer implements level_up_state_store_observer, poi
      *
      * @param context $context The context.
      * @param config $config The world config.
-     * @param course_level_up_notification_service $notificationservice The notification service.
      */
     public function __construct(context $context, config $config, course_level_up_notification_service $notificationservice) {
         $this->context = $context;
@@ -87,8 +86,8 @@ class default_state_store_observer implements level_up_state_store_observer, poi
                 'context' => $this->context,
                 'relateduserid' => $id,
                 'other' => [
-                    'level' => $i,
-                ],
+                    'level' => $i
+                ]
             ];
             $lupevent = \block_xp\event\user_leveledup::create($params);
             $lupevent->trigger();
@@ -130,7 +129,7 @@ class default_state_store_observer implements level_up_state_store_observer, poi
      */
     protected function process_leveled_up(state_store $store, $id, $level) {
         if ($this->config->get('enablelevelupnotif')) {
-            $this->notificationservice->notify($id, $level);
+            $this->notificationservice->notify($id);
         }
     }
 

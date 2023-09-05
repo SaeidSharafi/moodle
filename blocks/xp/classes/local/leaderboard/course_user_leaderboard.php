@@ -64,17 +64,6 @@ class course_user_leaderboard implements leaderboard {
     /** @var string The DB table. */
     protected $table = 'block_xp';
 
-    /** @var string SQL fields. */
-    protected $fields;
-    /** @var string SQL from. */
-    protected $from;
-    /** @var string SQL where. */
-    protected $where;
-    /** @var string SQL order. */
-    protected $order;
-    /** @var array SQL params. */
-    protected $params;
-
     /**
      * Constructor.
      *
@@ -195,7 +184,7 @@ class course_user_leaderboard implements leaderboard {
         $params = $this->params + [
             'posxp' => $xp,
             'posxpeq' => $xp,
-            'posid' => $id,
+            'posid' => $id
         ];
         return $this->db->count_records_sql($sql, $params);
     }

@@ -28,13 +28,13 @@ $string['privacy:metadata'] = 'این افزونه هیچ داده شخصی را
 
 $string['pagename_all'] = 'لیست کامل';
 $string['pagename_courseparticipation'] = 'شرکت‌کنندگان دوره - لیست کامل';
-$string['introduction'] = 'جداول زیر دوره‌هایی که شرکت‌کنندگان این دوره در گذشته شرکت کرده‌اند (سمت چپ) و دوره‌هایی که همزمان با این دوره شنود شده‌اند (سمت راست) را نشان می‌دهند.
+$string['introduction'] = 'جداول زیر دوره‌هایی که شرکت‌کنندگان این دوره در گذشته شرکت کرده‌اند (سمت چپ) و دوره‌هایی که همزمان با این دوره شرکت کرده‌اند (سمت راست) را نشان می‌دهند.
 به دلایل حفظ حریم خصوصی، دوره‌هایی که تعداد شرکت‌کنندگان همپوشانی کمتر از {$a} دارند نمایش داده نخواهند شد.';
 
 $string['registered_users'] = 'شرکت‌کنندگان';
 
-$string['courses_heard_before'] = 'دوره‌های شنود شده قبل';
-$string['parallel_courses'] = 'دوره‌های شنود شده هم‌زمان';
+$string['courses_heard_before'] = 'دوره‌های قبل';
+$string['parallel_courses'] = 'دوره‌های هم‌زمان';
 $string['coursename'] = 'دوره';
 $string['participated_before'] = 'درصد';
 $string['participating_now'] = 'درصد';

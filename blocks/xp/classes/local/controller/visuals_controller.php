@@ -28,12 +28,11 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/filelib.php');
 
-use block_xp\di;
+use context_course;
 use context_system;
 use html_writer;
 use stdClass;
 use block_xp\local\config\course_world_config;
-use block_xp\local\routing\url;
 
 /**
  * Visuals controller class.
@@ -45,20 +44,13 @@ use block_xp\local\routing\url;
  */
 class visuals_controller extends page_controller {
 
-    /** @var string The nav name. */
+    /** @inheritDoc */
     protected $navname = 'levels';
     /** @var string The route name. */
     protected $routename = 'visuals';
 
     /** @var moodleform The form. */
     private $form;
-
-    protected function define_optional_params() {
-        return [
-            ['reset', false, PARAM_BOOL, false],
-            ['confirm', false, PARAM_BOOL, false],
-        ];
-    }
 
     /**
      * Get manager context.
@@ -75,7 +67,7 @@ class visuals_controller extends page_controller {
      * @return array
      */
     final protected function get_filemanager_options() {
-        return ['subdirs' => 0, 'accepted_types' => ['.jpg', '.png', '.gif', '.svg']];
+        return ['subdirs' => 0, 'accepted_types' => array('.jpg', '.png', '.gif', '.svg')];
     }
 
     /**
@@ -85,9 +77,7 @@ class visuals_controller extends page_controller {
      */
     protected function define_form() {
         return new \block_xp\form\visuals($this->pageurl->out(false), [
-            'showpromo' => di::get('config')->get('enablepromoincourses'),
-            'promourl' => $this->urlresolver->reverse('promo', ['courseid' => $this->courseid]),
-            'fmoptions' => $this->get_filemanager_options(),
+            'fmoptions' => $this->get_filemanager_options()
         ]);
     }
 
@@ -104,15 +94,6 @@ class visuals_controller extends page_controller {
     }
 
     protected function pre_content() {
-
-        // Reset to defaults.
-        if ($this->get_param('reset') && confirm_sesskey()) {
-            if ($this->get_param('confirm')) {
-                $this->reset_visuals_to_defaults();
-                $this->redirect(new url($this->pageurl));
-            }
-        }
-
         $form = $this->get_form();
         $form->set_data((object) $this->get_initial_form_data());
         if ($data = $form->get_data()) {
@@ -144,19 +125,8 @@ class visuals_controller extends page_controller {
         }
 
         return [
-            'badges' => $draftitemid,
+            'badges' => $draftitemid
         ];
-    }
-
-    /**
-     * Reset visuals to defaults.
-     */
-    protected function reset_visuals_to_defaults() {
-        $config = $this->world->get_config();
-        $config->set('enablecustomlevelbadges', course_world_config::CUSTOM_BADGES_MISSING);
-
-        $fs = get_file_storage();
-        $fs->delete_area_files($this->get_filemanager_context()->id, 'block_xp', 'badges', 0);
     }
 
     /**
@@ -179,36 +149,30 @@ class visuals_controller extends page_controller {
     }
 
     protected function get_page_html_head_title() {
-        return get_string('levelsappearance', 'block_xp');
+        return get_string('coursevisuals', 'block_xp');
     }
 
     protected function get_page_heading() {
-        return get_string('levelsappearance', 'block_xp');
+        return get_string('coursevisuals', 'block_xp');
+    }
+
+    /**
+     * Introduction.
+     *
+     * @return void
+     */
+    protected function intro() {
+        echo html_writer::tag('p', get_string('visualsintro', 'block_xp'));
     }
 
     protected function page_content() {
-        $output = $this->get_renderer();
-
-        if ($this->get_param('reset')) {
-            echo $output->confirm(
-                get_string('reallyresetcoursevisualstodefaults', 'block_xp'),
-                new url($this->pageurl->get_compatible_url(), ['reset' => 1, 'confirm' => 1, 'sesskey' => sesskey()]),
-                new url($this->pageurl->get_compatible_url())
-            );
-            return;
-        }
-
-        echo $output->advanced_heading(get_string('levelsappearance', 'block_xp'), [
-            'intro' => new \lang_string('visualsintro', 'block_xp'),
-        ]);
+        $this->intro();
 
         $this->get_form()->display();
 
-        echo $output->heading_with_divider(get_string('preview', 'core'));
+        echo $this->get_renderer()->heading(get_string('preview'), 3);
 
         $this->preview();
-
-        $this->page_danger_zone_content();
     }
 
     /**
@@ -219,30 +183,6 @@ class visuals_controller extends page_controller {
     protected function preview() {
         $levelsinfo = $this->world->get_levels_info();
         echo $this->get_renderer()->levels_preview($levelsinfo->get_levels());
-    }
-
-    protected function page_danger_zone_content() {
-        $output = $this->get_renderer();
-
-        echo $output->heading_with_divider(get_string('dangerzone', 'block_xp'));
-
-        $url = new url($this->pageurl, ['reset' => 1, 'sesskey' => sesskey()]);
-        echo html_writer::tag('div',
-            $output->single_button(
-                $url->get_compatible_url(),
-                get_string('resetvisualstodefaults', 'block_xp'),
-                'get'
-            )
-        );
-    }
-
-    /**
-     * Introduction.
-     *
-     * @deprecated Since XP 3.15 without replacement.
-     * @return void
-     */
-    protected function intro() {
     }
 
 }
