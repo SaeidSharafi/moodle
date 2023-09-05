@@ -58,3 +58,5 @@ phpcs.xml
 jsconfig.json
 /temp/
 /soap/
+/mod/tracker/
+/local/vflibs/
