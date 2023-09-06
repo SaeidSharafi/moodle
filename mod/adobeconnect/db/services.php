@@ -40,6 +40,16 @@ $functions = array(
                 'loginrequired' => true,
                 'capabilities' => 'mod/adobeconnect:deleterecordings'
         ),
+        'adobeconnect_add_to_offline_queue' => array(
+            'classname' => 'mod_adobeconnect_external',
+            'methodname' => 'add_to_offline_queue',
+            'classpath' => 'mod/adobeconnect/externallib.php',
+            'description' => 'will queue recording to convert for offline view (intended to be used from AJAX)',
+            'type' => 'write',
+            'ajax' => true,
+            'loginrequired' => true,
+            'capabilities' => 'mod/adobeconnect:managerecordings'
+        ),
         'adobeconnect_hide_online' => array(
                 'classname' => 'mod_adobeconnect_external',
                 'methodname' => 'hide_online',

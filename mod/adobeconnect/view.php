@@ -243,7 +243,7 @@ if (has_capability('mod/adobeconnect:meetingpresenter', $context) or
 
     $protocol = 'http://';
 
-    if ($https) {
+    if ($configs->https) {
         $protocol = 'https://';
     }
 
@@ -376,7 +376,7 @@ if ($can_view_recordings) {
 
     //
 }
-if ($can_view_attendees) {
+if ($can_view_attendees || $configs->view_own_attendance) {
     $attendees = getAttendances($context, $cm->id);
 
     if (!empty($attendees)) {
@@ -422,6 +422,8 @@ function checkUser($usrobj) {
     if (!($usrprincipal = aconnect_user_exists($aconnect, $usrobj))) {
         if (!($usrprincipal = aconnect_create_user($aconnect, $usrobj))) {
             // DEBUG
+
+            debugging(print_r($usrprincipal,true), DEBUG_DEVELOPER);
             debugging("error creating user", DEBUG_DEVELOPER);
 
             //            print_object("error creating user");

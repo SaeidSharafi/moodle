@@ -1786,7 +1786,7 @@ function getRecordings($context, $instanceid, $user) {
         if ($offline_recordings['status'] == 1) {
             try {
                 $urls = json_decode($offline_recordings['data']);
-                $offline_recordings['data'] = $urls->data[0];
+                $offline_recordings['data'] = $urls->data? $urls->data[0] : [];
             } catch (Exception $exception) {
                 debugging("error getting offline recordings" . $exception, DEBUG_DEVELOPER);
             }
@@ -1799,11 +1799,19 @@ function getRecordings($context, $instanceid, $user) {
         $array_records = array_map(function($record) use ($USER, $offline_recordings, $adobe_offline) {
             $scoid = $record->recordingscoid;
             $url_offline = null;
+            $in_queue = false;
+            $in_server = false;
 
             if ($offline_recordings['status'] == 1) {
                 $url_obj = $offline_recordings['data'];
                 if ($url_obj->$scoid) {
                     $of_record = $url_obj->$scoid;
+                    if ($of_record->in_server === true){
+                        $in_server = true;
+                    }
+                    if ($of_record->in_queue === true){
+                        $in_queue = true;
+                    }
                     if ($of_record->downloaded === true && $of_record->file_exist === true) {
                         $url_offline = $of_record->url;
                     }
@@ -1814,6 +1822,8 @@ function getRecordings($context, $instanceid, $user) {
             $record->formated_create_date = userdate($record->create_date, get_string('strftimedaydatetime'));
             $record->formated_duration = secondsTooTime($record->duration);
             $record->url_offline = $url_offline;
+            $record->in_offline_queue = $in_queue;
+            $record->in_offline_server = $in_server;
             $record->sesskey = $USER->sesskey;
             $record->hiderow = $record->hideonline && $record->hideoffline;
             return $record;
@@ -2243,7 +2253,7 @@ function getOfflineRecordings($meetscoids, $instanceid, $manager = false) {
         try {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
+            //curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
             curl_setopt($ch, CURLOPT_POST, 1);
             curl_setopt($ch, CURLOPT_POSTFIELDS, array('action' => 'get', 'scoid' => json_encode($meetscoids)));
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -2288,6 +2298,74 @@ function getOfflineRecordings($meetscoids, $instanceid, $manager = false) {
                 'is_notification' => 0,
                 'msg' => get_string('offline_server_err_sco', 'adobeconnect'),
                 'data' => ''
+        );
+    }
+}
+function addToOfflineQueue($cmid,$scoid,$recording_id) {
+    global $DB,$USER;
+    $context = context_module::instance($cmid);
+    $isNotification = false;
+    if (has_capability('mod/adobeconnect:managerecordings', $context, $USER->id)) {
+        $isNotification = true;
+    }
+    if (!empty($scoid)) {
+        $use = get_config('mod_adobeconnect')->use_offline;
+        if (!$use) {
+            return array('status' => -1, 'is_notification' => $isNotification, 'msg' => "Offline server is not enabled", 'data' => '');
+        }
+        $host = get_config('mod_adobeconnect')->offline_host;
+        $secret = get_config('mod_adobeconnect')->offline_host_secret;
+        $url = "{$host}/connect/rest.php?secret={$secret}";
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            //curl_setopt($ch, CURLOPT_HTTPHEADER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, array('action' => 'make_offline', 'scoid' => $scoid));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            $response = curl_exec($ch);
+            $info = curl_getinfo($ch);
+
+            if (empty($info['http_code']) || $info['http_code'] != 200) {
+                return array(
+                    'status' => 0,
+                    'is_notification' => $isNotification,
+                    'msg' => get_string('offline_server_err_reach', 'adobeconnect'),
+                    'data' => ''
+                );
+            }
+
+            if ($response == "UNAUTHORIZED ACCESS") {
+                return array(
+                    'status' => 0,
+                    'is_notification' => $isNotification,
+                    'msg' => get_string('offline_server_err_auth', 'adobeconnect'),
+                    'data' => ''
+                );
+            }
+            try {
+                $res = json_decode($response);
+                return array('status' => 1, 'is_notification' => $isNotification, 'msg' => $res->message ?: '', 'data' => $response);
+            } catch (Exception $exception) {
+                return array('status' => 1, 'is_notification' => $isNotification, 'msg' => $exception->getMessage(), 'data' => $response);
+            }
+
+        } catch (Exception $e) {
+            return array(
+                'status' => 0,
+                'is_notification' => $isNotification,
+                'msg' => get_string('offline_server_err_reach', 'adobeconnect'),
+                'data' => ''
+            );
+        }
+
+    } else {
+        return array(
+            'status' => 0,
+            'is_notification' => $isNotification,
+            'msg' => get_string('offline_server_err_sco', 'adobeconnect'),
+            'data' => ''
         );
     }
 }
@@ -2502,8 +2580,9 @@ function recordingHideShowRow($cmid, $recordingId, $hide = 0) {
 
 function getAttendances($context, $instanceid) {
     global $DB, $USER;
-    if (!has_capability('mod/adobeconnect:viewattendees', $context, $USER->id)) {
-
+    $configs = get_config('mod_adobeconnect');
+    $canViewAttendances = has_capability('mod/adobeconnect:viewattendees', $context, $USER->id);
+    if (!$canViewAttendances && !$configs->view_own_attendance) {
         return [];
     }
 
@@ -2518,7 +2597,12 @@ function getAttendances($context, $instanceid) {
         $cfield = get_custom_fields();
 
         $attendees = toNestedObject($attendees);
-        foreach ($attendees as $attendee) {
+        foreach ($attendees as $key => $attendee) {
+            if ((!$canViewAttendances && $configs->view_own_attendance)
+                && html_entity_decode($attendee->email) != $USER->email) {
+                unset($key,$attendees);
+                continue;
+            }
             $attendee->email = html_entity_decode($attendee->email);
             $attendee->session_name = html_entity_decode($attendee->session_name);
             $attendee->participant_name = html_entity_decode($attendee->participant_name);
@@ -2566,7 +2650,8 @@ function getAttendances($context, $instanceid) {
             $attendee->exit_times = $exit_times;
 
         }
-        return array_values($attendees);
+
+        return array_values($attendees ?? []);
     } catch (Exception $e) {
         debugging("error getting attendees" . $e, DEBUG_DEVELOPER);
         return [];
@@ -2640,7 +2725,7 @@ function get_custom_fields() {
     $fieldsets = [];
     foreach ($fields as $field) {
         $field = trim($field);
-        if (array_key_exists($field, $custom_fields)) {
+        if ($custom_fields && array_key_exists($field, $custom_fields)) {
             $fieldsets[] = $custom_fields[$field];
         }
 
@@ -2675,7 +2760,7 @@ function get_profile_fields() {
     global $DB;
     $order = $DB->sql_order_by_text('name');
     if (!$fields = $DB->get_records_menu('user_info_field', null, $order, 'shortname, name')) {
-        return [];
+        return null;
     }
 
     return $fields;

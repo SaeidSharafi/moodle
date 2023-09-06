@@ -254,7 +254,6 @@ function xmldb_adobeconnect_upgrade($oldversion = 0)
         // Adobeconnect savepoint reached.
         upgrade_mod_savepoint(true, 2021081100, 'adobeconnect');
     }
-
     return true;
 
 }
