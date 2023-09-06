@@ -1303,9 +1303,7 @@ function aconnect_create_user($aconnect, $usrdata) {
     );
 
     $aconnect->create_request($params);
-echo '<pre>';
-var_dump($aconnect->_xmlresponse);
-echo '</pre>';
+
     if ($aconnect->call_success('aconnect_create_user')) {
         $dom = new DomDocument();
         $dom->loadXML($aconnect->_xmlresponse);
@@ -2582,8 +2580,9 @@ function recordingHideShowRow($cmid, $recordingId, $hide = 0) {
 
 function getAttendances($context, $instanceid) {
     global $DB, $USER;
-    if (!has_capability('mod/adobeconnect:viewattendees', $context, $USER->id)) {
-
+    $configs = get_config('mod_adobeconnect');
+    $canViewAttendances = has_capability('mod/adobeconnect:viewattendees', $context, $USER->id);
+    if (!$canViewAttendances && !$configs->view_own_attendance) {
         return [];
     }
 
@@ -2598,7 +2597,12 @@ function getAttendances($context, $instanceid) {
         $cfield = get_custom_fields();
 
         $attendees = toNestedObject($attendees);
-        foreach ($attendees as $attendee) {
+        foreach ($attendees as $key => $attendee) {
+            if ((!$canViewAttendances && $configs->view_own_attendance)
+                && html_entity_decode($attendee->email) != $USER->email) {
+                unset($key,$attendees);
+                continue;
+            }
             $attendee->email = html_entity_decode($attendee->email);
             $attendee->session_name = html_entity_decode($attendee->session_name);
             $attendee->participant_name = html_entity_decode($attendee->participant_name);
@@ -2646,7 +2650,8 @@ function getAttendances($context, $instanceid) {
             $attendee->exit_times = $exit_times;
 
         }
-        return array_values($attendees);
+
+        return array_values($attendees ?? []);
     } catch (Exception $e) {
         debugging("error getting attendees" . $e, DEBUG_DEVELOPER);
         return [];

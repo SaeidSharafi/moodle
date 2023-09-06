@@ -27,7 +27,7 @@
 require('../config.php');
 require_once('lib.php');
 require_once $CFG->dirroot.'/user/lib.php';
-check();
+//check();
 redirect_if_major_upgrade_required();
 
 $testsession = optional_param('testsession', 0, PARAM_INT); // test session works properly

@@ -95,6 +95,13 @@ if ($hassiteconfig) {
         $setting = new admin_setting_configcheckbox($name, $title, $description, $default);
         $page->add($setting);
 
+        $name = 'mod_adobeconnect/view_own_attendance';
+        $title = get_string('view_own_attendance', 'adobeconnect');
+        $description = get_string('view_own_attendance_desc', 'adobeconnect');
+        $default = '0';
+        $setting = new admin_setting_configcheckbox($name, $title, $description, $default);
+        $page->add($setting);
+
         $url = $CFG->wwwroot . '/mod/adobeconnect/conntest.php';
         $url = htmlentities($url, ENT_COMPAT, 'UTF-8');
         $options = 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,width=700,height=300';

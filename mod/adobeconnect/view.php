@@ -376,7 +376,7 @@ if ($can_view_recordings) {
 
     //
 }
-if ($can_view_attendees) {
+if ($can_view_attendees || $configs->view_own_attendance) {
     $attendees = getAttendances($context, $cm->id);
 
     if (!empty($attendees)) {
