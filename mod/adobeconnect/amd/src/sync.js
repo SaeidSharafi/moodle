@@ -208,7 +208,7 @@ const registerEventListeners = (localized_strings, locale, contextId, scoid, gro
             e.preventDefault();
             syncBoth = false;
             addToOfflineRecorder.classList.add('loading');
-            notification.confirm(localized_strings['delete'], localized_strings['confirmdelete'],
+            notification.confirm(localized_strings['offliner'], localized_strings['confirm_offline'],
                 localized_strings['yes'], localized_strings['no'], function () {
                     let query = '#recording-' + addToOfflineRecorder.dataset.recordingid;
                     let row = document.querySelector(query);
@@ -704,6 +704,8 @@ export const init = ({locale, contextid, scoid, groupmode, usrprincipal, showoff
     localized_strings['no'] = 'خیر';
     localized_strings['hide'] = 'پنهان کردن';
     localized_strings['show'] = 'نمایش';
+    localized_strings['offliner'] = 'اضافه کردن به صف تبدیل';
+    localized_strings['confirm_offline'] = 'آیا از اضافه کردن این جلسه برای تبدیل به فایل قابل دانلود اطمینان دارید؟';
     getStrings([
         {key: 'delete', component: 'core'},
         {key: 'view', component: 'core'},
@@ -712,6 +714,8 @@ export const init = ({locale, contextid, scoid, groupmode, usrprincipal, showoff
         {key: 'no'},
         {key: 'hide'},
         {key: 'show'},
+        {key: 'offliner', component: 'mod_adobeconnect'},
+        {key: 'confirm_offline', component: 'mod_adobeconnect'},
     ]).done(function (s) {
         localized_strings['delete'] = s[0];
         localized_strings['view'] = s[1];
@@ -720,6 +724,8 @@ export const init = ({locale, contextid, scoid, groupmode, usrprincipal, showoff
         localized_strings['no'] = s[4];
         localized_strings['hide'] = s[5];
         localized_strings['show'] = s[6];
+        localized_strings['offliner'] = s[7];
+        localized_strings['confirm_offline'] = s[8];
         if (sync) {
             syncBoth = true;
             synchronizeRecords(localized_strings, locale, contextid, scoid, groupmode, usrprincipal, showoffline, null, true);

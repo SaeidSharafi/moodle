@@ -172,7 +172,8 @@ $string['sync_attendance'] = 'Synchronize Attendances';
 $string['delete_recording'] = 'Delete recordings';
 $string['sync_recordings'] = 'Synchronize Recordings';
 $string['confirmdelete'] = 'Ar you sure you want to remove this recording? <br><span class="text-danger">removed recordings cannot be recovered</span>';
-
+$string['confirm_offline'] = 'Ar you sure you want to add this recording to offliner queueu?';
+$string['offliner']= 'Make Offline';
 $string['insession'] = 'ongoing session';
 $string['last_sync'] = 'Last sync';
 
