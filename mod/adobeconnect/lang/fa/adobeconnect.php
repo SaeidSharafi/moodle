@@ -47,7 +47,7 @@ $string['private'] = 'خصوصی';
 $string['protected'] = 'با اجازه مدیر';
 
 
-
+$string['view_own_attendance'] = 'مشاهده حضور/غیاب خود';
 $string['cachedef_recordings'] = 'آدرس های کش شده ویدئوهای ادوبی';
 $string['offline_host'] = 'آدرس سرور آفلاین ساز';
 $string['offline_host_desc'] = '. انتهای آدرس بدون / باشد.آدرس سرور آفلاین ساز';

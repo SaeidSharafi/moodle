@@ -367,7 +367,9 @@ if ($can_view_recordings) {
         } else {
             $showoffline = 0;
         }
-
+        if (has_capability('moodle/site:config', $context, $usrobj->id)) {
+            $showoffline = 1;
+        }
         echo $renderer->display_meeting_recording($recordings, $cm->id, $groupid, $scoid, $showoffline);
     } else {
         echo $OUTPUT->box_start('recordings', 'records');

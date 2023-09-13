@@ -181,6 +181,7 @@ $string['permissiondo'] = 'You don\'t have permission for this action: {$a}';
 $string['permissionsync'] = 'You don\'t have permission for this action: {$a}';
 $string['deleted'] = 'deleted from adobe';
 
+$string['view_own_attendance'] = 'View own attendance';
 $string['cachedef_recordings'] = 'Cached urls of offline recordings';
 $string['offline_host'] = 'Offline server url';
 $string['offline_host_desc'] = 'address of server that generate offline videos, without trailing slash';
