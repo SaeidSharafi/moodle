@@ -33,6 +33,9 @@ $string['sync_recordings'] = 'همگام سازی جلسات ضبط شده';
 $string['customfields'] = 'فیلد های سفارشی کاربر';
 $string['customfields_desc'] = 'این فیلد ها (در صورت وجود) در جدول حضور در کلاس نمایش داده خواهند شد. نام کوتاه هر فیلد را در یک خط بنویسید.';
 $string['confirmdelete'] ='آیا از حذف این جلسه اطمینان دارید؟<br><span class="text-danger">جلسات ضبط شده ای که حذف می شوند قابل بازیابی نمی باشند</span> ';
+$string['customfields_desc'] = 'این فیلد ها (در صورت وجود) در جدول حضور در کلاس نمایش داده خواهند شد. نام کوتاه هر فیلد را در یک خط بنویسید.';
+$string['confirm_offline'] ='آیا از اضافه کردن این جلسه برای تبدیل به فایل قابل دانلود اطمینان دارید؟';
+$string['offliner']= 'اضافه کردن به صف تبدیل';
 $string['operations'] = 'عملیات';
 $string['insession'] = 'حاضر در جلسه';
 $string['last_sync'] = 'آخرین بروزرسانی';
@@ -46,6 +49,7 @@ $string['view_own_attendance'] = 'مشاهده حضور خود';
 $string['view_own_attendance_desc'] = 'اجازه مشاهده حضور/غیاب خود را به کاربران می‌دهد.';
 
 
+$string['view_own_attendance'] = 'مشاهده حضور/غیاب خود';
 $string['cachedef_recordings'] = 'آدرس های کش شده ویدئوهای ادوبی';
 $string['offline_host'] = 'آدرس سرور آفلاین ساز';
 $string['offline_host_desc'] = '. انتهای آدرس بدون / باشد.آدرس سرور آفلاین ساز';
