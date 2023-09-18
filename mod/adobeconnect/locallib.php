@@ -2582,27 +2582,31 @@ function getAttendances($context, $instanceid) {
     global $DB, $USER;
     $configs = get_config('mod_adobeconnect');
     $canViewAttendances = has_capability('mod/adobeconnect:viewattendees', $context, $USER->id);
+
     if (!$canViewAttendances && !$configs->view_own_attendance) {
         return [];
     }
-
     try {
         //$attendees = $DB->get_records('adobeconnect_attendeess', ['instanceid' => $instanceid], 'email ASC');
         $sql = "SELECT * FROM {adobeconnect_attendees} attendees
                   JOIN {adobeconnect_attendance} attendance
                   ON attendees.id = attendance.attendee_id
-                 WHERE  instanceid = ?
-                 ORDER BY attendees.email,attendance.start_date DESC";
-        $attendees = $DB->get_records_sql($sql, [$instanceid]);
+                 WHERE  instanceid = ?";
+        if (!$canViewAttendances && $configs->view_own_attendance) {
+            $sql .= " AND attendees.email = ?";
+        }
+
+        $sql .= " ORDER BY attendees.email,attendance.start_date DESC";
+        $attendees = $DB->get_records_sql($sql, [$instanceid,$USER->email]);
         $cfield = get_custom_fields();
 
         $attendees = toNestedObject($attendees);
         foreach ($attendees as $key => $attendee) {
-            if ((!$canViewAttendances && $configs->view_own_attendance)
-                && html_entity_decode($attendee->email) != $USER->email) {
-                unset($key,$attendees);
-                continue;
-            }
+//            if ((!$canViewAttendances && $configs->view_own_attendance)
+//                && html_entity_decode($attendee->email) != html_entity_decode($USER->email)) {
+//                unset($key,$attendees);
+//                continue;
+//            }
             $attendee->email = html_entity_decode($attendee->email);
             $attendee->session_name = html_entity_decode($attendee->session_name);
             $attendee->participant_name = html_entity_decode($attendee->participant_name);
