@@ -45,6 +45,8 @@ $string['deleted'] = 'این رکورد حذف شده است';
 $string['public'] = 'عمومی';
 $string['private'] = 'خصوصی';
 $string['protected'] = 'با اجازه مدیر';
+$string['view_own_attendance'] = 'مشاهده حضور خود';
+$string['view_own_attendance_desc'] = 'اجازه مشاهده حضور/غیاب خود را به کاربران می‌دهد.';
 
 
 $string['view_own_attendance'] = 'مشاهده حضور/غیاب خود';
