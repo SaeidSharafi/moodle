@@ -154,6 +154,8 @@ $string['download'] = 'Download';
 $string['offline_link'] = 'View offline';
 
 $string['attendance'] = 'Attendance';
+$string['view_own_attendance'] = 'View Own Attendance';
+$string['view_own_attendance_desc'] = 'Allows users to view their own attendance records.';
 
 $string['sessain_name'] = 'Name';
 $string['participant_name'] = 'Adobe Name';
