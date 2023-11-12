@@ -134,7 +134,7 @@ class mod_quiz_external extends external_api {
 
                     // Fields only for managers.
                     if (has_capability('moodle/course:manageactivities', $context)) {
-                        $additionalfields = array('shuffleanswers', 'timecreated', 'timemodified', 'password', 'subnet');
+                        $additionalfields = array('shuffleanswers', 'forceanswers', 'timecreated', 'timemodified', 'password', 'subnet');
                         $viewablefields = array_merge($viewablefields, $additionalfields);
                     }
 
@@ -222,6 +222,7 @@ class mod_quiz_external extends external_api {
                                                                 \'free\' and \'seq\'.', VALUE_OPTIONAL),
                             'shuffleanswers' => new external_value(PARAM_INT, 'Whether the parts of the question should be shuffled,
                                                                     in those question types that support it.', VALUE_OPTIONAL),
+                            'forceanswers' => new external_value(PARAM_INT, 'Whether user has to answer all questions or not.', VALUE_OPTIONAL),
                             'sumgrades' => new external_value(PARAM_FLOAT, 'The total of all the question instance maxmarks.',
                                                                 VALUE_OPTIONAL),
                             'grade' => new external_value(PARAM_FLOAT, 'The total that the quiz overall grade is scaled to be

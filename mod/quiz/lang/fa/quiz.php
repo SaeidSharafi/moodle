@@ -15,15 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Quiz activity version information.
+ * Strings for component 'quiz', language 'en', branch 'MOODLE_20_STABLE'
  *
  * @package   mod_quiz
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+$string['forceanswers'] = 'پاسخ اجباری';
+$string['forceanswers_desc'] = 'با فعال کرن این گزینه کاربران باید به تمام سوالات آزمون پاسخ دهند';
 
-$plugin->version   = 2023111200;
-$plugin->requires  = 2022111800;
-$plugin->component = 'mod_quiz';
+$string['mustanswerallquestions'] = 'شما باید به همه سوالات پاسخ دهید';
