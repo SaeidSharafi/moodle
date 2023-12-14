@@ -814,6 +814,7 @@ class core_message_external extends external_api {
             throw new moodle_exception('disabled', 'message');
         }
 
+
         // Validate context.
         $context = context_system::instance();
         self::validate_context($context);

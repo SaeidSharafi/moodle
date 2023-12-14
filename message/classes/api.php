@@ -336,17 +336,18 @@ class api {
 
         // Only fields that are also part of user_get_default_fields() are valid when passed into user_get_user_details().
         $fields = array_intersect($namefields->get_required_fields(), user_get_default_fields());
-
         foreach ($getnoncontactusers(0, $batchlimit) as $users) {
             foreach ($users as $id => $user) {
-                if ($CFG->message_no_restrict || (user_has_roles_assignment($id, [3,4])
+                if ($CFG->message_no_restrict
+                    || has_capability('moodle/site:config', \context_system::instance())
+                    || (user_has_roles_assignment($id, [3,4])
                     || user_has_roles_assignment($userid, [3,4]))
                 ) {
-                // User visibility checks: only return users who are visible to the user performing the search.
-                // Which visibility check to use depends on the 'messagingallusers' (site wide messaging) setting:
-                // - If enabled, return matched users whose profiles are visible to the current user anywhere (site or course).
-                // - If disabled, only return matched users whose course profiles are visible to the current user.
-                $userdetails = \core_message\helper::search_get_user_details($user, $fields);
+                    // User visibility checks: only return users who are visible to the user performing the search.
+                    // Which visibility check to use depends on the 'messagingallusers' (site wide messaging) setting:
+                    // - If enabled, return matched users whose profiles are visible to the current user anywhere (site or course).
+                    // - If disabled, only return matched users whose course profiles are visible to the current user.
+                    $userdetails = \core_message\helper::search_get_user_details($user, $fields);
 
                 // Return the user only if the searched field is returned.
                 // Otherwise it means that the $USER was not allowed to search the returned user.
@@ -367,8 +368,8 @@ class api {
                     }
                     $noofvalidseenrecords++;
                 }
+                }
             }
-        }
         }
         $foundusers = $returnedusers;
 
@@ -1631,7 +1632,13 @@ class api {
         if (!has_capability('moodle/site:sendmessage', $systemcontext, $senderid)) {
             return false;
         }
-
+        if (!$CFG->message_no_restrict
+            && !has_capability('moodle/site:config',  $systemcontext, $senderid)
+            && !(user_has_roles_assignment($recipientid, [3,4])
+                && user_has_roles_assignment($senderid, [3,4]))
+        ){
+            return false;
+        }
         if (has_capability('moodle/site:readallmessages', $systemcontext, $senderid)) {
             return true;
         }
@@ -2271,7 +2278,13 @@ class api {
         if ($CFG->messagingallusers) {
             return true;
         }
-
+        if (!$CFG->message_no_restrict
+            && !has_capability('moodle/site:config',  \context_system::instance(), $userid)
+            && !(user_has_roles_assignment($userid, [3,4])
+                && user_has_roles_assignment($requesteduserid, [3,4]))
+        ){
+            return false;
+        }
         // We need to check if they are in the same course.
         return enrol_sharing_course($userid, $requesteduserid);
     }
@@ -2429,6 +2442,13 @@ class api {
     public static function add_contact(int $userid, int $contactid) {
         global $DB;
 
+        if (!$CFG->message_no_restrict
+            && !has_capability('moodle/site:config',  $systemcontext, $userid)
+            && !(user_has_roles_assignment($userid, [3,4])
+                && user_has_roles_assignment($contactid, [3,4]))
+        ){
+            return false;
+        }
         $messagecontact = new \stdClass();
         $messagecontact->userid = $userid;
         $messagecontact->contactid = $contactid;
