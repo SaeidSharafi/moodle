@@ -535,7 +535,8 @@ class quiz
         if ($when == mod_quiz_display_options::DURING ||
             $when == mod_quiz_display_options::IMMEDIATELY_AFTER) {
             return '';
-        } else if ($when == mod_quiz_display_options::LATER_WHILE_OPEN && $this->quiz->timeclose &&
+        } else {
+            if ($when == mod_quiz_display_options::LATER_WHILE_OPEN && $this->quiz->timeclose &&
                 $this->quiz->reviewattempt & mod_quiz_display_options::AFTER_CLOSE) {
                 return get_string('noreviewuntil'.$langstrsuffix, 'quiz',
                     userdate($this->quiz->timeclose, $dateformat));
@@ -543,6 +544,7 @@ class quiz
                 return get_string('noreview'.$langstrsuffix, 'quiz');
             }
         }
+    }
 
     /**
      * Probably not used any more, but left for backwards compatibility.

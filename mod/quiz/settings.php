@@ -153,6 +153,13 @@ if ($ADMIN->fulltree) {
     $setting->set_locked_flag_options(admin_setting_flag::ENABLED, false);
     $quizsettings->add($setting);
 
+    $setting = new admin_setting_configcheckbox('quiz/forceanswers',
+        get_string('forceanswers', 'quiz'), get_string('forceanswers_desc', 'quiz'),
+        0);
+    $setting->set_advanced_flag_options(admin_setting_flag::ENABLED, false);
+    $setting->set_locked_flag_options(admin_setting_flag::ENABLED, false);
+    $quizsettings->add($setting);
+
     // Can redo completed questions.
     $setting = new admin_setting_configselect('quiz/canredoquestions',
             get_string('canredoquestions', 'quiz'), get_string('canredoquestions_desc', 'quiz'),
