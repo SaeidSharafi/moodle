@@ -70,7 +70,6 @@ class mod_quiz_generator extends testing_module_generator {
             'overallfeedbackclosed'  => 1,
             'questionsperpage'       => 1,
             'shuffleanswers'         => 1,
-            'forceanswers'           => 0,
             'sumgrades'              => 0,
             'grade'                  => 100,
             'timecreated'            => time(),

@@ -157,20 +157,6 @@ function xmldb_quiz_upgrade($oldversion) {
         upgrade_mod_savepoint(true, 2022020300, 'quiz');
     }
 
-    if ($oldversion < 2023111200) {
-
-        // Define field forceanswers to be added to quiz.
-        $table = new xmldb_table('quiz');
-        $field = new xmldb_field('forceanswers', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'shuffleanswers');
-
-        // Conditionally launch add field forceanswers.
-        if (!$dbman->field_exists($table, $field)) {
-            $dbman->add_field($table, $field);
-        }
-
-        // Quiz savepoint reached.
-        upgrade_mod_savepoint(true, 2023111200, 'quiz');
-    }
     // Automatically generated Moodle v4.0.0 release upgrade line.
     // Put any upgrade step following this.
 

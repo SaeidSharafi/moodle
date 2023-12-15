@@ -179,10 +179,6 @@ class mod_quiz_mod_form extends moodleform_mod {
                 get_string('howquestionsbehave', 'question'), $behaviours);
         $mform->addHelpButton('preferredbehaviour', 'howquestionsbehave', 'question');
 
-        //Force users to answer all questions
-        $mform->addElement('selectyesno', 'forceanswers', get_string('forceanswers', 'quiz'));
-        $mform->addHelpButton('forceanswers', 'forceanswers_desc', 'quiz');
-
         // Can redo completed questions.
         $redochoices = array(0 => get_string('no'), 1 => get_string('canredoquestionsyes', 'quiz'));
         $mform->addElement('select', 'canredoquestions', get_string('canredoquestions', 'quiz'), $redochoices);

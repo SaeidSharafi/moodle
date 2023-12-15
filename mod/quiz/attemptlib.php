@@ -535,8 +535,7 @@ class quiz
         if ($when == mod_quiz_display_options::DURING ||
             $when == mod_quiz_display_options::IMMEDIATELY_AFTER) {
             return '';
-        } else {
-            if ($when == mod_quiz_display_options::LATER_WHILE_OPEN && $this->quiz->timeclose &&
+        } else if ($when == mod_quiz_display_options::LATER_WHILE_OPEN && $this->quiz->timeclose &&
                 $this->quiz->reviewattempt & mod_quiz_display_options::AFTER_CLOSE) {
                 return get_string('noreviewuntil'.$langstrsuffix, 'quiz',
                     userdate($this->quiz->timeclose, $dateformat));
@@ -544,7 +543,6 @@ class quiz
                 return get_string('noreview'.$langstrsuffix, 'quiz');
             }
         }
-    }
 
     /**
      * Probably not used any more, but left for backwards compatibility.
@@ -649,7 +647,6 @@ class quiz_attempt
     const FINISHED = 'finished';
     /** @var string to identify the abandoned state. */
     const ABANDONED = 'abandoned';
-    const NOT_ANSWERED = 'not_answered';
 
     /** @var int maximum number of slots in the quiz for the review page to default to show all. */
     const MAX_SLOTS_FOR_DEFAULT_REVIEW_SHOW_ALL = 50;
@@ -2544,11 +2541,9 @@ class quiz_attempt
                 array('attempt' => $this->attempt->id, 'cmid' => $this->get_cmid()));
             if ($page == 0 && $showall != $defaultshowall) {
                 $url->param('showall', (int) $showall);
-            } else {
-                if ($page > 0) {
+            } else if ($page > 0) {
                     $url->param('page', $page);
                 }
-            }
             return $url;
         }
     }
@@ -2567,9 +2562,6 @@ class quiz_attempt
     {
         global $DB;
 
-
-//        return;
-//        die();
         $transaction = $DB->start_delegated_transaction();
 
         // Get key times.
@@ -2652,13 +2644,7 @@ class quiz_attempt
             }
 
             $transaction->allow_commit();
-            if ($this->quizobj->get_quiz()->forceanswers) {
-                foreach ($this->get_slots($thispage) as $slot) {
-                    if (get_class($this->get_question_state($slot)) === question_state_todo::class) {
-                        return self::NOT_ANSWERED;
-                    }
-                }
-            }
+
             return $becomingoverdue ? self::OVERDUE : self::IN_PROGRESS;
         }
 

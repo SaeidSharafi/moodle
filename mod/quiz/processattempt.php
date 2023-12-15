@@ -93,14 +93,8 @@ if (!$finishattempt && !$attemptobj->check_page_access($thispage)) {
 
 // Process the attempt, getting the new status for the attempt.
 $status = $attemptobj->process_attempt($timenow, $finishattempt, $timeup, $thispage);
-if ($status == quiz_attempt::NOT_ANSWERED) {
-    if ($previous) {
-        redirect($nexturl);
-    }
-    redirect( $attemptobj->attempt_url(null, $attemptobj->get_currentpage()),get_string('mustanswerallquestions','quiz'),
-        null,\core\output\notification::NOTIFY_WARNING);
-}
-else if ($status == quiz_attempt::OVERDUE) {
+
+if ($status == quiz_attempt::OVERDUE) {
     redirect($attemptobj->summary_url());
 } else if ($status == quiz_attempt::IN_PROGRESS) {
     redirect($nexturl);
