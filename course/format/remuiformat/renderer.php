@@ -231,7 +231,7 @@ class format_remuiformat_renderer extends section_renderer {
 
             if ($thismod->uservisible) {
                 if (isset($sectionmods[$thismod->modname])) {
-                    $sectionmods[$thismod->modname]['name'] = $thismod->modplural;
+                    $sectionmods[$thismod->modname]['name'] = current_language() === 'fa' ? $thismod->modfullname : $thismod->modplural;
                     $sectionmods[$thismod->modname]['count']++;
                 } else {
                     $sectionmods[$thismod->modname]['name'] = $thismod->modfullname;

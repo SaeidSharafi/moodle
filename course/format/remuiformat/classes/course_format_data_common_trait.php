@@ -418,7 +418,7 @@ class course_format_data_common_trait {
 
             if ($thismod->uservisible) {
                 if (isset($sectionmods[$thismod->modname])) {
-                    $sectionmods[$thismod->modname]['name'] = $thismod->modplural;
+                    $sectionmods[$thismod->modname]['name'] = current_language() === 'fa' ? $thismod->modfullname : $thismod->modplural;
                     $sectionmods[$thismod->modname]['count']++;
                 } else {
                     $sectionmods[$thismod->modname]['name'] = $thismod->modfullname;
@@ -1087,7 +1087,7 @@ class course_format_data_common_trait {
                             continue;
                         }
                         if (isset($sectionmods[$thismod->modname])) {
-                            $sectionmods[$thismod->modname]['name'] = $thismod->modplural;
+                            $sectionmods[$thismod->modname]['name'] = current_language() === 'fa' ? $thismod->modfullname : $thismod->modplural;
                             $sectionmods[$thismod->modname]['count']++;
                         } else {
                             $sectionmods[$thismod->modname]['name'] = $thismod->modfullname;

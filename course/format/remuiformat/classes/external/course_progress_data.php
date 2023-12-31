@@ -80,7 +80,7 @@ trait course_progress_data {
                         continue;
                     }
                     if (isset($sectionmods[$thismod->modname])) {
-                        $sectionmods[$thismod->modname]['name'] = $thismod->modplural;
+                        $sectionmods[$thismod->modname]['name'] = current_language() === 'fa' ? $thismod->modfullname : $thismod->modplural;
                         $sectionmods[$thismod->modname]['count']++;
                     } else {
                         $sectionmods[$thismod->modname]['name'] = $thismod->modfullname;
