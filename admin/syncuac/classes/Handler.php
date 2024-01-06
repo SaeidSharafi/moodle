@@ -42,7 +42,7 @@ class Handler {
         $params = http_build_query($data, null, '&');
 
         // API URL
-        $url = $CFG->samaurl.'/services/StudentService.svc/web/GetStudentsPersonInfo?' . $params;
+        $url = $CFG->samaurl.'/services/StudentService.svc/web/2019/01/GetStudentsPersonInfo?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -102,10 +102,10 @@ class Handler {
                         }
 
                         if (strlen(trim($email)) == 0 || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                            $email = $national_code . "@tabrizu.ac.ir";
+                            $email = $national_code . "@smums.ac.ir";
                         }
                         $user = new Student($firstName, $lastName, "s" . $studentNumber,
-                                $national_code, $student->StudyLevel->StudyLevelId, $email);
+                                $national_code, $student->StudyLevel->StudyLevelIntId, $email);
                         $users[] = $user;
                     }
 
@@ -136,7 +136,7 @@ class Handler {
         $params = http_build_query($data, null, '&');
 
         // API URL
-        $url = $CFG->samaurl.'/services/StudentService.svc/web/GetStudentPersonInfo?' . $params;
+        $url = $CFG->samaurl.'/services/StudentService.svc/web/2019/01/GetStudentPersonInfo?' . $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
@@ -170,7 +170,7 @@ class Handler {
         $users = array();
         if (is_object($student)) {
             if (in_array($student->StudentStatus->StudentStatusId, $statusId) &&
-                    in_array($student->StudyLevel->StudyLevelId, $study_levels)) {
+                    in_array($student->StudyLevel->StudyLevelIntId, $study_levels)) {
                 if ($student->Person->FullName) {
                     $firstName = $student->Person->FirstName;
                     $lastName = $student->Person->LastName;
@@ -200,10 +200,10 @@ class Handler {
                     }
 
                     if (strlen(trim($email)) == 0 || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $email = $national_code . "@tabrizu.ac.ir";
+                        $email = $national_code . "@smums.ac.ir";
                     }
                     $user = new Student($firstName, $lastName, "s" . $studentNumber,
-                            $national_code, $student->StudyLevel->StudyLevelId, $email);
+                            $national_code, $student->StudyLevel->StudyLevelIntId, $email);
                     $users[] = $user;
                 }
 
@@ -301,7 +301,7 @@ class Handler {
                             }
 
                             if (strlen(trim($email)) == 0 || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                                $email = $national_code . "@tabrizu.ac.ir";
+                                $email = $national_code . "@smums.ac.ir";
                             }
                             $user = new Teacher($firstName, $lastName, "t" . $professorCode,
                                     $national_code, $email);
