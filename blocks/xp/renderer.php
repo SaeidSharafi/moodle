@@ -282,27 +282,28 @@ class block_xp_renderer extends plugin_renderer_base {
 
         $notice = null;
         $candidates = [
-            [
-                static::NOTICE_FLAG_QUEST,
-                function() {
-                    $questblogurl = new moodle_url('https://www.levelup.plus/blog/quest-moodle-gamification-plugin?ref=xp_notice');
-                    $questurl = new moodle_url('https://www.levelup.plus/quest?ref=xp_notice');
-                    return strip_tags(markdown_to_html(get_string('questreleasenotice', 'block_xp', (object) [
-                        'questblogurl' => $questblogurl->out(false),
-                        'questurl' => $questurl->out(false),
-                    ])), '<a><em><strong>');
-                },
-            ], [
-                $this->noticesflag,
-                function() {
-                    $moodleorgurl = new moodle_url('https://moodle.org/plugins/view.php?plugin=block_xp');
-                    $githuburl = new moodle_url('https://github.com/FMCorz/moodle-block_xp');
-                    return get_string('likenotice', 'block_xp', (object) [
-                        'moodleorg' => $moodleorgurl->out(),
-                        'github' => $githuburl->out(),
-                    ]);
-                },
-            ],
+//            [
+//                static::NOTICE_FLAG_QUEST,
+//                function() {
+//                    $questblogurl = new moodle_url('https://www.levelup.plus/blog/quest-moodle-gamification-plugin?ref=xp_notice');
+//                    $questurl = new moodle_url('https://www.levelup.plus/quest?ref=xp_notice');
+//                    return strip_tags(markdown_to_html(get_string('questreleasenotice', 'block_xp', (object) [
+//                        'questblogurl' => $questblogurl->out(false),
+//                        'questurl' => $questurl->out(false),
+//                    ])), '<a><em><strong>');
+//                },
+//            ],
+//            [
+//                $this->noticesflag,
+//                function() {
+//                    $moodleorgurl = new moodle_url('https://moodle.org/plugins/view.php?plugin=block_xp');
+//                    $githuburl = new moodle_url('https://github.com/FMCorz/moodle-block_xp');
+//                    return get_string('likenotice', 'block_xp', (object) [
+//                        'moodleorg' => $moodleorgurl->out(),
+//                        'github' => $githuburl->out(),
+//                    ]);
+//                },
+//            ],
         ];
         foreach ($candidates as $candidate) {
             if (!get_user_preferences($candidate[0], false)) {
