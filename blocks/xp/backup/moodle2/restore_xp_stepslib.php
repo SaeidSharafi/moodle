@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use block_xp\local\backup\restore_context;
+
 /**
  * Block XP restore structure step class.
  *
@@ -53,7 +55,7 @@ class restore_xp_block_structure_step extends restore_structure_step {
     protected function define_structure() {
         global $DB;
 
-        $paths = array();
+        $paths = [];
         $userinfo = $this->get_setting_value('users');
 
         // Define each path.
@@ -93,10 +95,10 @@ class restore_xp_block_structure_step extends restore_structure_step {
             // Removing old preferences.
             $sql = $DB->sql_like('name', ':name');
             $DB->delete_records_select('user_preferences', $sql, [
-                'name' => 'block_xp-notice-block_intro_' . $courseid
+                'name' => 'block_xp-notice-block_intro_' . $courseid,
             ]);
             $DB->delete_records_select('user_preferences', $sql, [
-                'name' => 'block_xp_notify_level_up_' . $courseid
+                'name' => 'block_xp_notify_level_up_' . $courseid,
             ]);
         }
     }
@@ -113,7 +115,7 @@ class restore_xp_block_structure_step extends restore_structure_step {
             $data['defaultfilters'] = \block_xp\local\config\course_world_config::DEFAULT_FILTERS_STATIC;
         }
 
-        if ($DB->record_exists('block_xp_config', array('courseid' => $data['courseid']))) {
+        if ($DB->record_exists('block_xp_config', ['courseid' => $data['courseid']])) {
             $this->log('block_xp: config not restored, existing config was found', backup::LOG_DEBUG);
             return;
         }
@@ -183,7 +185,8 @@ class restore_xp_block_structure_step extends restore_structure_step {
         global $DB;
         $data['courseid'] = $this->get_courseid();
         $data['userid'] = $this->get_mappingid('user', $data['userid']);
-        if ($DB->record_exists('block_xp', array('courseid' => $data['courseid'], 'userid' => $data['userid']))) {
+        $data['lvl'] = 1; // This is no longer used, and is hardcoded to 1.
+        if ($DB->record_exists('block_xp', ['courseid' => $data['courseid'], 'userid' => $data['userid']])) {
             $this->log("block_xp: XP of user with id '{$data['userid']}' not restored, existing entry found", backup::LOG_DEBUG);
             return;
         }
@@ -202,7 +205,20 @@ class restore_xp_block_structure_step extends restore_structure_step {
      */
     protected function after_restore() {
         global $DB;
+
+        block_xp\di::reset_container();
         $courseid = $this->get_courseid();
+        $restorecontext = restore_context::from_structure_step($this);
+
+        // Update the levels data if needed.
+        try {
+            $factory = block_xp\di::get('course_world_factory');
+            $world = $factory->get_world($courseid);
+            $writer = block_xp\di::get('levels_info_writer');
+            $writer->update_world_after_restore($restorecontext, $world);
+        } catch (Exception $e) {
+            $this->log("block_xp: Running levels_info_writer::update_world_after_restore did not succeed", backup::LOG_DEBUG);
+        }
 
         // Update each filter (the rules).
         $filters = $DB->get_recordset('block_xp_filters', ['courseid' => $courseid]);

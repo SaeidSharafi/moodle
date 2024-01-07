@@ -54,7 +54,6 @@ class default_course_world_navigation_factory implements course_world_navigation
      *
      * @param url_resolver $resolver The URL resolver.
      * @param config $adminconfig Admin config.
-     * @param user_indicator $indicator The indicator.
      */
     public function __construct(url_resolver $resolver, config $adminconfig) {
         $this->resolver = $resolver;
@@ -91,12 +90,15 @@ class default_course_world_navigation_factory implements course_world_navigation
         $urlresolver = $this->resolver;
         $renderer = \block_xp\di::get('renderer');
         $accessperms = $world->get_access_permissions();
+        $hasaddon = di::get('addon')->is_activated();
+//      $showpromo = $this->adminconfig->get('enablepromoincourses');
+        $showpromo = false;
 
         if ($world->get_config()->get('enableinfos')) {
             $links[] = [
                 'id' => 'infos',
                 'url' => $urlresolver->reverse('infos', ['courseid' => $courseid]),
-                'text' => get_string('navinfos', 'block_xp')
+                'text' => get_string('navinfos', 'block_xp'),
             ];
         }
 
@@ -112,7 +114,7 @@ class default_course_world_navigation_factory implements course_world_navigation
             'id' => 'ladder',
             'url' => null,
             'text' => get_string('navladder', 'block_xp'),
-            'children' => array_filter([$laddernav])
+            'children' => array_filter([$laddernav]),
         ];
 
         $canviewlogs = $accessperms instanceof access_logs_permissions && $accessperms->can_access_logs();
@@ -143,7 +145,7 @@ class default_course_world_navigation_factory implements course_world_navigation
                 'children' => array_filter([
                     $canviewreport ? $reportnav : null,
                     $canviewlogs ? $lognav : null,
-                ])
+                ]),
             ];
         }
 
@@ -161,28 +163,48 @@ class default_course_world_navigation_factory implements course_world_navigation
                     [
                         'id' => 'visuals',
                         'url' => $urlresolver->reverse('visuals', ['courseid' => $courseid]),
-                        'text' => get_string('navvisuals', 'block_xp')
+                        'text' => get_string('navvisuals', 'block_xp'),
                     ],
 
-                ]
+                ],
             ];
             $links[] = [
                 'id' => 'rules',
                 'url' => $urlresolver->reverse('rules', ['courseid' => $courseid]),
                 'text' => get_string('navpoints', 'block_xp'),
-                'children' => [
+                'children' => array_filter([
                     [
                         'id' => 'rules',
                         'url' => $urlresolver->reverse('rules', ['courseid' => $courseid]),
-                        'text' => get_string('navrules', 'block_xp'),
-                    ]
-                ]
+                        'text' => get_string('naveventrules', 'block_xp'),
+                    ],
+                    $showpromo || $hasaddon ?
+                    [
+                        'id' => 'graderules',
+                        'url' => $urlresolver->reverse('graderules', ['courseid' => $courseid]),
+                        'text' => get_string('navgraderules', 'block_xp'),
+                        'addonrequired' => !$hasaddon,
+                    ] : null,
+                    $showpromo || $hasaddon ?
+                    [
+                        'id' => 'drops',
+                        'url' => $urlresolver->reverse('drops', ['courseid' => $courseid]),
+                        'text' => get_string('navdrops', 'block_xp'),
+                        'addonrequired' => !$hasaddon,
+                    ] : null,
+                    $showpromo || $hasaddon ? [
+                        'id' => 'import',
+                        'url' => $urlresolver->reverse('import', ['courseid' => $courseid]),
+                        'text' => get_string('navimport', 'block_xp'),
+                        'addonrequired' => !$hasaddon,
+                    ] : null,
+                ]),
             ];
 
             $links[] = [
                 'id' => 'config',
                 'url' => $urlresolver->reverse('config', ['courseid' => $courseid]),
-                'text' => get_string('navsettings', 'block_xp')
+                'text' => get_string('navsettings', 'block_xp'),
             ];
 
             // @codingStandardsIgnoreStart
@@ -193,10 +215,9 @@ class default_course_world_navigation_factory implements course_world_navigation
             //   $CFG->forced_plugin_settings = ['block_xp' => ['enablepromoincourses' => 0]];
             //
             // @codingStandardsIgnoreEnd
-            $localxp = di::get('addon')->is_activated();
-            if ($this->adminconfig->get('enablepromoincourses') || $localxp) {
+            if ($showpromo || $hasaddon) {
                 $star = $renderer->pix_icon('star', '', 'block_xp', ['class' => 'icon']);
-                if ($localxp) {
+                if ($hasaddon) {
                     $star = '';
                 }
 
@@ -209,7 +230,7 @@ class default_course_world_navigation_factory implements course_world_navigation
                 $links[] = [
                     'id' => 'promo',
                     'url' => $urlresolver->reverse('promo', ['courseid' => $courseid]),
-                    'text' => $star . get_string('navpromo', 'block_xp') . $hasnew
+                    'text' => $star . get_string('navpromo', 'block_xp') . $hasnew,
                 ];
             }
         }

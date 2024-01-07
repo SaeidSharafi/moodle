@@ -35,17 +35,20 @@ namespace block_xp\local\observer;
  */
 class default_observer_rules_maker implements observer_rules_maker {
 
+    /**
+     * Get observer rules.
+     */
     public function get_observer_rules() {
         return [
             [
                 'eventname' => '*',
                 'callback' => 'block_xp\\local\\observer\\observer::catch_all',
-                'internal' => false
+                'internal' => false,
             ],
             [
                 'eventname' => '\\core\\event\\course_deleted',
-                'callback' => 'block_xp\\local\\observer\\observer::course_deleted'
-            ]
+                'callback' => 'block_xp\\local\\observer\\observer::course_deleted',
+            ],
         ];
     }
 

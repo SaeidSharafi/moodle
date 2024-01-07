@@ -97,7 +97,7 @@ function xmldb_block_xp_upgrade($oldversion) {
 
         // Define index courseid (unique) to be added to block_xp_config.
         $table = new xmldb_table('block_xp_config');
-        $index = new xmldb_index('courseid', XMLDB_INDEX_UNIQUE, array('courseid'));
+        $index = new xmldb_index('courseid', XMLDB_INDEX_UNIQUE, ['courseid']);
 
         // Conditionally launch add index courseid.
         if (!$dbman->index_exists($table, $index)) {
@@ -136,10 +136,10 @@ function xmldb_block_xp_upgrade($oldversion) {
         $table->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
 
         // Adding keys to table block_xp_filters.
-        $table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
 
         // Adding indexes to table block_xp_filters.
-        $table->add_index('courseid', XMLDB_INDEX_NOTUNIQUE, array('courseid'));
+        $table->add_index('courseid', XMLDB_INDEX_NOTUNIQUE, ['courseid']);
 
         // Conditionally launch create table for block_xp_filters.
         if (!$dbman->table_exists($table)) {
@@ -213,7 +213,7 @@ function xmldb_block_xp_upgrade($oldversion) {
     if ($oldversion < 2016021500) {
 
         // We changed the way the "Level up" notifications are triggered, so we'll remove the old flags from the database.
-        $DB->delete_records('user_preferences', array('name' => 'block_xp_notify_level_up'));
+        $DB->delete_records('user_preferences', ['name' => 'block_xp_notify_level_up']);
 
         // Xp savepoint reached.
         upgrade_block_savepoint(true, 2016021500, 'xp');
@@ -550,6 +550,16 @@ function xmldb_block_xp_upgrade($oldversion) {
 
         // Xp savepoint reached.
         upgrade_block_savepoint(true, 2022090112, 'xp');
+    }
+
+    if ($oldversion < 2023080702) {
+
+        // The lvl column is deprecated, but kept to avoid breaking external integrations.
+        // Nevertheless, all values are set to the default of 1 to avoid confusion with mixed data.
+        $DB->set_field('block_xp', 'lvl', 1, []);
+
+        // Xp savepoint reached.
+        upgrade_block_savepoint(true, 2023080702, 'xp');
     }
 
     return true;
