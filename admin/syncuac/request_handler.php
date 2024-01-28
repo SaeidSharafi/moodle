@@ -3,7 +3,6 @@
 
 set_time_limit(-1);
 
-
 include_once "classes/Handler.php";
 include_once "classes/SyncData.php";
 include_once "classes/utils.php";
@@ -127,7 +126,7 @@ function callIt($action, $params)
             foreach ($mdl_courses['items'] as $mdl_course) {
                 $enrolments = $handler->getEnrollments($params['term'], $mdl_course->idnumber, Settings::$student_role_id);
                 if ($enrolments['status'] == Status::END) {
-                    echo json_encode(array('status' => Status::END, 'response' => $enrolments['msg'], 'details' => $enrolments['items']), JSON_UNESCAPED_UNICODE);
+                    echo json_encode(array('status' => Status::SUCCESS, 'response' => $enrolments['msg'], 'details' => $enrolments['items']), JSON_UNESCAPED_UNICODE);
                     return;
                 } elseif ($enrolments['status'] == Status::ERROR) {
                     echo json_encode(array('status' => Status::ERROR, 'response' => $enrolments['msg'], 'details' => $enrolments['items']), JSON_UNESCAPED_UNICODE);
@@ -176,7 +175,7 @@ function callIt($action, $params)
                 }
                 $enrolments = $handler->getLessonTeachers($params['term'], $lessoncode, $lessongroup, Settings::$teacher_role_id);
                 if ($enrolments['status'] == Status::END) {
-                    echo json_encode(array('status' => Status::END, 'response' => $enrolments['msg'], 'details' => $enrolments['items']), JSON_UNESCAPED_UNICODE);
+                    echo json_encode(array('status' => Status::SUCCESS, 'response' => $enrolments['msg'], 'details' => $enrolments['items']), JSON_UNESCAPED_UNICODE);
                     return;
                 } elseif ($enrolments['status'] == Status::ERROR) {
                     echo json_encode(array('status' => Status::ERROR, 'response' => $enrolments['msg'], 'details' => $enrolments['items']), JSON_UNESCAPED_UNICODE);

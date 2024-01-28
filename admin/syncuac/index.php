@@ -88,11 +88,11 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                 </div>
                 <div class="form-group">
                     <label for="term">کد مقاطع تحصیلی</label>
-                    <input class="form-control study-level"
+                    <input type="hidden" class="form-control study-level"
                            id="all-study-level"
                            name="study_level"
                            placeholder="example: 5,7"
-                           value="5,7"
+                           value="0"
                            required />
                 </div>
                 <input type="hidden" id="current-step" >

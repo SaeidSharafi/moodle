@@ -60,3 +60,5 @@ jsconfig.json
 /soap/
 /mod/tracker/
 /local/vflibs/
+mysql/*
+admin/syncuac/logs/*

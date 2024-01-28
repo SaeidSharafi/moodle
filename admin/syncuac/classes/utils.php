@@ -36,7 +36,7 @@ function logit($text){
     $log_path = __DIR__.'/../logs/'.$date.".log";
     $log_file = fopen($log_path, 'ab');
     $time = date('Y-m-d H:i:s');
-    $text = "{$time}, [{$level}] : $text \n";
+    $text = "{$time}, [info] : $text \n";
     fwrite($log_file, $text);
     fclose($log_file);
     return $log_path;

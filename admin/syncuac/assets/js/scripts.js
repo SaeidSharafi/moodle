@@ -209,7 +209,7 @@ var getAPIDataLoop = function (ele, mockup = 0) {
         case "ImportTeachers":
             requstAPI = "ImportTeachers";
             params.items_per_page = 500;
-            ajaxCaller(requstAPI, params);
+            ajaxCaller(requstAPI, params, true);
             break;
         case "ImportLessons":
             requstAPI = "ImportLessons";
@@ -355,7 +355,8 @@ function ajaxCaller(requstAPI, params,showDetail =false) {
             }
             pager.text("در حال دریافت و ثبت اطلاعات" + " | " + "صفحه " + page);
             if (requstAPI == "ImportStudents" || requstAPI == "ImportLessons") {
-                pager.text(pager.text() + " | " + "مقطع " + StudyLevelText[study_levels[params.study_level_index]]);
+                pager.text(pager.text() );
+                    // + " | " + "مقطع " + StudyLevelText[study_levels[params.study_level_index]]);
             }
             params.page = page;
             params.study_level = study_levels[params.study_level_index];
@@ -364,6 +365,8 @@ function ajaxCaller(requstAPI, params,showDetail =false) {
                     // staus = data.status;
                     switch (data.status) {
                         case Status.success:
+                        case Status.edit:
+                        case Status.save:
 
                             if (params.mockup == true) {
                                 console.log(data.response);
@@ -574,7 +577,8 @@ function callAjaxAutomatic(requstAPI, params, step) {
             }
             pager.text("در حال " + params.cr_text + " | " + "صفحه " + page);
             if (requstAPI == "ImportStudents" || requstAPI == "ImportLessons") {
-                pager.text(pager.text() + " | " + "مقطع " + StudyLevelText[study_levels[params.study_level_index]]);
+                pager.text(pager.text());
+                // + " | " + "مقطع " + StudyLevelText[study_levels[params.study_level_index]]);
             }
             params.page = page;
             params.study_level = study_levels[params.study_level_index];

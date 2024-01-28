@@ -20,39 +20,46 @@ require_once('../../config.php');
 use Synchronizer\Settings;
 
 /** @noinspection PhpUndefinedVariableInspection */
-require_once $CFG->dirroot . '/user/lib.php';
+require_once $CFG->dirroot.'/user/lib.php';
 
-class Handler {
+class Handler
+{
     private $auth;
+    private $asp_auth;
     public $login_success;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->login_success = $this->login();
     }
 
-    public function getStudents($study_level, $page, $items_per_page = 100) {
+    public function getStudents($study_level, $page, $items_per_page = 100)
+    {
         global $CFG;
         //        $auth = $this->login();
         //$page = $page == 1 ? 500 : 1000;
         $data = array(
-                'pageNumber' => $page,
-                'pageRows' => $items_per_page,
-                'studyLevelId' => $study_level
+            'pageNumber'   => $page,
+            'pageRows'     => $items_per_page,
+            //'studyLevelId' => $study_level
         );
         $params = http_build_query($data, null, '&');
 
         // API URL
-        $url = $CFG->samaurl.'/services/StudentService.svc/web/2019/01/GetStudentsPersonInfo?' . $params;
+        $url = $CFG->samaurl.'/services/StudentService.svc/web/2019/01/GetStudentsPersonInfo?'.$params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -102,51 +109,57 @@ class Handler {
                         }
 
                         if (strlen(trim($email)) == 0 || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                            $email = $national_code . "@smums.ac.ir";
+                            $email = $national_code."@smums.ac.ir";
                         }
-                        $user = new Student($firstName, $lastName, "s" . $studentNumber,
-                                $national_code, $student->StudyLevel->StudyLevelIntId, $email);
+                        $user = new Student($firstName, $lastName, "s".$studentNumber,
+                            $national_code, $student->StudyLevel->StudyLevelIntId, $email);
                         $users[] = $user;
                     }
 
                 }
             }
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: S1-NSF";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: S1-NSF";
             logit($url);
             logit($students);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $result);
 
         }
 
-        $msg = "در حال ثبت اطلاعات دانشپذیران" . " : " . count($users);
+        $msg = "در حال ثبت اطلاعات دانشپذیران"." : ".count($users);
         //$msg = "Current page = $page \n current url= $url";
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $users);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $users
+        );
 
     }
 
-    public function getStudent($student_id, $study_levels, $items_per_page = 100) {
+    public function getStudent($student_id, $study_levels, $items_per_page = 100)
+    {
         global $CFG;
         //        $auth = $this->login();
         //$page = $page == 1 ? 500 : 1000;
         $data = array(
-                'StudentNumber' => $student_id
+            'StudentNumber' => $student_id
         );
         $params = http_build_query($data, null, '&');
 
         // API URL
-        $url = $CFG->samaurl.'/services/StudentService.svc/web/2019/01/GetStudentPersonInfo?' . $params;
+        $url = $CFG->samaurl.'/services/StudentService.svc/web/2019/01/GetStudentPersonInfo?'.$params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
         // Execute the POST request
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
@@ -156,8 +169,10 @@ class Handler {
 
         if ($result == '"دانشجو با شماره دانشجویی وارد شده موجود نیست"') {
             $msg = "دانشجو با شماره دانشجویی وارد شده موجود نیست";
-            return array('status' => Status::END, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                    'items' => []);
+            return array(
+                'status' => Status::END, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+                'items'  => []
+            );
         }
         $student = json_decode($result);
         // $user = new Student("asd","asd","student7","asd","asd");
@@ -169,8 +184,9 @@ class Handler {
 
         $users = array();
         if (is_object($student)) {
-            if (in_array($student->StudentStatus->StudentStatusId, $statusId) &&
-                    in_array($student->StudyLevel->StudyLevelIntId, $study_levels)) {
+            if (in_array($student->StudentStatus->StudentStatusId, $statusId)
+                && in_array($student->StudyLevel->StudyLevelIntId, $study_levels)
+            ) {
                 if ($student->Person->FullName) {
                     $firstName = $student->Person->FirstName;
                     $lastName = $student->Person->LastName;
@@ -194,63 +210,71 @@ class Handler {
                     $national_code = $student->Person->NationalCode;
                     $email = $student->Person->Email;
                     $national_code = preg_replace("/[^0-9]/", "", $national_code);
-                    $studentNumber = preg_replace("/[^0-9]/", "", $student->StudentNumber);
+                    $studentNumber = $student_id;
                     if (strlen(trim($national_code)) == 0) {
                         $national_code = $studentNumber;
                     }
 
                     if (strlen(trim($email)) == 0 || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                        $email = $national_code . "@smums.ac.ir";
+                        $email = $national_code."@smums.ac.ir";
                     }
-                    $user = new Student($firstName, $lastName, "s" . $studentNumber,
-                            $national_code, $student->StudyLevel->StudyLevelIntId, $email);
+                    $user = new Student($firstName, $lastName, "s".$studentNumber,
+                        $national_code, $student->StudyLevel->StudyLevelIntId, $email);
                     $users[] = $user;
                 }
 
             } else {
-                $msg = "ثبت نام دانشجو به دلیل فیلتر وضعیت دانشجو و یا مقطع تحصیلی امکان پذیر نیست." . "<br>" .
-                        "وضعیت: " . $student->StudentStatus->Title . " کد " . $student->StudentStatus->StudentStatusId . "<br>" .
-                        "مقطع تحصیلی: " . $student->StudyLevel->Title . " کد " . $student->StudyLevel->StudyLevelId;
-                return array('status' => Status::END, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                        'items' => []);
+                $msg = "ثبت نام دانشجو به دلیل فیلتر وضعیت دانشجو و یا مقطع تحصیلی امکان پذیر نیست."."<br>".
+                    "وضعیت: ".$student->StudentStatus->Title." کد ".$student->StudentStatus->StudentStatusId."<br>".
+                    "مقطع تحصیلی: ".$student->StudyLevel->Title." کد ".$student->StudyLevel->StudyLevelId;
+                return array(
+                    'status' => Status::END, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+                    'items'  => []
+                );
             }
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: S1-NSF-Single";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: S1-NSF-Single";
             logit($url);
             logit($student);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $result);
 
         }
 
-        $msg = "در حال ثبت اطلاعات دانشپذیران" . " : " . count($users);
+        $msg = "در حال ثبت اطلاعات دانشپذیران"." : ".count($users);
         //$msg = "Current page = $page \n current url= $url";
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $users);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $users
+        );
 
     }
 
-    public function getTeachers($term, $page, $items_per_page = 1000) {
+    public function getTeachers($term, $page, $items_per_page = 1000)
+    {
         global $CFG;
 
         $data = array(
-                'pageNumber' => $page,
-                'pageRows' => $items_per_page
+            'pageNumber' => $page,
+            'pageRows'   => $items_per_page
         );
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = $CFG->samaurl.'/services/ProfessorService.svc/web/2019/01/GetProfessorList?' .
-                $params;
+        $url = $CFG->samaurl.'/services/ProfessorService.svc/web/2019/01/GetProfessorList?'.
+            $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -301,10 +325,10 @@ class Handler {
                             }
 
                             if (strlen(trim($email)) == 0 || !$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                                $email = $national_code . "@smums.ac.ir";
+                                $email = $national_code."@smums.ac.ir";
                             }
-                            $user = new Teacher($firstName, $lastName, "t" . $professorCode,
-                                    $national_code, $email);
+                            $user = new Teacher($firstName, $lastName, "t".$professorCode,
+                                $national_code, $email);
                             $user->term = $term;
                             $users[] = $user;
                         }
@@ -313,7 +337,7 @@ class Handler {
                 }
             }
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: T1";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: T1";
             logit($url);
             logit($teachers);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $result);
@@ -321,34 +345,40 @@ class Handler {
 
         $msg = "در حال ثبت اطلاعات اساتید";
 
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $users);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $users
+        );
     }
 
-    public function getLessons($term, $studyLevelId, $page, $items_per_page = 1000) {
+    public function getLessons($term, $studyLevelId, $page, $items_per_page = 1000)
+    {
         global $CFG;
         //        $auth = $this->login();
 
         $data = array(
-                'termCode' => $term,
-                'pageRows' => $items_per_page,
-                'pageNumber' => $page,
-                'studyLevelId' => $studyLevelId
+            'termCode'     => $term,
+            'pageRows'     => $items_per_page,
+            'pageNumber'   => $page,
+            //'studyLevelId' => $studyLevelId
         );
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = $CFG->samaurl.'/services/EducationService.svc/web/GetTermLessonList?' . $params;
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetTermLessonList?'.$params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -371,25 +401,22 @@ class Handler {
                 if (true) {
                     if (true) {
                         if ($lesson->Lesson->LessonCode) {
-                            if (is_numeric($lesson->LessonGroup->Title)) {
-                                $groupTitle = "گروه درسی " . (int) $lesson->LessonGroup->Title;
-                            } else {
-                                $groupTitle = $lesson->LessonGroup->Title;
-                            }
 
-                            $idnumber = $term . "-" .
-                                    ((int) $lesson->LessonGroup->LessonGroupCode) . "-" .
-                                    $lesson->Lesson->LessonCode;
-                            $shortname = $idnumber . "-" . $lesson->Lesson->LessonName;
+                            $groupTitle = "گروه درسی ".(int) $lesson->LessonGroup;
+
+                            $idnumber = $term."-".
+                                ((int) $lesson->LessonGroup)."-".
+                                $lesson->Lesson->LessonCode;
+                            $shortname = $idnumber."-".$lesson->Lesson->LessonName;
                             $fullname = $lesson->Lesson->LessonName;
                             $category = new Category(
-                                    $lesson->Faculty->FacultyCode,
-                                    $lesson->Faculty->Title,
-                                    (int) $lesson->LessonGroup->LessonGroupCode,
-                                    $groupTitle
+                                (string) $lesson->FacultyCode,
+                                ($lesson->FacultyTitle ?: 'دانشکده ' . $lesson->FacultyCode),
+                                (int) $lesson->LessonGroup,
+                                $groupTitle
                             );
                             $course = new Course($idnumber, $fullname, $shortname,
-                                    $category);
+                                $category);
                             $courses[] = $course;
                         }
                     }
@@ -400,7 +427,7 @@ class Handler {
 
             $courses = $this->array_unique_objects($courses);
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: C0";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: C0";
             logit($url);
             logit($lessons);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $courses);
@@ -410,82 +437,96 @@ class Handler {
         //$courses = array();
         $msg = "در حال ثبت اطلاعات دروس";
         //$msg = "Current page = $page \n current url= $url";
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $courses);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $courses
+        );
 
     }
 
-    public function getMoodleCourses($page, $items_per_page, $term = "%") {
+    public function getMoodleCourses($page, $items_per_page, $term = "%")
+    {
         global $DB;
         $start = $items_per_page * ($page - 1);
         try {
             $courses = $DB->get_recordset_select('course', "idnumber LIKE '{$term}-%-%'", null, '', 'idnumber', $start,
-                    $items_per_page);
+                $items_per_page);
             $msg = "در حال ثبت اطلاعات ثبت نام";
             //$msg = "Current page = $page \n current url= $url";
             //var_dump($courses);
             if ($courses->valid()) {
-                return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                        'items' => $courses);
+                return array(
+                    'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+                    'items'  => $courses
+                );
             } else {
                 $msg = "این لیست موجود نمی باشد.";
-                return array('status' => Status::END, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                        'items' => $courses);
+                return array(
+                    'status' => Status::END, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+                    'items'  => $courses
+                );
             }
 
         } catch (\dml_exception $e) {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: C1";
-            $msg .= "<br>" . $e->getMessage();
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: C1";
+            $msg .= "<br>".$e->getMessage();
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => []);
         }
 
     }
 
-    public function getMoodleCourse($idnumber) {
+    public function getMoodleCourse($idnumber)
+    {
         global $DB;
 
         try {
             $course = $DB->get_record('course', array("idnumber" => $idnumber));
             $msg = "در حال ثبت اطلاعات ثبت نام";
             //$msg = "Current page = $page \n current url= $url";
-            return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                    'items' => $course);
+            return array(
+                'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+                'items'  => $course
+            );
         } catch (\dml_exception $e) {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: C2";
-            $msg .= "<br>" . $e->getMessage();
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: C2";
+            $msg .= "<br>".$e->getMessage();
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => []);
         }
 
     }
 
-    public function getLessonEnrollments($term, $lesson_id, $group_id, $roleid = null) {
+    public function getLessonEnrollments($term, $lesson_id, $group_id, $roleid = null)
+    {
         global $CFG;
         //      $auth = $this->login();
 
         $data = array(
-                'termCode' => $term,
-                'LessonCode' => $lesson_id,
-                'LessonGroup' => $group_id,
+            'termCode'    => $term,
+            'LessonCode'  => $lesson_id,
+            'LessonGroup' => $group_id,
         );
 
-        $idnumber = $term . "-" .
-                $group_id . "-" .
-                $lesson_id;
+        $idnumber = $term."-".
+            $group_id."-".
+            $lesson_id;
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetStudentsOfTermLesson?' .
-                $params;
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetStudentsOfTermLesson?'.
+            $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -511,8 +552,8 @@ class Handler {
                     if (true) {
                         if ($student->StudentNumber) {
                             $enrolment = new Enrollment($idnumber,
-                                    "s" . $student->StudentNumber, $roleid,
-                                    $term, 1);
+                                "s".$student->StudentNumber, $roleid,
+                                $term, 1);
                             $enrolment->roletext = ($roleid == Settings::$teacher_role_id) ? "استاد" : "دانشپذیر";
                             $enrolments[] = $enrolment;
                         }
@@ -522,7 +563,7 @@ class Handler {
 
             }
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: LE1";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: LE1";
             logit($url);
             logit($students);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $enrolments);
@@ -531,63 +572,68 @@ class Handler {
 
         //$courses = array();
         $msg = "در حال ثبت نام دانشپذیران";
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $enrolments);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $enrolments
+        );
 
     }
 
-    public function getLessonTeachers($term, $lesson_id, $group_id, $roleid = null) {
+    public function getLessonTeachers($term, $lesson_id, $group_id, $roleid = null)
+    {
         global $CFG;
-        //      $auth = $this->login();
+        //$auth = $this->login();
 
-        $idnumber = $term . "-" .
-                $group_id . "-" .
-                $lesson_id;
+        $idnumber = $term."-".
+            $group_id."-".
+            $lesson_id;
         $data = array(
-                'termCode' => $term,
-                'LessonCode' => $lesson_id,
-                'LessonGroup' => $group_id,
+            'termCode'    => $term,
+            'LessonCode'  => $lesson_id,
+            'LessonGroup' => $group_id,
         );
 
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = $CFG->samaurl.'/services/EducationService.svc/web/GetOfferedTermLesson?' . $params;
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetTermLessonScheduleList?'.$params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
-
         // var_dump($url);
         // Close cURL resource
         curl_close($ch);
         if ($result == '"این لیست موجود نیست"') {
-            $msg = "این لیست موجود نمی باشد.";
-            return array('status' => Status::SUCCESS, 'msg' => $msg);
+            $msg = "این لیست موجود نمی باشد." . "({$idnumber})";
+            return array('status' => Status::END, 'msg' => $msg);
         }
         $teachers = json_decode($result);
         // $user = new Student("asd","asd","student7","asd","asd");
 
-        $enrolments = array();
+        $enrolments = [];
         if (is_object($teachers) || is_array($teachers)) {
             foreach ($teachers as $teacher) {
 
-                $pf = $teacher->ProfessorLesson->Professor;
+                $pf = $teacher->ProfessorLesson->ProfessorInfo;
                 if ($pf) {
                     if ($pf->ProfessorCode) {
                         $enrolment = new Enrollment($idnumber,
-                                "t" . $pf->ProfessorCode, $roleid,
-                                $term, 1);
+                            "t".$pf->ProfessorCode, $roleid,
+                            $term, 1);
                         $enrolment->roletext = ($roleid == Settings::$teacher_role_id) ? "استاد" : "دانشپذیر";
                         $enrolments[] = $enrolment;
                     }
@@ -595,44 +641,49 @@ class Handler {
 
             }
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: LTE1";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: LTE1";
             logit($url);
             logit($teachers);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $result);
 
         }
-
         //$courses = array();
         $msg = "در حال ثبت نام اساتید";
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $enrolments);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $enrolments
+        );
 
     }
 
-    public function getStudentEnrollments($term, $studentNumber, $roleid = null) {
+    public function getStudentEnrollments($term, $studentNumber, $roleid = null)
+    {
         global $CFG;
         //        $auth = $this->login();
 
         $data = array(
-                'termCode' => $term,
-                'studentNumber' => $studentNumber,
-                'lessonSalaryStatus' => 1,
+            'termCode'           => $term,
+            'studentNumber'      => $studentNumber,
+            'lessonSalaryStatus' => 1,
         );
 
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = $CFG->samaurl.'/services/StudentService.svc/web/GetStudentLessonList?' . $params;
+        $url = $CFG->samaurl.'/services/StudentService.svc/web/2019/01/GetStudentLessonList?'.$params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -652,19 +703,19 @@ class Handler {
                 if ($lesson->StudentLessonStatus->StudentLessonStatusId == 2) {
                     continue;
                 }
-                $idnumber = $idnumber = $term . "-" .
-                        ((int) $lesson->TermLesson->LessonGroup->LessonGroupCode) . "-" .
-                        $lesson->TermLesson->Lesson->LessonCode;
+                $idnumber = $idnumber = $term."-".
+                    ((int) $lesson->TermLesson->LessonGroup->LessonGroupCode)."-".
+                    $lesson->TermLesson->Lesson->LessonCode;
                 $enrolment = new Enrollment($idnumber,
-                        "s" . $studentNumber, $roleid,
-                        $term, 1);
+                    "s".$studentNumber, $roleid,
+                    $term, 1);
                 $enrolment->roletext = ($roleid == Settings::$teacher_role_id) ? "استاد" : "دانشپذیر";
                 $enrolment->coursename = $lesson->TermLesson->Lesson->LessonName;
                 $enrolments[] = $enrolment;
 
             }
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: SE1";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: SE1";
             logit($url);
             logit($lessons);
             return array('success' => Status::ERROR, 'msg' => $msg, 'url' => $url, 'items' => $enrolments);
@@ -672,12 +723,15 @@ class Handler {
         }
 
         $msg = "در حال ثبت نام دانشپذیران";
-        return array('success' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $enrolments);
+        return array(
+            'success' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'   => $enrolments
+        );
 
     }
 
-    public function getEnrollments($term, $course_idnumber, $roleid = null) {
+    public function getEnrollments($term, $course_idnumber, $roleid = null)
+    {
         global $CFG;
         //        $auth = $this->login();
 
@@ -691,25 +745,28 @@ class Handler {
         }
 
         $data = array(
-                'termCode' => $term,
-                'LessonCode' => ($lessoncode),
-                'LessonGroup' => $lessongroup,
+            'termCode'    => $term,
+            'LessonCode'  => ($lessoncode),
+            'LessonGroup' => $lessongroup,
         );
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetStudentsOfTermLesson?' .
-                $params;
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetStudentsOfTermLesson?'.
+            $params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -733,8 +790,8 @@ class Handler {
                     if (true) {
                         if ($student->StudentNumber) {
                             $enrolment = new Enrollment($course_idnumber,
-                                    "s" . $student->StudentNumber, $roleid,
-                                    $term, 1);
+                                "s".$student->StudentNumber, $roleid,
+                                $term, 1);
                             $enrolment->roletext = ($roleid == Settings::$teacher_role_id) ? "استاد" : "دانشپذیر";
                             $enrolments[] = $enrolment;
                         }
@@ -744,7 +801,7 @@ class Handler {
 
             }
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: E1";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: E1";
             logit($url);
             logit($students);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $result);
@@ -752,12 +809,15 @@ class Handler {
         }
 
         $msg = "در حال ثبت نام دانشپذیران";
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $enrolments);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $enrolments
+        );
 
     }
 
-    public function getProfessorInfo($term, $teacher_code, $roleid = null) {
+    public function getProfessorInfo($term, $teacher_code, $roleid = null)
+    {
         global $CFG;
 
         if (!$roleid) {
@@ -765,23 +825,26 @@ class Handler {
         }
 
         $data = array(
-                'termCode' => $term,
-                'ProfessorCode' => $teacher_code
+            'termCode'      => $term,
+            'ProfessorCode' => $teacher_code
         );
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = $CFG->samaurl.'/services/ProfessorService.svc/web/GetProfessorLessonList?' . $params;
+        $url = $CFG->samaurl.'/services/ProfessorService.svc/web/2019/01/GetProfessorLessonList?'.$params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -804,12 +867,12 @@ class Handler {
                 if (true) {
                     if (true) {
                         if ($lesson->TermLesson) {
-                            $idnumber = $term . "-" .
-                                    ((int) $lesson->TermLesson->LessonGroup->LessonGroupCode) . "-" .
-                                    $lesson->TermLesson->Lesson->LessonCode;
+                            $idnumber = $term."-".
+                                ((int) $lesson->TermLesson->LessonGroup->LessonGroupCode)."-".
+                                $lesson->TermLesson->Lesson->LessonCode;
 
-                            $enrolment = new Enrollment($idnumber, "t" . $teacher_code, $roleid,
-                                    $term, 1);
+                            $enrolment = new Enrollment($idnumber, "t".$teacher_code, $roleid,
+                                $term, 1);
                             $enrolment->roletext = ($roleid == Settings::$teacher_role_id) ? "استاد" : "دانشپذیر";
                             $enrolment->coursename = $lesson->TermLesson->Lesson->LessonName;
                             $enrolments[] = $enrolment;
@@ -820,7 +883,7 @@ class Handler {
                 }
             }
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: TI1";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: TI1";
             logit($url);
             logit($lessons);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $enrolments);
@@ -829,33 +892,39 @@ class Handler {
 
         //$courses = array();
         $msg = "در حال ثبت نام اساتید";
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $enrolments);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $enrolments
+        );
 
     }
 
-    public function getLessonInfo($term, $lesson, $group) {
+    public function getLessonInfo($term, $lesson, $group)
+    {
         global $CFG;
 
         $data = array(
-                'termCode' => $term,
-                'lessonCode' => $lesson,
-                'lessonGroup' => $group
+            'termCode'    => $term,
+            'lessonCode'  => $lesson,
+            'lessonGroup' => $group
         );
         $params = http_build_query($data, null, "&");
 
         // API URL
-        $url = $CFG->samaurl.'/services/EducationService.svc/web/GetOfferedTermLesson?' . $params;
+        $url = $CFG->samaurl.'/services/EducationService.svc/web/2019/01/GetTermLessonList?'.$params;
 
         // Create a new cURL resource
         $ch = curl_init($url);
 
         // Return response instead of outputting
-        $cookies = "Cookie: " . $this->auth->name . "=" . $this->auth->value;
+        $cookies = [
+            "Cookie: ".$this->auth->name."=".$this->auth->value,
+            "Cookie: ".$this->asp_auth->name."=".$this->asp_auth->value
+        ];
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, array($cookies));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $cookies);
 
         // Execute the POST request
         $result = curl_exec($ch);
@@ -875,33 +944,31 @@ class Handler {
         if (is_object($lessons) || is_array($lessons)) {
 
             foreach ($lessons as $lesson) {
-                $tlesson = $lesson->ProfessorLesson->TermLesson;
+                $tlesson = $lesson;
                 if ($tlesson->Lesson->LessonCode) {
-                    if (is_numeric($tlesson->LessonGroup->Title)) {
-                        $groupTitle = "گروه درسی " . (int) $tlesson->LessonGroup->Title;
-                    } else {
-                        $groupTitle = $tlesson->LessonGroup->Title;
-                    }
-                    $idnumber = $term . "-" .
-                            ((int) $tlesson->LessonGroup->LessonGroupCode) . "-" .
-                            $tlesson->Lesson->LessonCode;
-                    $shortname = $idnumber . "-" . $tlesson->Lesson->LessonName;
+                    $groupTitle = "گروه درسی ".(int) $tlesson->LessonGroup;
+                    $idnumber = $term."-".
+                        ((int) $tlesson->LessonGroup)."-".
+                        $tlesson->Lesson->LessonCode;
+                    $shortname = $idnumber."-".$tlesson->Lesson->LessonName;
                     $fullname = $tlesson->Lesson->LessonName;
                     $category = new Category(
-                            $tlesson->Faculty->FacultyCode,
-                            $tlesson->Faculty->Title,
-                            (int) $tlesson->LessonGroup->LessonGroupCode,
-                            $groupTitle
+                        (string)$tlesson->FacultyCode,
+                        ($tlesson->FacultyTitle ?: 'دانشکده ' . $tlesson->FacultyCode),
+                        (int) $tlesson->LessonGroup,
+                        $groupTitle
                     );
 
                     $course = new Course($idnumber, $fullname, $shortname,
-                            $category);
+                        $category);
+
                     $courses[] = $course;
                 }
             }
+
             $courses = $this->array_unique_objects($courses);
         } else {
-            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است." . " کد: LI1";
+            $msg = "به علت عدم پاسخگویی سرور سامانه سما، دریافت اطلاعات با مشکل مواجه شده است."." کد: LI1";
             logit($url);
             logit($lessons);
             return array('status' => Status::ERROR, 'msg' => $msg, 'items' => $courses);
@@ -910,12 +977,15 @@ class Handler {
 
         //$courses = array();
         $msg = "در حال ثبت دوره";
-        return array('status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
-                'items' => $courses);
+        return array(
+            'status' => Status::SUCCESS, 'msg' => $msg, 'sec_key' => Settings::$security_key,
+            'items'  => $courses
+        );
 
     }
 
-    public function array_unique_objects($array, $keep_key_assoc = false) {
+    public function array_unique_objects($array, $keep_key_assoc = false)
+    {
         $duplicate_keys = array();
         $tmp = array();
 
@@ -939,16 +1009,17 @@ class Handler {
         return $keep_key_assoc ? $array : array_values($array);
     }
 
-    public function login() {
+    public function login()
+    {
         global $CFG;
 
         $data = array(
-                'username' => $CFG->samauser,
-                'password' => $CFG->samapass
+            'username' => $CFG->samauser,
+            'password' => $CFG->samapass
         );
 
         $params = http_build_query($data, null, "&");
-        $url = $CFG->samaurl.'/services/AuthenticationService.svc/web/Login?' . $params;
+        $url = $CFG->samaurl.'/services/AuthenticationService.svc/web/Login?'.$params;
 
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_HEADER, 1);
@@ -957,22 +1028,26 @@ class Handler {
 
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
+
         $cookies = array();
         preg_match_all('/Set-Cookie:(?<cookie>\s{0,}.*)$/im', $result, $cookies);
 
         // var_dump(http_parse_cookie($cookies['cookie']));
         //var_dump($cookies['cookie']);
-        $parse_coockies = $this->parse_cookies($cookies['cookie'][0]);
+        $auth_coockies = $this->parse_cookies($cookies['cookie'][0]);
+        $asp_coockies = $this->parse_cookies($cookies['cookie'][1]);
         $cookieParts = array();
         preg_match_all('/Set-Cookie:\s{0,}(?P<name>[^=]*)=(?P<value>[^;]*).*?/im', $result, $cookieParts);
 
         curl_close($ch);
-        $this->auth = $parse_coockies[0];
+        $this->auth = $auth_coockies[0];
+        $this->asp_auth = $asp_coockies[0];
 
         return $result;
     }
 
-    public function parse_cookies($header) {
+    public function parse_cookies($header)
+    {
 
         $cookies = array();
 
@@ -985,7 +1060,7 @@ class Handler {
             if ($i == 0) {
                 $key = $part;
                 continue;
-            } else if ($i == count($parts) - 1) {
+            } elseif ($i == count($parts) - 1) {
                 $cookie->set_value($key, $part);
                 $cookies[] = $cookie;
                 continue;
