@@ -325,7 +325,7 @@ class SyncData
             switch ($delete) {
                 case "username":
                     $DB->delete_records(Settings::$enrol_table,
-                        array('username' => $rows[0]->username, 'is_updated' => 0));
+                        array('username' => $rows[0]->username, 'term' => $rows[0]->term, 'is_updated' => 0));
 
                     $DB->set_field(Settings::$enrol_table, 'is_updated', 0, array('username' => $rows[0]->username));
                     $msg = $this->formatMsg("ثبت نام کاربر ".$rows[0]->username." ویرایش شد",

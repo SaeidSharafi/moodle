@@ -177,15 +177,15 @@ class Handler
         $student = json_decode($result);
         // $user = new Student("asd","asd","student7","asd","asd");
         $statusId = array(1, 3, 9, 14, 18, 24, 31, 39, 43, 50, 51, 58, 60, 62);
-        $study_levels = explode(',', $study_levels);
-        if (!$study_levels) {
-            $study_levels = array(5, 7);
-        }
+        //$study_levels = explode(',', $study_levels);
+        //if (!$study_levels) {
+        //    $study_levels = array(5, 7);
+        //}
 
         $users = array();
         if (is_object($student)) {
             if (in_array($student->StudentStatus->StudentStatusId, $statusId)
-                && in_array($student->StudyLevel->StudyLevelIntId, $study_levels)
+                //&& in_array($student->StudyLevel->StudyLevelIntId, $study_levels)
             ) {
                 if ($student->Person->FullName) {
                     $firstName = $student->Person->FirstName;

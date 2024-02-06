@@ -153,7 +153,7 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                         <input class="form-control numeric term"
                                id="courses-term"
                                name="term"
-                               placeholder="example: 13992"
+                               placeholder="example: 14021"
                                required />
                     </div>
                     <div class="form-group">
@@ -161,7 +161,7 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                         <input class="form-control numeric lesson"
                                id="courses-lesson"
                                name="lesson"
-                               placeholder="example: 8888703"
+                               placeholder="example: 1"
                                required />
                     </div>
                     <div class="form-group">
@@ -169,7 +169,7 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                         <input class="form-control numeric group"
                                id="courses-group"
                                name="group"
-                               placeholder="example: 19"
+                               placeholder="example: 1"
                                required />
                     </div>
                 </div>
@@ -205,7 +205,7 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                         <input class="form-control numeric term"
                                id="professors-term"
                                name="term"
-                               placeholder="example: 13992"
+                               placeholder="example: 14021"
                                required />
                     </div>
                     <div class="form-group">
@@ -213,7 +213,7 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                         <input class="form-control numeric professor"
                                id="professors-code"
                                name="professor"
-                               placeholder="example: 8104103"
+                               placeholder="example: 1"
                                required />
                     </div>
                 </div>
@@ -240,7 +240,7 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                         <input class="form-control numeric term"
                                id="student-term"
                                name="term"
-                               placeholder="example: 13992"
+                               placeholder="example: 14021"
                                required />
                     </div>
                     <div class="form-group">
@@ -248,12 +248,12 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                         <input class="form-control numeric student"
                                id="student-code"
                                name="professor"
-                               placeholder="example: 975247018"
+                               placeholder="example: 981414084"
                                required />
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <label for="term">کد مقاطع تحصیلی</label>
-                        <input class="form-control study-level"
+                        <input type="hidden" class="form-control study-level"
                                id="student-study-level"
                                name="study_level"
                                placeholder="example: 5,7"
