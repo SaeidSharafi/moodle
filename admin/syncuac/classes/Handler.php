@@ -664,7 +664,7 @@ class Handler
         $data = array(
             'termCode'           => $term,
             'studentNumber'      => $studentNumber,
-            'lessonSalaryStatus' => 1,
+            //'lessonSalaryStatus' => 1,
         );
 
         $params = http_build_query($data, null, "&");
@@ -700,11 +700,11 @@ class Handler
         $enrolments = array();
         if (is_object($lessons) || is_array($lessons)) {
             foreach ($lessons as $lesson) {
-                if ($lesson->StudentLessonStatus->StudentLessonStatusId == 2) {
-                    continue;
-                }
-                $idnumber = $idnumber = $term."-".
-                    ((int) $lesson->TermLesson->LessonGroup->LessonGroupCode)."-".
+                //if ($lesson->StudentLessonStatus->StudentLessonStatusId == 2) {
+                //    continue;
+                //}
+                $idnumber = $term."-".
+                    ((int) $lesson->TermLesson->LessonGroup)."-".
                     $lesson->TermLesson->Lesson->LessonCode;
                 $enrolment = new Enrollment($idnumber,
                     "s".$studentNumber, $roleid,
@@ -868,7 +868,7 @@ class Handler
                     if (true) {
                         if ($lesson->TermLesson) {
                             $idnumber = $term."-".
-                                ((int) $lesson->TermLesson->LessonGroup->LessonGroupCode)."-".
+                                ((int) $lesson->TermLesson->LessonGroup)."-".
                                 $lesson->TermLesson->Lesson->LessonCode;
 
                             $enrolment = new Enrollment($idnumber, "t".$teacher_code, $roleid,
