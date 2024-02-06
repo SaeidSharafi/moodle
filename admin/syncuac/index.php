@@ -83,10 +83,10 @@ if (!has_capability('moodle/site:config', $systemcontext) && $USER->id != "14334
                     <input class="form-control numeric term"
                            id="all-term"
                            name="term"
-                           placeholder="example: 13992"
+                           placeholder="example: 14021"
                            required />
                 </div>
-                <div class="form-group">
+                <div class="form-group d-none">
                     <label for="term">کد مقاطع تحصیلی</label>
                     <input type="hidden" class="form-control study-level"
                            id="all-study-level"
