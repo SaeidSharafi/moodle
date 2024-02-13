@@ -6,7 +6,7 @@ services:
     ports:
       - "8081:80"
     volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
       - ./:/var/www/html
       - /var/www/moodledata:/var/www/moodledata
     networks:
@@ -26,7 +26,7 @@ services:
     volumes:
       - ./:/var/www/html
       - /var/www/moodledata:/var/www/moodledata
-      - ./php/php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+      - ./.docker/php/php.ini:/usr/local/etc/php/conf.d/custom-php.ini
     networks:
       - moodle
 
@@ -35,13 +35,15 @@ services:
     ports:
       - '${FORWARD_DB_PORT:-3306}:3306'
     environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ROOT_HOST: '%'
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: moodle
-      MYSQL_USER: moodleuser
-      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
     volumes:
-      - ./mysql:/var/lib/mysql
+      - './.docker/create-dev-database.sh:/docker-entrypoint-initdb.d/10-create-dev-database.sh'
+      - ./.docker/mysql:/var/lib/mysql
     networks:
       - moodle
     healthcheck:
