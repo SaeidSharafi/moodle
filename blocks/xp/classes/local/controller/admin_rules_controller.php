@@ -50,7 +50,7 @@ class admin_rules_controller extends admin_route_controller {
         return [
             ['revert', false, PARAM_BOOL, false],
             ['reset', false, PARAM_BOOL, false],
-            ['confirm', false, PARAM_BOOL, false]
+            ['confirm', false, PARAM_BOOL, false],
         ];
     }
 
@@ -99,11 +99,12 @@ class admin_rules_controller extends admin_route_controller {
      * Save the filters.
      *
      * @param array $filters Filters data.
-     * @param int $category The category constant.
+     * @param array $existingfilters Existing filters data.
+     * @param int|null $category The category constant.
      * @return void
      */
     protected function save_filters($filters, $existingfilters, $category = null) {
-        $filterids = array();
+        $filterids = [];
         foreach ($filters as $filterdata) {
             $data = $filterdata;
             $data['ruledata'] = json_encode($data['rule'], true);
@@ -150,17 +151,17 @@ class admin_rules_controller extends admin_route_controller {
             (object) [
                 'name' => get_string('ruleevent', 'block_xp'),
                 'info' => get_string('ruleeventinfo', 'block_xp'),
-                'rule' => new \block_xp_rule_event()
+                'rule' => new \block_xp_rule_event(),
             ],
             (object) [
                 'name' => get_string('ruleproperty', 'block_xp'),
                 'info' => get_string('rulepropertyinfo', 'block_xp'),
-                'rule' => new \block_xp_rule_property()
+                'rule' => new \block_xp_rule_property(),
             ],
             (object) [
                 'name' => get_string('ruleset', 'block_xp'),
                 'info' => get_string('rulesetinfo', 'block_xp'),
-                'rule' => new \block_xp_ruleset()
+                'rule' => new \block_xp_ruleset(),
             ],
         ];
         return $rules;
@@ -169,7 +170,7 @@ class admin_rules_controller extends admin_route_controller {
     /**
      * Get default filters.
      *
-     * @return block_xp_filter
+     * @return \block_xp_filter
      */
     protected function get_default_filter() {
         return \block_xp_filter::load_from_data(['rule' => new \block_xp_ruleset()]);
@@ -242,14 +243,14 @@ class admin_rules_controller extends admin_route_controller {
             return;
         }
 
+        $this->page_warning_editing_defaults('rules');
 //        $this->page_plus_promo_content();
         echo html_writer::tag('p', get_string('admindefaultrulesintro', 'block_xp'));
         $this->page_rules_content();
 
         $hasdangerzone = $this->filtermanager->is_customised() || !$forwholesite;
         if ($hasdangerzone) {
-            echo html_writer::tag('div', $output->heading(get_string('dangerzone', 'block_xp'), 3),
-                ['style' => 'margin-top: 2em']);
+            echo $output->heading_with_divider(get_string('dangerzone', 'block_xp'));
         }
 
         // Revert button.

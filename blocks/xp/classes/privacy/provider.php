@@ -66,7 +66,6 @@ class provider implements
 
         $collection->add_database_table('block_xp', [
             'xp' => 'privacy:metadata:xp:xp',
-            'lvl' => 'privacy:metadata:xp:lvl',
             'userid' => 'privacy:metadata:xp:userid',
         ], 'privacy:metadata:xp');
 
@@ -176,7 +175,7 @@ class provider implements
 
         // Fetch the record of points for each course.
         $sql = "
-            SELECT xp.userid, xp.lvl, xp.xp, xp.courseid
+            SELECT xp.userid, xp.xp, xp.courseid
               FROM {block_xp} xp
              WHERE xp.courseid $insql
                AND xp.userid = :userid
@@ -189,7 +188,6 @@ class provider implements
         foreach ($recordset as $record) {
             $context = static::get_context_from_courseid($record->courseid);
             writer::with_context($context)->export_data($path, (object) [
-                'level' => $record->lvl,
                 'userid' => transform::user($record->userid),
                 'points' => $record->xp,
             ]);
@@ -363,10 +361,10 @@ class provider implements
         $db = \block_xp\di::get('db');
         $sql = $db->sql_like('name', ':name');
         $db->delete_records_select('user_preferences', $sql, [
-            'name' => 'block_xp-notice-block_intro_' . $courseid
+            'name' => 'block_xp-notice-block_intro_' . $courseid,
         ]);
         $db->delete_records_select('user_preferences', $sql, [
-            'name' => 'block_xp_notify_level_up_' . $courseid
+            'name' => 'block_xp_notify_level_up_' . $courseid,
         ]);
     }
 
@@ -483,7 +481,7 @@ class provider implements
             $prefs[] = (object) [
                 'name' => $name,
                 'value' => $value,
-                'description' => $desc
+                'description' => $desc,
             ];
         }
 

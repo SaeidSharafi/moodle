@@ -52,7 +52,7 @@ class default_routes_config extends static_routes_config {
                 '~^/config/(\d+)$~',
                 'config',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
                 ]
             ),
             new route_definition(
@@ -61,7 +61,7 @@ class default_routes_config extends static_routes_config {
                 '~^/infos/(\d+)$~',
                 'infos',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
                 ]
             ),
             new route_definition(
@@ -70,7 +70,7 @@ class default_routes_config extends static_routes_config {
                 '~^/ladder/(\d+)$~',
                 'ladder',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
                 ]
             ),
             new route_definition(
@@ -79,7 +79,7 @@ class default_routes_config extends static_routes_config {
                 '~^/levels/(\d+)$~',
                 'levels',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
                 ]
             ),
             new route_definition(
@@ -88,7 +88,7 @@ class default_routes_config extends static_routes_config {
                 '~^/log/(\d+)$~',
                 'log',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
                 ]
             ),
             new route_definition(
@@ -97,7 +97,7 @@ class default_routes_config extends static_routes_config {
                 '~^/report/(\d+)$~',
                 'report',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
                 ]
             ),
             new route_definition(
@@ -106,7 +106,34 @@ class default_routes_config extends static_routes_config {
                 '~^/rules/(\d+)$~',
                 'rules',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
+                ]
+            ),
+            new route_definition(
+                'graderules',
+                '/graderules/:courseid',
+                '~^/graderules/(\d+)$~',
+                'grade_rules',
+                [
+                    1 => 'courseid',
+                ]
+            ),
+            new route_definition(
+                'drops',
+                '/drops/:courseid',
+                '~^/drops/(\d+)$~',
+                'drops',
+                [
+                    1 => 'courseid',
+                ]
+            ),
+            new route_definition(
+                'import',
+                '/import/:courseid',
+                '~^/import/(\d+)$~',
+                'import',
+                [
+                    1 => 'courseid',
                 ]
             ),
             new route_definition(
@@ -115,7 +142,7 @@ class default_routes_config extends static_routes_config {
                 '~^/visuals/(\d+)$~',
                 'visuals',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
                 ]
             ),
 
@@ -158,7 +185,7 @@ class default_routes_config extends static_routes_config {
                 '~^/promo/(\d+)$~',
                 'promo',
                 [
-                    1 => 'courseid'
+                    1 => 'courseid',
                 ]
             ),
         ];

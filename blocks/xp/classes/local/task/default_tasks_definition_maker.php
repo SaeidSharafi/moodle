@@ -35,6 +35,9 @@ namespace block_xp\local\task;
  */
 class default_tasks_definition_maker implements tasks_definition_maker {
 
+    /**
+     * Get the tasks definition.
+     */
     public function get_tasks_definition() {
         return [
             [
@@ -44,7 +47,7 @@ class default_tasks_definition_maker implements tasks_definition_maker {
                 'hour' => 3,
                 'day' => '*',
                 'dayofweek' => '*',
-                'month' => '*'
+                'month' => '*',
             ],
             [
                 'classname' => 'block_xp\task\usage_report',
@@ -53,8 +56,8 @@ class default_tasks_definition_maker implements tasks_definition_maker {
                 'hour' => 'R',
                 'day' => '*',
                 'dayofweek' => 'R',
-                'month' => '*'
-            ]
+                'month' => '*',
+            ],
         ];
     }
 
