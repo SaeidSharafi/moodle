@@ -321,7 +321,7 @@ class format_remuiformat extends core_courseformat\base
                     'type'    => PARAM_INT
                 ),
                 'remuienablecardbackgroundimg' => array(
-                    'default' => 0,
+                    'default' => 1,
                     'type'    => PARAM_INT
                 ),
                 'edw_format_hd_bgpos'          => array(
