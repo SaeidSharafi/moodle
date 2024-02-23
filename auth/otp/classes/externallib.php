@@ -40,33 +40,49 @@ class auth_otp_external extends external_api
         return new external_function_parameters(
             array(
                 'phone' => new external_value(PARAM_TEXT, 'phone'),
-                'countrycode' => new external_value(PARAM_TEXT, 'countrycode')
             )
         );
     }
 
     /**
      * @param $phone
-     * @param $countrycode
      * @return array
      * @throws coding_exception
      * @throws dml_exception
      * @throws invalid_parameter_exception
      */
-    public static function send_otp($phone, $countrycode) {
+    public static function send_otp($phone) {
         global $DB, $CFG;
         $params = array(
             'phone' => $phone,
-            'countrycode' => $countrycode,
         );
         // Validate the params.
         self::validate_parameters(self::send_otp_parameters(), $params);
 
-        $fullphone = strval($countrycode) . '' . strval($phone);
+        $fullphone = strval($phone);
 
         // check user exist and last otp time
-        $sql = 'select * from {auth_otp_linked_login} where phone = ' . $phone;
-        $data = $DB->get_record_sql($sql);
+        $sql = 'select * from {auth_otp_linked_login} where phone = ?';
+        $data = $DB->get_record_sql($sql,[$phone]);
+        $user = null;
+        if (!$data){
+            $sql = 'select * from {user} where phone1 = ? OR phone2 = ?';
+            $user = $DB->get_record_sql($sql,[$phone,$phone]);
+            if ($user){
+                $user->auth= 'otp';
+                $DB->update_record('user', $user);
+                $data = new stdClass();
+                $data->phone = $phone;
+                $data->confirmtoken = null;
+                $data->username =  $user->username;
+                $data->otpcreated =  null;
+                $data->fullphone =  $phone;
+                $data->countrycode =  null;
+                $DB->insert_record('auth_otp_linked_login', $data);
+                $sql = 'select * from {auth_otp_linked_login} where phone = ?';
+                $data = $DB->get_record_sql($sql,[$phone]);
+            }
+        }
         $otp = null;
         $currentdate = '';
         // alreadu exist
@@ -82,9 +98,10 @@ class auth_otp_external extends external_api
                     $_SESSION['auth_otp']['credentials'] = [
                         'otp' => $data->confirmtoken,
                         'otpdatetime' => $currentdate,
-                        'username' => $phone,
-                        'country' => $countrycode
+                        'username' =>  $phone,
+                        'realusername' => $data->username,
                     ];
+                    $username = $data->username;
                     $status = 1;
                     $message = get_string('otpsentinfo', 'auth_otp');
 
@@ -94,7 +111,7 @@ class auth_otp_external extends external_api
                         $currentdate = date("Y-m-d H:i:s");
                         $otp = $smsstatus['otp']; // Get otp from message response
                         // Create new user
-                        self::old_user_handle($phone, $otp, $countrycode);
+                        $username = self::old_user_handle($phone, $otp)['username'];
                         $message = get_string('otpsentsuccess', 'auth_otp');
                         $status = 1;
                     } else {
@@ -108,7 +125,7 @@ class auth_otp_external extends external_api
                     $currentdate = date("Y-m-d H:i:s");
                     $otp = $smsstatus['otp']; // get otp from message response
                     // create new user
-                    self::old_user_handle($phone, $otp, $countrycode);
+                    $username = self::old_user_handle($phone, $otp)['username'];
                     $message = get_string('otpsentsuccess', 'auth_otp');
                     $status = 1;
                 } else {
@@ -124,7 +141,7 @@ class auth_otp_external extends external_api
                 $currentdate = date("Y-m-d H:i:s");
                 $otp = $smsstatus['otp']; // get otp from message response
                 // create new user
-                self::new_user_handle($phone, $otp, $countrycode);
+                $username = self::new_user_handle($phone, $otp)['username'];
                 $message = get_string('otpsentsuccess', 'auth_otp');
                 $status = 1;
             } else {
@@ -134,6 +151,7 @@ class auth_otp_external extends external_api
         }
         $data = [
             'phone' => $phone,
+            'username' => $username,
             'otp' => $otp,
             'timeout' => $currentdate,
             'message' => $message,
@@ -150,6 +168,7 @@ class auth_otp_external extends external_api
         return new external_single_structure(
             array(
                 'phone' => new external_value(PARAM_TEXT, 'phone'),
+                'username' => new external_value(PARAM_TEXT, 'username'),
                 'otp' => new external_value(PARAM_TEXT, 'otp'),
                 'timeout' => new external_value(PARAM_TEXT, 'timeout'),
                 'message' => new external_value(PARAM_TEXT, 'Error Message'),
@@ -208,24 +227,23 @@ class auth_otp_external extends external_api
      *
      * @param $phone
      * @param $otp
-     * @param $countrycode
      * @return array
      * @throws dml_exception
      */
-    public static function new_user_handle($phone, $otp, $countrycode)
+    public static function new_user_handle($phone, $otp)
     {
         global $DB;
         $currentdate = date("Y-m-d H:i:s");
         //Write a function to send otp to the user
-//        $data = $DB->execute("INSERT INTO {auth_otp_linked_login} (phone,confirmtoken,username,otpcreated,fullphone,countrycode) VALUES ('" . $phone . "'," . $otp . ",'" . $phone . "','" . $currentdate . "','" . $countrycode . ' ' . $phone . "','" . $countrycode . "')");
+//        $data = $DB->execute("INSERT INTO {auth_otp_linked_login} (phone,confirmtoken,username,otpcreated,fullphone) VALUES ('" . $phone . "'," . $otp . ",'" . $phone . "','" . $currentdate . "','" . $phone . "')");
 
         $data = new stdClass();
         $data->phone = $phone;
         $data->confirmtoken = $otp;
         $data->username =  $phone;
         $data->otpcreated =  $currentdate;
-        $data->fullphone =  $countrycode.$phone;
-        $data->countrycode =  $countrycode;
+        $data->fullphone =  $phone;
+        $data->countrycode =  null;
 
         $DB->insert_record('auth_otp_linked_login', $data);
 
@@ -233,7 +251,7 @@ class auth_otp_external extends external_api
             'otp' => $otp,
             'otpdatetime' => $currentdate,
             'username' => $phone,
-            'country' => $countrycode,
+            'realusername' => $phone,
         ];
         $authplugin = get_auth_plugin('otp');
         $user = new stdClass();
@@ -242,8 +260,9 @@ class auth_otp_external extends external_api
         $user->firstaccess = 0;
         $user->timecreated = time();
         $user->username = $phone;
-        $user->firstname = $countrycode;
-        $user->lastname = $phone;
+        $user->phone1 = $phone;
+        $user->firstname = '';
+        $user->lastname = '';
         $user->password = '';
         $user->mnethostid = 1;
         $user->email = $phone . '@otp.com';
@@ -251,6 +270,7 @@ class auth_otp_external extends external_api
         $authplugin->create_user($user);
         return [
             'phone' => $phone,
+            'username' => $phone,
             'otpdatetime' => $currentdate,
             'otp' => $otp
         ];
@@ -261,23 +281,25 @@ class auth_otp_external extends external_api
      *
      * @param $phone
      * @param $otp
-     * @param $countrycode
      * @return array
      * @throws dml_exception
      */
-    public static function old_user_handle($phone, $otp, $countrycode)
+    public static function old_user_handle($phone, $otp)
     {
         global $DB;
         $currentdate = date("Y-m-d H:i:s");
         $data = $DB->execute("UPDATE {auth_otp_linked_login} SET confirmtoken= " . $otp . ",otpcreated = '" . $currentdate . "' where phone = '" . $phone . "'");
+        $sql = 'select * from {user} where phone1 = ? OR phone2 = ?';
+        $user = $DB->get_record_sql($sql,[$phone,$phone]);
         $_SESSION['auth_otp']['credentials'] = [
             'otp' => $otp,
             'otpdatetime' => $currentdate,
             'username' => $phone,
-            'country' => $countrycode,
+            'realusername' =>  $user ? $user->username : $phone,
         ];
         return [
             'phone' => $phone,
+            'username' => $user ? $user->username : $phone,
             'otpdatetime' => $currentdate,
             'otp' => $otp
         ];

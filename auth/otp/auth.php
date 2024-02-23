@@ -97,8 +97,10 @@ class auth_plugin_otp extends auth_plugin_base {
     public function user_login($username, $password) {
 
         global $DB;
-        $username = substr($username, -10);
+
+        $username = substr($username, -11);
         $phone = $username;
+
         if (empty($phone) || empty($password)) {
             return false;
         }
@@ -109,10 +111,10 @@ class auth_plugin_otp extends auth_plugin_base {
             }
             else {
 
-                $data = $DB->get_record('auth_otp_linked_login', ['phone' => $username, 'confirmtoken' => $password], '*');
+                $data = $DB->get_record('auth_otp_linked_login', ['username' => $username, 'confirmtoken' => $password], '*');
 
                 if ($data) {
-                    $rec = $DB->get_record('user', array('username' => $username, 'auth' => 'otp'));
+                    $rec = $DB->get_record('user', array('username' => $username));
                     if (!$rec) {
                         $user = new stdClass();
                         $user->auth = $this->authtype;
@@ -120,15 +122,17 @@ class auth_plugin_otp extends auth_plugin_base {
                         $user->firstaccess = 0;
                         $user->timecreated = time();
                         $user->username = $username;
+                        $user->phone1 = $username;
                         $user->firstname = '';
                         $user->lastname = '';
                         $user->password = '';
                         $user->mnethostid = 1;
                         $user->email = '';
-                        $this->create_otp_user($user);
+                        $this->create_user($user);
                     }
+
                     unset($_SESSION['auth_otp']['credentials']);
-                    $this->reset_otp($phone);
+                    $this->reset_otp($rec ? $rec->phone1 : $username);
                     return true;
                 } else {                    // Otp mismatch.
                     isset($_SESSION['login_failed_count']) ?
@@ -140,7 +144,7 @@ class auth_plugin_otp extends auth_plugin_base {
                         $_SESSION['login_failed_count'] >= $this->config->revokethreshold) {
                         unset($_SESSION['login_failed_count']);
                         unset($_SESSION['auth_otp']['credentials']);
-                        $this->reset_otp($phone);
+                        $this->reset_otp($username);
                         return (bool)$this->redirect($username, 'otprevoked', notification::NOTIFY_INFO);
                     }
 
@@ -191,7 +195,6 @@ class auth_plugin_otp extends auth_plugin_base {
      */
     public function reset_otp($phone) {
         global $DB;
-
         $data = $DB->get_record('auth_otp_linked_login', ['phone' => $phone], '*');
         $data->confirmtoken = null;
         $data->otpcreated = null;
