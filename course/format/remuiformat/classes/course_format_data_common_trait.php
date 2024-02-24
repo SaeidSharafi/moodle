@@ -611,12 +611,21 @@ class course_format_data_common_trait {
             $imagesrc = $image['src'];
             $imgarray['img'] = $imagesrc;
             $imgarray['pattern'] = 0;
-        } else {
-            // @codingStandardsIgnoreStart
-            $imgarray['img'] = $OUTPUT->image_url('pattern', 'format_remuiformat');
-            // @codingStandardsIgnoreEnd
-            $imgarray['pattern'] = 1;
+            return $imgarray;
         }
+
+        if ($section->section >= 1 && $section->section <= 6) {
+            // @codingStandardsIgnoreStart
+            $imgarray['img'] = $OUTPUT->image_url('section'.$section->section, 'format_remuiformat');
+            // @codingStandardsIgnoreEnd
+            $imgarray['pattern'] = 0;
+            return $imgarray;
+        }
+
+        // @codingStandardsIgnoreStart
+        $imgarray['img'] = $OUTPUT->image_url('pattern', 'format_remuiformat');
+        // @codingStandardsIgnoreEnd
+        $imgarray['pattern'] = 1;
         return $imgarray;
     }
 
