@@ -26,7 +26,7 @@ services:
     volumes:
       - ./:/var/www/html
       - /var/www/moodledata:/var/www/moodledata
-      - ./.docker/php/php.ini:/usr/local/etc/php/conf.d/custom-php.ini
+      - ./.docker/php/php.ini:/usr/local/etc/php/conf.d/zz.overrides.php.ini
     networks:
       - moodle
 
