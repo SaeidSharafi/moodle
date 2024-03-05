@@ -486,11 +486,13 @@ class course_format_data_common_trait {
      * @return string datauri
      */
     public static function get_dummy_image_for_id($id) {
-        $color = self::get_dummy_color_for_id($id);
-        $pattern = new \core_geopattern();
-        $pattern->setColor($color);
-        $pattern->patternbyid($id);
-        return $pattern->datauri();
+        global $OUTPUT;
+        return $OUTPUT->image_url('banner', 'format_remuiformat');
+        //$color = self::get_dummy_color_for_id($id);
+        //$pattern = new \core_geopattern();
+        //$pattern->setColor($color);
+        //$pattern->patternbyid($id);
+        //return $pattern->datauri();
     }
 
     /**
