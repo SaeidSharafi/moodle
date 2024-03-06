@@ -437,9 +437,9 @@ class course_format_data_common_trait {
         $lastactivitydata = end($sectionmods);
         foreach ($sectionmods as $mod) {
             if ($lastactivitydata != $mod) {
-                $output['activityinfo'][] = $mod['count'].' '.$mod['name'].',';
+                $output['activityinfo'][] = $mod['count'].' '.$mod['name'];
             } else {
-                $output['activityinfo'][] = $mod['count'].' '.$mod['name'].'.';
+                $output['activityinfo'][] = $mod['count'].' '.$mod['name'];
             }
         }
         if ($total > 0) {
@@ -616,7 +616,7 @@ class course_format_data_common_trait {
             return $imgarray;
         }
 
-        if ($section->section >= 1 && $section->section <= 6) {
+        if ($section->section >= 1 && $section->section <= 5) {
             // @codingStandardsIgnoreStart
             $imgarray['img'] = $OUTPUT->image_url('section'.$section->section, 'format_remuiformat');
             // @codingStandardsIgnoreEnd

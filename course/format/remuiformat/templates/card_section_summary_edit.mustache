@@ -75,9 +75,10 @@
     data-for="section"
     data-number="{{num}}">
     <div class="single-card d-flex flex-column justify-content-between {{{remuinewthemecolor}}} {{#sectionfirstimage}}sectionfirstimage{{/sectionfirstimage}}"
-        {{#sectionfirstimage}}style="background: linear-gradient({{remuidefaultsectionoverlay}}),url({{sectionfirstimage}});
+        {{#sectionfirstimage}}style="background: url({{sectionfirstimage}}) #999999;
                 background-repeat: no-repeat;
-                background-size: cover,50%;background-position: center;"{{/sectionfirstimage}}>
+                background-size: 42%;
+                background-position: 15%;"{{/sectionfirstimage}}>
         {{#highlighted}}
             <div class="highlight text-primary"></div>
         {{/highlighted}}

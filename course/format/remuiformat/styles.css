@@ -230,7 +230,7 @@ body#page-course-view-remuiformat .remui-format-card.all-section-format .section
 body#page-course-view-remuiformat .remui-format-card.all-section-format .section .sectionname,
 body#page-course-view-remuiformat .remui-format-card.all-section-format .section .sectionname a {
   color: #313848;
-  font-size: 24px;
+  font-size: 21px;
   line-height: 32px;
   font-weight: 700;
 }
@@ -2056,4 +2056,26 @@ body#page-course-view-remuiformat .font-size-16 {
 
 body#page-course-view-remuiformat.editing .general-section-activities .activity .contentafterlink .no-overflow {
   overflow: auto !important;
+}
+body#page-course-view-remuiformat .remui-format-card.all-section-format .section .single-card {
+  min-height: 260px;
+  height: 100%;
+  width: 100%;
+}
+body#page-course-view-remuiformat .frmt-pt-50 {
+  padding-top: 5%;
+  padding-bottom: 17%;
+}
+.card.dashboard-card .course-summary{
+  display:none;
+}
+.path-grade-report-grader .gradeparent {
+  overflow-x: scroll;
+}
+body#page-course-view-remuiformat .remui-format-card.all-section-format .section .single-card {
+
+  gap: 2px;
+}
+body#page-course-view-remuiformat .content {
+  height: 100%;
 }

@@ -189,10 +189,6 @@ class format_remuiformat extends core_courseformat\base
             // Return the general section.
             return get_string('section5name', 'format_remuiformat');
         }
-        if ($section->section == 6) {
-            // Return the general section.
-            return get_string('section6name', 'format_remuiformat');
-        }
 
         // Use format_remuiformat::get_default_section_name implementation which
         // will display the section name in "Topic n" format.
