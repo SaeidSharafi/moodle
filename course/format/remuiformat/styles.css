@@ -2079,3 +2079,10 @@ body#page-course-view-remuiformat .remui-format-card.all-section-format .section
 body#page-course-view-remuiformat .content {
   height: 100%;
 }
+
+body#page-course-view-remuiformat .single-card{
+  background-position: 85% !important;
+}
+body#page-course-view-remuiformat.dir-rtl .single-card{
+  background-position: 15% !important;
+}

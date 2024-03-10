@@ -242,12 +242,12 @@ class course_format_data_common_trait {
         $sections = array();
 
         for ($sectionindex = $startfrom; $sectionindex <= $end; $sectionindex++) {
-
             // Get current section info.
             $section = $modinfo->get_section_info($sectionindex);
             $data = new \stdClass();
             $data->index = $sectionindex;
             $data->num = $section->section;
+            $data->bg = get_config('format_remuiformat', 'tilebgcolor');
             $data->id = $section->id;
             $data->sectionreturnid = course_get_format($course)->get_section_number();
             $data->insertafter = false;

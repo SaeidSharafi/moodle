@@ -64,6 +64,12 @@ if ($ADMIN->fulltree) {
             1 => new lang_string('remuicourseformat_list', 'format_remuiformat')
         )
     ));
+    $name = 'format_remuiformat/tilebgcolor';
+    $title = get_string('tilebgcolor', 'format_remuiformat');
+    $description = get_string('tilebgcolor_desc', 'format_remuiformat');
+    $setting = new admin_setting_configcolourpicker($name, $title, $description, '#0a9bb2');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $settings->add($setting);
 
     // Usage tracking GDPR setting.
     $name = 'format_remuiformat/enableusagetracking';

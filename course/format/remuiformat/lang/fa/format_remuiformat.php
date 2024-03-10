@@ -191,3 +191,5 @@ $string["remuiheader"] = 'سربرگ';
 $string["headereditingbutton"] = "انتخاب موقعیت دکمه ویرایش";
 $string['headereditingbutton_help'] = "انتخاب موقعیت دکمه ویرایش این تنظیم در remui کار نخواهد کرد، تنظیمات دوره را بررسی کنید.";
 
+$string['tilebgcolor'] ='رنگ پس‌زمینه بخش‌ها';
+$string['tilebgcolor_desc'] ='رنگ پس‌زمینه بخش‌ها';

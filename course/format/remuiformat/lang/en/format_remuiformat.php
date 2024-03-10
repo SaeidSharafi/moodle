@@ -189,3 +189,7 @@ $string["defaultheader"] = 'Default ';
 $string["remuiheader"] = 'Header';
 $string["headereditingbutton"] = "Select editing button positon";
 $string['headereditingbutton_help'] = "Select editing button positon This setting will not work in remui, check course setting";
+
+
+$string['tilebgcolor'] ='Tiles background color';
+$string['tilebgcolor_desc'] ='Tiles background color';
