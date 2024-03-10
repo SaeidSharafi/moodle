@@ -22,7 +22,7 @@
  */
 
 // نام افزونه.
-$string['pluginname'] = 'فرمت‌های دوره Edwiser';
+$string['pluginname'] = 'فرمت‌های دوره Pafco';
 
 // تنظیمات.
 $string['defaultcoursedisplay'] = 'نمایش پیش‌فرض دوره';

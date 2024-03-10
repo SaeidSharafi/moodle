@@ -22,7 +22,7 @@
  */
 
 // Plugin Name.
-$string['pluginname'] = 'Edwiser course formats';
+$string['pluginname'] = 'Pafco course formats';
 
 // Settings.
 $string['defaultcoursedisplay'] = 'Course display default';
