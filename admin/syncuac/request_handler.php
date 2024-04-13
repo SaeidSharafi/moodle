@@ -27,7 +27,6 @@ function callIt($action, $params)
         return;
     }
 
-
     if (array_key_exists('data', $_POST)) {
         $params = $_POST['data'];
     }
@@ -36,7 +35,7 @@ function callIt($action, $params)
         $msg = 'لطفا فیلدهای مربوط به سامانه را در فایل config.php وارد کنید'. '<br>';
         $msg .= '$CFG->samaurl : ' . ($CFG->samaurl ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
         $msg .= '$CFG->samauser : ' . ($CFG->samauser ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
-        $msg .= '$CFG->samapass : ' . ($CFG->pass ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
+        $msg .= '$CFG->samapass : ' . ($CFG->samapass ? 'تنظیم شده' : 'تنظیم نشده') .'<br>';
         echo json_encode(array('status' => Status::ERROR, 'response' => $msg, 'details' => false), JSON_UNESCAPED_UNICODE);
         return;
     }

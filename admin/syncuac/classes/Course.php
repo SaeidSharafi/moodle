@@ -14,11 +14,12 @@ class Course
     public $idnumber = "";
     public $fullname = "";
     public $shortname = "";
+    public $format = "remuiformat";
     public $categoryData ="";
     public $category ="";
-    public $numsections = 10;
+    public $numsections = 5;
     public $showgrades = 1;
-    public $newsitems = 5;
+    public $newsitems = 0;
     public $summary_editor = array(
         'text' => '',
         'format' => 1
