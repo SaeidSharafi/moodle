@@ -242,8 +242,8 @@ body#page-course-view-remuiformat {
         .activityiconcontainer {
             border-radius: $border-radius-16;
             margin-right: 0 !important;
-            height: 80px;
-            width: 80px;
+            height: 40px;
+            width: 40px;
             .activityinstance img {
                 width: $activity-icon-width !important;
                 height: $activity-icon-height !important;
@@ -291,7 +291,7 @@ body#page-course-view-remuiformat {
         .activitytitle {
             .media-body {
                 display: flex;
-                flex-direction: column;
+                flex-direction: row !important;
                 align-items: start;
                 gap: $gap-4;
                 width: 100%;
@@ -306,8 +306,7 @@ body#page-course-view-remuiformat {
                 .activityname {
                     & a {
                         color: $heading-color;
-                        @include frmt-font-styling(20px, 28px, 700);
-                        word-break: break-all;
+                        @include frmt-font-styling(15px, 21px, 700);
                     }
 
                     .inplaceeditable {
@@ -354,6 +353,18 @@ body#page-course-view-remuiformat {
                         }
                     }
                 }
+            }
+        }
+        .description {
+            .course-description-item {
+                .description-inner{
+                    font-size: 0.7rem;
+                }
+            }
+        }
+        .completion-info {
+            .btn-sm {
+                font-size: 0.7rem;
             }
         }
     }

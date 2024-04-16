@@ -347,7 +347,7 @@
                 .activitytitle {
                     gap: $gap-24;
                     @media (max-width:$sm-screen-bp) {
-                        flex-direction: column;
+                        flex-direction: row;
                     }
                 }
                 .activity-info.mt-1 {

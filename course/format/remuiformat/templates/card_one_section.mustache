@@ -164,7 +164,7 @@
                                         class="badge badge-pill badge-warning">{{#str}}hiddenoncoursepage{{/str}}</span>
                                 </div>
                                 {{/modstealth}}
-                                <div class="activity-content">
+                                <div class="activity-content d-none">
                                     {{#summary}}
                                     {{#label}}
                                     {{{ fullcontent }}}
@@ -196,7 +196,7 @@
                                 </div>
                             </div>
                             {{/completion}}
-                            <div class="{{^summary}}nosummary{{/summary}}">{{{ availstatus }}}</div>
+                            <div class="{{^summary}}nosummary{{/summary}} d-none">{{{ availstatus }}}</div>
 
                         </div>
                     </li>
