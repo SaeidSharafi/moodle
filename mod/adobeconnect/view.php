@@ -266,7 +266,7 @@ if (has_capability('mod/adobeconnect:meetingpresenter', $context) or
 // Determine if the user has the permissions to assign perticipants
 $meetingdetail->participants = false;
 
-if (has_capability('mod/adobeconnect:meetingpresenter', $context, $usrobj->id) or
+if (has_capability('mod/adobeconnect:meetingpresenter', $context, $usrobj->id) ||
         has_capability('mod/adobeconnect:meetinghost', $context, $usrobj->id)) {
 
     $meetingdetail->participants = true;
