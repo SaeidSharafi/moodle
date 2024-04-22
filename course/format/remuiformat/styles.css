@@ -2081,7 +2081,7 @@ body#page-course-view-remuiformat .remui-format-card.all-section-format .section
 
   gap: 2px;
 }
-body#page-course-view-remuiformat .content {
+body#page-course-view-remuiformat .single-card .content {
   height: 100%;
 }
 
