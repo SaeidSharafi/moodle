@@ -50,7 +50,8 @@ class block_myoverview extends block_base {
             return $this->content;
         }
         $group = get_user_preferences('block_myoverview_user_grouping_preference');
-        $sort = get_user_preferences('block_myoverview_user_sort_preference');
+        //$sort = get_user_preferences('block_myoverview_user_sort_preference');
+        $sort = 'timecreated';
         $view = get_user_preferences('block_myoverview_user_view_preference');
         $paging = get_user_preferences('block_myoverview_user_paging_preference');
         $customfieldvalue = get_user_preferences('block_myoverview_user_grouping_customfieldvalue_preference');
