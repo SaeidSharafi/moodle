@@ -34,8 +34,8 @@
         ]
     }
 }}
-<div class="card dashboard-card" role="listitem"
-    data-region="course-content"
+<div class="card dashboard-card position-relative" role="listitem"
+    data-region="course-content" title="{{coursename}}"
     data-course-id="{{{id}}}">
     <a href="{{viewurl}}" tabindex="-1">
         <div class="card-img dashboard-card-img" style='background-image: url("{{{courseimage}}}");'>
@@ -64,6 +64,7 @@
                     <span class="sr-only">
                             {{#str}}aria:coursename, core_course{{/str}}
                         </span>
+
                     {{$coursename}}{{/coursename}}
                 </a>
                 {{^visible}}
