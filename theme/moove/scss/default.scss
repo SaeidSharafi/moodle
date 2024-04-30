@@ -20,3 +20,8 @@
 @import "moove/profile";
 @import "moove/enrol";
 @import "moove/hide";
+
+
+.block_myoverview .dashboard-card-deck .dashboard-card{
+  position: initial !important;
+}
