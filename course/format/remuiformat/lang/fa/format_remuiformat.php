@@ -65,6 +65,7 @@ $string['section2name'] = 'تکالیف';
 $string['section3name'] = 'کلاس های آنلاین';
 $string['section4name'] = 'تالار گفتگو';
 $string['section5name'] = 'خودآزمون ها';
+$string['section6name'] = 'محتوا و منابع مطالعه بیشتر';
 $string['hidefromothers'] = 'مخفی کردن بخش';
 $string['showfromothers'] = 'نمایش بخش';
 $string['viewtopic'] = 'مشاهده';

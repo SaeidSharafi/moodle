@@ -64,6 +64,7 @@ $string['section2name'] = 'Assignment';
 $string['section3name'] = 'Class';
 $string['section4name'] = 'Forum';
 $string['section5name'] = 'Quiz';
+$string['section6name'] = 'More Resources';
 $string['hidefromothers'] = 'Hide section';
 $string['showfromothers'] = 'Show section';
 $string['viewtopic'] = 'View';
