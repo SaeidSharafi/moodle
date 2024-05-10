@@ -193,3 +193,6 @@ $string['headereditingbutton_help'] = "Select editing button positon This settin
 
 $string['tilebgcolor'] ='Tiles background color';
 $string['tilebgcolor_desc'] ='Tiles background color';
+
+$string['readmore'] = 'Read More';
+$string['readless'] = 'Read Less';

@@ -194,3 +194,7 @@ $string['headereditingbutton_help'] = "انتخاب موقعیت دکمه ویر
 
 $string['tilebgcolor'] ='رنگ پس‌زمینه بخش‌ها';
 $string['tilebgcolor_desc'] ='رنگ پس‌زمینه بخش‌ها';
+
+$string['readmore'] = 'نمایش بیشتر';
+$string['readless'] = 'نمایش کمتر';
+
