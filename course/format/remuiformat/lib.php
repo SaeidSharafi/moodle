@@ -1002,7 +1002,7 @@ function get_extra_header_context(&$export, $course, $percentage, $imgurl)
     }
     $coursesettings = course_get_format($course)->get_settings();
     $export->generalsection['teachers'] = get_enrolled_teachers_context_formate($course->id, true);
-    $export->generalsection['studentscount'] = get_enrolled_students_count($course->i);
+    $export->generalsection['studentscount'] = get_enrolled_students_count($course->id);
 
     $export->generalsection['coursefullname'] = format_text($coursedetails->fullname);
     $export->generalsection['coursecategoryname'] = format_text($categorydetails->name);
