@@ -72,16 +72,16 @@ class ranginehservices implements otpmethods
         $token = "YYYYYY"; // Your Auth Token from www.twilio.com/console
 
         $client = new \SoapClient("http://ippanel.com/class/sms/wsdlservice/server.php?wsdl");
-        //$message = $client->sendPatternSms(
-        //    $this->number,
-        //    [$phone],
-        //    $this->username,
-        //    $this->password,
-        //    "mdoe1j1587",
-        //    ['code' => $otp]
-        //);
+        $message = $client->sendPatternSms(
+            $this->number,
+            [$phone],
+            $this->username,
+            $this->password,
+            "mdoe1j1587",
+            ['code' => $otp]
+        );
 
-        //print $message->sid;
+        print $message->sid;
     }
 
     /**

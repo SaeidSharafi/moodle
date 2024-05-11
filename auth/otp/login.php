@@ -45,8 +45,8 @@ $url = $CFG->wwwroot . "/login/index.php";
             ?>
         </style>
         <?php
-        //$PAGE->requires->js_call_amd('auth_otp/intltelInput');
-        //$PAGE->requires->js_call_amd('auth_otp/implement');
+        $PAGE->requires->js_call_amd('auth_otp/intltelInput');
+        $PAGE->requires->js_call_amd('auth_otp/implement');
         $PAGE->requires->js_call_amd('auth_otp/otp');
         $PAGE->requires->js_call_amd('auth_otp/timer', 'setup', array());
 
@@ -74,9 +74,7 @@ $url = $CFG->wwwroot . "/login/index.php";
             }
         }
         $usname = !empty($_SESSION['auth_otp']['credentials']['username']) ?
-             $_SESSION['auth_otp']['credentials']['username'] : '';
-        $real_username = !empty($_SESSION['auth_otp']['credentials']['realusername']) ?
-            $_SESSION['auth_otp']['credentials']['realusername'] : '';
+            $_SESSION['auth_otp']['credentials']['country'] . '' . $_SESSION['auth_otp']['credentials']['username'] : '';
         ?>
         <div class="d-flex justify-content-center">
             <div class="card">
@@ -104,7 +102,7 @@ $url = $CFG->wwwroot . "/login/index.php";
                                         </label>
                                         <input type="tel" name="phone" id="phone" class="form-control"
                                                value="<?php echo $usname; ?>" placeholder="phone" autocomplete="phone">
-                                        <input type="hidden" name="username" value="<?php echo $real_username; ?>"
+                                        <input type="hidden" name="username" value="<?php echo $usname; ?>"
                                                placeholder="" required id="username">
 
                                         <div class="display:flex">
