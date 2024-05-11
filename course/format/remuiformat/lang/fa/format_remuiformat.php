@@ -198,4 +198,5 @@ $string['tilebgcolor_desc'] ='رنگ پس‌زمینه بخش‌ها';
 $string['readmore'] = 'نمایش بیشتر';
 $string['readless'] = 'نمایش کمتر';
 $string['studentscount'] = 'تعداد فراگیران:';
+$string['student'] = 'فراگیر';
 

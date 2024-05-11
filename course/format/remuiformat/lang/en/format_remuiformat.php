@@ -197,3 +197,4 @@ $string['tilebgcolor_desc'] ='Tiles background color';
 $string['readmore'] = 'Read More';
 $string['readless'] = 'Read Less';
 $string['studentscount'] = 'Students Count:';
+$string['student'] = 'Students';
