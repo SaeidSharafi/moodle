@@ -616,7 +616,7 @@ class course_format_data_common_trait {
             return $imgarray;
         }
 
-        if ($section->section >= 1 && $section->section <= 5) {
+        if ($section->section >= 1 && $section->section <= 6) {
             // @codingStandardsIgnoreStart
             $imgarray['img'] = $OUTPUT->image_url('section'.$section->section, 'format_remuiformat');
             // @codingStandardsIgnoreEnd
