@@ -10,13 +10,13 @@
 include_once "../../config.php";
 class Config
 {
+
     /** @var string Secret key to use for security */
     public static $security_key = "x";
-
     public static $db_server = 'localhost';
-    public static $db_user = 'remote';
-    public static $db_pass = 'passwordformoodledude';
-    public static $db_name = 'moodle';
+    public static $db_user = 'moodleuser';
+    public static $db_pass = 'password';
+    public static $db_name = 'pafc_dev';
 
     /** @var bool set to false if you are using mysql */
     public static $mssql = false;
@@ -27,10 +27,10 @@ class Config
 
     public static $soap_pass='100100';
 
-    public static $user_table='mdl_user';
-    public static $category_table='mdl_course_categories';
-    public static $course_table='mdl_course';
-    public static $enrol_table='mdl_enrol_db';
+    public static $user_table='user';
+    public static $category_table='course_categories';
+    public static $course_table='course';
+    public static $enrol_table='enrol_db';
     //public static $user_enrol_table='mdl_user_enrolments';
 
     /** @var int role id of student */
