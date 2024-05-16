@@ -23,14 +23,22 @@ function init()
     $crs_degree = $params['crs_degree'] ?: null;
     $crs_degree = $params['crs_degree'] ?: null;
 
-    $client = new SoapClient('http://golestan.ibi.ac.ir/GolestanService/gservice.asmx?WSDL');
     $client = new SoapClient("{$CFG->golestan_url}/GolestanService/gservice.asmx?WSDL");
     $pub = "<Root>";
     $pub .= create_pub(Courses_1248::TERM, $term);
-    $pub .= create_pub(Courses_1248::STATE);
-    $pub .= create_pub(Courses_1248::CENTER, $center, $center);
+    $pub .= create_pub(Courses_1248::STATE,37);
     $pub .= create_pub(Courses_1248::COURSE_STATE, "1");
 
+    if (is_array($center)){
+        $pub .= create_pub(Courses_1248::CENTER,$center[0],$center[0]);
+        if (count($center) > 1 && $center[1]){
+            $pub .= create_pub(Courses_1248::UNIVERSITY, $center[1], $center[1]);
+        }
+
+    }else{
+        $pub .= create_pub(Courses_1248::CENTER, $center, $center);
+
+    }
     if ($edu_group) {
         $grps = explode("-",$edu_group);
         if (count($grps) > 1){
@@ -90,14 +98,13 @@ function init()
     } else {
 
         foreach ($xml->row as $row) {
-
             //$item['crs'] = $row;
             $crs = explode("_", trim((string) $row['C9']));
             $crs_id = $crs[0];
             $crs_group = $crs[1];
-            if ($crs_group == "00") {
-                continue;
-            }
+            //if ($crs_group == "00") {
+            //    continue;
+            //}
             $item['state_id'] = trim((string) $row['C1']);
             $item['state_name'] = trim((string) $row['C2']);
             $item['center_id'] = trim((string) $row['C3']);
@@ -119,13 +126,15 @@ function init()
             $item['degree_id'] = trim((string) $row['C21']);
             $item['degree_name'] = trim((string) $row['C22']);
             $item['term'] = $term;
-
-            // var_dump($item);
             array_push($courses, $item);
-            //echo '</pre>';
+        }
+        if (is_array($center)){
+            $msg = "در حال  ثبت دوره های ارائه شده در مرکز شماره" . $center[0]." کد دانشکده " . $center[1];
+
+        }else{
+            $msg = "در حال  ثبت دوره های ارائه شده در مرکز شماره" . $center;
         }
 
-        $msg = "در حال  ثبت دوره های ارائه شده در مرکز شماره" . $center;
         header('Content-Type: application/json');
         echo json_encode(array('success' => 1, 'msg' => $msg, 'items' => $courses), JSON_UNESCAPED_UNICODE);
 

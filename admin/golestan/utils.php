@@ -11,10 +11,10 @@ class Courses_1248
 {
 
     const TERM = 2;
-    const STATE = 4;
+    const STATE = 3;
     const CENTER = 5;
     const COURSE_STATE = 6;
-    const COLLEGE = 12;
+    const UNIVERSITY = 12;
     const GROUP = 16;
     const COURSE_NUMBER = 20;
     const COURSE_GROUP = 24;
@@ -55,7 +55,10 @@ class Students_1132
     const STD_SOURCE = 2;
     const STD_ID = 4;
     const TERM = 16;
-    const CENTER = 41;
+    const CENTER = 3;
+    const UNIVERSITY = 18;
+    const FIELD = 22;
+    const STATUS = 38;
 
 
     const PRI_LETTER_UQID = 245;
@@ -69,8 +72,7 @@ class Teachers_1131
 
     const CENTER = 1;
     const TCH_ID = 2;
-    const TCH_COLLEGE = 4;
-
+    const UNIVERSITY = 4;
 
 
     const PRI_LETTER_UQID = 17145;

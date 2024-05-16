@@ -1,3 +1,13 @@
+<?php
+require_once('../../config.php');
+global $USER;
+$systemcontext = context_system::instance();
+if (!has_capability('moodle/site:config', $systemcontext)) {
+    header('Location: '.$CFG->wwwroot);
+    return;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 <head>
@@ -43,12 +53,36 @@
     <div class="jumbotron m-auto w-50">
         <div class="form-group">
             <label for="term">کد ترم</label>
-            <input class="form-control" id="term" name="term" value="4001"/>
+            <input class="form-control" id="term" name="term" value="4022"/>
         </div>
         <div class="form-group">
             <label for="centers">کد های مراکز آموزشی</label>
-            <input class="form-control" id="centers" name="centers" value="1,2,3,4,5,6,7,8,9,10"/>
+            <input class="form-control" id="centers" name="centers" value="10,20"/>
             <small id="centersHelp" class="form-text text-muted">کد ها را با , از یکدیگر جدا نمایید مانند: 1,2,3,4,5
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="university">کد دانشکده</label>
+            <input class="form-control" id="university" name="university" placeholder="12" value="10,11,12,13,14,15,16,17,18"/>
+            <small id="centersHelp" class="form-text text-muted" style="direction: rtl !important;">
+                کد ها را با , از یکدیگر جدا نمایید مانند: 1,2,3,4,5
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="university">کدهای رشته</label>
+            <div class="row" style="direction: rtl">
+                <div class="col-6">
+                    <label for="university">از</label>
+                    <input class="form-control" id="from_field" name="from_field" placeholder="10" value="10"/>
+
+                </div>
+                <div class="col-6">
+                    <label for="university">تا</label>
+                    <input class="form-control" id="to_field" name="to_field" placeholder="50" value="50"/>
+                </div>
+            </div>
+            <small id="centersHelp" class="form-text text-muted" style="direction: rtl !important;">
+                شروع و پایان کد رشته برای تمامی دانشکده ها ( در صورت عدم وجود رشته در دانشکده داده‌ای ثبت نمی‌شود)
             </small>
         </div>
         <hr/>

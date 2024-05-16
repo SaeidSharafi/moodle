@@ -23,6 +23,9 @@ $(document).ready(function () {
         let target = $(this);
 
         let items = $('#centers').val().split(",");
+        let university = $('#university').val().split(",");
+        let from_field = $('#from_field').val();
+        let to_field = $('#to_field').val();
         let term = $('#term').val();
         let crs_degree = $('#crs_degree').val();
         let edu_group = $('#edu_group').val();
@@ -50,16 +53,31 @@ $(document).ready(function () {
             console.log('error');
             return;
         }
-        if (action == "students") {
-            items = [1];
-        }
-        if (action == "courses" || action == "enroll") {
+        // if (action == "students") {
+        //     items = [1];
+        // }
+        if (action == "enroll") {
             seuqunce(security, items, url, action, params, true);
 
         } else {
-            seuqunce(security, items, url, action, params);
+            let result = [];
+
+            items.forEach(item => {
+                university.forEach(group => {
+                    if (action == "students") {
+                        for (let i = from_field; i <= to_field; i++){
+                            result.push([item, group,i]);
+                        }
+                    }else{
+                        result.push([item, group]);
+                    }
+
+                });
+            });
+
+            seuqunce(security, result, url, action, params, (action == "courses"));
         }
-    })
+    });
 });
 
 var addText = function (text, isheader = false) {
@@ -91,7 +109,16 @@ var seuqunce = function (key, items, url, action, params, unenroll = false) {
 var ajax_request = function (key, item, url, action, params, unenroll = false) {
     var deferred = $.Deferred();
     console.log(item);
-    board.append(addText('در حال دریافت اطلاعات مرکز شماره ' + item, true));
+    let center = item;
+    let msg = addText('در حال دریافت اطلاعات مرکز شماره ' + item, true);
+    if(Array.isArray(item)){
+        let text = 'در حال دریافت اطلاعات مرکز شماره ' + item[0] + ' کد دانشکده ' + item[1];
+        if (item.length > 2){
+            text +=  ' کد رشته ' + item[2];
+        }
+        msg = addText(text, true);
+    }
+    board.append(msg);
     console.log(board);
     board.scrollTop(board[0].scrollHeight);
     console.log("Item: " + item);
@@ -139,13 +166,17 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
             })).then(function () {
                 // run this after all ajax calls have completed
                 console.log('Done!');
+                let postData =  {
+                    action: action,
+                    center: item,
+                    courses: action === 'courses' ? data.items : null};
                 if (unenroll) {
                     $.ajax({
                         async: false,
                         url: baseUrl + '/register.php',
                         dataType: "json",
                         type: "POST",
-                        data: {key: key, action: "unenroll",params: params, data: {action: action, center: item}},
+                        data: {key: key, action: "unenroll",params: params, data:postData},
                         success: function (dataIn) {
                             if (!dataIn.success) {
                                 board.append(addText("ERROR"));

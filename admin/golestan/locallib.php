@@ -16,7 +16,6 @@ class SyncDB
     const SAVE = 1;
     const EDIT = 2;
 
-
     private function connect()
     {
         $connection = "mysql:host=".Config::$db_server.";dbname=".Config::$db_name.";charset=utf8";
@@ -64,24 +63,30 @@ class SyncDB
 
         }
         try {
+            $params = [
+                'id'    => $row->id,
+                'fname' => $row->fname,
+                'lname' => $row->lname,
+                'email' => strtolower($row->email),
+                'time'  => $time,
+            ];
 
-            $stmt = $this->_conn->prepare($query);
             if (!($update && $user_id)) {
-                $stmt->bindParam(":pass", $hashed_pass);
+                $params["pass"] = $hashed_pass;
             }
-            $stmt->bindParam(":id", $row->id);
-            $stmt->bindParam(":fname", $row->fname);
-            $stmt->bindParam(":lname", $row->lname);
-            $stmt->bindParam(":email", strtolower($row->email));
-            $stmt->bindParam(":time", $time);
 
-            $this->_conn->beginTransaction();
-            $stmt->execute();
-            $this->_conn->commit();
-
+            $transaction = $DB->start_delegated_transaction();
+            $DB->execute($query, $params);
+            $transaction->allow_commit();
+            $operation = 'ثبت';
+            $pass = "<span class='text-danger'>$pass</span>";
+            if ($update && $user_id) {
+                $operation = 'بروزرسانی';
+                $pass = "";
+            }
             return "<span class='text-info'>".$row->fname." ".$row->lname."</span>".
-                " (<span class='text-success'>$row->id</span>) "." با موفقیت ثبت شد. "." - رمز عبور : ".
-                "<span class='text-danger'>$pass</span>";
+                " (<span class='text-success'>$row->id</span>) "." با موفقیت ".$operation." شد. "." - رمز عبور : ".
+                $pass;
 
         } catch (Exception $e) {
 
@@ -114,10 +119,12 @@ class SyncDB
         $parent_id = $this->check_category(
             $term,
             $term, 0);
-        $cat_id = $this->check_category(
+        $cat_id_college = $this->check_category(
             $row->center_name,
             $cat_idnumber, $parent_id);
-
+        $cat_id = $this->check_category(
+            $row->college_name,
+            $cat_idnumber.$row->college_id, $cat_id_college);
         if ($cat_id instanceof Exception) {
             return "<span class='text-danger'>"." خطا در ثبت درس به شماره ".$row->id.
                 "</span><br> <span class='text-danger text-left'>ERROR: "
@@ -127,7 +134,7 @@ class SyncDB
         //$id = $this->selectCourse($idnumber, $cat_id);
         $lesson = new stdClass();
         $lesson->idnumber = $idnumber;
-        $lesson->fullname = $name;
+        $lesson->fullname = substr($name, 0, 250);
         $lesson->shortname = $shortname;
         $lesson->category = $cat_id;
         $result = $this->check_lesson($lesson);
@@ -146,6 +153,7 @@ class SyncDB
         $enroll['user_id'] = $row->teacher_id;
         $enroll['crs_id'] = $row->id;
         $enroll['center_id'] = $row->center_id;
+        $enroll['college_id'] = $row->college_id;
         $enroll['group'] = $row->group;
         $enroll['term'] = $row->term;
         $msg .= "<br>";
@@ -157,7 +165,7 @@ class SyncDB
 
     public function syncEnrolment($enrollment, $roleid = 5)
     {
-       global $DB;
+        global $DB;
         $table = Config::$enrol_table;
         $today = date("Y-m-d");
         $row = json_decode(json_encode($enrollment, JSON_UNESCAPED_UNICODE), false);
@@ -175,21 +183,21 @@ class SyncDB
             $update_msg = "بروزرسانی";
         } else {
             $query = "INSERT INTO {{$table}} ";
-            $query .= "(username, courseid, roleid, term, enrolldate, center, is_updated)";
-            $query .= " VALUES (:user_id,:crs_id,:roleid,:term,:today,:center,1)";
+            $query .= "(username, courseid, roleid, term, enrolldate, center, college, is_updated)";
+            $query .= " VALUES (:user_id,:crs_id,:roleid,:term,:today,:center,:college,1)";
             $update_msg = "انجام";
         }
-
 
         try {
             $transaction = $DB->start_delegated_transaction();
             $DB->execute($query, [
                 'user_id' => $row->user_id,
-                'crs_id' => $idnumber,
-                'roleid' => $roleid,
-                'term' => $row->term,
-                'center' =>  $row->center_id,
-                'today' => $today,
+                'crs_id'  => $idnumber,
+                'roleid'  => $roleid,
+                'term'    => $row->term,
+                'center'  => $row->center_id,
+                'college' => $row->college_id,
+                'today'   => $today,
             ]);
             $transaction->allow_commit();
             $msg = " ثبت نام کاربر با کد "."<span class='text-primary'>".$row->user_id."</span>".
@@ -208,7 +216,7 @@ class SyncDB
 
     public function syncCategory($category)
     {
-       global $DB;
+        global $DB;
         $table = Config::$category_table;
         //$row = json_decode(json_encode($categories, JSON_UNESCAPED_UNICODE), FALSE);
         $id = $this->selectCategory($category->center_id);
@@ -229,16 +237,16 @@ class SyncDB
 
         try {
 
-           $conditions = [
-               'name' => $category->center_name,
-               'idnumber' => $category->center_id,
-           ];
+            $conditions = [
+                'name'     => $category->center_name,
+                'idnumber' => $category->center_id,
+            ];
             if ($id) {
-                array_push($conditions,[
+                array_push($conditions, [
                     'id' => $id
                 ]);
             }
-             $transaction = $DB->start_delegated_transaction();
+            $transaction = $DB->start_delegated_transaction();
             $DB->execute($query,);
             $transaction->allow_commit();
             if ($id) {
@@ -357,14 +365,28 @@ class SyncDB
         $today = date("Y-m-d");
         $row = json_decode(json_encode($obj, JSON_UNESCAPED_UNICODE), false);
 
+        $idnumbers = [];
+        if ($row->action == 'courses') {
+            if ($row->courses){
+                foreach ($row->courses as $course){
+                    $idnumbers[] = $course->center_id.$course->id.$course->group.$course->term;
+                }
+            }
+        }
+
+
+        $center = is_array($row->center) ? "" : $row->center;
+        if (is_array($row->center)) {
+            $center = $row->center[0]." کد دانشکده ".$row->center[1];
+        }
         if ($row->action == 'courses') {
             $role = Config::$teacher_role_id;
-            $msg = "<span class='text-info'>"."تعداد ثبت نام حذف شده از اساتید در مرکز".$row->center."در ترم ".$term.
+            $msg = "<span class='text-info'>"."تعداد ثبت نام حذف شده از اساتید در مرکز".$center."در ترم ".$term.
                 "</span>";
 
         } elseif ($row->action == 'enroll') {
             $role = Config::$student_role_id;
-            $msg = "<span class='text-info'>"."تعداد ثبت نام حذف شده از دانشجویان در مرکز".$row->center."در ترم ".
+            $msg = "<span class='text-info'>"."تعداد ثبت نام حذف شده از دانشجویان در مرکز".$center."در ترم ".
                 $term."</span>";
 
         } else {
@@ -372,24 +394,53 @@ class SyncDB
         }
 
         try {
-            $transaction = $DB->start_delegated_transaction();
-            $DB->delete_records($table,
-                [
-                    'roleid'     => $role,
-                    'term'       => $term,
-                    'center'     => $row->center,
-                    'is_updated' => 0,
-                ]);
+            $query = "DELETE FROM {{$table}} WHERE is_updated = 0 AND roleid = ? AND term = ? AND center = ? ";
+            if ($idnumbers){
+                $query .= " AND courseid IN (" . rtrim(str_repeat("?,",count($idnumbers)),',') . ")";
+            }
+            $parameters = [
+                $role,
+                $term,
+                $row->center,
+            ];
+            if (is_array($row->center) && $row->action == 'courses') {
+                $query .= " AND college = ?";
+                $parameters = array_merge($parameters,$idnumbers);
+            }
 
-            $msg = $msg." : ".$stm->rowCount();
+            if (is_array($row->center)) {
+                $parameters[2] = $row->center[0];
+                if ($row->action == 'courses') {
+                    $parameters[] = $row->center[1];
+                }
+            }
+
+            //$res = $DB->get_records($table);
+
+            $transaction = $DB->start_delegated_transaction();
+            $res = $DB->execute($query, $parameters);
 
             $query = "UPDATE {{$table}} SET is_updated = 0 WHERE roleid = :role AND term = :term AND center = :center ";
-            $DB->execute($query, [
+            //if (is_array($row->center) && $row->action == 'courses') {
+            //    $query .= " AND college = :college";
+            //}
+            //if ($idnumbers){
+            //    $idnumbers = implode(",",$idnumbers);
+            //    $query .= " AND courseid IN (" . $idnumbers . ")";
+            //}
+            $parameters = [
                 'role'   => $role,
                 'term'   => $term,
                 'center' => $row->center,
-            ]);
-           $transaction->allow_commit();
+            ];
+            if (is_array($row->center)) {
+                $parameters['center'] = $row->center[0];
+                if ($row->action == 'courses') {
+                    $parameters['college'] = $row->center[1];
+                }
+            }
+            $DB->execute($query, $parameters);
+            $transaction->allow_commit();
             return $msg;
 
         } catch (Exception $e) {
