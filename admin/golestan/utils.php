@@ -32,20 +32,21 @@ class Courses_1248
 class Enrollment_1171
 {
 
-    const SOURCE = 2;
-    const STD_SOURCE = 3;
-    const STD_ID = 4;
-    const TERM = 16;
-    const CENTER = 41;
-    const COURSE_NUMBER = 20;
-    const COURSE_GROUP = 24;
-    const COURSE_DEGREE = 28;
+    const PRI_TERM_ID = 2;
+    const PRI_TERM_UQID = 2;
+    const PRI_STATE_ID = 6;
+    const PRI_STATE_UQID = 703;
+    const PRI_CENTER_ID = 8;
+    const PRI_CENTER_UQID = 400;
+    const PRI_UNIVERSITY_ID = 10;
+    const PRI_UNIVERSITY_UQID = 240;
+    const PRI_SOURCE_ID = 22;
+    const PRI_SOURCE_UQID = 417;
+    const PRI_SHOW_INTRO_TEACHERS_ID = 24;
+    const PRI_SHOW_INTRO_TEACHERS_UQID = 505;
+    const PRI_SHOW_PROJECT_COURSES_ID = 25;
+    const PRI_SHOW_PROJECT_COURSES_UQID = 538;
 
-
-    const PRI_LETTER_UQID = 245;
-    const PRI_LETTER_ID = 2;
-    const PRI_TERM_UQID = 10;
-    const PRI_TERM_ID = 4;
 
 }
 class Students_1132

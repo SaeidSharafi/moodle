@@ -7,9 +7,6 @@
  */
 include_once "utils.php";
 include_once "settings.php";
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
 function init()
 {
     global $CFG;
@@ -29,55 +26,75 @@ function init()
     }
 
     $params = $_POST['params'];
-    $center = $_POST['center'] ? $_POST['center'] : 1;
-    $term = $params['term'] ? $params['term'] : '4002';
+    $center = $_POST['center'] ? $_POST['center'] : 10;
+    $term = $params['term'] ? $params['term'] : '4022';
     $client = new SoapClient("{$CFG->golestan_url}/GolestanService/gservice.asmx?WSDL");
 
-    $pub = "<Root>";
-    $pub .= create_pub(Enrollment_1171::SOURCE, 1);
-    $pub .= create_pub(Enrollment_1171::STD_ID);
-    $pub .= create_pub(Enrollment_1171::CENTER, $center, $center);
-    $pub .= "</Root>";
-
-
     $pri = "<Root>";
-    $pri .= create_pri(Enrollment_1171::PRI_LETTER_UQID, Enrollment_1171::PRI_LETTER_ID, 0);
-    $pri .= create_pri(Enrollment_1171::PRI_TERM_UQID, Enrollment_1171::PRI_TERM_ID, $term);
+    $pri .= create_pri(Enrollment_1171::PRI_TERM_UQID,Enrollment_1171::PRI_TERM_ID, $term,$term);
+    $pri .= create_pri(Enrollment_1171::PRI_STATE_UQID,Enrollment_1171::PRI_STATE_ID,37,37);
+
+    if (is_array($center)){
+        $pri .= create_pri(Enrollment_1171::PRI_CENTER_UQID,Enrollment_1171::PRI_CENTER_ID,$center[0],$center[0]);
+        if (count($center) > 1 && $center[1]){
+            $pri .= create_pri(Enrollment_1171::PRI_UNIVERSITY_UQID,Enrollment_1171::PRI_UNIVERSITY_ID,$center[1],$center[1]);
+        }
+    }else{
+        $pri .= create_pri(Enrollment_1171::PRI_CENTER_UQID,Enrollment_1171::PRI_CENTER_ID, $center, $center);
+    }
+    //$pri .= create_pri(240,10, 10, 10);
+    $pri .= create_pri(Enrollment_1171::PRI_SOURCE_UQID,Enrollment_1171::PRI_SOURCE_ID, 1,1);
+    $pri .= create_pri(Enrollment_1171::PRI_SHOW_INTRO_TEACHERS_UQID,Enrollment_1171::PRI_SHOW_INTRO_TEACHERS_ID, 0,0);
+    $pri .= create_pri(Enrollment_1171::PRI_SHOW_PROJECT_COURSES_UQID,Enrollment_1171::PRI_SHOW_PROJECT_COURSES_ID, 0,0);
     $pri .= "</Root>";
 
 
+
     $StudentInfo = $client->__soapCall('golInfo',
-        array(array('login' => $CFG->golestan_user, 'pass' => $CFG->golestan_pass, 'sec' => '1171', 'iFID' => '1171', 'pub' => $pub, 'pri' => $pri, 'mor' => '')));
+        array(array('login' => $CFG->golestan_user, 'pass' => $CFG->golestan_pass, 'sec' => '426591DD5A', 'iFID' => '1083', 'pub' => '', 'pri' => $pri, 'mor' => '')));
     $xml = '<?xml version="1.0" encoding="utf-8"?>';
     $xml .= $StudentInfo->golInfoResult->any;
 
     $xml = simplexml_load_string($xml);
-    //var_dump($xml);
+
+
     $enrollments = array();
     if ($xml === false) {
         $msg = "Failed loading XML: \n";
         foreach (libxml_get_errors() as $error) {
             $msg .= "\n" . $error->message;
         }
-        header('Content-Type: application/json');
+        //header('Content-Type: application/json');
         echo json_encode(array('success' => 0, 'msg' => $msg), JSON_UNESCAPED_UNICODE);
     } else {
-        foreach ($xml->p as $row) {
+        $count = 0;
+        foreach ($xml->row as $row) {
+            if ($count > 20) {
+                continue;
+            }
             $item['user_id'] = trim((string)$row['C1']);
-            $item['crs_id'] = $row['C2'] . $row['C3'] . $row['C4'];
-            $item['group'] = trim((string)$row['C5']);
-            $item['center_id'] = trim((string)$row['C6']);
-            $item['college_id'] = null;
-            $item['term'] = $term;
-            if (!$item['center_id'])
+            $item['crs_id'] = trim((string)$row['C16']);
+            $item['group'] = trim((string)$row['18']);
+            if (is_array($center)){
+                $item['center_id'] = $center[0];
+                $item['college_id'] = $center[1];
+            }else{
                 $item['center_id'] = $center;
+                $item['college_id'] = (string)$row['C4'];
+            }
+
+            $item['term'] = $term;
             array_push($enrollments, $item);
+            $count++;
         }
     }
 
-    //echo json_encode($xml);
-    $enrolls = json_encode($enrollments);
-    $msg = "در حال  ثبت نام دانشپذیران مرکز شماره".$center;
+    if (is_array($center)){
+        $msg = "در حال  ثبت نام دانشپذیران مرکز شماره" . $center[0]." کد دانشکده " . $center[1];
+
+    }else{
+        $msg = "در حال  ثبت نام دانشپذیران مرکز شماره" . $center;
+    }
     header('Content-Type: application/json');
     echo json_encode(array('success' => 1, 'msg' => $msg, 'items' => $enrollments));
 }

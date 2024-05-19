@@ -56,27 +56,24 @@ $(document).ready(function () {
         // if (action == "students") {
         //     items = [1];
         // }
-        if (action == "enroll") {
-            seuqunce(security, items, url, action, params, true);
 
-        } else {
-            let result = [];
+        let result = [];
 
-            items.forEach(item => {
-                university.forEach(group => {
-                    if (action == "students") {
-                        for (let i = from_field; i <= to_field; i++){
-                            result.push([item, group,i]);
-                        }
-                    }else{
-                        result.push([item, group]);
+        items.forEach(item => {
+            university.forEach(group => {
+                if (action == "students") {
+                    for (let i = from_field; i <= to_field; i++) {
+                        result.push([item, group, i]);
                     }
+                } else {
+                    result.push([item, group]);
+                }
 
-                });
             });
+        });
 
-            seuqunce(security, result, url, action, params, (action == "courses"));
-        }
+        seuqunce(security, result, url, action, params, (action == "courses" || action == "enroll"));
+
     });
 });
 
@@ -93,7 +90,7 @@ var seuqunce = function (key, items, url, action, params, unenroll = false) {
 
         looper = looper.then(function () {
             // trigger ajax call with item data
-            console.log(item);
+            // console.log(item);
             //deferred.resolve(item);
             return ajax_request(key, item, url, action, params, unenroll);
         });
@@ -111,13 +108,14 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
     console.log(item);
     let center = item;
     let msg = addText('در حال دریافت اطلاعات مرکز شماره ' + item, true);
-    if(Array.isArray(item)){
+    if (Array.isArray(item)) {
         let text = 'در حال دریافت اطلاعات مرکز شماره ' + item[0] + ' کد دانشکده ' + item[1];
-        if (item.length > 2){
-            text +=  ' کد رشته ' + item[2];
+        if (item.length > 2) {
+            text += ' کد رشته ' + item[2];
         }
         msg = addText(text, true);
     }
+    board.empty();
     board.append(msg);
     console.log(board);
     board.scrollTop(board[0].scrollHeight);
@@ -157,8 +155,7 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
                 looperItems = looperItems.then(function () {
                     // trigger ajax call with item data
                     console.log("Calling for item");
-                    console.log(item);
-                    return ajax_request_items(key, item, action, params);
+                    return ajax_request_items(key, item, action, params, data.items.length, i);
 
 
                 });
@@ -166,17 +163,18 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
             })).then(function () {
                 // run this after all ajax calls have completed
                 console.log('Done!');
-                let postData =  {
+                let postData = {
                     action: action,
                     center: item,
-                    courses: action === 'courses' ? data.items : null};
+                    courses: action === 'courses' ? data.items : null
+                };
                 if (unenroll) {
                     $.ajax({
                         async: false,
                         url: baseUrl + '/register.php',
                         dataType: "json",
                         type: "POST",
-                        data: {key: key, action: "unenroll",params: params, data:postData},
+                        data: {key: key, action: "unenroll", params: params, data: postData},
                         success: function (dataIn) {
                             if (!dataIn.success) {
                                 board.append(addText("ERROR"));
@@ -197,23 +195,12 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
             });
             // mark the ajax call as completed
 
-        },
-        error: function (error) {
-            // mark the ajax call as failed
-            board.append(addText("خطا در اتصال به سرور گلستان"));
-            board.append(addText(error.status));
-            board.append(addText(error.statusText));
-            board.scrollTop(board[0].scrollHeight);
-            console.log('Processing Items failed!');
-            console.log(error);
-            $('.close-btn').show();
-            deferred.reject(error);
         }
     });
 
     return deferred.promise();
 };
-var ajax_request_items = function (key, item, action, params) {
+var ajax_request_items = function (key, item, action, params,total = 0, index =0) {
     // console.log('Processing Items!');
     var deferred2 = $.Deferred();
     $.ajax({
@@ -225,14 +212,14 @@ var ajax_request_items = function (key, item, action, params) {
             if (!data.success) {
                 deferred2.reject("error");
                 console.log("Empty result");
-                console.log(data);
+                // console.log(data);
                 board.append(addText("ERROR"));
                 board.append(addText(data.msg));
                 return;
             }
             // do something here
-            console.log(data);
-            board.append(addText(data.msg));
+            // console.log(data);
+            board.append(addText(total+ " از " + index + ":" + data.msg));
             board.scrollTop(board[0].scrollHeight);
             // mark the ajax call as completed
             deferred2.resolve(data);

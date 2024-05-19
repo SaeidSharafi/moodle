@@ -120,7 +120,6 @@ function init()
             $teacher = explode("-", trim((string) $row['C16']));
             $item['teacher_id'] = trim($teacher[0]);
             $item['teacher_name'] = trim(str_replace("<BR>", "", $teacher[1]));
-            $item['time'] = trim((string) $row['C17']);
             $item['exam_date'] = strip_tags(trim((string) $row['C18']));
             $item['exam_hour'] = trim((string) $row['C19']);
             $item['degree_id'] = trim((string) $row['C21']);
@@ -128,6 +127,7 @@ function init()
             $item['term'] = $term;
             array_push($courses, $item);
         }
+
         if (is_array($center)){
             $msg = "در حال  ثبت دوره های ارائه شده در مرکز شماره" . $center[0]." کد دانشکده " . $center[1];
 
@@ -136,7 +136,7 @@ function init()
         }
 
         header('Content-Type: application/json');
-        echo json_encode(array('success' => 1, 'msg' => $msg, 'items' => $courses), JSON_UNESCAPED_UNICODE);
+        echo  json_encode(array('success' => 1, 'msg' => $msg, 'items' => $courses), JSON_UNESCAPED_UNICODE);
 
     }
 }

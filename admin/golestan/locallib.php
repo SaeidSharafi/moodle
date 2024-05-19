@@ -112,7 +112,7 @@ class SyncDB
         }
         //$row = $course;
 
-        $name = $row->id."-".$row->name."-".$row->group."-".str_replace('درس(ت):', '', $row->time);
+        $name = $row->id."-".$row->name."-".$row->group;
         $shortname = $row->id."_".$row->group."_".$row->center_id."_".$row->term;
         $idnumber = $row->center_id.$row->id.$row->group.$row->term;
         $cat_idnumber = $term.$row->center_id;
@@ -176,11 +176,23 @@ class SyncDB
 
         $idnumber = $row->center_id.$row->crs_id.$row->group.$row->term;
         $id = $this->selectEnrollment($row, $idnumber);
+        $parameters = [
+            'user_id' => $row->user_id,
+            'crs_id'  => $idnumber,
+            'roleid'  => $roleid,
+            'term'    => $row->term,
+            'center'  => $row->center_id,
+            'college' => $row->college_id,
+            'today'   => $today,
+        ];
         if ($id) {
             $query = "UPDATE {{$table}} SET ";
             $query .= "enrolldate = :today, is_updated = 1";
             $query .= "WHERE id = $id";
             $update_msg = "بروزرسانی";
+            $parameters = [
+                'today'   => $today,
+            ];
         } else {
             $query = "INSERT INTO {{$table}} ";
             $query .= "(username, courseid, roleid, term, enrolldate, center, college, is_updated)";
@@ -189,16 +201,9 @@ class SyncDB
         }
 
         try {
+
             $transaction = $DB->start_delegated_transaction();
-            $DB->execute($query, [
-                'user_id' => $row->user_id,
-                'crs_id'  => $idnumber,
-                'roleid'  => $roleid,
-                'term'    => $row->term,
-                'center'  => $row->center_id,
-                'college' => $row->college_id,
-                'today'   => $today,
-            ]);
+            $DB->execute($query, $parameters);
             $transaction->allow_commit();
             $msg = " ثبت نام کاربر با کد "."<span class='text-primary'>".$row->user_id."</span>".
                 " با موفقیت در درس "."<span class='text-success'>".$row->crs_id."</span>"
@@ -207,6 +212,7 @@ class SyncDB
 
         } catch (\Exception $e) {
             $transaction->rollback($e);
+            throw $e;
             return "<span class='text-danger'>"." خطا در ثبت نام کاربر ".$row->std_id.
                 " در درس ".$row->crs_id.
                 "</span><br><span class='text-danger text-left'> ERROR: ".$e->getMessage()."</span>";
@@ -296,7 +302,7 @@ class SyncDB
                 return $value;
             }
         } catch (Exception $e) {
-            throw $e;
+           throw $e;
         }
 
         return null;
@@ -403,16 +409,16 @@ class SyncDB
                 $term,
                 $row->center,
             ];
-            if (is_array($row->center) && $row->action == 'courses') {
+            if (is_array($row->center)) {
                 $query .= " AND college = ?";
+            }
+            if ($row->action == 'courses' && $idnumbers) {
                 $parameters = array_merge($parameters,$idnumbers);
             }
 
             if (is_array($row->center)) {
                 $parameters[2] = $row->center[0];
-                if ($row->action == 'courses') {
-                    $parameters[] = $row->center[1];
-                }
+                $parameters[] = $row->center[1];
             }
 
             //$res = $DB->get_records($table);
