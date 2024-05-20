@@ -65,12 +65,14 @@ class auth_otp_external extends external_api
         $sql = 'select * from {auth_otp_linked_login} where phone = ?';
         $data = $DB->get_record_sql($sql,[$phone]);
         $user = null;
+        $sql = 'select * from {user} where phone1 = ? OR phone2 = ?';
+        $user = $DB->get_record_sql($sql,[$phone,$phone]);
+        if ($user){
+            $user->auth= 'otp';
+            $DB->execute('UPDATE {user} set auth = "otp" where id = :id', ['id' => $user->id]);
+        }
         if (!$data){
-            $sql = 'select * from {user} where phone1 = ? OR phone2 = ?';
-            $user = $DB->get_record_sql($sql,[$phone,$phone]);
             if ($user){
-                $user->auth= 'otp';
-                $DB->update_record('user', $user);
                 $data = new stdClass();
                 $data->phone = $phone;
                 $data->confirmtoken = null;
@@ -133,32 +135,30 @@ class auth_otp_external extends external_api
                     $status = 0;
                 }
             }
+            $data = [
+                'phone' => $phone,
+                'username' => $username,
+                'otp' => $otp,
+                'timeout' => $currentdate,
+                'message' => $message,
+                'success' => $status,
+                'warnings' => []
+            ];
+            return $data;
 
-        } else { // New User
-            $smsstatus = self::call_otp_funcction($fullphone);
-
-            if ($smsstatus['status']) {
-                $currentdate = date("Y-m-d H:i:s");
-                $otp = $smsstatus['otp']; // get otp from message response
-                // create new user
-                $username = self::new_user_handle($phone, $otp)['username'];
-                $message = get_string('otpsentsuccess', 'auth_otp');
-                $status = 1;
-            } else {
-                $message = $smsstatus['message'];
-                $status = 0;
-            }
         }
-        $data = [
+
+        return [
             'phone' => $phone,
-            'username' => $username,
+            'username' => '',
             'otp' => $otp,
             'timeout' => $currentdate,
-            'message' => $message,
-            'success' => $status,
+            'message' => 'User not found',
+            'success' => 0,
             'warnings' => []
         ];
-        return $data;
+
+
     }
 
     /**
@@ -230,51 +230,51 @@ class auth_otp_external extends external_api
      * @return array
      * @throws dml_exception
      */
-    public static function new_user_handle($phone, $otp)
-    {
-        global $DB;
-        $currentdate = date("Y-m-d H:i:s");
-        //Write a function to send otp to the user
-//        $data = $DB->execute("INSERT INTO {auth_otp_linked_login} (phone,confirmtoken,username,otpcreated,fullphone) VALUES ('" . $phone . "'," . $otp . ",'" . $phone . "','" . $currentdate . "','" . $phone . "')");
-
-        $data = new stdClass();
-        $data->phone = $phone;
-        $data->confirmtoken = $otp;
-        $data->username =  $phone;
-        $data->otpcreated =  $currentdate;
-        $data->fullphone =  $phone;
-        $data->countrycode =  null;
-
-        $DB->insert_record('auth_otp_linked_login', $data);
-
-        $_SESSION['auth_otp']['credentials'] = [
-            'otp' => $otp,
-            'otpdatetime' => $currentdate,
-            'username' => $phone,
-            'realusername' => $phone,
-        ];
-        $authplugin = get_auth_plugin('otp');
-        $user = new stdClass();
-        $user->auth = 'otp';
-        $user->confirmed = 1;
-        $user->firstaccess = 0;
-        $user->timecreated = time();
-        $user->username = $phone;
-        $user->phone1 = $phone;
-        $user->firstname = '';
-        $user->lastname = '';
-        $user->password = '';
-        $user->mnethostid = 1;
-        $user->email = $phone . '@otp.com';
-
-        $authplugin->create_user($user);
-        return [
-            'phone' => $phone,
-            'username' => $phone,
-            'otpdatetime' => $currentdate,
-            'otp' => $otp
-        ];
-    }
+//    public static function new_user_handle($phone, $otp)
+//    {
+//        global $DB;
+//        $currentdate = date("Y-m-d H:i:s");
+//        //Write a function to send otp to the user
+////        $data = $DB->execute("INSERT INTO {auth_otp_linked_login} (phone,confirmtoken,username,otpcreated,fullphone) VALUES ('" . $phone . "'," . $otp . ",'" . $phone . "','" . $currentdate . "','" . $phone . "')");
+//
+//        $data = new stdClass();
+//        $data->phone = $phone;
+//        $data->confirmtoken = $otp;
+//        $data->username =  $phone;
+//        $data->otpcreated =  $currentdate;
+//        $data->fullphone =  $phone;
+//        $data->countrycode =  null;
+//
+//        $DB->insert_record('auth_otp_linked_login', $data);
+//
+//        $_SESSION['auth_otp']['credentials'] = [
+//            'otp' => $otp,
+//            'otpdatetime' => $currentdate,
+//            'username' => $phone,
+//            'realusername' => $phone,
+//        ];
+//        $authplugin = get_auth_plugin('otp');
+//        $user = new stdClass();
+//        $user->auth = 'otp';
+//        $user->confirmed = 1;
+//        $user->firstaccess = 0;
+//        $user->timecreated = time();
+//        $user->username = $phone;
+//        $user->phone1 = $phone;
+//        $user->firstname = '';
+//        $user->lastname = '';
+//        $user->password = '';
+//        $user->mnethostid = 1;
+//        $user->email = $phone . '@otp.com';
+//
+//        $authplugin->create_user($user);
+//        return [
+//            'phone' => $phone,
+//            'username' => $phone,
+//            'otpdatetime' => $currentdate,
+//            'otp' => $otp
+//        ];
+//    }
 
     /**
      * Update Old user otp token

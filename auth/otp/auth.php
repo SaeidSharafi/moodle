@@ -116,23 +116,11 @@ class auth_plugin_otp extends auth_plugin_base {
                 if ($data) {
                     $rec = $DB->get_record('user', array('username' => $username));
                     if (!$rec) {
-                        $user = new stdClass();
-                        $user->auth = $this->authtype;
-                        $user->confirmed = 1;
-                        $user->firstaccess = 0;
-                        $user->timecreated = time();
-                        $user->username = $username;
-                        $user->phone1 = $username;
-                        $user->firstname = '';
-                        $user->lastname = '';
-                        $user->password = '';
-                        $user->mnethostid = 1;
-                        $user->email = '';
-                        $this->create_user($user);
+                        return false;
                     }
 
                     unset($_SESSION['auth_otp']['credentials']);
-                    $this->reset_otp($rec ? $rec->phone1 : $username);
+                    //$this->reset_otp($rec ? $rec->phone1 : $username);
                     return true;
                 } else {                    // Otp mismatch.
                     isset($_SESSION['login_failed_count']) ?
@@ -210,23 +198,28 @@ class auth_plugin_otp extends auth_plugin_base {
      * @throws dml_exception
      * @throws moodle_exception
      */
-    public function create_user($user) {
-        global $CFG, $DB;
-        require_once($CFG->dirroot . '/user/profile/lib.php');
-        require_once($CFG->dirroot . '/user/lib.php');
-        require_once($CFG->dirroot . '/user/editlib.php');
+    //public function create_user($user) {
+    //    global $CFG, $DB;
+    //    require_once($CFG->dirroot . '/user/profile/lib.php');
+    //    require_once($CFG->dirroot . '/user/lib.php');
+    //    require_once($CFG->dirroot . '/user/editlib.php');
+    //
+    //    if (empty($user->calendartype)) {
+    //        $user->calendartype = $CFG->calendartype;
+    //    }
+    //
+    //    $user->id = user_create_user($user, false, false);
+    //    $user = signup_setup_new_user($user);
+    //    $user->auth = 'otp';
+    //    user_update_user($user, false, false);
+    //
+    //    // Trigger event.
+    //    \core\event\user_created::create_from_userid($user->id)->trigger();
+    //    $DB->set_field("user", "confirmed", 1, array("id" => $user->id));
+    //}
 
-        if (empty($user->calendartype)) {
-            $user->calendartype = $CFG->calendartype;
-        }
-
-        $user->id = user_create_user($user, false, false);
-        $user = signup_setup_new_user($user);
-        $user->auth = 'otp';
-        user_update_user($user, false, false);
-
-        // Trigger event.
-        \core\event\user_created::create_from_userid($user->id)->trigger();
-        $DB->set_field("user", "confirmed", 1, array("id" => $user->id));
+    public function can_change_password()
+    {
+        return false;
     }
 }

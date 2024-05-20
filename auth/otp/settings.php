@@ -46,21 +46,25 @@ if ($ADMIN->fulltree) {
 
 
 
-    $settings->add(new class(
-        'auth_otp/minrequestperiod',
-        get_string('minrequestperiod', 'auth_otp'),
-        get_string('minrequestperiod_help', 'auth_otp')
-    ) extends admin_setting_configtext {
-        public function __construct($name, $visiblename, $description) {
-            $readers = get_log_manager()->get_readers('\core\log\sql_reader');
-            $logreader = reset($readers);
-            parent::__construct($name, $visiblename, $description, $logreader ? 300 : 0, PARAM_INT);
-            if (!$logreader && !empty($this->get_setting())) {
-                $this->description .= ' ' . get_string('logstorerequired', 'auth_otp',
-                        (string)new moodle_url('/admin/settings.php', ['section' => 'managelogging'])
-                    );
-            }
-        }
-    });
+    //$settings->add(new class(
+    //    'auth_otp/minrequestperiod',
+    //    get_string('minrequestperiod', 'auth_otp'),
+    //    get_string('minrequestperiod_help', 'auth_otp')
+    //) extends admin_setting_configtext {
+    //    public function __construct($name, $visiblename, $description) {
+    //        $readers = get_log_manager()->get_readers('\core\log\sql_reader');
+    //        $logreader = reset($readers);
+    //        parent::__construct($name, $visiblename, $description, $logreader ? 300 : 0, PARAM_INT);
+    //        if (!$logreader && !empty($this->get_setting())) {
+    //            $this->description .= ' ' . get_string('logstorerequired', 'auth_otp',
+    //                    (string)new moodle_url('/admin/settings.php', ['section' => 'managelogging'])
+    //                );
+    //        }
+    //    }
+    //});
+
+    $authplugin = get_auth_plugin('otp');
+    display_auth_lock_options($settings, $authplugin->authtype,
+        $authplugin->userfields, get_string('auth_fieldlocks_help', 'auth'), false, false);
 
 }
