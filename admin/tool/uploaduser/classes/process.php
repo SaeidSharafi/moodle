@@ -237,6 +237,15 @@ class process {
     }
 
     /**
+     * Setting to allow matching user accounts on phone
+     * @return bool
+     */
+    protected function get_match_on_phone(): bool {
+        $optype = $this->get_operation_type();
+        return (!empty($this->formdata->uumatchphone) && $optype != UU_USER_ADDNEW && $optype != UU_USER_ADDINC);
+    }
+
+    /**
      * Setting to allow deletes
      * @return bool
      */
@@ -422,7 +431,7 @@ class process {
         }
 
         // Make sure we really have username.
-        if (empty($user->username) && !$this->get_match_on_email()) {
+        if (empty($user->username) && (!$this->get_match_on_email() || !$this->get_match_on_phone())) {
             $this->upt->track('status', get_string('missingfield', 'error', 'username'), 'error');
             $this->upt->track('username', get_string('error'), 'error');
             $this->userserrors++;
@@ -441,6 +450,10 @@ class process {
 
         if (empty($user->mnethostid)) {
             $user->mnethostid = $CFG->mnet_localhost_id;
+        }
+
+        if (isset($user->phone1) && !str_starts_with($user->phone1,'0')) {
+            $user->phone1 = '0'.$user->phone1;
         }
 
         return $user;
@@ -462,6 +475,9 @@ class process {
         }
 
         $matchparam = $this->get_match_on_email() ? ['email' => $user->email] : ['username' => $user->username];
+        if ($this->get_match_on_phone()){
+            $matchparam = ['phone1' => $user->phone1];
+        }
         if ($existinguser = $DB->get_records('user', $matchparam + ['mnethostid' => $user->mnethostid])) {
             if (is_array($existinguser) && count($existinguser) !== 1) {
                 $this->upt->track('status', get_string('duplicateemail', 'tool_uploaduser', $user->email), 'warning');
@@ -599,7 +615,7 @@ class process {
         // We do not need the deleted flag anymore.
         unset($user->deleted);
 
-        $matchonemailallowrename = $this->get_match_on_email() && $this->get_allow_renames();
+        $matchonemailallowrename = ($this->get_match_on_email() && $this->get_match_on_phone()) && $this->get_allow_renames();
         if ($matchonemailallowrename && $user->username && ($user->username !== $existinguser->username)) {
             $user->oldusername = $existinguser->username;
             $existinguser = false;
@@ -781,7 +797,18 @@ class process {
                                 $this->upt->track('email', get_string('invalidemail'), 'warning');
                             }
                         }
+                        if ($column === 'phone1') {
+                            $select = $DB->sql_like('phone1', ':phone', false, true, false, '|');
+                            $params = array('phone' => $DB->sql_like_escape($user->phone1, '|'));
+                            if ($DB->record_exists_select('user', $select , $params)) {
 
+                                $this->upt->track('phone1', get_string('userephoneuplicate', 'theme_moove'), 'warning');
+
+                            }
+                            if (!validate_phone($user->phone1)) {
+                                $this->upt->track('phone1', get_string('invalidphone', 'theme_moove'), 'warning');
+                            }
+                        }
                         if ($column === 'lang') {
                             if (empty($user->lang)) {
                                 // Do not change to not-set value.
@@ -962,6 +989,19 @@ class process {
             }
             if (!validate_email($user->email)) {
                 $this->upt->track('email', get_string('invalidemail'), 'warning');
+            }
+
+
+            if (empty($user->phone1)) {
+                $this->upt->track('phone1', get_string('invalidephone', 'theme_moove'), 'error');
+                $this->upt->track('status', get_string('usernotaddederror', 'error'), 'error');
+                $this->userserrors++;
+                return;
+
+            } else if ($DB->record_exists('user', ['phone1' => $user->phone1])) {
+                $this->upt->track('phone1', get_string('userphoneduplicate', 'theme_moove'), 'error');
+                $this->upt->track('status', get_string('usernotaddederror', 'error'), 'error');
+                return;
             }
 
             if (empty($user->lang)) {

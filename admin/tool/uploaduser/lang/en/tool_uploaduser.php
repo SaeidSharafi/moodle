@@ -53,6 +53,7 @@ $string['invaliduserdata'] = 'Invalid data detected for user {$a} and it has bee
 $string['invalidtheme'] = 'Theme "{$a}" is not installed and will be ignored.';
 $string['linex'] = 'Line {$a}';
 $string['matchemail'] = 'Match on email address';
+$string['matchphone'] = 'Match on phone number';
 $string['nochanges'] = 'No changes';
 $string['notheme'] = 'No theme is defined for this user.';
 $string['pluginname'] = 'User upload';

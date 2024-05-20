@@ -207,4 +207,6 @@ $string['navid_front'] = '<p>
 
 
 //User Edit form
-$string['phoneexists'] = 'شماره همراه وارد شده قبلا ثبت شده است';
+$string['phoneexists'] = 'شماره تلفن همراه وارد شده قبلا ثبت شده است';
+$string['invalidemail'] = 'شماره تلفن همراه معتبر نمی‌باشد';
+$string['userphoneduplicate'] = 'شماره تلفن همراه وارد شده قبلا ثبت شده است';

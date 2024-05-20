@@ -207,3 +207,5 @@ $string['navid_front'] = '
 
 //User Edit form
 $string['phoneexists'] = 'This Phone number is already registered.';
+$string['invalidemail'] = 'Invalid phone number';
+$string['userphoneduplicate'] = 'Duplicate phone';

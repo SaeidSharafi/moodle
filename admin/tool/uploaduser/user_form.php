@@ -144,6 +144,12 @@ class admin_uploaduser_form2 extends moodleform {
         $mform->hideIf('uumatchemail', 'uutype', 'eq', UU_USER_ADDNEW);
         $mform->hideIf('uumatchemail', 'uutype', 'eq', UU_USER_ADDINC);
 
+        $mform->addElement('selectyesno', 'uumatchphone', get_string('matchphone', 'tool_uploaduser'));
+        $mform->setDefault('uumatchphone', 0);
+        $mform->hideIf('uumatchphone', 'uutype', 'eq', UU_USER_ADDNEW);
+        $mform->hideIf('uumatchphone', 'uutype', 'eq', UU_USER_ADDINC);
+
+
         $mform->addElement('selectyesno', 'uuallowrenames', get_string('allowrenames', 'tool_uploaduser'));
         $mform->setDefault('uuallowrenames', 0);
         $mform->hideIf('uuallowrenames', 'uutype', 'eq', UU_USER_ADDNEW);

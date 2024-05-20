@@ -130,11 +130,27 @@ class preview extends \html_table {
                 }
             }
 
+            if (isset($rowcols['phone1'])) {
+                if (!validate_phone($rowcols['phone1'])) {
+                    $rowcols['status'][] = get_string('invalidphone', 'theme_moove');
+                }
+
+                $select = $DB->sql_like('phone1', ':phone', false, true, false, '|');
+                $params = array('phone' => $DB->sql_like_escape($rowcols['phone1'], '|'));
+                if ($DB->record_exists_select('user', $select , $params)) {
+                    $rowcols['status'][] = get_string('userphoneduplicate', 'theme_moove');
+                }
+            }
+
+
             if (isset($rowcols['theme'])) {
                 list($status, $message) = field_value_validators::validate_theme($rowcols['theme']);
                 if ($status !== 'normal' && !empty($message)) {
                     $rowcols['status'][] = $message;
                 }
+            }
+            if (isset($rowcols['phone1']) && !str_starts_with($rowcols['phone1'],'0')) {
+                $rowcols['phone1'] = '0'.$rowcols['phone1'];
             }
 
             // Check if rowcols have custom profile field with correct data and update error state.

@@ -78,6 +78,7 @@ class uu_progress_tracker {
             'firstname' => get_string('firstname'),
             'lastname' => get_string('lastname'),
             'email' => get_string('email'),
+            'phone1' => get_string('phone1'),
             'password' => get_string('password'),
             'auth' => get_string('authentication'),
             'enrolments' => get_string('enrolments', 'enrol'),
@@ -129,6 +130,10 @@ class uu_progress_tracker {
             }
             echo '<td class="cell c'.$ci++.'">';
             if (!empty($field)) {
+
+                if ($key === 'phone1' && !str_starts_with($field['normal'],'0')){
+                    $field['normal'] = '0'.$field['normal'];
+                }
                 echo implode('<br />', $field);
             } else {
                 echo '&nbsp;';
@@ -528,4 +533,15 @@ function uu_check_custom_profile_data(&$data, array &$profilefieldvalues = []) {
         }
     }
     return $noerror;
+}
+
+
+
+function validate_phone($phone)
+{
+    if (preg_match("/^0?9[0-1-2-3-9]\d{8}$/", $phone)) {
+        return true;
+    }
+    return false;
+
 }
