@@ -188,7 +188,7 @@ class SyncDB
         if ($id) {
             $query = "UPDATE {{$table}} SET ";
             $query .= "enrolldate = :today, is_updated = 1";
-            $query .= "WHERE id = $id";
+            $query .= " WHERE id = $id";
             $update_msg = "بروزرسانی";
             $parameters = [
                 'today'   => $today,
@@ -293,13 +293,13 @@ class SyncDB
         try {
             $value = $DB->get_record(Config::$enrol_table, [
                 'username' => $enroll->user_id,
-                'term'     => $idnumber,
-                'courseid' => $enroll->center_id,
-                'center'   => $enroll->term,
+                'courseid' => $idnumber,
+                'term'     => $enroll->term,
+                'center'   => $enroll->center_id,
             ]);
 
             if ($value) {
-                return $value;
+                return $value->id;
             }
         } catch (Exception $e) {
            throw $e;

@@ -67,11 +67,7 @@ function init()
         //header('Content-Type: application/json');
         echo json_encode(array('success' => 0, 'msg' => $msg), JSON_UNESCAPED_UNICODE);
     } else {
-        $count = 0;
         foreach ($xml->row as $row) {
-            if ($count > 20) {
-                continue;
-            }
             $item['user_id'] = trim((string)$row['C1']);
             $item['crs_id'] = trim((string)$row['C16']);
             $item['group'] = trim((string)$row['18']);
@@ -85,7 +81,6 @@ function init()
 
             $item['term'] = $term;
             array_push($enrollments, $item);
-            $count++;
         }
     }
 

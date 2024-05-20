@@ -19,6 +19,7 @@ if (!has_capability('moodle/site:config', $systemcontext)) {
             font-size: 14px;
             border-bottom: 1px solid #ccc;
             padding: 5pt 0;
+            direction: rtl;
         }
 
         .info:nth-child(odd) {
@@ -136,9 +137,9 @@ if (!has_capability('moodle/site:config', $systemcontext)) {
 
         </div>
         <hr/>
-        <div class="form-group">
+        <div class="form-group d-none">
             <label for="key">کد امنیتی</label>
-            <input class="form-control" id="key" name="key" placeholder="ex: t8fpLwWw"/>
+            <input class="form-control" id="key" name="key" placeholder="ex: t8fpLwWw" value="x"/>
         </div>
 
         <div class="form-group">

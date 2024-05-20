@@ -71,7 +71,7 @@ function init()
             $item['fname'] = trim((string)$row['C2']);
             $item['lname'] = trim((string)$row['C3']);
             $item['gender'] = trim((string)$row['C4']);
-            $item['meli'] = trim((string)$row['C5']);
+            $item['meli'] = trim((string)$row['C5']) ?: trim((string)$row['C12']);
             $item['college'] = trim((string)$row['C6']);
             $item['degree'] = trim((string)$row['C7']);
             $item['mobile'] = trim((string)$row['C8']);
