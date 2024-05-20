@@ -313,6 +313,22 @@ class user_editadvanced_form extends moodleform {
             }
         }
 
+        // Validate phone.
+        //if ($usernew->phone1 !== $user->phone1) {
+            // Make a case-insensitive query for the given email address.
+            $select = $DB->sql_equal('phone1', ':phone', false) . ' AND mnethostid = :mnethostid AND id <> :userid';
+            $params = array(
+                'phone' => $usernew->phone1,
+                'mnethostid' => $CFG->mnet_localhost_id,
+                'userid' => $usernew->id
+            );
+            // If there are other user(s) that already have the same email, show an error.
+            if ($DB->record_exists_select('user', $select, $params)) {
+                $err['phone1'] = get_string('phoneexists','theme_moove');
+            }
+
+
+        //}
         // Next the customisable profile fields.
         $err += profile_validation($usernew, $files);
 

@@ -203,3 +203,7 @@ $string['navid_front'] = '
          enable student collaboration and discussion, manage assignments and quizzes, and assign grades.
           New feature will be add to <span class="text-danger">NAVID</span>  according to project timetable.</p>
 ';
+
+
+//User Edit form
+$string['phoneexists'] = 'This Phone number is already registered.';

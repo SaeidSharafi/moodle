@@ -280,6 +280,12 @@ function useredit_shared_definition(&$mform, $editoroptions, $filemanageroptions
         $mform->setType($addname, PARAM_NOTAGS);
     }
 
+
+    $mform->addElement('text', 'phone1', get_string('phone1'), 'maxlength="20" size="25"');
+    $mform->setType('phone1', core_user::get_property_type('phone1'));
+    $mform->addRule('phone1',$strrequired,'required', null, 'client');
+    $mform->setForceLtr('phone1');
+
     // Do not show email field if change confirmation is pending.
     if ($user->id > 0 and !empty($CFG->emailchangeconfirmation) and !empty($user->preference_newemail)) {
         $notice = get_string('emailchangepending', 'auth', $user);
@@ -406,9 +412,6 @@ function useredit_shared_definition(&$mform, $editoroptions, $filemanageroptions
     $mform->addElement('text', 'department', get_string('department'), 'maxlength="255" size="25"');
     $mform->setType('department', core_user::get_property_type('department'));
 
-    $mform->addElement('text', 'phone1', get_string('phone1'), 'maxlength="20" size="25"');
-    $mform->setType('phone1', core_user::get_property_type('phone1'));
-    $mform->setForceLtr('phone1');
 
     $mform->addElement('text', 'phone2', get_string('phone2'), 'maxlength="20" size="25"');
     $mform->setType('phone2', core_user::get_property_type('phone2'));
