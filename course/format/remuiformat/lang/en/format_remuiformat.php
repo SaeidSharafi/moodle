@@ -58,7 +58,7 @@ $string['hidegeneralsectionwhenempty_help'] = 'When general section does not hav
 // Section.
 $string['sectionname'] = 'Section';
 $string['sectionnamecaps'] = 'SECTION';
-$string['section0name'] = 'Introduction';
+$string['section0name'] = 'Introduction and Curriculum';
 $string['section1name'] = 'Course Resources';
 $string['section2name'] = 'Assignment';
 $string['section3name'] = 'Class';

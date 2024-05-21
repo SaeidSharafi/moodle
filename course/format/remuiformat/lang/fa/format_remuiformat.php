@@ -59,7 +59,7 @@ $string['hidegeneralsectionwhenempty_help'] = 'زمانی که بخش عمومی
 // بخش.
 $string['sectionname'] = 'بخش';
 $string['sectionnamecaps'] = 'بخش';
-$string['section0name'] = 'معرفی';
+$string['section0name'] = 'معرفی و برنامه آموزشی';
 $string['section1name'] = 'محتوا و منابع درس';
 $string['section2name'] = 'تکالیف';
 $string['section3name'] = 'کلاس های آنلاین';
