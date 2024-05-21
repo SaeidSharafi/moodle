@@ -120,7 +120,7 @@ class auth_plugin_otp extends auth_plugin_base {
                     }
 
                     unset($_SESSION['auth_otp']['credentials']);
-                    //$this->reset_otp($rec ? $rec->phone1 : $username);
+                    $this->reset_otp($rec ? $rec->phone1 : $username);
                     return true;
                 } else {                    // Otp mismatch.
                     isset($_SESSION['login_failed_count']) ?
