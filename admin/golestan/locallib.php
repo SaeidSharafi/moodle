@@ -8,7 +8,10 @@
 
 require_once "settings.php";
 require_once $CFG->dirroot.'/course/lib.php';
-
+require_once($CFG->dirroot . '/course/modlib.php');
+error_reporting(E_ERROR);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
 class SyncDB
 {
     public $_conn;
@@ -137,11 +140,12 @@ class SyncDB
         $lesson->fullname = substr($name, 0, 250);
         $lesson->shortname = $shortname;
         $lesson->category = $cat_id;
-        $result = $this->check_lesson($lesson);
-        if ($result instanceof Exception) {
+        try {
+            $result = $this->check_lesson($lesson);
+        }catch (\Exception $e){
             return "<span class='text-danger'>"." خطا در ثبت درس به شماره ".$row->id.
                 "</span><br> <span class='text-danger text-left'>ERROR: "
-                .$result->getMessage()."</span>";
+                .$e->getMessage()."</span>";
         }
 
         if ($result == SyncDB::SAVE) {
@@ -191,7 +195,7 @@ class SyncDB
             $query .= " WHERE id = $id";
             $update_msg = "بروزرسانی";
             $parameters = [
-                'today'   => $today,
+                'today' => $today,
             ];
         } else {
             $query = "INSERT INTO {{$table}} ";
@@ -302,7 +306,7 @@ class SyncDB
                 return $value->id;
             }
         } catch (Exception $e) {
-           throw $e;
+            throw $e;
         }
 
         return null;
@@ -373,13 +377,12 @@ class SyncDB
 
         $idnumbers = [];
         if ($row->action == 'courses') {
-            if ($row->courses){
-                foreach ($row->courses as $course){
+            if ($row->courses) {
+                foreach ($row->courses as $course) {
                     $idnumbers[] = $course->center_id.$course->id.$course->group.$course->term;
                 }
             }
         }
-
 
         $center = is_array($row->center) ? "" : $row->center;
         if (is_array($row->center)) {
@@ -401,8 +404,8 @@ class SyncDB
 
         try {
             $query = "DELETE FROM {{$table}} WHERE is_updated = 0 AND roleid = ? AND term = ? AND center = ? ";
-            if ($idnumbers){
-                $query .= " AND courseid IN (" . rtrim(str_repeat("?,",count($idnumbers)),',') . ")";
+            if ($idnumbers) {
+                $query .= " AND courseid IN (".rtrim(str_repeat("?,", count($idnumbers)), ',').")";
             }
             $parameters = [
                 $role,
@@ -413,7 +416,7 @@ class SyncDB
                 $query .= " AND college = ?";
             }
             if ($row->action == 'courses' && $idnumbers) {
-                $parameters = array_merge($parameters,$idnumbers);
+                $parameters = array_merge($parameters, $idnumbers);
             }
 
             if (is_array($row->center)) {
@@ -427,13 +430,7 @@ class SyncDB
             $res = $DB->execute($query, $parameters);
 
             $query = "UPDATE {{$table}} SET is_updated = 0 WHERE roleid = :role AND term = :term AND center = :center ";
-            //if (is_array($row->center) && $row->action == 'courses') {
-            //    $query .= " AND college = :college";
-            //}
-            //if ($idnumbers){
-            //    $idnumbers = implode(",",$idnumbers);
-            //    $query .= " AND courseid IN (" . $idnumbers . ")";
-            //}
+
             $parameters = [
                 'role'   => $role,
                 'term'   => $term,
@@ -483,25 +480,105 @@ class SyncDB
     function check_lesson($lesson)
     {
         global $DB;
-
+        $createdCourse = null;
         try {
             $course = $DB->get_record('course', array('idnumber' => $lesson->idnumber));
 
             if (!$course) {
 
-                create_course($lesson);
+                $createdCourse = create_course($lesson);
+                $mod = $this->createAdobeConnect($createdCourse);
                 $msg = SyncDB::SAVE;
             } else {
-
+                $sql = 'SELECT * FROM {course_modules} cm JOIN {modules} md ON (md.id = cm.module) WHERE cm.course = ? AND md.name = ?';
+                $hasModule = $DB->record_exists_sql($sql,[$course->id,'adobeconnect']);
+                if (!$hasModule){
+                    $mod = $this->createAdobeConnect($course);
+                }
                 $lesson->id = $course->id;
                 update_course($lesson);
                 $msg = SyncDB::EDIT;
             }
             return $msg;
         } catch (Exception $e) {
-            return $e;
+            if ($createdCourse){
+                delete_course($createdCourse->id);
+            }
+            throw $e;
         }
 
     }
 
+    function createAdobeConnect($course)
+    {
+        $data = (object)[
+            "name"                       => $course->fullname,
+            "intro"                      => '',
+            "introformat"                => 0,
+            "meeturl"                    => '',
+            "meetingpublic"              => '2',
+            "templatescoid"              => '11033',
+            "tempenable"                 => 0,
+            "userid"                     => 0,
+            "starttime"                  => time(),
+            "endtime"                    => time() + 7200,
+            "showoffline"                => '0',
+            "visible"                    => '1',
+            "visibleoncoursepage"        => '1',
+            "cmidnumber"                 => '0',
+            "lang"                       => '',
+            "groupmode"                  => '0',
+            "groupingid"                 => '0',
+            "completionunlocked"         => '1',
+            "completion"                 => '1',
+            "completionexpected"         => 0,
+            "tags"                       => [],
+            "course"                     => $course->id,
+            "coursemodule"               => 0,
+            "section"                    => 0,
+            "module"                     => 1,
+            "modulename"                 => 'adobeconnect',
+            "instance"                   => 0,
+            "add"                        => 'adobeconnect',
+            "update"                     => 0,
+        ];
+        $modInfo = add_moduleinfo($data,$course);
+        return $modInfo;
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

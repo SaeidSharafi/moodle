@@ -115,7 +115,7 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
         }
         msg = addText(text, true);
     }
-    board.empty();
+    // board.empty();
     board.append(msg);
     console.log(board);
     board.scrollTop(board[0].scrollHeight);
