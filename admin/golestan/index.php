@@ -52,6 +52,7 @@ if (!has_capability('moodle/site:config', $systemcontext)) {
 <body class="h-100">
 <div class="d-flex h-100 align-items-center">
     <div class="jumbotron m-auto w-50">
+        <form class="w-100">
         <div class="form-group">
             <label for="term">کد ترم</label>
             <input class="form-control" id="term" name="term" value="4022"/>
@@ -94,6 +95,9 @@ if (!has_capability('moodle/site:config', $systemcontext)) {
         </button>
 
         <div class="collapse" id="collapseExample">
+            <p>
+                این بخش تنها برای وارد کردن دروس میباشد.
+            </p>
             <div class="form-group">
                 <label for="term">کد مقطع</label>
                 <input class="form-control" id="crs_degree" name="crs_degree" placeholder="1-10"/>
@@ -137,21 +141,22 @@ if (!has_capability('moodle/site:config', $systemcontext)) {
 
         </div>
         <hr/>
-        <div class="form-group d-none">
-            <label for="key">کد امنیتی</label>
-            <input class="form-control" id="key" name="key" placeholder="ex: t8fpLwWw" value="x"/>
+        <div class="form-group">
+            <label for="key">رمز عبور</label>
+            <input class="form-control" type="password" id="key" name="key" autocomplete="on"/>
         </div>
 
         <div class="form-group">
-            <a class="mb-2 btn bg-info RegisterData text-white" data-action="enroll" data-url="enroll_1171.php">ثبت نام
-                دانشپذریران</a>
-            <a class="mb-2 btn bg-info RegisterData text-white" data-action="courses" data-url="courses_1248.php">ثبت دوره ها</a>
-            <a class="mb-2 btn bg-success RegisterData text-white" data-action="teachers" data-url="teachers_1131.php">ثبت اطلاعات
+            <a class="mb-2 btn bg-info RegisterData text-white" type="submit" data-action="enroll" data-url="enroll_1171.php">ثبت نام
+                دانشپذیران</a>
+            <a class="mb-2 btn bg-info RegisterData text-white" type="submit" data-action="courses" data-url="courses_1248.php">ثبت دوره ها</a>
+            <a class="mb-2 btn bg-success RegisterData text-white" type="submit" data-action="teachers" data-url="teachers_1131.php">ثبت اطلاعات
                 اساتید</a>
-            <a class="mb-2 btn bg-success RegisterData text-white" data-action="students" data-url="students_1132.php">ثبت اطلاعات
+            <a class="mb-2 btn bg-success RegisterData text-white" type="submit" data-action="students" data-url="students_1132.php">ثبت اطلاعات
                 دانشپذیران</a>
 
         </div>
+        </form>
         <div class="modal fade" id="ex-modal" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">

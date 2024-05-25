@@ -9,7 +9,8 @@ $(document).ready(function () {
     console.log("ready!");
     board = $("#export");
     sec = $("#key");
-    $(".RegisterData").on("click", function () {
+    $(".RegisterData").on("click", function (e) {
+        e.preventDefault();
         looper = $.Deferred().resolve();
         looperItems = new $.Deferred().resolve();
         $('.close-btn').hide();
@@ -53,9 +54,20 @@ $(document).ready(function () {
             console.log('error');
             return;
         }
-        // if (action == "students") {
-        //     items = [1];
-        // }
+        if (security) {
+            var cred = new PasswordCredential({
+                id: 'golestan',
+                password: security
+            });
+
+            navigator.credentials.store(cred)
+                .then(function () {
+                    console.log('Credentials stored!');
+                })
+                .catch(function (err) {
+                    console.log('Error storing credentials', err);
+                });
+        }
 
         let result = [];
 
@@ -101,6 +113,10 @@ var seuqunce = function (key, items, url, action, params, unenroll = false) {
         board.scrollTop(board[0].scrollHeight);
         $('.close-btn').show();
         console.log('Done!');
+    }).catch(function (){
+        board.scrollTop(board[0].scrollHeight);
+        $('.close-btn').show();
+        console.log('Error!');
     });
 };
 var ajax_request = function (key, item, url, action, params, unenroll = false) {
@@ -134,7 +150,6 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
                 } else {
                     board.append(addText("Empty result"));
                 }
-
                 return;
             }
             console.log(data);
@@ -219,7 +234,7 @@ var ajax_request_items = function (key, item, action, params,total = 0, index =0
             }
             // do something here
             // console.log(data);
-            board.append(addText(total+ " از " + index + ":" + data.msg));
+            board.append(addText('<span style="direction: rtl">' + (index+1) + " از " + total + '</span>' + ":" + data.msg));
             board.scrollTop(board[0].scrollHeight);
             // mark the ajax call as completed
             deferred2.resolve(data);

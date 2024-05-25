@@ -10,29 +10,14 @@ require_once "settings.php";
 require_once $CFG->dirroot.'/course/lib.php';
 require_once($CFG->dirroot . '/course/modlib.php');
 error_reporting(E_ERROR);
-ini_set('display_errors', TRUE);
-ini_set('display_startup_errors', TRUE);
+ini_set('display_errors', false);
+ini_set('display_startup_errors', false);
 class SyncDB
 {
     public $_conn;
 
     const SAVE = 1;
     const EDIT = 2;
-
-    private function connect()
-    {
-        $connection = "mysql:host=".Config::$db_server.";dbname=".Config::$db_name.";charset=utf8";
-        if (Config::$mssql) {
-            $connection = "sqlsrv:Server=".Config::$db_server.";Database=".Config::$db_name;
-        }
-
-        try {
-            $this->_conn = new PDO($connection, Config::$db_user, Config::$db_pass);
-            return true;
-        } catch (Exception $e) {
-            return ("خطا در اتصال به دیتابیس:<br> ".$e->getMessage());
-        }
-    }
 
     public function insertUsers($students, $update = false)
     {
@@ -41,10 +26,10 @@ class SyncDB
         $table = Config::$user_table;
         $row = json_decode(json_encode($students, JSON_UNESCAPED_UNICODE), false);
         $user_id = $this->selectUser($row->id);
-
         if ($row->meli) {
             $pass = $row->meli;
         } else {
+
             $pass = str_replace(['s','t'],'',$row->id);
         }
         $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
@@ -85,8 +70,9 @@ class SyncDB
             $pass = "<span class='text-danger'>$pass</span>";
             if ($update && $user_id) {
                 $operation = 'بروزرسانی';
-                $pass = "";
+                $pass = "عدم تغییر";
             }
+
             return "<span class='text-info'>".$row->fname." ".$row->lname."</span>".
                 " (<span class='text-success'>$row->id</span>) "." با موفقیت ".$operation." شد. "." - رمز عبور : ".
                 $pass;
@@ -119,15 +105,18 @@ class SyncDB
         $shortname = $row->id."_".$row->group."_".$row->center_id."_".$row->term;
         $idnumber = $row->center_id.$row->id.$row->group.$row->term;
         $cat_idnumber = $term.$row->center_id;
+        $mainCat = $this->check_category(
+            'دانشگاه بین‌المللی امام خمینی (ره)',
+            'main', 0);
         $parent_id = $this->check_category(
             $term,
-            $term, 0);
-        $cat_id_college = $this->check_category(
-            $row->center_name,
-            $cat_idnumber, $parent_id);
+            $term, $mainCat);
+        //$cat_id_college = $this->check_category(
+        //    $row->center_name,
+        //    $cat_idnumber, $parent_id);
         $cat_id = $this->check_category(
             $row->college_name,
-            $cat_idnumber.$row->college_id, $cat_id_college);
+            $cat_idnumber.$row->college_id, $parent_id);
         if ($cat_id instanceof Exception) {
             return "<span class='text-danger'>"." خطا در ثبت درس به شماره ".$row->id.
                 "</span><br> <span class='text-danger text-left'>ERROR: "
@@ -502,7 +491,7 @@ class SyncDB
             return $msg;
         } catch (Exception $e) {
             if ($createdCourse){
-                delete_course($createdCourse->id);
+                delete_course($createdCourse->id ,false);
             }
             throw $e;
         }
@@ -548,37 +537,3 @@ class SyncDB
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,11 +5,12 @@ include_once "settings.php";
 function init()
 {
     global $CFG;
-    if (!isset($_POST['key']) || $_POST['key'] != Config::$security_key){
-        echo json_encode(array('success' => 0,'msg' => "کد امنیتی نامعتبر"));
+
+    if (!isset($_POST['key'])) {
+        echo json_encode(array('success' => 0, 'msg' => "رمز عبور وارد نشده است"), JSON_UNESCAPED_UNICODE);
         return;
     }
-
+    $pass = $_POST['key'];
 
     if (!isset($_POST['action']) || !$_POST['action'] || !isset($_POST['params']) || !$_POST['params']) {
         echo json_encode(array('success' => 0,'msg' => 'اطلاعات وارد شده ناقص می باشد'));
@@ -49,9 +50,8 @@ function init()
     //$pri .= create_pri(Students_1132::PRI_TERM_UQID,Students_1132::PRI_TERM_ID,$term);
     $pri .= "</Root>";
 
-
     $StudentInfo =  $client->__soapCall( 'golInfo' ,
-        array(array('login' => $CFG->golestan_user, 'pass' => $CFG->golestan_pass,'sec'=>'AA0ECD9901','iFID'=>'1132','pub'=>$pub,'pri'=>$pri,'mor'=>'')));
+        array(array('login' => $CFG->golestan_user, 'pass' => $pass,'sec'=>'AA0ECD9901','iFID'=>'1132','pub'=>$pub,'pri'=>$pri,'mor'=>'')));
     $xml = '<?xml version="1.0" encoding="utf-8"?>';
     $xml .= $StudentInfo->golInfoResult->any;
 
@@ -65,6 +65,17 @@ function init()
         header('Content-Type: application/json');
         echo json_encode(array('success' => 0,'msg' =>$msg),JSON_UNESCAPED_UNICODE );
     } else {
+
+        if ($xml->e){
+            header('Content-Type: application/json');
+            $msg = '';
+            foreach ($xml->e as $error) {
+                $msg .= "\n" . $error;
+            }
+            echo json_encode(array('success' => 0,'msg' =>$msg),JSON_UNESCAPED_UNICODE );
+            return;
+        }
+
         foreach ($xml->p as $row) {
 
             $item['id'] = 's'.trim((string)$row['C1']);

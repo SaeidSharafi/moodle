@@ -1,13 +1,16 @@
 <?php
+set_time_limit(-1);
 include_once "utils.php";
 include_once "settings.php";
 function init()
 {
     global $CFG;
-    if (!isset($_POST['key']) || $_POST['key'] != Config::$security_key) {
-        echo json_encode(array('success' => 0, 'msg' => "کد امنیتی نامعتبر"), JSON_UNESCAPED_UNICODE);
+
+    if (!isset($_POST['key'])) {
+        echo json_encode(array('success' => 0, 'msg' => "رمز عبور وارد نشده است"), JSON_UNESCAPED_UNICODE);
         return;
     }
+    $pass = $_POST['key'];
     if (!isset($_POST['action']) || !$_POST['action'] || !isset($_POST['center']) ||
         !$_POST['center'] || !isset($_POST['params']) || !$_POST['params']) {
         echo json_encode(array('success' => 0, 'msg' => 'اطلاعات وارد شده ناقص می باشد'), JSON_UNESCAPED_UNICODE);
@@ -81,7 +84,7 @@ function init()
     $pri .= "</Root>";
 
     $XmlInfo = $client->__soapCall('golInfo',
-        array(array('login' => $CFG->golestan_user, 'pass' => $CFG->golestan_pass, 'sec' => 'F87E1A81B3', 'iFID' => '1248', 'pub' => $pub,
+        array(array('login' => $CFG->golestan_user, 'pass' => $pass, 'sec' => 'F87E1A81B3', 'iFID' => '1248', 'pub' => $pub,
                     'pri' => $pri, 'mor' => '')));
     $xml = '<?xml version="1.0" encoding="utf-8"?>';
     $xml .= $XmlInfo->golInfoResult->any;
@@ -96,15 +99,21 @@ function init()
         header('Content-Type: application/json');
         echo json_encode(array('success' => 0, 'msg' => $msg), JSON_UNESCAPED_UNICODE);
     } else {
-
+        if ($xml->e){
+            header('Content-Type: application/json');
+            $msg = '';
+            foreach ($xml->e as $error) {
+                $msg .= "\n" . $error;
+            }
+            echo json_encode(array('success' => 0,'msg' =>$msg),JSON_UNESCAPED_UNICODE );
+            return;
+        }
         foreach ($xml->row as $row) {
             //$item['crs'] = $row;
             $crs = explode("_", trim((string) $row['C9']));
             $crs_id = $crs[0];
             $crs_group = $crs[1];
-            //if ($crs_group == "00") {
-            //    continue;
-            //}
+
             $item['state_id'] = trim((string) $row['C1']);
             $item['state_name'] = trim((string) $row['C2']);
             $item['center_id'] = trim((string) $row['C3']);
