@@ -118,7 +118,7 @@ function init()
             $item['name'] = trim((string) $row['C10']);
             $item['group'] = $crs_group;
             $teacher = explode("-", trim((string) $row['C16']));
-            $item['teacher_id'] = trim($teacher[0]);
+            $item['teacher_id'] = 't'.trim($teacher[0]);
             $item['teacher_name'] = trim(str_replace("<BR>", "", $teacher[1]));
             $item['exam_date'] = strip_tags(trim((string) $row['C18']));
             $item['exam_hour'] = trim((string) $row['C19']);

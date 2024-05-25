@@ -67,7 +67,7 @@ function init()
     } else {
         foreach ($xml->p as $row) {
 
-            $item['id'] = trim((string)$row['C1']);
+            $item['id'] = 's'.trim((string)$row['C1']);
             $item['fname'] = trim((string)$row['C2']);
             $item['lname'] = trim((string)$row['C3']);
             $item['gender'] = trim((string)$row['C4']);

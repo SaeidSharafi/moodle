@@ -68,7 +68,7 @@ function init()
         echo json_encode(array('success' => 0, 'msg' => $msg), JSON_UNESCAPED_UNICODE);
     } else {
         foreach ($xml->row as $row) {
-            $item['user_id'] = trim((string)$row['C1']);
+            $item['user_id'] = 's'.trim((string)$row['C1']);
             $item['crs_id'] = trim((string)$row['C16']);
             $item['group'] = trim((string)$row['18']);
             if (is_array($center)){

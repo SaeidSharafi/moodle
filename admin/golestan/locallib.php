@@ -45,7 +45,7 @@ class SyncDB
         if ($row->meli) {
             $pass = $row->meli;
         } else {
-            $pass = $row->id."@pass";
+            $pass = str_replace(['s','t'],'',$row->id);
         }
         $hashed_pass = password_hash($pass, PASSWORD_DEFAULT);
         $time = time();

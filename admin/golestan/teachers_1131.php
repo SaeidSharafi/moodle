@@ -60,7 +60,7 @@ if ($xml === false) {
 
     foreach ($xml->p as $row) {
 
-        $item['id'] = trim((string)$row['C1']);
+        $item['id'] = 't'.trim((string)$row['C1']);
         $item['fname'] = trim((string)$row['C3']);
         $item['lname'] = trim((string)$row['C4']);
         $item['meli'] = is_numeric(trim((string)$row['C5'])) ? trim((string)$row['C5']) : $item['id'];
