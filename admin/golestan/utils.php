@@ -59,6 +59,8 @@ class Students_1132
     const CENTER = 3;
     const UNIVERSITY = 18;
     const FIELD = 22;
+
+    const GROUP = 20;
     const STATUS = 38;
 
 

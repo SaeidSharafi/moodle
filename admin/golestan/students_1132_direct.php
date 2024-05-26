@@ -1,28 +1,15 @@
 <?php
 set_time_limit(-1);
+ini_set("default_socket_timeout", 300);
 include_once "utils.php";
 include_once "settings.php";
 function init()
 {
     global $CFG;
 
-    if (!isset($_POST['key'])) {
-        echo json_encode(array('success' => 0, 'msg' => "رمز عبور وارد نشده است"), JSON_UNESCAPED_UNICODE);
-        return;
-    }
-    $pass = $_POST['key'];
 
-    if (!isset($_POST['action']) || !$_POST['action'] || !isset($_POST['params']) || !$_POST['params']) {
-        echo json_encode(array('success' => 0,'msg' => 'اطلاعات وارد شده ناقص می باشد'));
-        return;
-    }
-    if ($_POST['action'] != 'students') {
-        echo json_encode(array('success' => 0,'msg' => 'اطلاعات وارد شده ناقص می باشد'));
-        return;
-    }
-    $params = $_POST['params'];
-    $center = $_POST['center'] ? $_POST['center'] : [10,null];
-    $term = $params['term'] ? $params['term'] : '4002';
+    $center = [10,13,12];
+    $term = '4022';
     $client = new SoapClient("{$CFG->golestan_url}/GolestanService/gservice.asmx?WSDL");
 
     $pub = "<Root>";
@@ -38,9 +25,6 @@ function init()
         if (count($center) > 2 && $center[2]){
             $pub .= create_pub(Students_1132::FIELD,$center[2],$center[2]);
         }
-        if (count($center) > 3 && $center[3]){
-            $pub .= create_pub(Students_1132::GROUP,$center[3],$center[3]);
-        }
     }
     $pub .= "</Root>";
 
@@ -54,7 +38,7 @@ function init()
     $pri .= "</Root>";
 
     $StudentInfo =  $client->__soapCall( 'golInfo' ,
-        array(array('login' => $CFG->golestan_user, 'pass' => $pass,'sec'=>'AA0ECD9901','iFID'=>'1132','pub'=>$pub,'pri'=>$pri,'mor'=>'')));
+        array(array('login' => $CFG->golestan_user, 'pass' => 'pfaco$#2024','sec'=>'AA0ECD9901','iFID'=>'1132','pub'=>$pub,'pri'=>$pri,'mor'=>'')));
     $xml = '<?xml version="1.0" encoding="utf-8"?>';
     $xml .= $StudentInfo->golInfoResult->any;
 

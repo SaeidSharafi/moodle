@@ -75,7 +75,9 @@ $(document).ready(function () {
             university.forEach(group => {
                 if (action == "students") {
                     for (let i = from_field; i <= to_field; i++) {
-                        result.push([item, group, i]);
+                        for (let j = from_field; j <= to_field; j++) {
+                            result.push([item, group, i, j]);
+                        }
                     }
                 } else {
                     result.push([item, group]);
@@ -113,7 +115,7 @@ var seuqunce = function (key, items, url, action, params, unenroll = false) {
         board.scrollTop(board[0].scrollHeight);
         $('.close-btn').show();
         console.log('Done!');
-    }).catch(function (){
+    }).catch(function () {
         board.scrollTop(board[0].scrollHeight);
         $('.close-btn').show();
         console.log('Error!');
@@ -128,6 +130,9 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
         let text = 'در حال دریافت اطلاعات مرکز شماره ' + item[0] + ' کد دانشکده ' + item[1];
         if (item.length > 2) {
             text += ' کد رشته ' + item[2];
+        }
+        if (item.length > 3) {
+            text += ' کد گروه ' + item[3];
         }
         msg = addText(text, true);
     }
@@ -215,7 +220,7 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
 
     return deferred.promise();
 };
-var ajax_request_items = function (key, item, action, params,total = 0, index =0) {
+var ajax_request_items = function (key, item, action, params, total = 0, index = 0) {
     // console.log('Processing Items!');
     var deferred2 = $.Deferred();
     $.ajax({
@@ -234,7 +239,7 @@ var ajax_request_items = function (key, item, action, params,total = 0, index =0
             }
             // do something here
             // console.log(data);
-            board.append(addText('<span style="direction: rtl">' + (index+1) + " از " + total + '</span>' + ":" + data.msg));
+            board.append(addText('<span style="direction: rtl">' + (index + 1) + " از " + total + '</span>' + ":" + data.msg));
             board.scrollTop(board[0].scrollHeight);
             // mark the ajax call as completed
             deferred2.resolve(data);
