@@ -39,9 +39,9 @@ define(['jquery', 'core/ajax', 'core/notification'],
                     return;
                 }
                 // Do timeout stuff here
-                alert('Timeout for otp');
+                // alert('Timeout for otp');
                 $('#sendotp').removeAttr('disabled');
-                document.getElementById('timer').innerHTML = 'Resend Code';
+                // document.getElementById('timer').innerHTML = 'Resend Code';
             }
 
             return true;

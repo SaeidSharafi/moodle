@@ -92,36 +92,41 @@ $url = $CFG->wwwroot . "/login/index.php";
                         </div>
 
                         <div class="row justify-content-md-center">
-                            <div class="col-md-5">
+                            <div class="col-md-12">
                                 <form class="mt-3" action="<?php echo $url; ?>" method="post"
                                       id="login">
                                     <input id="anchor" type="hidden" name="anchor" value="">
                                     <script>document.getElementById('anchor').value = location.hash;</script>
                                     <input type="hidden" name="logintoken" value="<?php echo $token ?>">
                                     <div class="form-group">
-                                        <label for="username" class="sr-only">
-                                              <?php echo get_string('username', 'auth_otp')?>
-                                        </label>
-                                        <input type="tel" name="phone" id="phone" class="form-control"
-                                               value="<?php echo $usname; ?>" placeholder="phone" autocomplete="phone">
-                                        <input type="hidden" name="username" value="<?php echo $real_username; ?>"
-                                               placeholder="" required id="username">
+                                        <div class="d-flex align-items-center">
+                                            <label for="username" class="sr-only">
+                                                <?php echo get_string('username', 'auth_otp')?>
+                                            </label>
+                                            <input type="tel" name="phone" id="phone" class="form-control phone-otp"
+                                                   value="<?php echo $usname; ?>" placeholder=" <?php echo get_string('phone', 'auth_otp')?>" autocomplete="phone">
+                                            <input type="hidden" name="username" value="<?php echo $real_username; ?>"
+                                                   placeholder="" required id="username">
 
-                                        <div class="display:flex">
-                                            <button class="btn btn-primary mt-1
-                                                <?php if (!empty($usname)) {
-                                                    echo "d-none";
-                                                }
-                                                ?>" type="button" id="sendotp"
-                                            >
-                                                <?php echo get_string('send', 'auth_otp') ?>
-                                            </button>
+                                            <div class="display:flex">
+                                                <button class="btn btn-primary send-otp" type="button" id="sendotp"
+                                                    <?php if (!empty($usname)) {
+                                                        echo " disabled";
+                                                    }
+                                                    ?>
+                                                >
+                                                    <?php echo get_string('send', 'auth_otp') ?>
+                                                </button>
+                                            </div>
+                                        </div>
 
+                                        <div class="mt-1">
                                             <span id="timer"></span>
                                             <input type="hidden" name="timeout" id="otptimeoutval"
                                                    value="<?php echo $otptimeoutval; ?>">
                                         </div>
                                     </div>
+
                                     <div class="form-group
                                         <?php if (empty($usname)) {
                                             echo "d-none";
@@ -132,35 +137,13 @@ $url = $CFG->wwwroot . "/login/index.php";
                                         </label>
                                         <input type="text" required name="password" id="password" value=""
                                                class="form-control"
-                                               placeholder="OTP">
+                                               placeholder=" <?php  echo get_string('otp', 'auth_otp') ?>">
                                     </div>
 
                                     <button type="submit" class="btn btn-primary btn-block mt-3" id="loginbtn">
                                         <?php echo get_string('login', 'auth_otp') ?>
                                     </button>
                                 </form>
-                            </div>
-
-                            <div class="col-md-5">
-                                <div class="forgetpass mt-3">
-                                    <a href="<?php echo $CFG->wwwroot ?>/login/forgot_password.php">
-                                        <?php echo get_string('forgot', 'auth_otp') ?>
-                                    </a>
-                                </div>
-                                <div class="mt-3">
-                                    <?php echo get_string('cookie', 'auth_otp');?>
-                                    <a class="btn btn-link p-0" role="button" data-container="body"
-                                       data-toggle="popover"
-                                       data-placement="right"
-                                       data-content = "<div class=&quot;no-overflow&quot;>
-                                            <?php echo get_string('cookie_desc', 'auth_otp'); ?> </div>"
-                                       data-html="true" tabindex="0" data-trigger="focus">
-                                        <i class="icon fa fa-question-circle text-info fa-fw "
-                                           title=" <?php echo get_string('cookie_help', 'auth_otp') ?>"
-                                           aria-label="<?php echo get_string('cookie_help', 'auth_otp') ?> ">
-                                        </i>
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </div>

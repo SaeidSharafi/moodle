@@ -69,7 +69,7 @@ class auth_otp_external extends external_api
         $user = $DB->get_record_sql($sql,[$phone,$phone]);
         if ($user){
             $user->auth= 'otp';
-            $DB->execute('UPDATE {user} set auth = "otp" where id = :id', ['id' => $user->id]);
+            $DB->set_field('user','auth','otp', ['id' => $user->id]);
         }
         if (!$data){
             if ($user){
@@ -153,7 +153,7 @@ class auth_otp_external extends external_api
             'username' => '',
             'otp' => $otp,
             'timeout' => $currentdate,
-            'message' => 'User not found',
+            'message' => get_string('error_user_not_found','auth_otp'),
             'success' => 0,
             'warnings' => []
         ];
@@ -189,20 +189,27 @@ class auth_otp_external extends external_api
     public static function call_otp_funcction($phone) {
         $otp = self::generate_otp();
         // if set aws credentials
-        if (get_config('auth_otp', 'enablerangineh')
-            && get_config('auth_otp', 'rangineh_username')
-            && get_config('auth_otp', 'rangineh_password')
-            && get_config('auth_otp', 'rangineh_number')) {
-            $username = get_config('auth_otp', 'rangineh_username');
-            $password = get_config('auth_otp', 'rangineh_password');
-            $number = get_config('auth_otp', 'rangineh_number');
-            try {
-                $sms = \auth_otp\ranginehservices::sendOtp($otp, $phone, $username, $password, $number);
+        if (get_config('auth_otp', 'enablemagfa')
+            && get_config('auth_otp', 'magfa_username')
+            && get_config('auth_otp', 'magfa_password')
+            && get_config('auth_otp', 'magfa_number')
+        && get_config('auth_otp', 'magfa_templatetext')) {
+            $username = get_config('auth_otp', 'magfa_username');
+            $password = get_config('auth_otp', 'magfa_password');
+            $number = get_config('auth_otp', 'magfa_number');
+            $domain = get_config('auth_otp', 'magfa_domain');
+            $template = get_config('auth_otp', 'magfa_templatetext');
 
-                return ['status' => true, 'otp' => $otp, 'message' => get_string('otpsentsuccess', 'auth_otp')];
+            $message = preg_replace('/\{code\}/', $otp, $template);
+            try {
+                $status = \auth_otp\magfaservices::sendOtp($message, $phone, $username, $password, $number, $domain);
+                if($status === 0 || $status === '0') {
+                    return ['status' => true, 'otp' => $otp, 'message' => get_string('otpsentsuccess', 'auth_otp')];
+                }
+                self::remove_otp($phone);
+                return ['status' => false, 'otp' => $otp, 'message' => get_string('otpsenterror_number', 'auth_otp') . $status];
 
             } catch (Exception $e) {
-                print_r($e);
                 return ['status' => false, 'otp' => $otp, 'message' => get_string('otpsenterror', 'auth_otp')];
             }
 
@@ -321,6 +328,17 @@ class auth_otp_external extends external_api
         $minsInSecs = $diff->i * 60;
         $seconds = $daysInSecs + $hoursInSecs + $minsInSecs + $diff->s;
         return ['invert' => $diff->invert, 'seconds' => $seconds];
+    }
+
+    public static function remove_otp($phone) {
+        global $DB;
+        $data = $DB->get_record('auth_otp_linked_login', ['phone' => $phone], '*');
+        $data->confirmtoken = null;
+        $data->otpcreated = null;
+
+        $DB->update_record('auth_otp_linked_login', $data);
+
+        return true;
     }
 
 }

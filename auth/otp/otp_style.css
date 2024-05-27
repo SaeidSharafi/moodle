@@ -1524,3 +1524,16 @@
 .iti__flag.iti__np {
     background-color: transparent;
 }
+
+.phone-otp{
+    border-radius:0.5rem 0 0 .5rem;
+}
+body.dir-rtl .phone-otp{
+    border-radius:0 0.5rem .5rem 0;
+}
+.send-otp{
+    border-radius:0 0.5rem 0.5rem 0;
+}
+body.dir-rtl .send-otp{
+    border-radius:0.5rem 0  0 0.5rem;
+}

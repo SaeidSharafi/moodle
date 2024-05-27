@@ -21,9 +21,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @since      3.1
  */
-define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notification) {
+define(['jquery', 'core/ajax', 'core/notification', 'core/str'], function ($, Ajax, Notification, str) {
 
-    $("#sendotp").click(function () {
+    $("#sendotp").click(function (e) {
+        $('#sendotp').attr('disabled', 'disabled');
         var fullphone =  $('#phone').val();
         $('input[name="full_number"]').val(fullphone);
         var phone = $('#phone').val();
@@ -51,7 +52,6 @@ define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notifica
                         return;
                     }
                     // Do timeout stuff here
-                    alert('Timeout for otp');
                     $('#sendotp').removeAttr('disabled');
                     document.getElementById('timer').innerHTML = 'Resend Code';
                     $('#sendotp').removeClass('d-none');
@@ -83,26 +83,34 @@ define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notifica
                             });
 
                         } else {
+                            $('#sendotp').removeAttr('disabled');
                             Notification.addNotification({
-                                message: 'Something went wrong to send otp Please Try again !!',
+                                message: data.message,
                                 type: 'error'
                             });
                         }
                     }).fail(Notification.exception);
                 } catch (e) {
                     console.log(e);
+                    $('#sendotp').removeAttr('disabled');
                 }
             } else {
-                Notification.addNotification({
-                    message: 'insert Valid Phone number !!',
-                    type: 'error'
-                });
+                 $('#sendotp').removeAttr('disabled');
+                str.get_string('invalidphonenumber', 'auth_otp').done(function (s) {
+                    Notification.addNotification({
+                        message: s,
+                        type: 'error'
+                    });
+                }).fail(Notification.exception);
             }
         } else {
-            Notification.addNotification({
-                message: 'phone number can\'t be empty',
-                type: 'error'
-            });
+             $('#sendotp').removeAttr('disabled');
+            str.get_string('phonenumberempty', 'auth_otp').done(function (s) {
+                Notification.addNotification({
+                    message: s,
+                    type: 'error'
+                });
+            }).fail(Notification.exception);
 
         }
         return false;

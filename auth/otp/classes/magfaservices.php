@@ -36,13 +36,14 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2021 Brain Station 23 ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class ranginehservices implements otpmethods
+class magfaservices implements otpmethods
 {
     private $username;
 
     private $password;
 
     private $number;
+    private $domain;
 
 
     /**
@@ -50,11 +51,12 @@ class ranginehservices implements otpmethods
      * @param string $password
      * @param string $number
      */
-    public function __construct(string $username, string $password, string $number)
+    public function __construct(string $username, string $password, string $number, string $domain)
     {
         $this->username = $username;
         $this->password = $password;
         $this->number = $number;
+        $this->domain = $domain;
     }
 
 
@@ -68,20 +70,24 @@ class ranginehservices implements otpmethods
     public function sent(string $otp, string $phone)
     {
 
-        $sid = "ACXXXXXX"; // Your Account SID from www.twilio.com/console
-        $token = "YYYYYY"; // Your Auth Token from www.twilio.com/console
-
-        $client = new \SoapClient("http://ippanel.com/class/sms/wsdlservice/server.php?wsdl");
-        //$message = $client->sendPatternSms(
-        //    $this->number,
-        //    [$phone],
-        //    $this->username,
-        //    $this->password,
-        //    "mdoe1j1587",
-        //    ['code' => $otp]
-        //);
-
-        //print $message->sid;
+        $options = [
+            'login' => "$this->username/$this->domain",'password' => $this->password, // -Credientials
+            'cache_wsdl' => WSDL_CACHE_NONE, // -No WSDL Cache
+            'compression' => (SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 5), // -Compression *
+            'trace' => false // -Optional (debug)
+        ];
+        $client = new \SoapClient("https://sms.magfa.com/api/soap/sms/v2/server?wsdl",$options);
+        $result = $client->send(
+            [$otp], // messages
+            [$this->number], // short numbers can be 1 or same count as recipients (mobiles)
+            [$phone], // recipients
+            [], // client-side unique IDs.
+            [], // Encodings are optional, The system will guess it, itself ;)
+            [], // UDHs, Please read Magfa UDH Documnet
+            [] // Message priorities (unused).
+        );
+        //return 0;
+        return $result->status;
     }
 
     /**
@@ -96,14 +102,15 @@ class ranginehservices implements otpmethods
      * @throws Twilio\Exceptions\TwilioException
      */
     public static function sendOtp(
-        string $otp,
+        string $otpText,
         string $phone,
         string $number,
         string $username,
-        string $password
+        string $password,
+        string $domain = 'magfa'
     )
     {
-        $service = new ranginehservices($username, $password, $number);
-        return $service->sent($otp, $phone);
+        $service = new magfaservices($username, $password, $number, $domain);
+        return $service->sent($otpText, $phone);
     }
 }

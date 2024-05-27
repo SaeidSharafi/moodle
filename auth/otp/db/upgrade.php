@@ -31,7 +31,7 @@ defined('MOODLE_INTERNAL') || die();
  */
 function xmldb_auth_otp_upgrade($oldversion) {
     global $CFG, $DB;
-
+    $dbman = $DB->get_manager();
     // Automatically generated Moodle v3.6.0 release upgrade line.
     // Put any upgrade step following this.
 
@@ -49,6 +49,21 @@ function xmldb_auth_otp_upgrade($oldversion) {
 
     // Automatically generated Moodle v3.11.0 release upgrade line.
     // Put any upgrade step following this.
+
+    if ($oldversion < 2024052702) {
+
+        // Changing nullability of field id on table auth_otp_linked_login to not null.
+        $table = new xmldb_table('auth_otp_linked_login');
+        $field = new xmldb_field('countrycode', XMLDB_TYPE_CHAR, '6', null, null, null, null, 'fullphone');
+
+        // Launch change of nullability for field id.
+        $dbman->change_field_notnull($table, $field);
+
+
+        // Otp savepoint reached.
+        upgrade_plugin_savepoint(true, 2024052702, 'auth', 'otp');
+    }
+
 
     return true;
 }

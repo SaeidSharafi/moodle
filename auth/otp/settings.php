@@ -28,23 +28,29 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_heading('auth_otp/security',
         new lang_string('security', 'admin'), ''));
 
-    $settings->add(new admin_setting_configcheckbox('auth_otp/enablerangineh',
-        get_string('enablerangineh', 'auth_otp'),
-        get_string('enablerangineh_help', 'auth_otp'), 0, PARAM_INT));
+    $settings->add(new admin_setting_configcheckbox('auth_otp/enablemagfa',
+        get_string('enablemagfa', 'auth_otp'),
+        get_string('enablemagfa_help', 'auth_otp'), 0, PARAM_INT));
 
-    $settings->add(new admin_setting_configtext('auth_otp/rangineh_username',
-        get_string('rangineh_username', 'auth_otp'),
-        get_string('rangineh_username_help', 'auth_otp'), '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('auth_otp/magfa_username',
+        get_string('magfa_username', 'auth_otp'),
+        get_string('magfa_username_help', 'auth_otp'), '', PARAM_TEXT));
 
-    $settings->add(new admin_setting_configtext('auth_otp/rangineh_password',
-        get_string('rangineh_password', 'auth_otp'),
-        get_string('rangineh_password_help', 'auth_otp'), '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('auth_otp/magfa_password',
+        get_string('magfa_password', 'auth_otp'),
+        get_string('magfa_password_help', 'auth_otp'), '', PARAM_TEXT));
 
-    $settings->add(new admin_setting_configtext('auth_otp/rangineh_number',
-        get_string('rangineh_number', 'auth_otp'),
-        get_string('rangineh_number_help', 'auth_otp'), '', PARAM_TEXT));
+    $settings->add(new admin_setting_configtext('auth_otp/magfa_number',
+        get_string('magfa_number', 'auth_otp'),
+        get_string('magfa_number_help', 'auth_otp'), '', PARAM_TEXT));
 
+    $settings->add(new admin_setting_configtext('auth_otp/magfa_domain',
+        get_string('magfa_domain', 'auth_otp'),
+        get_string('magfa_domain_help', 'auth_otp'), 'magfa', PARAM_TEXT));
 
+    $settings->add(new admin_setting_configtextarea('auth_otp/magfa_templatetext',
+        get_string('magfa_templatetext', 'auth_otp'),
+        get_string('magfa_templatetext_help', 'auth_otp'), get_string('magfa_templatetext_default', 'auth_otp'), PARAM_TEXT));
 
     //$settings->add(new class(
     //    'auth_otp/minrequestperiod',
