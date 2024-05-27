@@ -76,6 +76,7 @@ class Teachers_1131
     const CENTER = 1;
     const TCH_ID = 2;
     const UNIVERSITY = 4;
+    const GROUP = 6;
 
 
     const PRI_LETTER_UQID = 17145;

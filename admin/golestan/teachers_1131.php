@@ -37,6 +37,9 @@ function init()
         if (count($center) > 1 && $center[1]){
             $pub .= create_pub(Teachers_1131::UNIVERSITY,$center[1],$center[1]);
         }
+        if (count($center) > 2 && $center[2]){
+            $pub .= create_pub(Teachers_1131::GROUP,$center[2],$center[2]);
+        }
 
     }else{
         $pub .= create_pub(Teachers_1131::CENTER,$center);

@@ -79,6 +79,10 @@ $(document).ready(function () {
                             result.push([item, group, i, j]);
                         }
                     }
+                } else if (action == "teachers") {
+                    for (let i = from_field; i <= to_field; i++) {
+                        result.push([item, group, i]);
+                    }
                 } else {
                     result.push([item, group]);
                 }
@@ -129,7 +133,11 @@ var ajax_request = function (key, item, url, action, params, unenroll = false) {
     if (Array.isArray(item)) {
         let text = 'در حال دریافت اطلاعات مرکز شماره ' + item[0] + ' کد دانشکده ' + item[1];
         if (item.length > 2) {
-            text += ' کد رشته ' + item[2];
+            if (action === 'students'){
+                text += ' کد رشته ' + item[2];
+            }else {
+                text += ' کد گروه ' + item[2];
+            }
         }
         if (item.length > 3) {
             text += ' کد گروه ' + item[3];
