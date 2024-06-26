@@ -76,7 +76,7 @@ function init()
         foreach ($xml->row as $row) {
             $item['user_id'] = 's'.trim((string)$row['C1']);
             $item['crs_id'] = trim((string)$row['C16']);
-            $item['group'] = trim((string)$row['18']);
+            $item['group'] = trim((string)$row['C18']);
             if (is_array($center)){
                 $item['center_id'] = $center[0];
                 $item['college_id'] = $center[1];
