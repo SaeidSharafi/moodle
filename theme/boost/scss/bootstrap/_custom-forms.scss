@@ -179,6 +179,7 @@
   .custom-control-label {
     &::before {
       left: -($custom-switch-width + $custom-control-gutter);
+      top: add(($font-size-base * $line-height-base - $custom-control-indicator-size) * .5, 0);
       width: $custom-switch-width;
       pointer-events: all;
       // stylelint-disable-next-line property-disallowed-list

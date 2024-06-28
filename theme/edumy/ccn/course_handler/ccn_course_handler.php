@@ -370,10 +370,10 @@ class ccnCourseHandler {
       $ccnReturn = '<div class="ui_kit_whitchbox">';
       $ccnReturnType = '';
       if($ccnType == 'filter-rating'){
-        $ccnReturnType .= $this->ccnBuildFilterToggle('filter-rating', null, $ccnStringShowAll);
+        $ccnReturnType .= $this->ccnBuildFilterToggle('filter-rating', $ccnStringShowAll, null);
         $ccnReturnType .= $this->ccnBuildCourseFilterRating();
       } elseif($ccnType == 'filter-price'){
-        $ccnReturnType .= $this->ccnBuildFilterToggle('filter-price', null, $ccnStringShowAll);
+        $ccnReturnType .= $this->ccnBuildFilterToggle('filter-price', $ccnStringShowAll, null);
         $ccnReturnType .= $this->ccnBuildCourseFilterPrice();
       }
       $ccnReturn .= $ccnReturnType;
@@ -396,8 +396,8 @@ class ccnCourseHandler {
       $ccnStringFree = get_string('ccn_cf_free', 'theme_edumy');
     }
 
-    $ccnTogglePaid = $this->ccnBuildFilterToggle('filter-price', '2', $ccnStringPaid);
-    $ccnToggleFree = $this->ccnBuildFilterToggle('filter-price', '1', $ccnStringFree);
+    $ccnTogglePaid = $this->ccnBuildFilterToggle('filter-price', $ccnStringPaid, '2');
+    $ccnToggleFree = $this->ccnBuildFilterToggle('filter-price', $ccnStringFree, '1');
 
     $ccnReturn = $ccnTogglePaid . $ccnToggleFree;
 
@@ -428,17 +428,17 @@ class ccnCourseHandler {
       $ccnString5 = get_string('ccn_cf_5_stars', 'theme_edumy');
     }
 
-    $ccnToggle1 = $this->ccnBuildFilterToggle('filter-rating', '1', $ccnString1);
-    $ccnToggle2 = $this->ccnBuildFilterToggle('filter-rating', '2', $ccnString2);
-    $ccnToggle3 = $this->ccnBuildFilterToggle('filter-rating', '3', $ccnString3);
-    $ccnToggle4 = $this->ccnBuildFilterToggle('filter-rating', '4', $ccnString4);
-    $ccnToggle5 = $this->ccnBuildFilterToggle('filter-rating', '5', $ccnString5);
+    $ccnToggle1 = $this->ccnBuildFilterToggle('filter-rating', $ccnString1, '1');
+    $ccnToggle2 = $this->ccnBuildFilterToggle('filter-rating', $ccnString2, '2');
+    $ccnToggle3 = $this->ccnBuildFilterToggle('filter-rating', $ccnString3, '3');
+    $ccnToggle4 = $this->ccnBuildFilterToggle('filter-rating', $ccnString4, '4');
+    $ccnToggle5 = $this->ccnBuildFilterToggle('filter-rating', $ccnString5, '5');
 
     $ccnReturn = $ccnToggle1 . $ccnToggle2. $ccnToggle3 . $ccnToggle4 . $ccnToggle5;
     return $ccnReturn;
   }
 
-  public function ccnBuildFilterToggle($ccnParam, $ccnValue = null, $ccnIdentifiedBy) {
+  public function ccnBuildFilterToggle($ccnParam, $ccnIdentifiedBy, $ccnValue = null) {
 
 
     $ccnBuildString = $this->ccnBuildFilterCoursesUrl($ccnParam, $ccnValue);

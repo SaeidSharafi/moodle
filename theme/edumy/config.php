@@ -344,3 +344,4 @@ $THEME->csspostprocess = 'theme_edumy_process_css';
 $THEME->activityheaderconfig = [
     'notitle' => true
 ];
+$THEME->haseditswitch = true;

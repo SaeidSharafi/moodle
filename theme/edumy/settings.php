@@ -36,7 +36,7 @@ if ($ADMIN->fulltree) {
     // Blog style
     $setting = new admin_setting_configselect('theme_edumy/blogstyle',
         get_string('blogstyle', 'theme_edumy'),
-        get_string('blogstyle_desc', 'theme_edumy'), null,
+        get_string('blogstyle_desc', 'theme_edumy'), 3,
                 array('1' => 'Blog style 1',
                       '2' => 'Blog style 2',
                       '3' => 'Blog style 3',
@@ -1552,7 +1552,7 @@ if ($ADMIN->fulltree) {
     // Course Main Page Layout
     $setting = new admin_setting_configselect('theme_edumy/coursemainpage_layout',
         get_string('coursemainpage_layout', 'theme_edumy'),
-        get_string('coursemainpage_layout_desc', 'theme_edumy'), 0,
+        get_string('coursemainpage_layout_desc', 'theme_edumy'), 2,
                 array('0' => 'Edumy (default) - recommended',
                       '1' => 'Edumy Dashboard for enrolled users only',
                       '2' => 'Edumy Dashboard for all users',
@@ -1564,7 +1564,7 @@ if ($ADMIN->fulltree) {
     // Inner Course Page Layout
     $setting = new admin_setting_configselect('theme_edumy/incourse_layout',
         get_string('incourse_layout', 'theme_edumy'),
-        get_string('incourse_layout_desc', 'theme_edumy'), 0,
+        get_string('incourse_layout_desc', 'theme_edumy'), 1,
                 array('0' => 'Edumy (default)',
                       '1' => 'Edumy Dashboard',
                       '2' => 'Edumy Focus'
@@ -1574,7 +1574,7 @@ if ($ADMIN->fulltree) {
     // Profile Page Layout
     $setting = new admin_setting_configselect('theme_edumy/user_profile_layout',
         get_string('user_profile_layout', 'theme_edumy'),
-        get_string('user_profile_layout_desc', 'theme_edumy'), 0,
+        get_string('user_profile_layout_desc', 'theme_edumy'), 1,
                 array('0' => 'Edumy (default)',
                       '1' => 'Edumy Dashboard'
                     ));

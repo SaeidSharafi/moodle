@@ -274,7 +274,7 @@ if((int)$ccnMdlVersion >= 400) {
   $templatecontext['mobileprimarynav'] = $primarymenu['mobileprimarynav'];
   $templatecontext['headercontent'] = $headercontent;
   $templatecontext['overflow'] = $overflow;
-  $templatecontext['addblockbutton'] = $addblockbutton;
+  $templatecontext['addblockbutton'] = $addblockbutton ?? null;
   // 'primarymoremenu' => $primarymenu['moremenu'],
   // 'secondarymoremenu' => $secondarynavigation ? : false,
   // 'eithermoremenu' => !empty($primarymenu['moremenu']) || $secondarynavigation ? true : false,
@@ -376,6 +376,10 @@ $PAGE->requires->js_init_call('ccnControl', array($ccnControlBlockListUri, $ccnC
 $nav = $PAGE->flatnav;
 $templatecontext['flatnavigation'] = $nav;
 $templatecontext['firstcollectionlabel'] = $nav->get_collectionlabel();
+
+//$nav = $PAGE->primarynav;
+//$templatecontext['flatnavigation'] = $nav;
+//$templatecontext['firstcollectionlabel'] = $nav->children->get_collectionlabel();
 
 if($PAGE->pagetype == "admin-setting-themesettingedumy") {
   $PAGE->requires->css('/theme/edumy/style/cocoon.editor.theme.css');
