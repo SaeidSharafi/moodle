@@ -220,9 +220,7 @@ $(function() {
       $("body").css({
         'overflow': 'auto',
       });
-      $(".dashboard_sidebar").css({
-        'padding': '0',
-      });
+
     }
     /* Begin Legacy Course Single handlers */
     $(".cs_row_one.ccn-pullto-breadcrumb").each(function() {
