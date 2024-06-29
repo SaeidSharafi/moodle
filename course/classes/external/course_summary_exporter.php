@@ -76,7 +76,8 @@ class course_summary_exporter extends \core\external\exporter {
             'isfavourite' => $this->related['isfavourite'],
             'hidden' => boolval(get_user_preferences('block_myoverview_hidden_course_' . $this->data->id, 0)),
             'showshortname' => $CFG->courselistshortnames ? true : false,
-            'coursecategory' => $coursecategory->name
+            'coursecategory' => $coursecategory->name,
+            'coursestartdate'     => userdate($this->data->startdate, get_string('strftimedate')),
         );
     }
 
@@ -165,6 +166,9 @@ class course_summary_exporter extends \core\external\exporter {
                 'type' => PARAM_BOOL
             ),
             'coursecategory' => array(
+                'type' => PARAM_TEXT
+            ),
+            'coursestartdate' => array(
                 'type' => PARAM_TEXT
             )
         );

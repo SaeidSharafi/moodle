@@ -35,47 +35,60 @@
     }
 }}
 
-<div class="my_course_content_list" role="list">
+<div class="my_course_content_list row no-gutters" role="list">
   {{#courses}}
-    <div class="mc_content_list" role="listitem" data-region="course-content" data-course-id="{{{id}}}">
-      <div class="thumb">
-        <img class="img-whp" src="{{{courseimage}}}" alt=""><span class="sr-only">{{#str}}aria:courseimage, core_course{{/str}}</span>
-        <div class="overlay">
-          <ul class="mb0">
-            <li class="list-inline-item">
-              <a class="mcc_view" href="{{viewurl}}">{{#str}}view, theme_edumy{{/str}}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="details">
-        <div class="mc_content">
-          <div class="ccn_mc_content_header">
-            <div class="ccn_mc_content_header_details">
-              {{$coursecategory}}
-              <p class="subtitle">{{{coursecategory}}}</p><span class="sr-only">{{#str}}aria:courseimage, core_course{{/str}}</span>{{/coursecategory}}
-              {{#showshortname}}
-                <h5 class="title">{{{shortname}}}<span class="sr-only">{{#str}}aria:courseshortname, core_course{{/str}}</span></h5>
-              {{/showshortname}}
-              <h5 class="title">{{{fullname}}} {{#showshortname}}{{{shortname}}}<span class="sr-only">{{#str}}aria:courseshortname, core_course{{/str}}</span>{{/showshortname}}</h5>
-              <div class="ccn_mc_content_header_status"><small class="tag">{{#str}}published, theme_edumy{{/str}}</small></div>
-              {{> core_course/favouriteicon }}
-              {{#hasprogress}}
-                <div class="ccn_mc_progress">
-                  {{> block_myoverview/progress-bar}}
-                </div>
-              {{/hasprogress}}
-              <span class="sr-only">
-                {{#str}}aria:coursename, core_course{{/str}}
-              </span>
-            </div>
-            <div class="ccn_mc_content_header_actions">
-              {{> block_myoverview/course-action-menu }}
-            </div>
+      <div class="w-100 col-12 col-md-6 col-lg-4 col-xl-3">
+          <div class="p-3">
+          <div class="mc_content_list cardview d-flex flex-column p-0" role="listitem" data-region="course-content" data-course-id="{{{id}}}">
+              <div class="thumb">
+                  <img class="img-whp" src="{{{courseimage}}}" alt=""><span class="sr-only">{{#str}}aria:courseimage, core_course{{/str}}</span>
+                  <div class="overlay">
+                      <ul class="mb0">
+                          <li class="list-inline-item">
+                              <a class="mcc_view" href="{{viewurl}}">{{#str}}view, theme_edumy{{/str}}</a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="details">
+                  <div class="mc_content w-100">
+                      <div class="ccn_mc_content_header w-100">
+                          <div class="ccn_mc_content_header_details w-100">
+                              {{#hasprogress}}
+                                  <div class="ccn_mc_progress">
+                                      {{> block_myoverview/progress-bar}}
+                                  </div>
+                              {{/hasprogress}}
+
+                             {{#showshortname}}
+                                  <h5 class="title px-3">{{{shortname}}}<span class="sr-only">{{#str}}aria:courseshortname, core_course{{/str}}</span></h5>
+                              {{/showshortname}}
+                              <h5 class="title px-3">
+                                  {{{fullname}}}
+                                  {{#showshortname}}
+                                      {{{shortname}}}
+                                  <span class="sr-only">{{#str}}aria:courseshortname, core_course{{/str}}</span>
+                                  {{/showshortname}}
+                              </h5>
+                              <div class="w-100 py-2 border-top px-3">
+                                  <i class="fa fa-clock-o"></i>
+                                  {{coursestartdate}}
+                              </div>
+                              {{> core_course/favouriteicon }}
+
+                              <span class="sr-only">
+                                  {{#str}}aria:coursename, core_course{{/str}}
+                              </span>
+                          </div>
+                          <div class="ccn_mc_content_header_actions d-none">
+                              {{> block_myoverview/course-action-menu }}
+                          </div>
+                      </div>
+                      <span class="sr-only">{{#str}}aria:coursesummary, block_myoverview{{/str}}</span>{{{summary}}}
+                  </div>
+              </div>
           </div>
-          <span class="sr-only">{{#str}}aria:coursesummary, block_myoverview{{/str}}</span>{{{summary}}}
-        </div>
       </div>
-    </div>
+      </div>
   {{/courses}}
 </div>

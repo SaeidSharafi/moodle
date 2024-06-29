@@ -60,6 +60,21 @@
     margin: 0;
     max-width: 930px;
 }
+.my_course_content_list .ccn_mc_progress.progress {
+    height: .35rem;
+}
+.my_course_content_list .mc_content_list.cardview .thumb{
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: auto;
+}
+.my_course_content_list .mc_content_list.cardview{
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+.my_course_content_header .dropdown-menu{
+    width: fit-content;
+}
 @media (max-width: 767.98px) {
     .editmode-switch-form label {
         position: initial;
