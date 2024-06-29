@@ -19,13 +19,54 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Extend the global navigation tree by adding your plugin nodes.
  *
- * @param navigation_node $navref An object representing the navigation tree node of your plugin
- * @param stdClass $course
- * @param context $context
+ * @param  navigation_node  $navref  An object representing the navigation tree node of your plugin
+ * @param  stdClass  $course
+ * @param  context  $context
  */
-function local_navigation_manager_extend_navigation_course(navigation_node $parentnode,
+function local_navigation_manager_extend_navigation_course(
+    navigation_node $parentnode,
     stdClass $course,
-    context_course $context) {
+    context_course $context
+) {
+    if (!has_capability('local/navigation_manager:view_badgesview', $context)) {
+
+        $reportsnode = $parentnode->get('badgesview');
+        if ($reportsnode) {
+            $parentnode->children->remove('badgesview');
+        }
+        $reportsnode = $parentnode->get('coursebadges');
+        if ($reportsnode) {
+            $parentnode->children->remove('coursebadges');
+        }
+    }
+    if (!has_capability('local/navigation_manager:view_competencies', $context)) {
+
+        $reportsnode = $parentnode->get('competencies');
+        if ($reportsnode) {
+            $parentnode->children->remove('competencies');
+        }
+    }
+    if (!has_capability('local/navigation_manager:view_filtermanagement', $context)) {
+
+        $reportsnode = $parentnode->get('filtermanagement');
+        if ($reportsnode) {
+            $parentnode->children->remove('filtermanagement');
+        }
+    }
+    if (!has_capability('local/navigation_manager:view_unenrolself', $context)) {
+
+        $reportsnode = $parentnode->get('unenrolself');
+        if ($reportsnode) {
+            $parentnode->children->remove('unenrolself');
+        }
+    }
+    if (!has_capability('local/navigation_manager:view_coursecompletion', $context)) {
+
+        $reportsnode = $parentnode->get('coursecompletion');
+        if ($reportsnode) {
+            $parentnode->children->remove('coursecompletion');
+        }
+    }
     // Make sure this is a teacher viewing the course.
     if (!has_capability('local/navigation_manager:view_course_report', $context)) {
         // Find the 'Reports' node in the navigation tree.
@@ -34,5 +75,21 @@ function local_navigation_manager_extend_navigation_course(navigation_node $pare
             // Remove the 'Reports' node.
             $parentnode->children->remove('coursereports');
         }
+
     }
+}
+
+function local_navigation_manager_extend_navigation(
+    global_navigation $nav
+) {
+    //echo implode(',', $nav->get_children_key_list())."<br>";
+
+}
+
+function local_navigation_manager_extend_settings_navigation(
+    settings_navigation $nav,
+    context $context
+) {
+    //echo implode(',', $nav->get_children_key_list())."<br>";
+    //die();
 }

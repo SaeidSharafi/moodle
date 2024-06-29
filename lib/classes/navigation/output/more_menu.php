@@ -77,38 +77,45 @@ class more_menu implements renderable, templatable
             // (as required by the template) we need to set the node's property 'moremenuid' to a new unique value and
             // 'haschildren' to true.
 
-            if ($this->content->children->get('participants')){
-                $children = clone $this->content->children;
-                if ($item = $children->get('participants')){
-                    $this->content->children->remove('participants');
-                    $this->content->children->add($item, 'editsettings');
-                }
-                if ($item = $children->get('coursereuse')){
-                    $this->content->children->remove('coursereuse');
-                    $this->content->children->add($item, 'editsettings');
-                }
-                if ($item = $children->get('coursereports')){
-                    $this->content->children->remove('coursereports');
-                    $this->content->children->add($item, 'editsettings');
-                }
-                if ($item = $children->get('grades')){
-                    $this->content->children->remove('grades');
-                    $this->content->children->add($item, 'editsettings');
-                }
-                $children = null;
-            }
+            //if ($this->content->children->get('participants')){
+            //    $children = clone $this->content->children;
+            //    if ($item = $children->get('participants')){
+            //        $this->content->children->remove('participants');
+            //        $this->content->children->add($item, 'editsettings');
+            //    }
+            //    if ($item = $children->get('coursereuse')){
+            //        $this->content->children->remove('coursereuse');
+            //        $this->content->children->add($item, 'editsettings');
+            //    }
+            //    if ($item = $children->get('coursereports')){
+            //        $this->content->children->remove('coursereports');
+            //        $this->content->children->add($item, 'editsettings');
+            //    }
+            //    if ($item = $children->get('grades')){
+            //        $this->content->children->remove('grades');
+            //        $this->content->children->add($item, 'editsettings');
+            //    }
+            //    $children = null;
+            //}
 
 
             foreach ($this->content->children as $key => &$item) {
 
-                if ($item->key == 'coursereuse') {
-                    $item->forceintomoremenu = false;
-                }
                 if ($item->showchildreninsubmenu && isset($this->content->children)
                     && count($this->content->children) > 0
                 ) {
                     $item->moremenuid = uniqid();
                     $item->haschildren = true;
+                }
+                if ($item->key == 'coursereuse') {
+                    $item->forceintomoremenu = false;
+                }
+                if ($item->key == 'questionbank') {
+                    $item->forceintomoremenu = false;
+
+                }
+                if ($item->key == 'contentbank') {
+                    $item->forceintomoremenu = false;
                 }
             }
             $data['nodecollection'] = $this->content;
@@ -116,6 +123,7 @@ class more_menu implements renderable, templatable
             $data['nodearray'] = (array) $this->content;
         }
         $data['moremenuid'] = uniqid();
+
 
         return $data;
     }

@@ -56,6 +56,10 @@
 .user_setting_content .simplebar-placeholder{
     display: none;
 }
+.secondary-navigation .navigation .nav-tabs {
+    margin: 0;
+    max-width: 930px;
+}
 @media (max-width: 767.98px) {
     .editmode-switch-form label {
         position: initial;

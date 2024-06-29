@@ -26,8 +26,8 @@ defined('MOODLE_INTERNAL') || die;
 
 $plugin->component = 'local_navigation_manager';
 
-$plugin->version = 2024042312;
-$plugin->release = 'v0.1.1';
+$plugin->version = 2024062900;
+$plugin->release = 'v0.2.0';
 $plugin->maturity = MATURITY_STABLE;
 
 $plugin->requires = 2017111302;
