@@ -51,7 +51,7 @@ $THEME->layouts = [
     ),
     // Standard layout with blocks, this is recommended for most pages with general information.
     'standard' => array(
-        'file' => 'columns2.php',
+        'file' => 'ccn_my.php',
         'regions' => array('fullwidth-top', 'fullwidth-bottom', 'above-content', 'below-content', 'left', 'side-pre'),
         'defaultregion' => 'side-pre',
     ),
