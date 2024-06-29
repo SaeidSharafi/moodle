@@ -646,7 +646,7 @@ class grade_report_grader extends grade_report {
         $strfeedback  = $this->get_lang_string("feedback");
 
         $extrafields = \core_user\fields::get_identity_fields($this->context);
-
+        unset($extrafields[array_search('email',$extrafields)]);
         $arrows = $this->get_sort_arrows($extrafields);
 
         $colspan = 1 + $hasuserreportcell + count($extrafields);
