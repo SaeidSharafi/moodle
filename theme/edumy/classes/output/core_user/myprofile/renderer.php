@@ -41,6 +41,7 @@ class renderer extends \core_user\output\myprofile\renderer {
       $ccn_page = new \stdClass();
       $ccn_page->id = $ccn_user_id;
 
+      $hiddenCategories = ['privacyandpolicies','miscellaneous','loginactivity'];
 
       $ccnUserHandler = new ccnUserHandler();
       $ccnUser = $ccnUserHandler->ccnGetUserDetails($ccn_user_id);
@@ -206,7 +207,9 @@ class renderer extends \core_user\output\myprofile\renderer {
                   <div class="'.$ccn_col_main_block.' --course_content">';
                     $categories = $tree->categories;
                     foreach ($categories as $category) {
-                      $return .= $this->render($category);
+                        if (!in_array($category->name,$hiddenCategories)){
+                            $return .= $this->render($category);
+                        }
                     }
                     $return .='
                   </div>
@@ -281,7 +284,7 @@ class renderer extends \core_user\output\myprofile\renderer {
                     <h4>'.$userFirst.get_string('apostrophe_s', 'theme_edumy').' '.get_string('last_accessed_courses', 'theme_edumy').'</h4>
                   </div>
                   <div class="container-fluid p-0">
-                    <div class="my_course_content_list">';
+                    <div class="my_course_content_list row no-gutters">';
                       $ia = 0;
                       foreach ($userLastCourses as $course_id => $accessed) {
                         if ($DB->record_exists('course', array('id' => $course_id))) {
@@ -291,12 +294,18 @@ class renderer extends \core_user\output\myprofile\renderer {
                         $courseTitle = $course->fullname;
                         $courseDesc = substr(format_string($course->summary, $striplinks = true,$options = null),0,200).'...';
 
+                        $courseStart = userdate($course->startdate, get_string('strftimedate'));
                         $courseNewsItems = $course->newsitems;
                         $courseLink = $CFG->wwwroot.'/course/view.php?id='.$course_id;
                         $category = $DB->get_record('course_categories',array('id'=>$course->category));
                         $categoryName = $category->name;
                         $lastAccessed = userdate($accessed, '%d %b %Y');
-
+                        $progress =   \core_completion\progress::get_course_progress_percentage($course);
+                        $hasprogress = false;
+                        if ($progress === 0 || $progress > 0) {
+                            $hasprogress = true;
+                        }
+                        $progress = floor($progress ?? 0);
                         $contentimages = '';
                         foreach ($course->get_course_overviewfiles() as $file) {
                             $isimage = $file->is_valid_image();
@@ -306,11 +315,16 @@ class renderer extends \core_user\output\myprofile\renderer {
                             } else {
                                 $image = $this->output->pix_icon(file_file_icon($file, 24), $file->get_filename(), 'moodle');
                                 $filename = html_writer::tag('span', $image, array('class' => 'fp-icon')). html_writer::tag('span', $file->get_filename(), array('class' => 'fp-filename'));
-                                $contentfiles .= html_writer::tag('span', html_writer::link($url, $filename), array('class' => 'coursefile fp-filename-icon'));
+                                $contentimages .= html_writer::tag('span', html_writer::link($url, $filename), array('class' => 'coursefile fp-filename-icon'));
                             }
                         }
+                        if (!$contentimages){
+                            $contentimages = '<img class="img-whp" alt="'.$courseTitle.'" src="/theme/moove/pix/course-default.jpg"/>';;
+                        }
                         $return .='
-                        <div class="mc_content_list">';
+                        <div class="w-100 col-12 col-md-6 col-lg-4">
+                        <div class="p-3">
+                        <div class="mc_content_list cardview d-flex flex-column p-0">';
                           if($contentimages){
                           $return .='
                           <div class="thumb">
@@ -326,17 +340,31 @@ class renderer extends \core_user\output\myprofile\renderer {
                           }
                           $return .='
                           <div class="details">
-                            <div class="mc_content">
-                              <div class="ccn_mc_content_header">
-                                <div class="ccn_mc_content_header_details">
-                                  <div class="text-truncate">'.format_text($categoryName, FORMAT_HTML, array('filter' => true)).'</div>
-                                  <h5 class="title">'.format_text($courseTitle, FORMAT_HTML, array('filter' => true)).'</h5>
-                                  <div class="ccn_mc_content_header_status"><small class="tag">'.get_string('published', 'theme_edumy').'</small></div>
+                            <div class="mc_content w-100">
+                              <div class="ccn_mc_content_header w-100">
+                                <div class="ccn_mc_content_header_details w-100">';
+                          if ($hasprogress){
+                              $return .= ' <div class="ccn_mc_progress">
+                                      <div class="progress bg-white">
+    <div class="progress-bar bar" role="progressbar" aria-valuenow="{{progress}}" style="width: '.$progress.'%" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<div class="small">
+    <span class="sr-only">'.get_string('aria:courseprogress', 'block_myoverview').'</span>'.
+                                  get_string('completepercent', 'block_myoverview', "<strong>$progress</strong>").
+                            '</div></div>';
+                          }
+                                  $return .='<h5 class="title px-3">'.format_text($courseTitle, FORMAT_HTML, array('filter' => true)).'</h5>
+                                   <div class="w-100 py-2 border-top px-3">
+                                  <i class="fa fa-clock-o"></i>
+                                  '.$courseStart.'
+                              </div>
                                 </div>
                               </div>
-                              '.$courseDesc.'
+                            
                             </div>
                           </div>
+                        </div>
+                        </div>
                         </div>';
                       }
                   }

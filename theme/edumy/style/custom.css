@@ -60,8 +60,8 @@
     margin: 0;
     max-width: 930px;
 }
-.my_course_content_list .ccn_mc_progress.progress {
-    height: .35rem;
+.my_course_content_list .ccn_mc_progress .progress {
+    height: .5rem;
 }
 .my_course_content_list .mc_content_list.cardview .thumb{
     width: 100% !important;
