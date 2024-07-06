@@ -1,0 +1,48 @@
+define(['jquery', 'core/ajax', 'core/modal_factory', 'core/templates'],
+    function($, Ajax, ModalFactory, Templates) {
+    return {
+        init: function(courseId) {
+            window.console.log("init modchooser");
+            // Add a click event listener to the "Add activity" button
+            $('body').on('click', '.add-mod', function(e) {
+                e.preventDefault();
+                var sectionId = $(this).data('sectionid'); // Get the section ID from the button
+
+                ModalFactory.create({
+                    type: ModalFactory.types.DEFAULT,
+                    title: 'Choose an activity or resource',
+                    body: '<div class="modchoosercontainer"  id="activities">' +
+                        '<div class="chooser-container">' +
+                        '<div class="d-flex flex-wrap mw-100 optionscontainer p-1 position-relative">' +
+                        'Loading...' +
+                        '</div></div></div>',
+                    footer: '',
+                    large: true,
+                    templateContext: {
+                        classes: 'modchooser'
+                    }
+                }).done(function(modal) {
+                    modal.show();
+                    // Make an AJAX request to get the filtered modchooser content
+                    Ajax.call([{
+                        methodname: 'format_vums_get_filtered_modchooser',
+                        args: {
+                            sectionid: sectionId,
+                            courseid: courseId,
+                        },
+                        done: function(response) {
+
+                            Templates.render('format_vums/activitychooser',response).done(function(html) {
+                                let table = document.querySelector('#activities');
+                                Templates.replaceNode(table, html);
+                            });
+                        },
+                        fail: function() {
+                            modal.getBody().html('<div>Error loading activities.</div>');
+                        }
+                    }]);
+                });
+            });
+        }
+    };
+});

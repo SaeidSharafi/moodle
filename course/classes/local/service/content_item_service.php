@@ -243,6 +243,27 @@ class content_item_service {
             return [];
         }
 
+        $filterbysection =[
+            '1' => [
+                'adobeconnect'
+            ],
+            '2' => [
+                'file',
+            ],
+            '3' => [
+                'assign',
+                'assignment'
+            ],
+            '4' => [
+                'book'
+            ],
+            '5' => [
+                'game'
+            ],
+            '6' => [
+                'page'
+            ],
+        ];
         // Get all the visible content items.
         $allcontentitems = $this->repository->find_all_for_course($course, $user);
 
@@ -274,7 +295,13 @@ class content_item_service {
             // Check the parent module access for the user.
             return course_allowed_module($course, explode('_', $parents[$contentitem->get_component_name()])[1], $user);
         });
-
+        if ($linkparams && isset($linkparams['secid']) && $linkparams['secid'] > 0 && $linkparams['secid'] < 7) {
+            $availablecontentitems = array_filter($allcontentitems,
+                function ($contentitem) use ($course, $user, $parents, $filterbysection,$linkparams) {
+                    // Check the parent module access for the user.
+                    return in_array(explode('_', $parents[$contentitem->get_component_name()])[1], $filterbysection[$linkparams['secid']]);
+                });
+        }
         // Add the link params to the link, if any have been provided.
         if (!empty($linkparams)) {
             $availablecontentitems = array_map(function ($item) use ($linkparams) {
