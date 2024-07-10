@@ -1747,4 +1747,85 @@ if ($ADMIN->fulltree) {
 
     $settings->add($page);
 
+
+
+    $page = new admin_settingpage('theme_edumy_frontpage', get_string('frontpage_settings', 'theme_edumy'));
+
+    $name='theme_edumy/videoposter';
+    $title = get_string('videoposter', 'theme_edumy');
+    $description = get_string('videoposter_desc', 'theme_edumy');
+    $setting = new admin_setting_configstoredfile($name, $title, $description, 'videoposter');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    $name='theme_edumy/videofile';
+    $title = get_string('videofile', 'theme_edumy');
+    $description = get_string('videofile_desc', 'theme_edumy');
+    $setting = new admin_setting_configstoredfile($name, $title, $description, 'videofile');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    $name='theme_edumy/whatsistitle';
+    $title = get_string('whatsistitle', 'theme_edumy');
+    $description = get_string('whatsistitle_desc', 'theme_edumy');
+    $setting = new admin_setting_configtext($name, $title, $description, get_string('whatistitle_default','theme_edumy'),PARAM_RAW);
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    $name='theme_edumy/whatsiscontent';
+    $title = get_string('whatsiscontent', 'theme_edumy');
+    $description = get_string('whatsiscontent_desc', 'theme_edumy');
+    $setting = new admin_setting_confightmleditor($name, $title, $description, get_string('whatsiscontent_default','theme_edumy'));
+
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    // Enable or disable Numbers sections settings.
+    $name = 'theme_edumy/numbersfrontpage';
+    $title = get_string('numbersfrontpage', 'theme_edumy');
+    $description = get_string('numbersfrontpagedesc', 'theme_edumy');
+    $default = 1;
+    $choices = array(0 => get_string('no'), 1 => get_string('yes'));
+    $setting = new admin_setting_configselect($name, $title, $description, $default, $choices);
+    $page->add($setting);
+
+
+    $settings->add($page);
+
+
+    // CCN FAQ settings
+    $page = new admin_settingpage('theme_edumy_faq', get_string('faq_settings', 'theme_edumy'));
+
+    $name = 'theme_edumy/faqcount';
+    $title = get_string('faqcount', 'theme_edumy');
+    $description = get_string('faqcountdesc', 'theme_edumy');
+    $default = 0;
+    $options = array();
+    for ($i = 0; $i < 16; $i++) {
+        $options[$i] = $i;
+    }
+    $setting = new admin_setting_configselect($name, $title, $description, $default, $options);
+    $page->add($setting);
+
+    $faqcount = get_config('theme_edumy', 'faqcount');
+
+    if ($faqcount > 0) {
+        for ($i = 1; $i <= $faqcount; $i++) {
+            $name = "theme_edumy/faqquestion{$i}";
+            $title = get_string('faqquestion', 'theme_edumy', $i . '');
+            $setting = new admin_setting_configtext($name, $title, '', '');
+            $page->add($setting);
+
+            $name = "theme_edumy/faqanswer{$i}";
+            $title = get_string('faqanswer', 'theme_edumy', $i . '');
+            $setting = new admin_setting_confightmleditor($name, $title, '', '');
+            $page->add($setting);
+        }
+
+        $setting = new admin_setting_heading('faqseparator', '', '<hr>');
+        $page->add($setting);
+    }
+
+    $settings->add($page);
+
 }

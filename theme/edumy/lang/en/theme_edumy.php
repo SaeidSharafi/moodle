@@ -699,3 +699,53 @@ $string['no_students_yet'] = 'No students yet';
 $string['no_courses_yet'] = 'No courses yet';
 $string['interested_in'] = 'Interested in';
 $string['uncategorized'] = 'Uncategorized';
+
+$string['faq'] = 'FAQ';
+$string['faqcount'] = 'FAQ questions';
+$string['faqcountdesc'] = 'Select how many questions you want to add <strong>then click SAVE</strong> to load the input fields.<br>If you don\'t want a FAQ, just select 0.';
+$string['faqquestion'] = 'FAQ question {$a}';
+$string['faqanswer'] = 'FAQ answer {$a}';
+
+$string['whatistitle'] = 'What is ...? title';
+$string['whatsiscontent'] = 'What is ...? content';
+$string['whatistitle_default'] = 'What is NAVID?';
+$string['whatsiscontent_default'] = '<span lang="fa" class="multilang">
+    سیستم های مدیریت یادگیری (LMS یا Learning Management System) زیرساخت کلیدی و ضروری برای استقرار و توسعه یادگیری الکترونیکی محسوب می شوند. این سیستم
+    های
+    نرم افزاری امور مربوط به به کارگیری، ثبت نام، ‌مدیریت، پیگیری، ارزشیابی، ارائه برنامه ها، ‌برقراری تعامل بین فراگیران و محتوای برنامه و بین فراگیران
+    و
+    استادان را انجام می دهند. لذا یکی از الزامات "بسته توسعه آموزش مجازی در علوم پزشکی" راه اندازی LMS کشوری با عنوان "نوید" (نرم افزار ویژه یادگیری
+    دانشگاهی) بود که انجام آن به دانشگاه علوم پزشکی مجازی واگذار شد. کارگروه تخصصی شامل متخصصان آموزش مجازی و فنی، طراحی آموزشی و اجرای نرم افزار را به
+    عهده
+    گرفتند. بالاخره نسخه اول "نوید" در مرداد ماه 1396 به بهره برداری رسید. بعد از پایلوت در دو دانشگاه در نیمسال اول سال تحصیلی 97-96، به تدریج از
+    نیمسال
+    دوم این نرم افزار برای استفاده در اختیار تمام دانشگاه های علوم پزشکی متقاضی قرار می گیرد. برای آگاهی بیشتر از روند طراحی و آماده سازی "نوید"، می
+    توانید
+    به مطلب منتشر شده در خبرنامه شماره بهمن ماه 1396 انجمن یادگیری الکترونیکی ایران مراجعه نمایید.</span>
+<span lang="en" class="multilang">
+    <span class="text-danger">NAVID</span>
+    project was a major milestone for VUMS as a responsible body to create national Learning Management System,
+    a project initiated in 2016 when the new reformation package by ministry of Health and Medical Education was announced.
+    During the project’s consultation phase,
+    team of experts was engaged with their peers to determine the pedagogical and functional requirements for supporting
+    teaching and learning. Design, development and implementation of key features of NAVID was the 2nd phase of project.
+    During 2017 fall semester <span class="text-danger">NAVID</span> was evaluated by faculty, staff,
+    and students through pilot courses in Alborz University of Medical Sciences as a partner University with VUMS.
+    Since 2018 spring semester <span class="text-danger">NAVID</span> (version Beta) has been used by 20 other Medical Universities all around country.
+    In NAVID , instructors can share materials (text or multimedia),
+    enable student collaboration and discussion, manage assignments and quizzes, and assign grades.
+    New feature will be add to <span class="text-danger">NAVID</span> according to project timetable.
+</span>';
+$string['contact_support'] = 'Support';
+$string['blog_title'] = 'News & Announcements';
+$string['view_all'] = 'View All';
+$string['university'] ='Smart University of Medical Sciences';
+$string['navid_title'] = 'What is NAVID?';
+$string['contact_us']='Support';
+$string['unesco']='UNESCO National Award';
+$string['behdasht']='Ministery of Health and Medical Education';
+$string['arman']='ARMAN';
+$string['phoneexists'] = 'This Phone number is already registered.';
+$string['invalidemail'] = 'Invalid phone number';
+$string['userphoneduplicate'] = 'Duplicate phone';
+$string['copyright']='کلیه حقوق مادی و معنوی محتوای سامانه متعلق به دانشگاه علوم پزشکی هوشمند می‌باشد.';

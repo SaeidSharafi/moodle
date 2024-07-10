@@ -4878,7 +4878,8 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu>li.last {
 }
 .footer_middle_area,
 .footer_one {
-  background-color: #151515;
+  background-color: #ffffff;
+  color: #000
 }
 .footer_bottom_area {
   background-color: #0a0a0a;

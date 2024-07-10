@@ -49,7 +49,9 @@ function theme_edumy_pluginfile($course, $cm, $context, $filearea, $args, $force
                                                       $filearea === 'upload_font_secondary_woff2' ||
                                                       $filearea === 'upload_font_secondary_woff' ||
                                                       $filearea === 'upload_font_secondary_ttf' ||
-                                                      $filearea === 'upload_font_secondary_svg'
+                                                      $filearea === 'upload_font_secondary_svg' ||
+                                                      $filearea === 'videoposter' ||
+                                                      $filearea === 'videofile'
                                                     )) {
         $theme = theme_config::load('edumy');
         // By default, theme files must be cache-able by both browsers and proxies.
@@ -636,4 +638,50 @@ function theme_edumy_process_css($css, $theme) {
     $css = str_replace($tag_src, $replacement_src, $css);
 
     return $css;
+}
+
+function frontpage($theme) {
+    global $DB,$PAGE,$CFG;
+
+    if (!empty($theme->settings->videofile)) {
+        $url = $theme->setting_file_url('videofile', 'videofile');
+        //print_object($fileurl);
+        //die();
+        if ($url) {
+            // Get a URL suitable for moodle_url.
+            $relativebaseurl = preg_replace('|^https?://|i', '//', $CFG->wwwroot);
+            $url = str_replace($relativebaseurl, '', $url);
+            $templatecontext['videofile'] = new moodle_url($url);
+        }
+    }
+    if (!empty(get_config('theme_edumy','videoposter'))) {
+        $url = $PAGE->theme->setting_file_url('videoposter', 'videoposter');
+        if ($url) {
+            // Get a URL suitable for moodle_url.
+            $relativebaseurl = preg_replace('|^https?://|i', '//', $CFG->wwwroot);
+            $url = str_replace($relativebaseurl, '', $url);
+            $templatecontext['videoposter'] = new moodle_url($url);
+        }
+    }
+    $templatecontext['whatsistitle'] = get_config('theme_edumy','whatsistitle');
+    $templatecontext['whatsiscontent'] = format_string(get_config('theme_edumy','whatsiscontent'),false);
+
+    $numbersfrontpage = get_config('theme_edumy','numbersfrontpage');
+    if ($numbersfrontpage) {
+        $templatecontext['numbersfrontpage'] = $numbersfrontpage;
+        $templatecontext['numbersusers'] = $DB->count_records_sql(
+            'SELECT COUNT(DISTINCT userid)
+                    FROM {role_assignments}
+                    WHERE roleid = 5'
+        );
+        $templatecontext['numberscourses'] = $DB->count_records('course', ['visible' => 1]) - 1;
+        $templatecontext['numbersteachers'] = $DB->count_records_sql(
+            'SELECT COUNT(DISTINCT userid)
+                    FROM {role_assignments}
+                    WHERE roleid = 3'
+        );
+        $templatecontext['numbersactivties'] = $DB->count_records('course_modules', ['visible' => 1]) - 1;
+    }
+
+    return $templatecontext;
 }

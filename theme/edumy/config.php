@@ -74,9 +74,15 @@ $THEME->layouts = [
         'defaultregion' => 'side-pre',
     ),
     // The site home page.
+    //'frontpage' => array(
+    //    'file' => 'columns2.php',
+    //    'regions' => array('fullwidth-top', 'fullwidth-bottom', 'above-content', 'below-content', 'left', 'side-pre'),
+    //    'defaultregion' => 'side-pre',
+    //    'options' => array('nonavbar' => true),
+    //),
     'frontpage' => array(
-        'file' => 'columns2.php',
-        'regions' => array('fullwidth-top', 'fullwidth-bottom', 'above-content', 'below-content', 'left', 'side-pre'),
+        'file' => 'frontpage.php',
+        'regions' => array('side-pre'),
         'defaultregion' => 'side-pre',
         'options' => array('nonavbar' => true),
     ),

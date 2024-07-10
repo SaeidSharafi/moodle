@@ -48,9 +48,16 @@
         </ul>
       {{/header_search_bar}}
 
+        {{^isLoggedin}}
+            <ul class="header_user_notif withlogo ccn-frontend-header_user_notif align-items-center d-flex dn-smd">
 
+                {{#lang_menu_icons}}
 
+                    {{{lang_menu}}}
 
+                {{/lang_menu_icons}}
+            </ul>
+        {{/isLoggedin}}
 
       <nav class="navbar navbar-expand" aria-label="{{#str}}sitemenubar, admin{{/str}}">
         {{#primarymoremenu}}
@@ -63,9 +70,6 @@
           {{{ output.page_heading_menu }}}
         </ul>
       </nav>
-
-
-
 
 
 
