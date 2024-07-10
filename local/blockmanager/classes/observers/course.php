@@ -37,8 +37,15 @@ class course {
     public static function created(course_created $event) :void{
         global $DB;
 
+        return;
+
         // Get the course ID from the event data
         $courseid = $event->courseid;
+
+        if (!$course = $DB->get_record('course', array('id' => $courseid))) {
+            return;
+        }
+        $courseformat = course_get_format($course)->get_format();
 
         // Add cocoon_course_overview block to the course
         $block = new \stdClass();
