@@ -3228,8 +3228,8 @@ body.ccn_context_dashboard.ccnDarkMode.ccn_context_dashboard,
 }
 /* CCN VISUALIZE */
 .modal:not(.sign_up_modal) .modal-dialog {
-  width: 95% !important;
-  max-width: 95% !important;
+  width: 100% !important;
+  max-width: 800px !important;
   margin: 0 auto !important;
   padding: 5vh 0 !important;
   position: relative;

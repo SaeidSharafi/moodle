@@ -374,6 +374,17 @@ $ccnControlBlockListUriThumb = $CFG->wwwroot . '/theme/edumy/ccn/visualize/ccn_b
 $PAGE->requires->js_init_call('ccnCommentHandler', array(get_string('add_comment', 'theme_edumy')));
 $PAGE->requires->js_init_call('ccnControl', array($ccnControlBlockListUri, $ccnControlBlockListUriThumb, $ccnLcVbCollection, $ccnMdlVersion));
 $nav = $PAGE->flatnav;
+
+foreach ($nav->getIterator() as &$item) {
+    if ($item->type == \navigation_node::TYPE_COURSE || $item->type == \navigation_node::TYPE_SECTION ) {
+        $nav->remove($item->key);
+    }
+    if (in_array($item->key ,
+        ['participants', 'badgesview', 'competencies','addblock', 'grades','privatefiles','mycourses','contentbank'])){
+        $nav->remove($item->key);
+    }
+}
+
 $templatecontext['flatnavigation'] = $nav;
 $templatecontext['firstcollectionlabel'] = $nav->get_collectionlabel();
 

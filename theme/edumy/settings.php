@@ -856,7 +856,7 @@ if ($ADMIN->fulltree) {
     $page->add(new admin_setting_heading('theme_edumy/color_settings_gradient', get_string('color_settings_gradient', 'theme_edumy'), NULL));
 
     // Gradient Start
-    $setting = new admin_setting_configcolourpicker('theme_edumy/color_gradient_start', get_string('color_gradient_start','theme_edumy'), get_string('color_gradient_start_desc', 'theme_edumy'), '#ff1053');
+    $setting = new admin_setting_configcolourpicker('theme_edumy/color_gradient_start', get_string('color_gradient_start','theme_edumy'), get_string('color_gradient_start_desc', 'theme_edumy'), '#001aff');
     $setting->set_updatedcallback('theme_reset_all_caches');
     $page->add($setting);
 

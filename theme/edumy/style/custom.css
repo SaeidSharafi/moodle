@@ -75,6 +75,45 @@
 .my_course_content_header .dropdown-menu{
     width: fit-content;
 }
+
+.secondary-navigation {
+    border: none;
+    align-items: stretch;
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: #003863;
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .5));
+    z-index: 99;
+    position: relative;
+}
+.secondary-navigation .moremenu {
+    box-shadow: none;
+    background-color: inherit;
+    border-top: none;
+    border-bottom: none;
+    height: 60px;
+}
+.secondary-navigation .moremenu .nav-tabs {
+    border: none;
+    background-color: inherit;
+    max-width: none;
+}
+.secondary-navigation .moremenu .nav-tabs .nav-link {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    color: #fff;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+}
+.secondary-navigation .moremenu .nav-tabs .nav-link:hover, .secondary-navigation .moremenu .nav-tabs .nav-link:focus {
+    background-color: #013537;
+}
+.nav-tabs .dropdown-menu{
+    width: max-content;
+}
+
 @media (max-width: 767.98px) {
     .editmode-switch-form label {
         position: initial;

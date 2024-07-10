@@ -153,9 +153,7 @@ address {
   right: 0;
   top: 0;
 }
-.modal-backdrop {
-  display: none;
-}
+
 .sign_up_modal .modal-header {
   background-color: [[setting:color_primary]];
   border-radius: 50%;
