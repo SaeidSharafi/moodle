@@ -70,107 +70,138 @@
         {{>format_vums/optional_secheader}}
         <div class="d-none hidden course-prgress-container" data-courseid="{{courseid}}"></div>
         <div class="section-details">
-            <div class="generaldetails content">
-                <div class="left side">
-                    {{{ leftsection }}}
-                </div>
-                <div class="right side">
-                    {{{ optionmenu }}}
-                </div>
-                <div class="generaldetails content d-flex flex-column"></div>
-                <h2 class="section-title pt-0 p-t-0 m-0">{{{title}}}</h2>
-                <div class='generalsectioninfo'>
-                    {{{availability}}}
-                    {{#fullsummary}}
-                    {{! <input type="checkbox" class="read-more-state" id="read-more-summary" /> }}
-                    <div class="read-more-target coursesummary" style="-webkit-box-orient: vertical;">{{{fullsummary}}}
+            <div class="course-info">
+                <div class="row no-gutters">
+                    <div class="col-md-8 col-lg-8">
+                        <div class="row no-gutters px-5 w-100">
+                            <div class="col-12 col-md-8">
+                                <div class='generalsectioninfo'>
+                                    <p>{{starttime}}</p>
+                                    <h4>{{fullname}}</h4>
+                                    {{#teachers}}
+                                        <div class="instructor-info stat-container">
+                                            <span> {{teacherlabel}}</span>
+                                            <span class="titles h-semibold-6">
+                                                {{#instructors}}
+                                                {{!}}
+                                                    {{#hasanother}},&nbsp;{{/hasanother}}
+                                                    {{name}}
+                                                {{!}}
+                                                {{/instructors}}
+                                            </span>
+                                        </div>
+                                    {{/teachers}}
+                                    <div>
+                                        <i class="fa fa-user-o"></i>
+                                        <span>{{#str}}student, format_vums{{/str}}</span>
+                                        <span>{{studentscount}}</span>
+                                    </div>
+                                    <div class="d-flex">
+                                        <a class="btn btn-primary" id="course-introduction-button" href="#">
+                                            {{#str}}course_introduction, format_vums{{/str}}
+                                        </a>
+                                        <a class="btn btn-primary d-none" id="course-content-button" href="#">
+                                            {{#str}}course_content, format_vums{{/str}}
+                                        </a>
+                                        {{#announcement}}
+                                            <a class="btn btn-primary" href="{{viewurl}}">
+                                                {{#str}}announcement, format_vums{{/str}}
+                                            </a>
+                                        {{/announcement}}
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 order-first order-md-last">
+                                <div class="course-image mb-3" style="max-width: 250px">
+                                    <img class="w-100" src="{{coursemainimage}}" alt="{{fullname}}"/>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    <a id="readmorebtn" class="d-none readbtn">{{#str}}readmore,format_vums{{/str}}</a>
-                    <a id="readlessbtn" class="d-none readbtn">{{#str}}readless,format_vums{{/str}}</a>
-                    {{! <label for="read-more-summary" class=" text-primary small read-more-trigger"></label> }}
-                    {{/fullsummary}}
-                    <a class="text-muted" href="{{ editsetionurl }}"><span><i class="fa fa-cog font-size-20"
-                                aria-hidden="true"></i></span></a>
+                    <div class="col-md-4 col-lg-4">
+                        <div class="coursedetails">
+                            <div class="d-flex flex-column">
+                                {{#activitylist}}
+                                    <div class="d-flex justify-content-between">
+                                        <span class="flex-shrink-0">{{ name }}</span>
+                                        <div class="align-items-center d-flex px-3 w-100">
+                                            <div class="w-100 border-bottom"></div>
+                                        </div>
+                                        <span class="flex-shrink-0">{{ count }}</span>
+                                    </div>
+                                {{/activitylist}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="coursedetails">
-                <div class="details d-flex flex-column">
-                    {{!> format_vums/course_progress }}
-                    <h3 class="m-0 activities-title">{{#str}}courseinformation,format_vums{{/str}}</h3>
-                    <ul class="section-activities-summary">
-                        {{#activitylist}}
-                        <li class="item">{{ . }}</li>
-                        {{/activitylist}}
-                    </ul>
-                    <ul class="section-activities-summary">
-                        <li class="item">{{studentscount}} {{#str}}student, format_vums{{/str}}</li>
-                    </ul>
-                </div>
+
             </div>
         </div>
         {{#activityexists}}
-        <div class="activities-wrapper d-flex flex-column">
-            <h4 class="activitieshead m-0">{{#str}} generalactivities, format_vums{{/str}}</h4>
-            <div class="content">
-                <div class="summary"></div>
-                <ul class="img-text section general-section-activities  text-center yui3-dd-drop"
-                    data-draggroups="resource">
-                    {{#activities}}
-                    <li class="activity {{{modulename}}} modtype_{{{modulename}}} d-flex flex-column justify-content-between  list-unstyled yui3-dd-drop"
-                        id="module-{{id}}" data-draggroups="resource">
+            <div class="activities-wrapper d-flex flex-column">
+                <h4 class="activitieshead m-0">{{#str}} generalactivities, format_vums{{/str}}</h4>
+                <div class="content">
+                    <div class="summary"></div>
+                    <ul class="img-text section general-section-activities  text-center yui3-dd-drop"
+                        data-draggroups="resource">
+                        {{#activities}}
+                            <li class="activity {{{modulename}}} modtype_{{{modulename}}} d-flex flex-column justify-content-between  list-unstyled yui3-dd-drop"
+                                id="module-{{id}}" data-draggroups="resource">
 
-                        <div class="activityinstance p-0 m-0 d-flex h-100 flex-column justify-content-between">
-                            <div class="title-activity-container text-break w-100 text-left ">
-                                {{{title}}}
-                            </div>
-                            <span class=""><span class="editing_move moodle-core-dragdrop-draghandle"
-                                    title="{{#str}} moveresource, format_vums {{/str}}" tabindex="0"
-                                    data-draggroups="resource" role="button" data-sectionreturn="0"
-                                    style="cursor: move;">{{#pix}} i/move_2d,core {{/pix}}</span></span>
-                            <div data-region="sectionbadges" class="sectionbadges d-flex align-items-center mt-2">
-                                {{> core_courseformat/local/content/section/badges }}
-                            </div>
-                            {{#modstealth}}
-                            <div class="mt-2 d-flex align-items-center">
-                                <span class="badge badge-pill badge-warning">{{#str}}hiddenoncoursepage{{/str}}</span>
-                            </div>
-                            {{/modstealth}}
-                            <div class="contentafterlink">
-                                {{{summary}}}
-                            </div>
-                        </div>
-                        <div class="p-0">
-                            {{#hasopenduedata}}
-                            <div class="description text-left">
-                                <div data-region="activity-dates" class="activity-dates small course-description-item">
-                                    <div class="description-inner">
-                                        {{#opendue}}
-                                        <div>
-                                            <strong>{{label}}</strong> {{timestamp}}
+                                <div class="activityinstance p-0 m-0 d-flex h-100 flex-column justify-content-between">
+                                    <div class="title-activity-container text-break w-100 text-left ">
+                                        {{{title}}}
+                                    </div>
+                                    <span class=""><span class="editing_move moodle-core-dragdrop-draghandle"
+                                                         title="{{#str}} moveresource, format_vums {{/str}}" tabindex="0"
+                                                         data-draggroups="resource" role="button" data-sectionreturn="0"
+                                                         style="cursor: move;">{{#pix}} i/move_2d,core {{/pix}}</span></span>
+                                    <div data-region="sectionbadges" class="sectionbadges d-flex align-items-center mt-2">
+                                        {{> core_courseformat/local/content/section/badges }}
+                                    </div>
+                                    {{#modstealth}}
+                                        <div class="mt-2 d-flex align-items-center">
+                                            <span class="badge badge-pill badge-warning">{{#str}}hiddenoncoursepage{{/str}}</span>
                                         </div>
-                                        {{/opendue}}
+                                    {{/modstealth}}
+                                    <div class="contentafterlink">
+                                        {{{summary}}}
                                     </div>
                                 </div>
-                            </div>
-                            {{/hasopenduedata}}
-                            {{{availstatus}}}
-                            <div class="actions">
-                                {{{completion}}}
-                                {{{modicons}}}
-                            </div>
-                        </div>
+                                <div class="p-0">
+                                    {{#hasopenduedata}}
+                                        <div class="description text-left">
+                                            <div data-region="activity-dates" class="activity-dates small course-description-item">
+                                                <div class="description-inner">
+                                                    {{#opendue}}
+                                                        <div>
+                                                            <strong>{{label}}</strong> {{timestamp}}
+                                                        </div>
+                                                    {{/opendue}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{/hasopenduedata}}
+                                    {{{availstatus}}}
+                                    <div class="actions">
+                                        {{{completion}}}
+                                        {{{modicons}}}
+                                    </div>
+                                </div>
 
-                    </li>
-                    {{/activities}}
-                </ul>
+                            </li>
+                        {{/activities}}
+                    </ul>
+                </div>
             </div>
-        </div>
         {{/activityexists}}
         <div class="text-center showactivitywrapper">
             <span class="showactivity text-primary show">
                 {{#str}}showmore, format_vums{{/str}}
             </span>
         </div>
-        {{{addnewactivity}}}
     </div>
 </li>

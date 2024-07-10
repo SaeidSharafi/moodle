@@ -53,14 +53,13 @@ if ($ADMIN->fulltree) {
     $name = 'format_vums/vumscourseformat';
     $title = new lang_string('vumscourseformat', 'format_vums');
     $description = new lang_string('vumscourseformat_help', 'format_vums');
-    $default = 0;
+    $default = 1;
     $settings->add(new admin_setting_configselect(
         $name,
         $title,
         $description,
         $default,
         array(
-            0 => new lang_string('vumscourseformat_card', 'format_vums'),
             1 => new lang_string('vumscourseformat_list', 'format_vums')
         )
     ));
@@ -71,10 +70,64 @@ if ($ADMIN->fulltree) {
     $setting->set_updatedcallback('theme_reset_all_caches');
     $settings->add($setting);
 
-    // Usage tracking GDPR setting.
-    $name = 'format_vums/enableusagetracking';
-    $title = get_string('enableusagetracking', 'format_vums');
-    $description = get_string('enableusagetrackingdesc', 'format_vums');
-    $default = true;
-    $settings->add(new admin_setting_configcheckbox($name, $title, $description, $default, true, false));
+    global $DB;
+    $activitytypes = array();
+
+    // Query to get all activity modules.
+    $modules = $DB->get_records('modules', array('visible' => 1));
+
+    foreach ($modules as $module) {
+        $activitytypes[$module->name] = get_string('modulename', $module->name);
+    }
+
+    // Create the multi-select element.
+    $settings->add(new admin_setting_configmultiselect(
+        'format_vums/section1activitytypes',
+        get_string('section1activitytypes', 'format_vums'),
+        get_string('section1activitytypes_desc', 'format_vums'),
+        array(),
+        $activitytypes
+    ));
+
+    $settings->add(new admin_setting_configmultiselect(
+        'format_vums/section2activitytypes',
+        get_string('section2activitytypes', 'format_vums'),
+        get_string('section2activitytypes_desc', 'format_vums'),
+        array(),
+        $activitytypes
+    ));
+
+    $settings->add(new admin_setting_configmultiselect(
+        'format_vums/section3activitytypes',
+        get_string('section3activitytypes', 'format_vums'),
+        get_string('section3activitytypes_desc', 'format_vums'),
+        array(),
+        $activitytypes
+    ));
+
+    $settings->add(new admin_setting_configmultiselect(
+        'format_vums/section4activitytypes',
+        get_string('section4activitytypes', 'format_vums'),
+        get_string('section4activitytypes_desc', 'format_vums'),
+        array(),
+        $activitytypes
+    ));
+
+    $settings->add(new admin_setting_configmultiselect(
+        'format_vums/section5activitytypes',
+        get_string('section5activitytypes', 'format_vums'),
+        get_string('section5activitytypes_desc', 'format_vums'),
+        array(),
+        $activitytypes
+    ));
+
+    $settings->add(new admin_setting_configmultiselect(
+        'format_vums/section6activitytypes',
+        get_string('section6activitytypes', 'format_vums'),
+        get_string('section6activitytypes_desc', 'format_vums'),
+        array(),
+        $activitytypes
+    ));
+
+
 }

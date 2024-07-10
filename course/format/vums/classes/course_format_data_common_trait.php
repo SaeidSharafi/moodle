@@ -1062,7 +1062,18 @@ class course_format_data_common_trait {
             }
 
             $generalsecactivities = $this->get_activities_details($generalsection, $course, $courserenderer, $settings);
-            $export->generalsection['activities'] = $generalsecactivities;
+            $announcement_index = null;
+            foreach ($generalsecactivities as $key => $generalsecactivity){
+                if ($generalsecactivity->modulename === 'forum'){
+                    $export->generalsection['announcement'] = $generalsecactivity;
+                    $announcement_index = $key;
+                }
+            }
+            if (isset($announcement_index)){
+                unset($generalsecactivities[$announcement_index]);
+            }
+
+            $export->generalsection['activities'] = array_values($generalsecactivities);
             // Check if activities exists in general section.
             if ( !empty($generalsecactivities) ) {
                 $export->generalsection['activityexists'] = 1;
@@ -1074,11 +1085,15 @@ class course_format_data_common_trait {
                 $course,
                 $generalsection
             );
-
+            $export->generalsection['starttime'] = userdate($course->starttime,get_string('strftimedatemonthabbr','langconfig'));
+            $export->generalsection['fullname'] = $course->fullname;
             $export->generalsection['summary'] = $renderer->abstract_html_contents(
                 $generalsectionsummary, 400
             );
             $export->generalsection['fullsummary'] = format_text($generalsectionsummary, FORMAT_HTML);
+            $export->generalsection['course_summary'] = format_text($course->summary, FORMAT_HTML);
+
+            $export->generalsection['coursemainimage'] = '/theme/moove/pix/course-default.jpg';
 
             // Get course image if added.
             $imgurl = $this->display_file(
@@ -1086,9 +1101,12 @@ class course_format_data_common_trait {
                 $settings['vumscourseimage_filemanager']
             );
             if (empty($imgurl)) {
-                $imgurl = $this->get_dummy_image_for_id($course->id);
+                $imgurl = \core_course\external\course_summary_exporter::get_course_image($course);
             }
-            $export->generalsection['coursemainimage'] = $imgurl;
+
+            if (!empty($imgurl)){
+                $export->generalsection['coursemainimage'] = $imgurl;
+            }
 
             // It will add extra data to the $export , this method takes 3 arguments $export,
             // course, course progress percentage.
@@ -1114,11 +1132,7 @@ class course_format_data_common_trait {
             }
             $lastactivitydata = end($sectionmods);
             foreach ($sectionmods as $mod) {
-                if ($lastactivitydata != $mod) {
-                    $output['activitylist'][] = $mod['count'].' '.$mod['name'].',';
-                } else {
-                    $output['activitylist'][] = $mod['count'].' '.$mod['name'].'.';
-                }
+                $output['activitylist'][] = ['count' => $mod['count'], 'name' => $mod['name'] ];
             }
             $export->activitylist = array_key_exists("activitylist", $output) ? $output['activitylist'] : '';
 
@@ -1143,6 +1157,10 @@ class course_format_data_common_trait {
             if (empty($export->activitylist)) {
                 $export->generalsection['courseinformationdata'] = false;
             }
+
+            $export->introductionsection['course_introduction'] = $settings['vums_introduction'];
+            $export->introductionsection['vums_teaching_group'] = $settings['vums_teaching_group'];
+            $export->introductionsection['vums_assessment'] = $settings['vums_assessment'];
         }
     }
 

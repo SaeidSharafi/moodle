@@ -44,51 +44,7 @@ class usage_tracking {
         // Reduces calls to DB.
         if (is_siteadmin()) {
 
-            // Check consent to send tracking data.
-            $consent = get_config('format_vums', 'enableusagetracking');
-            if ($consent) {
 
-                // TODO: A check needs to be added here, that user has agreed to send this data.
-                // TODO: We will have to add a settings checkbox for that or something similar.
-                $lastsentdata = isset($CFG->usage_data_last_sent_format_vums) ?
-                                $CFG->usage_data_last_sent_format_vums :
-                                false;
-
-                // If current time is greater then saved time, send data again.
-                if (!$lastsentdata || time() > $lastsentdata) {
-                    $resultarr = [];
-
-                    $analyticsdata = json_encode($this->prepare_usage_analytics());
-
-                    $url = "https://edwiser.org/wp-json/edwiser_customizations/send_usage_data";
-                    // Call api endpoint with data.
-                    $ch = curl_init();
-                    $useragent = $_SERVER['HTTP_USER_AGENT'] . ' - ' . $CFG->wwwroot;
-                    // Set the url, number of POST vars, POST data.
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $analyticsdata);
-                    curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                        'Content-Type: application/json',
-                        'Content-Length: ' . strlen($analyticsdata))
-                    );
-
-                    // Execute post.
-                    $result = curl_exec($ch);
-                    if ($result) {
-                        $resultarr = json_decode($result, 1);
-                    }
-                    // Close connection.
-                    curl_close($ch);
-
-                    // Save new timestamp, 7 days --- save only if api returned success.
-                    if (isset($resultarr['success']) && $resultarr['success']) {
-                        set_config('usage_data_last_sent_format_vums', time() + 604800);
-                    }
-                }
-            }
         }
     }
 
@@ -182,7 +138,6 @@ class usage_tracking {
 
         // Suppressing all the errors here, just in case the setting does not exists, to avoid many if statements.
         $filteredpluginconfig['defaultsectionsummarymaxlength'] = @$pluginconfig->defaultsectionsummarymaxlength;
-        $filteredpluginconfig['enableusagetracking'] = @$pluginconfig->enableusagetracking;
         $filteredpluginconfig['version'] = @$pluginconfig->version;
 
         return $filteredpluginconfig;

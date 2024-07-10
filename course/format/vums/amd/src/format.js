@@ -105,6 +105,21 @@ define(['jquery'], function($) {
                 }
             });
 
+            $("#course-introduction-button").on('click', () => {
+                $("#course-introduction").removeClass('d-none');
+                $("#course-content-button").removeClass('d-none');
+                $("#list-container").addClass('d-none');
+                $("#list-editing-container").addClass('d-none');
+                $("#course-introduction-button").addClass('d-none');
+            });
+
+            $("#course-content-button").on('click', () => {
+                $("#list-container").removeClass('d-none');
+                $("#list-editing-container").removeClass('d-none');
+                $("#course-introduction-button").removeClass('d-none');
+                $("#course-introduction").addClass('d-none');
+                $("#course-content-button").addClass('d-none');
+            });
         });
     }
 

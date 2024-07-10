@@ -39,10 +39,13 @@
 
 /**
  * Perform database upgrade
- * @param  int $oldversion Older plugin version
+ *
+ * @param  int  $oldversion  Older plugin version
+ *
  * @return bool
  */
-function xmldb_format_vums_upgrade($oldversion) {
+function xmldb_format_vums_upgrade($oldversion)
+{
     global $DB;
     $dbman = $DB->get_manager();
     if ($oldversion < 2020061800) {
@@ -115,6 +118,26 @@ function xmldb_format_vums_upgrade($oldversion) {
         // vums savepoint reached.
         upgrade_plugin_savepoint(true, 2023021600, 'format', 'vums');
     }
+    //if ($oldversion < 2024071001) {
+    //
+    //    // Define field layouttype to be added to format_vums.
+    //    $table = new xmldb_table('format_vums');
+    //    $field = new xmldb_field('introduction', XMLDB_TYPE_TEXT, null, null, null, null, null, 'layouttype');
+    //    if (!$dbman->field_exists($table, $field)) {
+    //        $dbman->add_field($table, $field);
+    //    }
+    //    $field = new xmldb_field('teaching_group', XMLDB_TYPE_TEXT, null, null, null, null, null, 'introduction');
+    //    if (!$dbman->field_exists($table, $field)) {
+    //        $dbman->add_field($table, $field);
+    //    }
+    //    $field = new xmldb_field('assessment', XMLDB_TYPE_TEXT, null, null, null, null, null, 'teaching_group');
+    //    if (!$dbman->field_exists($table, $field)) {
+    //        $dbman->add_field($table, $field);
+    //    }
+    //
+    //    // Vums savepoint reached.
+    //    upgrade_plugin_savepoint(true, 2024071001, 'format', 'vums');
+    //}
 
     return true;
 }

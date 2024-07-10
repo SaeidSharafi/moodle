@@ -13,13 +13,12 @@ define(['jquery', 'core/ajax', 'core/modal_factory', 'core/templates'],
                     title: 'Choose an activity or resource',
                     body: '<div class="modchoosercontainer"  id="activities">' +
                         '<div class="chooser-container">' +
-                        '<div class="d-flex flex-wrap mw-100 optionscontainer p-1 position-relative">' +
-                        'Loading...' +
-                        '</div></div></div>',
+                        '<div class="preloader"></div>' +
+                        '</div></div>',
                     footer: '',
-                    large: true,
+                    large: false,
                     templateContext: {
-                        classes: 'modchooser'
+                        classes: 'modchooser vums'
                     }
                 }).done(function(modal) {
                     modal.show();

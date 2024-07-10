@@ -155,21 +155,6 @@ $string['showless'] = 'Show Less';
 $string['showmore'] = 'Show More';
 $string['Complete'] = 'complete';
 
-// Usage tracking.
-$string['enableusagetracking'] = "Enable Usage Tracking";
-$string['enableusagetrackingdesc'] = "<strong>USAGE TRACKING NOTICE</strong>
-
-<hr class='text-muted' />
-
-<p>Edwiser from now on will collect anonymous data to generate product usage statistics.</p>
-
-<p>This information will help us guide the development in right direction and the Edwiser community prosper.</p>
-
-<p>Having said that we don't gather your personal data or of your students during this process. You can disable this from the plugin whenever you wish to opt out of this service.</p>
-
-<p>An overview of the data collected is available <strong><a href='https://forums.edwiser.org/topic/67/anonymously-tracking-the-usage-of-edwiser-products' target='_blank'>here</a></strong>.</p>";
-
-
 $string['edw_format_hd_bgpos'] = "Course header background image position";
 $string['bottom'] = "bottom";
 $string['center'] = "center";
@@ -198,3 +183,23 @@ $string['readmore'] = 'Read More';
 $string['readless'] = 'Read Less';
 $string['studentscount'] = 'Students Count:';
 $string['student'] = 'Students';
+
+
+$string['course_introduction'] = 'Introduction';
+$string['course_teaching_group'] = 'Teaching Group';
+$string['course_assessment'] = 'Assessment';
+$string['course_content'] = 'Course Content';
+$string['announcement'] = 'Announcement';
+
+$string['section1activitytypes'] ='Course Resources';
+$string['section1activitytypes_desc'] ='Activities that can be add to Course Resources section';
+$string['section2activitytypes'] ='Assignment';
+$string['section2activitytypes_desc'] ='Activities that can be add to Assignment section';
+$string['section3activitytypes'] ='Class';
+$string['section3activitytypes_desc'] ='Activities that can be add to Class section';
+$string['section4activitytypes'] ='Forum';
+$string['section4activitytypes_desc'] ='Activities that can be add to Forum section';
+$string['section5activitytypes'] ='Quiz';
+$string['section5activitytypes_desc'] ='Activities that can be add to Quiz section';
+$string['section6activitytypes'] ='More Resources';
+$string['section6activitytypes_desc'] ='Activities that can be add to More Resources section';

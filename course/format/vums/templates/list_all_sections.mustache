@@ -35,50 +35,113 @@
     }
 }}
 {{#editing}}
-<div id="card-editing-container" class="vums-format-card all-section-format theme-{{theme}} row">
-    <ul class="sections row generalsection-container">
-        {{! Display General Section }}
-        {{#generalsection}}
-        {{> format_vums/card_general_section_edit }}
-        {{/generalsection}}
-    </ul>
-</div>
-
-<div id="list-editing-container" class="vums-format-list all-section-format all-section theme-{{theme}} mt-20">
-    <ul class="nav nav-tabs nav-fill" role="tablist">
-        {{#sections}}
-            {{> format_vums/list_sections_titles }}
-        {{/sections}}
-    </ul>
-    <div  class="tab-content">
-        {{#sections}}
-            {{> format_vums/list_sections }}
-        {{/sections}}
+    <div id="card-editing-container" class="vums-format-card all-section-format theme-{{theme}} row">
+        <ul class="sections row generalsection-container">
+            {{! Display General Section }}
+            {{#generalsection}}
+                {{> format_vums/card_general_section_edit }}
+            {{/generalsection}}
+        </ul>
     </div>
-</div>
+    {{#introductionsection}}
+        <div class="course-introduction d-none" id="course-introduction">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" data-toggle="tab" data-target="#introduction-content-1" role="tab" aria-controls="introduction-content-1"
+                       aria-selected="true">{{#str}}course_introduction, format_vums{{/str}}</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-toggle="tab" data-target="#introduction-content-2" role="tab" aria-controls="introduction-content-2"
+                       aria-selected="true">{{#str}}course_teaching_group, format_vums{{/str}}</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-toggle="tab" data-target="#introduction-content-3" role="tab" aria-controls="introduction-content-3"
+                       aria-selected="true">{{#str}}course_assessment, format_vums{{/str}}</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="introduction-content-1" class="tab-pane fade show active" role="tabpanel" aria-labelledby="introduction-content-1">
+                    <div class="card-footer text-muted border-0 ">
+                        {{{course_introduction}}}
+                    </div>
+                </div>
+                <div id="introduction-content-2" class="tab-pane fade" role="tabpanel" aria-labelledby="introduction-content-2">
+                    <div class="card-footer text-muted border-0 ">
+                        {{{vums_teaching_group}}}
+                    </div>
+                </div>
+                <div id="introduction-content-3" class="tab-pane fade" role="tabpanel" aria-labelledby="introduction-content-3">
+                    <div class="card-footer text-muted border-0 ">
+                        {{{vums_assessment}}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/introductionsection}}
+    <div id="list-editing-container" class="course-content-wrapper vums-format-list all-section-format all-section theme-{{theme}} mt-20">
+        <ul class="nav nav-tabs nav-fill" role="tablist">
+            {{#sections}}
+                {{> format_vums/list_sections_titles }}
+            {{/sections}}
+        </ul>
+        <div class="tab-content">
+            {{#sections}}
+                {{> format_vums/list_sections }}
+            {{/sections}}
+        </div>
+    </div>
 {{/editing}}
 {{^editing}}
-<div id="card-container" class="vums-format-card all-section-format theme-{{theme}} row">
-  <ul class="sections row generalsection-container">
-      {{! Display General Section }}
-      {{#generalsection}}
-      {{> format_vums/card_general_section }}
-      {{/generalsection}}
-  </ul>
-</div>
-<div id="list-container" class="vums-format-list all-section-format theme-{{theme}} mt-20">
-    <ul class="nav nav-tabs nav-fill" role="tablist">
-        {{! Display Remaining Section }}
-        {{#sections}}
-            {{> format_vums/list_sections_titles }}
-        {{/sections}}
-    </ul>
-    <div  class="tab-content">
-        {{#sections}}
-            {{> format_vums/list_sections }}
-        {{/sections}}
+    <div id="card-container" class="vums-format-card all-section-format theme-{{theme}} row">
+        <ul class="sections row generalsection-container">
+            {{! Display General Section }}
+            {{#generalsection}}
+                {{> format_vums/card_general_section }}
+            {{/generalsection}}
+        </ul>
     </div>
-</div>
+    {{#introductionsection}}
+        <div class="course-introduction d-none" id="course-introduction">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" data-toggle="tab" data-target="#introduction-content-1" role="tab" aria-controls="introduction-content-1"
+                       aria-selected="true">{{#str}}course_introduction, format_vums{{/str}}</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-toggle="tab" data-target="#introduction-content-2" role="tab" aria-controls="introduction-content-2"
+                       aria-selected="true">{{#str}}course_teaching_group, format_vums{{/str}}</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" data-toggle="tab" data-target="#introduction-content-3" role="tab" aria-controls="introduction-content-3"
+                       aria-selected="true">{{#str}}course_assessment, format_vums{{/str}}</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="introduction-content-1" class="tab-pane fade show active" role="tabpanel" aria-labelledby="introduction-content-1">
+                    {{{course_introduction}}}
+                </div>
+                <div id="introduction-content-2" class="tab-pane fade" role="tabpanel" aria-labelledby="introduction-content-2">
+                    {{{vums_teaching_group}}}
+                </div>
+                <div id="introduction-content-3" class="tab-pane fade" role="tabpanel" aria-labelledby="introduction-content-3">
+                    {{{vums_assessment}}}
+                </div>
+            </div>
+        </div>
+    {{/introductionsection}}
+    <div id="list-container" class="course-content-wrapper vums-format-list all-section-format theme-{{theme}} mt-20">
+        <ul class="nav nav-tabs nav-fill" role="tablist">
+            {{! Display Remaining Section }}
+            {{#sections}}
+                {{> format_vums/list_sections_titles }}
+            {{/sections}}
+        </ul>
+        <div class="tab-content">
+            {{#sections}}
+                {{> format_vums/list_sections }}
+            {{/sections}}
+        </div>
+    </div>
 
 {{/editing}}
 

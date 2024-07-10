@@ -11,6 +11,9 @@
             <FIELD NAME="sectionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Null if this is a course option, otherwise id of the section this option is for"/>
             <FIELD NAME="activityid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="Null if this is a course option, otherwise id of the section this option is for"/>
             <FIELD NAME="layouttype" TYPE="char" LENGTH="100" NOTNULL="true" SEQUENCE="false" COMMENT="Name of the layout type option"/>
+<!--            <FIELD NAME="introduction" TYPE="text" NOTNULL="false" SEQUENCE="false"/>-->
+<!--            <FIELD NAME="teaching_group" TYPE="text" NOTNULL="false" SEQUENCE="false"/>-->
+<!--            <FIELD NAME="assessment" TYPE="text" NOTNULL="false" SEQUENCE="false"/>-->
         </FIELDS>
         <KEYS>
             <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

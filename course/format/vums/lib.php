@@ -290,12 +290,25 @@ class format_vums extends core_courseformat\base
      */
     public function course_format_options($foreditform = false)
     {
+        global $COURSE;
         static $courseformatoptions = false;
 
         if ($courseformatoptions === false) {
             $courseconfig = get_config('moodlecourse');
             $defaultlayout = get_config('format_vums', 'vumscourseformat');
             $courseformatoptions = array(
+                'vums_introduction'         => array(
+                    'default' => "",
+                    'type'    => PARAM_RAW
+                ),
+                'vums_teaching_group'         => array(
+                    'default' => "",
+                    'type'    => PARAM_RAW
+                ),
+                'vums_assessment'         => array(
+                    'default' => "",
+                    'type'    => PARAM_RAW
+                ),
                 'hiddensections'               => array(
                     'default' => $courseconfig->hiddensections,
                     'type'    => PARAM_INT,
@@ -337,6 +350,7 @@ class format_vums extends core_courseformat\base
                     'type'    => PARAM_RAW
                 ),
 
+
             );
         }
 
@@ -361,7 +375,6 @@ class format_vums extends core_courseformat\base
                     'element_type'       => 'select',
                     'element_attributes' => array(
                         array(
-                            VUMS_CARD_FORMAT => new lang_string('vumscourseformat_card', 'format_vums'),
                             VUMS_LIST_FORMAT => new lang_string('vumscourseformat_list', 'format_vums'),
                         )
                     ),
@@ -385,7 +398,6 @@ class format_vums extends core_courseformat\base
                     'element_type'       => 'select',
                     'element_attributes' => array(
                         array(
-                            COURSE_DISPLAY_MULTIPAGE  => new lang_string('coursedisplay_multi'),
                             COURSE_DISPLAY_SINGLEPAGE => new lang_string('coursedisplay_single'),
                         )
                     ),
@@ -407,63 +419,94 @@ class format_vums extends core_courseformat\base
                 ),
                 'sectiontitlesummarymaxlength' => array(
                     'label'          => new lang_string('sectiontitlesummarymaxlength', 'format_vums'),
-                    'element_type'   => 'text',
+                    'element_type'   => 'hidden',
                     'help'           => 'sectiontitlesummarymaxlength',
                     'help_component' => 'format_vums'
                 ),
                 'vumsdefaultsectionview'      => array(
                     'label'              => new lang_string('vumsdefaultsectionview', 'format_vums'),
-                    'element_type'       => 'select',
-                    'element_attributes' => array(
-                        array(
-                            1 => new lang_string('expanded', 'format_vums'),
-                            0 => new lang_string('collapsed', 'format_vums')
-                        )
-                    ),
+                    'element_type'       => 'hidden',
+                    //'element_attributes' => array(
+                    //    array(
+                    //        1 => new lang_string('expanded', 'format_vums'),
+                    //        0 => new lang_string('collapsed', 'format_vums')
+                    //    )
+                    //),
                     'help'               => 'vumsdefaultsectionview',
                     'help_component'     => 'format_vums'
                 ),
                 'vumsenablecardbackgroundimg' => array(
                     'label'              => new lang_string('vumsenablecardbackgroundimg', 'format_vums'),
-                    'element_type'       => 'select',
-                    'element_attributes' => array(
-                        array(
-                            0 => new lang_string('disablecardbackgroundimg', 'format_vums'),
-                            1 => new lang_string('enablecardbackgroundimg', 'format_vums')
-                        )
-                    ),
+                    'element_type'       => 'hidden',
+                    //'element_attributes' => array(
+                    //    array(
+                    //        0 => new lang_string('disablecardbackgroundimg', 'format_vums'),
+                    //        1 => new lang_string('enablecardbackgroundimg', 'format_vums')
+                    //    )
+                    //),
                     'help'               => 'vumsenablecardbackgroundimg',
                     'help_component'     => 'format_vums'
                 ),
                 'edw_format_hd_bgpos'          => array(
                     'label'              => new lang_string('edw_format_hd_bgpos', 'format_vums'),
-                    'element_type'       => 'select',
-                    'element_attributes' => array(
-                        array(
-                            "bottom" => new lang_string('bottom', 'format_vums'),
-                            "center" => new lang_string('center', 'format_vums'),
-                            "top"    => new lang_string('top', 'format_vums'),
-                            "left"   => new lang_string('left', 'format_vums'),
-                            "right"  => new lang_string('right', 'format_vums'),
-                        )
-                    ),
+                    'element_type'       => 'hidden',
+                    //'element_attributes' => array(
+                    //    array(
+                    //        "bottom" => new lang_string('bottom', 'format_vums'),
+                    //        "center" => new lang_string('center', 'format_vums'),
+                    //        "top"    => new lang_string('top', 'format_vums'),
+                    //        "left"   => new lang_string('left', 'format_vums'),
+                    //        "right"  => new lang_string('right', 'format_vums'),
+                    //    )
+                    //),
                     'help'               => 'edw_format_hd_bgpos',
                     'help_component'     => 'format_vums'
                 ),
                 'edw_format_hd_bgsize'         => array(
                     'label'              => new lang_string('edw_format_hd_bgsize', 'format_vums'),
-                    'element_type'       => 'select',
-                    'element_attributes' => array(
-                        array(
-                            "contain" => new lang_string('contain', 'format_vums'),
-                            "auto"    => new lang_string('auto', 'format_vums'),
-                            "cover"   => new lang_string('cover', 'format_vums'),
-                        )
-                    ),
+                    'element_type'       => 'hidden',
+                    //'element_attributes' => array(
+                    //    array(
+                    //        "contain" => new lang_string('contain', 'format_vums'),
+                    //        "auto"    => new lang_string('auto', 'format_vums'),
+                    //        "cover"   => new lang_string('cover', 'format_vums'),
+                    //    )
+                    //),
                     'help'               => 'edw_format_hd_bgsize',
                     'help_component'     => 'format_vums'
                 ),
-
+                'vums_introduction' => array(
+                    'label'          => new lang_string('course_introduction', 'format_vums'),
+                    'element_type'   => 'editor',
+                    'help'           => 'course_introduction',
+                    'help_component' => 'format_vums'
+                ),
+                'vums_teaching_group' => array(
+                    'label'          => new lang_string('course_teaching_group', 'format_vums'),
+                    'element_type'   => 'editor',
+                    'element_attributes' => array(
+                        array(
+                            'enable_filemanagement' => false,
+                            'subdirs'=>0,
+                            'maxfiles'=>0,
+                            'noclean'=>1,
+                        )
+                    ),                    'help'           => 'course_introduction',
+                    'help_component' => 'format_vums'
+                ),
+                'vums_assessment' => array(
+                    'label'          => new lang_string('course_assessment', 'format_vums'),
+                    'element_type'   => 'editor',
+                    'element_attributes' => array(
+                        array(
+                            'enable_filemanagement' => false,
+                            'subdirs'=>0,
+                            'maxfiles'=>0,
+                            'noclean'=>1,
+                        )
+                    ),                    'help'           => 'course_introduction',
+                    'help_component' => 'format_vums'
+                ),
             );
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
@@ -565,9 +608,49 @@ class format_vums extends core_courseformat\base
             $fileitemid
         );
         $mform->setDefault('vumscourseimage_filemanager', $data->vumscourseimage_filemanager);
+        $settings = $this->get_format_options();
+        $vums_introduction = $settings['vums_introduction'];
+        $vums_introduction_editor = [
+            'text' => $vums_introduction,
+            'format' => FORMAT_HTML,
+            'itemid' => 0,
+        ];
+        $editoropts = array(
+            'subdirs' => 0,
+            'maxbytes' => $COURSE->maxbytes,
+            'maxfiles' => EDITOR_UNLIMITED_FILES,
+            'context' => $coursecontext
+        );
+        //$mform->addElement('editor', 'vums_introduction', get_string('vums_introduction', 'yourplugin'), null, $editoropts);
+        $mform->setDefault('vums_introduction', $vums_introduction_editor);
+        $vums_teaching_group = $settings['vums_teaching_group'];
+        $vums_teaching_group_editor = [
+            'text' => $vums_teaching_group,
+            'format' => FORMAT_HTML,
+            'itemid' => 0
+        ];
+        $mform->setDefault('vums_teaching_group', $vums_teaching_group_editor);
+
+        // Add vums_assessment editor.
+        $vums_assessment = $settings['vums_assessment'];
+        $vums_assessment_editor = [
+            'text' => $vums_assessment,
+            'format' => FORMAT_HTML,
+            'itemid' => 0
+        ];
+        $mform->setDefault('vums_assessment', $vums_assessment_editor);
+
         foreach ($elements as $key => $element) {
             if ($element->getName() == 'vumscourseimage_filemanager') {
                 $element->setMaxfiles(1);
+            }
+            if (
+                $element->getName() === 'vums_introduction'
+                || $element->getName() === 'vums_teaching_group'
+                || $element->getName() === 'vums_assessment'
+            ){
+                $element->setMaxbytes($COURSE->maxbytes);
+                $element->setMaxfiles(EDITOR_UNLIMITED_FILES);
             }
         }
 
@@ -769,8 +852,30 @@ class format_vums extends core_courseformat\base
                     $data->vumscourseimage_filemanager
                 );
             }
-
+            if (isset($data->vums_introduction)) {
+                if (is_array($data->vums_introduction)) {
+                    $data->vums_introduction = clean_param($data->vums_introduction['text'], PARAM_RAW);
+                } else {
+                    $data->vums_introduction = clean_param($data->vums_introduction, PARAM_RAW);
+                }
+            }
+            if (isset($data->vums_teaching_group)) {
+                if (is_array($data->vums_teaching_group)) {
+                    $data->vums_teaching_group = clean_param($data->vums_teaching_group['text'], PARAM_RAW);
+                } else {
+                    $data->vums_teaching_group = clean_param($data->vums_teaching_group, PARAM_RAW);
+                }
+            }
+            if (isset($data->vums_assessment)) {
+                if (is_array($data->vums_assessment)) {
+                    $data->vums_assessment = clean_param($data->vums_assessment['text'], PARAM_RAW);
+                } else {
+                    $data->vums_assessment = clean_param($data->vums_assessment, PARAM_RAW);
+                }
+            }
             $this->set_vumscourseimage_filemanager($data->vumscourseimage_filemanager);
+
+
         }
         return $this->update_format_options($data);
     }
@@ -935,6 +1040,9 @@ function get_enrolled_teachers_context_formated($courseid = null, $frontlineteac
             }
             $profilecount++;
         }
+        $context['teacherlabel'] = $profilecount - $namescount > 1
+            ? get_string('teachers','format_vums')
+            : get_string('teacher','format_vums');
         if ($profilecount > $namescount) {
             $context['teachercount'] = $profilecount - $namescount;
         }
