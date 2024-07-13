@@ -702,9 +702,23 @@ $string['faqcount'] = 'تعدا سوالات پرتکرار';
 $string['faqcountdesc'] = 'تعداد سوالاتی که باید اضاضه شود را وارد و <strong>سپس روی دکمه ذخیره کلیک کنید</strong> تا مقادیر ورودی اعمال شود.<br> درصورتی نیاز به سوالات پرتکرار ندارید، ۰ را انتخاب کنید';
 $string['faqquestion'] = 'سوال پرتکرار {$a}';
 $string['faqanswer'] = 'پاسخ سوال {$a}';
+$string['faq_settings'] = 'سوالات پر تکرار';
+
+$string['numbersfrontpage'] = 'نمایش شمارنده‌های سایت';
+$string['numbersfrontpagedesc'] = 'در صورت فعالسازی، تعداد کاربران فعال و درس‌ها را در صفحه اول نمایش می‌دهد.';
+
+
+$string['frontpage_settings'] = 'صفحه اول';
+$string['videoposter'] = 'پوستر ویدپو';
+$string['videoposter_desc'] = 'تصویر پوستر ویدپوی صفحه اول';
+$string['videofile'] = 'فایل ویدپویی صفحه اول';
+$string['videofile_desc'] = 'فایل ویدپویی که در صفحه اول نمایش داده میشود. فرمت mp4';
+
 
 $string['whatistitle'] = 'عنوان نوید چیست؟';
+$string['whatsistitle_desc'] = 'عنوان نوید چیست؟';
 $string['whatsiscontent'] = 'محتوای نوید چیست؟';
+$string['whatsiscontent_desc'] = 'محتوای نوید چیست؟';
 $string['whatistitle_default'] = 'نوید چیست؟';
 $string['whatsiscontent_default'] = '<span lang="fa" class="multilang">
     سیستم های مدیریت یادگیری (LMS یا Learning Management System) زیرساخت کلیدی و ضروری برای استقرار و توسعه یادگیری الکترونیکی محسوب می شوند. این سیستم
