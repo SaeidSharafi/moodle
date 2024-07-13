@@ -650,7 +650,7 @@ li.mm-listitem {
   -o-transition: transform .4s ease;
   transition: transform .4s ease;
   transition: transform .4s ease, -webkit-transform .4s ease;
-  z-index: 1
+  z-index: 1050;
 }
 .mm-wrapper_opened {
   overflow-x: hidden;
