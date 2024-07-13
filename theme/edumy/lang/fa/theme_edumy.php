@@ -715,7 +715,7 @@ $string['videofile'] = 'فایل ویدپویی صفحه اول';
 $string['videofile_desc'] = 'فایل ویدپویی که در صفحه اول نمایش داده میشود. فرمت mp4';
 
 
-$string['whatistitle'] = 'عنوان نوید چیست؟';
+$string['whatsistitle'] = 'عنوان نوید چیست؟';
 $string['whatsistitle_desc'] = 'عنوان نوید چیست؟';
 $string['whatsiscontent'] = 'محتوای نوید چیست؟';
 $string['whatsiscontent_desc'] = 'محتوای نوید چیست؟';

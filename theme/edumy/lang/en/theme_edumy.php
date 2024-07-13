@@ -705,7 +705,7 @@ $string['faqcount'] = 'FAQ questions';
 $string['faqcountdesc'] = 'Select how many questions you want to add <strong>then click SAVE</strong> to load the input fields.<br>If you don\'t want a FAQ, just select 0.';
 $string['faqquestion'] = 'FAQ question {$a}';
 $string['faqanswer'] = 'FAQ answer {$a}';
-$string['faq'] = 'FAQ';
+$string['faq_settings'] = 'FAQ';
 
 $string['numbersfrontpage'] = 'Show site numberss';
 $string['numbersfrontpagedesc'] = 'If enabled, display the number of active users and courses in the frontpage.';
@@ -716,8 +716,10 @@ $string['videoposter_desc'] = 'Video poster for front page video';
 $string['videofile'] = 'Video file';
 $string['videofile_desc'] = 'Video file that is play in front page, video format should be MP4';
 
-$string['whatistitle'] = 'What is ...? title';
+$string['whatsistitle'] = 'What is ...? title';
+$string['whatsistitle_desc'] = 'What is ...? title';
 $string['whatsiscontent'] = 'What is ...? content';
+$string['whatsiscontent_desc'] = 'What is ...? content';
 $string['whatistitle_default'] = 'What is NAVID?';
 $string['whatsiscontent_default'] = '<span lang="fa" class="multilang">
     سیستم های مدیریت یادگیری (LMS یا Learning Management System) زیرساخت کلیدی و ضروری برای استقرار و توسعه یادگیری الکترونیکی محسوب می شوند. این سیستم
