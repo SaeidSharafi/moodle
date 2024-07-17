@@ -42,15 +42,17 @@
 <div id="section-content-{{{index}}}" class="tab-pane fade {{#isfirst}}show active{{/isfirst}}" role="tabpanel" aria-labelledby="section-content-{{index}}">
     <div class="content card-block vums-list-content-border" aria-labelledby="section-{{index}}">
         <div class="card-footer text-muted border-0 " aria-labelledby="section-{{index}} .sectionname a:not(.quickeditlink)" {{#collapsed}}style="display: none;"{{/collapsed}}>
-            <div style="padding: 24px;">
-                <button class="btn btn-link text-decoration-none add-mod d-flex align-items-center p-3 mb-3 btn-primary w-100" data-action="open-custom-chooser"
-                        data-sectionid="{{index}}" data-sectionreturnid="0">
+            {{#editing}}
+                <div style="padding: 24px;">
+                    <button class="btn btn-link text-decoration-none add-mod d-flex align-items-center p-3 mb-3 btn-primary w-100" data-action="open-custom-chooser"
+                            data-sectionid="{{index}}" data-sectionreturnid="0">
                     <span class="pluscontainer icon-no-margin icon-size-3 d-flex p-2 mr-3">
                         <i class="icon fa fa-plus fa-fw " aria-hidden="true"></i>
                     </span>
-                    <span class="activity-add-text">{{#str}}addresourceoractivity, moodle{{/str}}</span>
-                </button>
-            </div>
+                        <span class="activity-add-text">{{#str}}addresourceoractivity, moodle{{/str}}</span>
+                    </button>
+                </div>
+            {{/editing}}
             {{#sectionactivities}}
                 {{{sectionactivities}}}
             {{/sectionactivities}}
