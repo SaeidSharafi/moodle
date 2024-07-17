@@ -686,8 +686,14 @@ body.dir-rtl.format-tiles .section-cm-edit-actions .dropdown-menu {
 .pagelayout-frontpage .ccn_breadcrumb_widgets,
 .path-login .ccn_breadcrumb_widgets,
 .pagelayout-basepage .ccn_breadcrumb_widgets{
-
+    margin: 0 !important;
 }
+.pagelayout-frontpage .ccn_breadcrumb_widgets .page-context-header,
+.path-login .ccn_breadcrumb_widgets .page-context-header,
+.pagelayout-basepage .ccn_breadcrumb_widgets .page-context-header{
+    padding: 0 !important;
+}
+
 .pagelayout-frontpage header.ccnHeader1:not(.slideInDown),
 .pagelayout-frontpage .mobile-menu .header.stylehome1:not(.slideInDown),
 .path-login header.ccnHeader1:not(.slideInDown ),
