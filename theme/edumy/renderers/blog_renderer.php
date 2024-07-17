@@ -334,7 +334,7 @@ class theme_edumy_core_blog_renderer extends core_blog_renderer {
              </div>';
            } elseif(isset($PAGE->theme->settings->blogstyle) && ($PAGE->theme->settings->blogstyle == 2)) {
              $o .= '
-             <div class="ccn-blog-list-entry col-sm-6 col-lg-6 col-xl-6">
+             <div class="ccn-blog-list-entry col-sm-6 col-lg-6 col-xl-4">
                <div class="blog_grid_post mb30">';
                if(!empty($image)){
                  $o .= '

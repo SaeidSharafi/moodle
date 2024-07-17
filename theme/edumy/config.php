@@ -86,6 +86,12 @@ $THEME->layouts = [
         'defaultregion' => 'side-pre',
         'options' => array('nonavbar' => true),
     ),
+    'basepage' => array(
+        'file' => 'basepage.php',
+        'regions' => array('side-pre'),
+        'defaultregion' => 'side-pre',
+        'options' => array('nonavbar' => true),
+    ),
     // Server administration scripts.
     'admin' => array(
         'file' => $ccnAdminLayout,

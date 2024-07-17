@@ -32,6 +32,7 @@ if (isloggedin() ) {
 $PAGE->set_url('/courseteaser_admin/course_order.php');
 $PAGE->set_context(context_system::instance());
 $PAGE->set_title(get_string('pluginname', 'auth_otp'));
+$PAGE->set_pagelayout('basepage');
 echo $OUTPUT->header();
 $courseurl = $CFG->wwwroot . "/my/";
 $SESSION->wantsurl = $courseurl;

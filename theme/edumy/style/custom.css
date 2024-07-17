@@ -678,3 +678,27 @@ body.dir-rtl.format-tiles .section-cm-edit-actions .dropdown-menu {
     left: auto;
     right: 20px;
 }
+.pagelayout-frontpage .inner_page_breadcrumb,
+.path-login .inner_page_breadcrumb,
+.pagelayout-basepage .inner_page_breadcrumb{
+    display: none;
+}
+.pagelayout-frontpage header.ccnHeader1:not(.slideInDown),
+.pagelayout-frontpage .mobile-menu .header.stylehome1:not(.slideInDown),
+.path-login header.ccnHeader1:not(.slideInDown ),
+.path-login .mobile-menu .header.stylehome1:not(.slideInDown),
+.pagelayout-basepage header.ccnHeader1:not(.slideInDown ),
+.pagelayout-basepage .mobile-menu .header.stylehome1:not(.slideInDown )
+{
+    background-image: -moz-linear-gradient(135deg, #001aff 0%, #3452ff 100%);
+    background-image: -webkit-linear-gradient(135deg, #001aff 0%, #3452ff 100%);
+    background-image: -ms-linear-gradient(135deg, #001aff 0%, #3452ff 100%);
+}
+.notloggedin .menu_bar_home2{
+ display: none;
+}
+.pagelayout-frontpage #ccn-page-wrapper,
+.path-login section.our-log,
+.pagelayout-basepage #ccn-page-wrapper{
+    margin-top: 77px !important;
+}

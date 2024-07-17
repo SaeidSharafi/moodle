@@ -150,7 +150,9 @@ if ($usernode && $courseid != SITEID) {
     $blognode = $usernode->add(get_string('blogscourse', 'blog'), $blogurl);
     $blognode->make_active();
 }
-
+if (!isloggedin()){
+    $PAGE->set_pagelayout('basepage');
+}
 if ($courseid != SITEID) {
     $PAGE->set_heading($course->fullname);
     echo $OUTPUT->header();
