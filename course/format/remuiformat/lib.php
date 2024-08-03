@@ -908,10 +908,11 @@ function format_remuiformat_check_plugin_available($component)
  */
 function get_enrolled_teachers_context_formate($courseid = null, $frontlineteacher = false)
 {
-    global $OUTPUT;
+    global $OUTPUT,$DB;
     $coursecontext = \context_course::instance($courseid);
     $teachers = get_enrolled_users($coursecontext, 'mod/folder:managefiles', 0, '*', 'firstname');
-
+    $edit_teacher = $DB->get_record('role', array('shortname' => 'editingteacher'));
+    $teacherrole = $DB->get_record('role', array('shortname' => 'teacher'));
     $context = array();
 
     if ($teachers) {
@@ -919,6 +920,13 @@ function get_enrolled_teachers_context_formate($courseid = null, $frontlineteach
         $profilecount = 0;
 
         foreach ($teachers as $key => $teacher) {
+            //$roles = (get_user_roles($coursecontext,$teacher->id));
+            if(!user_has_role_assignment($teacher->id,$edit_teacher->id,$coursecontext->id)
+                && !user_has_role_assignment($teacher->id,$teacherrole->id,$coursecontext->id)) {
+                continue;
+            };
+
+
             if ($frontlineteacher && $profilecount < $namescount) {
                 $instructor = array();
                 $instructor['name'] = fullname($teacher, true);
