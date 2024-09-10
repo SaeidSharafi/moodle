@@ -293,5 +293,4 @@
     if ($completion->is_enabled()) {
         $PAGE->requires->js_call_amd('core_course/view', 'init');
     }
-
     echo $OUTPUT->footer();
