@@ -246,19 +246,6 @@ if ($ADMIN->fulltree) {
         get_string('headertype', 'theme_edumy'),
         get_string('headertype_desc', 'theme_edumy'), null,
                 array('1' => 'Header 1',
-                      '2' => 'Header 2',
-                      '3' => 'Header 3',
-                      '4' => 'Header 4',
-                      '5' => 'Header 5',
-                      '6' => 'Header 6',
-                      '7' => 'Header 7',
-                      '8' => 'Header 8',
-                      '9' => 'Header 9',
-                      '10' => 'Header 10',
-                      '11' => 'Header 11',
-                      '12' => 'Header 12',
-                      '13' => 'Header 13',
-                      '14' => 'Header 14',
                     ));
     $setting->set_updatedcallback('theme_reset_all_caches');
     $page->add($setting);

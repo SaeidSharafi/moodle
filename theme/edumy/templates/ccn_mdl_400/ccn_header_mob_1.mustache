@@ -1,6 +1,7 @@
-<div id="page" class="stylehome1 h0">
-  <div class="mobile-menu">
-    <div class="header stylehome1">
+<div id="page" class="mob-menu stylehome1 h0 w-100">
+  <div class="mobile-menu position-fixed w-100">
+    <div class="header stylehome1 d-flex justify-content-between align-items-baseline">
+        <div class="d-flex">
       {{#logo}}
         <div class="main_logo_home2">
           <a class="mobileBrand" href="{{{ ccnLogoUrl }}}">
@@ -16,6 +17,20 @@
           </a>
         </div>
       {{/logo}}
+            {{^isLoggedin}}
+                <ul class="header_user_notif mobile withlogo ccn-frontend-header_user_notif mobile align-items-center d-flex">
+
+                    {{#lang_menu_icons}}
+
+                        {{{lang_menu}}}
+
+                    {{/lang_menu_icons}}
+                </ul>
+            {{/isLoggedin}}
+
+        </div>
+        <a href="/login/index.php" class="btn flaticon-user btn-login">
+            <span class="">{{#str}}login_register, theme_edumy{{/str}}</span></a>
       <ul class="menu_bar_home2">
         {{#header_search_icon}}
           <li class="list-inline-item">

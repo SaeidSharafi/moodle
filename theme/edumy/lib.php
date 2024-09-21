@@ -683,5 +683,32 @@ function frontpage($theme) {
         $templatecontext['numbersactivties'] = $DB->count_records('course_modules', ['visible' => 1]) - 1;
     }
 
+    return array_merge($templatecontext,faq());
+}
+ function faq() {
+    $templatecontext['faqenabled'] = false;
+    $theme = theme_config::load('edumy');
+
+    if ($theme->settings->faqcount) {
+        for ($i = 1; $i <= $theme->settings->faqcount; $i++) {
+            $faqquestion = 'faqquestion' . $i;
+            $faqanswer = 'faqanswer' . $i;
+
+            if (!$theme->settings->$faqquestion || !$theme->settings->$faqanswer) {
+                continue;
+            }
+
+            $templatecontext['faq'][] = [
+                'id' => $i,
+                'question' => $theme->settings->$faqquestion,
+                'answer' => $theme->settings->$faqanswer
+            ];
+        }
+
+        if (count($templatecontext['faq'])) {
+            $templatecontext['faqenabled'] = true;
+        }
+    }
+
     return $templatecontext;
 }

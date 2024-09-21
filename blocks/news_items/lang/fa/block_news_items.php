@@ -15,28 +15,11 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Contact site support.
+ * Strings for component 'block_news_items', language 'en', branch 'MOODLE_20_STABLE'
  *
- * @copyright 2022 Simey Lameze <simey@moodle.com>
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @package core_user
+ * @package   block_news_items
+ * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-require_once('../config.php');
 
-
-$PAGE->set_context(context_system::instance());
-$PAGE->set_url('/vums/faq.php');
-$PAGE->set_title(get_string('faq', 'theme_moove'));
-$PAGE->set_heading(get_string('faq', 'theme_moove'));
-$PAGE->set_pagelayout('basepage');
-
-$renderer = $PAGE->get_renderer('core');
-$themesettings = new \theme_moove\util\settings();
-$templatecontext = $themesettings->frontpage();
-
-
-echo $OUTPUT->header();
-
-echo $OUTPUT->render_from_template('theme_moove/faq', $templatecontext);
-
-echo $OUTPUT->footer();
+$string['older_news']= 'اطلاعیه‌های قدیمی';

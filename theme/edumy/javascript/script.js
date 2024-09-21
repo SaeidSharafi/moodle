@@ -171,7 +171,11 @@
     // $('.circlechart').circlechart(); // Initialization
     /* ----- Mobile Nav ----- */
     function mobileNav() {
-      $('nav#menu').mmenu();
+      $('nav#menu').mmenu({
+        "offCanvas": {
+          "position": "left"
+        },
+      });
     }
     // $(window).on('load', function() {
     // });
