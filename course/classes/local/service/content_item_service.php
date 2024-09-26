@@ -277,6 +277,7 @@ class content_item_service {
             return course_allowed_module($course, explode('_', $parents[$contentitem->get_component_name()])[1], $user);
         });
         if ($course->format === 'vums'){
+            $linkparams['section'] = $linkparams['secid'];
             $filterbysection =[
                 '1' => explode(',',get_config('format_vums', 'section1activitytypes')),
                 '2' => explode(',',get_config('format_vums', 'section2activitytypes')),
