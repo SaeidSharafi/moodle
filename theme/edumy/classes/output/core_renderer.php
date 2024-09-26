@@ -1367,8 +1367,9 @@ return $output;
      // All the html stuff goes here.
      $html = html_writer::start_div('page-context-header');
 
+     $enableUserAvatarInHeading = false;
      // Image data.
-     if (isset($contextheader->imagedata)) {
+     if (isset($contextheader->imagedata) && $enableUserAvatarInHeading) {
          // Header specific image.
          $html .= html_writer::div($contextheader->imagedata, 'page-header-image mr-2');
      }
@@ -1381,7 +1382,8 @@ return $output;
      $html .= html_writer::tag('div', $heading, array('class' => 'page-header-headings'));
 
      // Buttons.
-     if (isset($contextheader->additionalbuttons)) {
+       $enableButtonsInHeading = false;
+     if (isset($contextheader->additionalbuttons) && $enableButtonsInHeading) {
          $html .= html_writer::start_div('btn-group header-button-group');
          foreach ($contextheader->additionalbuttons as $button) {
              if (!isset($button->page)) {
