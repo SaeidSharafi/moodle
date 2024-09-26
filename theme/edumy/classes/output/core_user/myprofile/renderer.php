@@ -301,10 +301,10 @@ class renderer extends \core_user\output\myprofile\renderer {
                         $categoryName = $category->name;
                         $lastAccessed = userdate($accessed, '%d %b %Y');
                         $progress =   \core_completion\progress::get_course_progress_percentage($course);
-                        $hasprogress = false;
-                        if ($progress === 0 || $progress > 0) {
-                            $hasprogress = true;
-                        }
+                        $hasprogress = true;
+                        //if ($progress === 0 || $progress > 0) {
+                        //    $hasprogress = true;
+                        //}
                         $progress = floor($progress ?? 0);
                         $contentimages = '';
                         foreach ($course->get_course_overviewfiles() as $file) {
