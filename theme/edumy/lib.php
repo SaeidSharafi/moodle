@@ -682,8 +682,10 @@ function frontpage($theme) {
         );
         $templatecontext['numbersactivties'] = $DB->count_records('course_modules', ['visible' => 1]) - 1;
     }
-
-    return array_merge($templatecontext,faq());
+    if ($faq = faq()) {
+        return array_merge($templatecontext,$faq);
+    }
+    return $templatecontext;
 }
  function faq() {
     $templatecontext['faqenabled'] = false;
@@ -705,7 +707,7 @@ function frontpage($theme) {
             ];
         }
 
-        if (count($templatecontext['faq'])) {
+        if ($templatecontext['faq'] && count($templatecontext['faq'])) {
             $templatecontext['faqenabled'] = true;
         }
     }
