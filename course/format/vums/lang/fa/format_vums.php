@@ -190,7 +190,7 @@ $string['course_introduction'] = 'معرفی و اهداف';
 $string['course_teaching_group'] = 'گروه تدریس';
 $string['course_assessment'] = 'ارزشیابی';
 $string['course_content'] = 'محتوای درس';
-$string['announcement'] = 'اطلاعیه';
+$string['announcement'] = 'اطلاعیه‌ها';
 
 $string['section1activitytypes'] ='محتوا و منابع درس';
 $string['section1activitytypes_desc'] ='فعالیت هایی که میتوانند به بخش «محتوا و منابع درس» اضافه شوند.';

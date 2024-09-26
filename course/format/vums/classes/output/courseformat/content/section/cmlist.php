@@ -15,15 +15,30 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version details
+ * Contains the default activity list from a section.
  *
- * @package   media_videojs
- * @copyright 2016 Marina Glancy
+ * @package   core_courseformat
+ * @copyright 2020 Ferran Recio <ferran@moodle.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+namespace format_vums\output\courseformat\content\section;
 
-$plugin->version   = 2024042200;         // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2022111800;         // Requires this Moodle version.
-$plugin->component = 'media_videojs'; // Full name of the plugin (used for diagnostics).
+
+use core_courseformat\output\local\content\section\cmlist as cmlist_base;
+
+/**
+ * Base class to render a section activity list.
+ *
+ * @package   core_courseformat
+ * @copyright 2020 Ferran Recio <ferran@moodle.com>
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class cmlist extends cmlist_base
+{
+    public function get_template_name(\renderer_base $renderer): string
+    {
+
+        return 'format_vums/local/content/section/cmlist';
+    }
+}

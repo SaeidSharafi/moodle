@@ -261,7 +261,7 @@
 /*  (min-width:1280px)+++ */
 @media only screen and (max-width:1280px) {
   .our-dashbord {
-    margin-top: 70px;
+    margin-top: 100px;
   }
   .brdr_left_right::before {
     left: -10px;
@@ -2525,9 +2525,9 @@
   .mobile-menu .header_user_notif {
     right: 17%;
   }
-  .mobile-menu .header_user_notif li:first-child {
-    display: none;
-  }
+  /*.mobile-menu .header_user_notif li:first-child {*/
+  /*  display: none;*/
+  /*}*/
   .stylehome1.dashbord_mobile_logo .nav_logo_img {
     margin-left: -35px;
   }

@@ -666,9 +666,11 @@ body.dir-rtl.format-tiles .section-cm-edit-actions .dropdown-menu {
         width: 323px;
         height: auto;
     }
+
     .monitor video {
         width: 300px;
     }
+
     .stand {
         display: flex !important;
         justify-content: center;
@@ -881,6 +883,7 @@ body.dir-rtl.format-tiles .section-cm-edit-actions .dropdown-menu {
 #faq .accordion .card-header .btn-link {
     color: #fff;
 }
+
 .btn-login.btn {
     box-shadow: none;
     font-family: "IransSans", sans-serif;
@@ -892,20 +895,23 @@ body.dir-rtl.format-tiles .section-cm-edit-actions .dropdown-menu {
     -o-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s;
 }
-.header_user_notif.mobile{
+
+.header_user_notif.mobile {
     position: relative;
     right: 0;
 }
-.mobile-menu .header.stylehome1:before{
+
+.mobile-menu .header.stylehome1:before {
     content: none !important;
 }
+
 .mobile-menu .header.stylehome1 .header_user_notif.mobile .user_setting_content nav a:before,
-.mobile-menu .header.stylehome1 .header_user_notif.mobile .ccn-lang-menu a.lang_icon:before{
+.mobile-menu .header.stylehome1 .header_user_notif.mobile .ccn-lang-menu a.lang_icon:before {
     content: none !important;
 }
+
 .mobile-menu .header.stylehome1 .header_user_notif.mobile .user_setting_content nav a,
-.mobile-menu .header.stylehome1 .header_user_notif.mobile .ccn-lang-menu a.lang_icon
-{
+.mobile-menu .header.stylehome1 .header_user_notif.mobile .ccn-lang-menu a.lang_icon {
     color: inherit;
     height: inherit;
     display: inherit;
@@ -925,15 +931,126 @@ body.dir-rtl.format-tiles .section-cm-edit-actions .dropdown-menu {
     border-radius: 10px;
     margin: 7px 0;
 }
-.header_user_notif.mobile{
+
+.header_user_notif.mobile {
     display: none !important;
 }
+
 @media (max-width: 1200px) {
-    .header_user_notif.mobile{
+    .header_user_notif.mobile {
         display: flex !important;
     }
 }
 
-.block_news_items .name{
+.block_news_items .name {
     display: none;
+}
+
+.ccn-4-navigation.secondary {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.ccn-4-navigation.secondary .moremenu.navigation {
+    margin: 0;
+}
+
+.coursedetails > div > div > span:first-child {
+    min-width: 80px;
+}
+
+.header.stylehome1.dashbord_mobile_logo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main_logo_home2 .mobileBrand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.menu_bar_home2 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.menu_bar_home2 li.list-inline-item:first-child {
+    position: initial;
+}
+
+.menu_bar_home2 li.list-inline-item:first-child:after {
+    position: initial;
+    display: block;
+}
+
+.menu_bar_home2 li.list-inline-item {
+    display: block;
+    margin: 0 !important;
+}
+
+.menu_bar_home2 li.list-inline-item > a {
+    position: initial !important;
+}
+
+.main_logo_home2 .mobileBrand > * {
+    margin: 0 !important;
+}
+
+.mobile-menu .header, .footer {
+    background: #777;
+    color: #fff;
+    line-height: 30px;
+    height: 70px;
+}
+
+.header_user_notif.mobile.withlogo.ccn-frontend-header_user_notif.mobile {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.header_user_notif.mobile.withlogo.ccn-frontend-header_user_notif.mobile .user_setting.ccn-settings-nav.ccn-lang-menu > .dropdown > a.lang_icon {
+    padding: 0;
+}
+
+.mobile-menu .header.stylehome1 .header_user_notif.mobile .user_setting_content nav a {
+    padding: 10px 5px;
+    gap: 10px;
+}
+
+.mobile-menu .header.stylehome1 .header_user_notif.mobile .user_setting_content nav a .lang_icon_flag {
+    margin: 0 !important;
+    display: block !important;
+    top: auto !important;
+}
+
+@media only screen and (max-width: 992px) {
+    .our-dashbord {
+        margin-top: 70px;
+    }
+}
+
+
+@media (max-width: 768.99px) {
+    .mob-p0 {
+        padding: 0 !important;
+    }
+
+    .mob-p0 > div:not(.container-fluid):not(.main_content_container) {
+        padding: 0;
+    }
+}
+
+@media (max-width: 1080px) {
+    .md-p0 {
+        padding: 0 !important;
+    }
+
+    .md-p0 > div:not(.container-fluid):not(.main_content_container) {
+        padding: 0;
+    }
+    .our-dashbord {
+        margin-top: 70px;
+    }
 }

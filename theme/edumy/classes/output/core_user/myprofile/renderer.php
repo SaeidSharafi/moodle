@@ -290,6 +290,7 @@ class renderer extends \core_user\output\myprofile\renderer {
                         if ($DB->record_exists('course', array('id' => $course_id))) {
                         if(++$ia > 3) break;
                         $course_record = $DB->get_record('course', array('id' => $course_id));
+
                         $course = new core_course_list_element($course_record);
                         $courseTitle = $course->fullname;
                         $courseDesc = substr(format_string($course->summary, $striplinks = true,$options = null),0,200).'...';
@@ -300,7 +301,9 @@ class renderer extends \core_user\output\myprofile\renderer {
                         $category = $DB->get_record('course_categories',array('id'=>$course->category));
                         $categoryName = $category->name;
                         $lastAccessed = userdate($accessed, '%d %b %Y');
-                        $progress =   \core_completion\progress::get_course_progress_percentage($course);
+
+                        $progress =   \core_completion\progress::get_course_progress_percentage($course_record);
+
                         $hasprogress = true;
                         //if ($progress === 0 || $progress > 0) {
                         //    $hasprogress = true;
