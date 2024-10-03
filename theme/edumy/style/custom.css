@@ -1213,7 +1213,8 @@ Report
 .grade-report-user .user-grade thead th {
     background-color:[[setting:color_primary]];
 }
-.generaltable thead th {
+.generaltable thead th,
+.generaltable thead td{
     background-color:[[setting:color_primary]];
     padding: 20px 5px !important;
     border-bottom: transparent !important;
