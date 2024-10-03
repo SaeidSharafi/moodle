@@ -1216,12 +1216,16 @@ Report
 .generaltable thead th,
 .generaltable thead td{
     background-color:[[setting:color_primary]];
-    padding: 20px 5px !important;
+    padding: 20px 5px;
     border-bottom: transparent !important;
     color: #fff;
     font-weight: 400;
     vertical-align: middle !important;
     line-height: 1.2;
+}
+.generaltable thead th a,
+.generaltable thead td a{
+    color: #fff;
 }
 
 /****/
