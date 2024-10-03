@@ -1738,6 +1738,27 @@ if ($ADMIN->fulltree) {
 
     $page = new admin_settingpage('theme_edumy_frontpage', get_string('frontpage_settings', 'theme_edumy'));
 
+    $name='theme_edumy/bannerimage';
+    $title = get_string('bannerimage', 'theme_edumy');
+    $description = get_string('bannerimage_desc', 'theme_edumy');
+    $setting = new admin_setting_configstoredfile($name, $title, $description, 'banner');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    $name='theme_edumy/bannerlogo';
+    $title = get_string('bannerlogo', 'theme_edumy');
+    $description = get_string('bannerlogo_desc', 'theme_edumy');
+    $setting = new admin_setting_configstoredfile($name, $title, $description, 'banner');
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
+    $name='theme_edumy/bannertext';
+    $title = get_string('bannertext', 'theme_edumy');
+    $description = get_string('bannertext_desc', 'theme_edumy');
+    $setting = new admin_setting_configtext($name, $title, $description, get_string('university','theme_edumy'),PARAM_RAW);
+    $setting->set_updatedcallback('theme_reset_all_caches');
+    $page->add($setting);
+
     $name='theme_edumy/videoposter';
     $title = get_string('videoposter', 'theme_edumy');
     $description = get_string('videoposter_desc', 'theme_edumy');

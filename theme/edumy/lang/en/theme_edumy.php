@@ -748,6 +748,7 @@ $string['whatsiscontent_default'] = '<span lang="fa" class="multilang">
     enable student collaboration and discussion, manage assignments and quizzes, and assign grades.
     New feature will be add to <span class="text-danger">NAVID</span> according to project timetable.
 </span>';
+$string['login_btn'] = 'Login';
 $string['contact_support'] = 'Support';
 $string['blog_title'] = 'News & Announcements';
 $string['view_all'] = 'View All';
@@ -761,3 +762,11 @@ $string['phoneexists'] = 'This Phone number is already registered.';
 $string['invalidemail'] = 'Invalid phone number';
 $string['userphoneduplicate'] = 'Duplicate phone';
 $string['copyright']='کلیه حقوق مادی و معنوی محتوای سامانه متعلق به دانشگاه علوم پزشکی هوشمند می‌باشد.';
+
+
+$string['bannerimage'] = 'Banner Image';
+$string['bannerimage_desc'] = 'Banner Image';
+$string['bannerlogo'] = 'Banner Logo';
+$string['bannerlogo_desc'] = 'Banner Logo';
+$string['bannertext'] = 'Banner Text';
+$string['bannertext_desc'] = 'Banner Text';

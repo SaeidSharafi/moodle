@@ -1,6 +1,6 @@
 <div id="page" class="mob-menu stylehome1 h0 w-100">
     <div class="mobile-menu position-fixed w-100">
-        <div class="header stylehome1 d-flex justify-content-between align-items-baseline">
+        <div class="header stylehome1 d-flex justify-content-between align-items-center">
             <div class="d-flex">
                 {{#logo}}
                     <div class="main_logo_home2">
@@ -19,7 +19,10 @@
                         </a>
                     </div>
                 {{/logo}}
-                <ul class="header_user_notif mobile withlogo ccn-frontend-header_user_notif mobile align-items-center d-flex">
+
+            </div>
+            {{^isLoggedin}}
+                <ul class="header_user_notif mobile withlogo notloggedin ccn-frontend-header_user_notif mobile align-items-center d-flex">
 
                     {{#lang_menu_icons}}
 
@@ -27,21 +30,9 @@
 
                     {{/lang_menu_icons}}
                 </ul>
-
-            </div>
-            <a href="/login/index.php" class="btn flaticon-user btn-login">
-                <span class="">{{#str}}login_register, theme_edumy{{/str}}</span></a>
+            {{/isLoggedin}}
             <ul class="menu_bar_home2">
-                {{#header_search_icon}}
-                    <li class="list-inline-item">
-                        <div class="search_overlay">
-                            <a id="search-button-listener2" class="mk-search-trigger mk-fullscreen-trigger" href="#">
-                                <div id="search-button2"><i class="flaticon-magnifying-glass"></i></div>
-                            </a>
-                        </div>
-                    </li>
-                {{/header_search_icon}}
-                <li class="list-inline-item ccn_mob_menu_trigger {{^header_search_icon}} ccn_mob_menu_trigger_standalone {{/header_search_icon}}"><a href="#menu"><span></span></a>
+                <li class="list-inline-item ccn_mob_menu_trigger"><a href="#menu"><span></span></a>
                 </li>
             </ul>
         </div>

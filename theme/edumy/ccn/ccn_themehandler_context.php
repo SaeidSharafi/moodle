@@ -376,7 +376,10 @@ $PAGE->requires->js_init_call('ccnControl', array($ccnControlBlockListUri, $ccnC
 $nav = $PAGE->flatnav;
 
 foreach ($nav->getIterator() as &$item) {
-    if ($item->type == \navigation_node::TYPE_COURSE || $item->type == \navigation_node::TYPE_SECTION ) {
+    if ($item->type == \navigation_node::TYPE_COURSE
+        || $item->type == \navigation_node::TYPE_SECTION
+        || $item->key === 'home'
+    ) {
         $nav->remove($item->key);
     }
     if (in_array($item->key ,
@@ -384,6 +387,7 @@ foreach ($nav->getIterator() as &$item) {
         $nav->remove($item->key);
     }
 }
+
 
 $templatecontext['flatnavigation'] = $nav;
 $templatecontext['firstcollectionlabel'] = $nav->get_collectionlabel();

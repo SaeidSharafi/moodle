@@ -311,10 +311,10 @@ body.ccn_context_dashboard {
 .ccn-drops a:active {
   color: [[setting:color_primary]]
 }
-.page-context-header {
-  float: right;
-  padding: 0;
-}
+/*.page-context-header {*/
+/*  float: right;*/
+/*  padding: 0;*/
+/*}*/
 /* Override, leave it */
 /* body.ccn_context_frontend#page-my-index {
   background: #fff !important;
@@ -341,10 +341,10 @@ body.ccn_context_dashboard {
   background-color: #fff;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.09);
 }
-.dashboard_main_content input[type=text],
-.dashboard_main_content input[type=number],
-.dashboard_main_content input[type=email],
-.dashboard_main_content select,
+body:not(.path-grade) .dashboard_main_content input[type=text],
+body:not(.path-grade) .dashboard_main_content input[type=number],
+body:not(.path-grade) .dashboard_main_content input[type=email],
+body:not(.path-grade) .dashboard_main_content select,
 .modal:not(.sign_up_modal) input[type=text],
 .modal:not(.sign_up_modal) select,
 /* Additional selects for text or select input styling */
@@ -395,11 +395,9 @@ body.ccn_context_dashboard {
 }
 .dashboard_main_content .btn-primary,
 .dashboard_main_content .btn-secondary,
-.dashboard_main_content .btn:not(.btn-link):not(.btn-success),
 .ccn_context_frontend .primary-navigation .moremenu .ccn-activate-more-dropdown>a.dropdown-toggle,
 .modal:not(.sign_up_modal) .btn-primary,
 .modal:not(.sign_up_modal) .btn-secondary,
-.modal:not(.sign_up_modal) .btn:not(.btn-link):not(.btn-success),
 /* Additional button-type selectors that we want to apply btn-secondary to: */
 .ccn-forum-discussion-tools .btn.btn-link.dropdown-toggle,
 .format-remuiformat .course-content .cards .wdm-card-section .card-section-leftnav .btn,
@@ -435,12 +433,9 @@ body.ccn_context_dashboard {
 }
 .dashboard_main_content .btn-primary:hover,
 .dashboard_main_content .btn-secondary:hover,
-.dashboard_main_content .btn:not(.btn-link):hover,
-.dashboard_main_content .btn:not(.btn-success):hover,
 .modal:not(.sign_up_modal) .btn-primary:hover,
 .modal:not(.sign_up_modal) .btn-secondary:hover,
 .modal:not(.sign_up_modal) .btn:not(.btn-link):hover,
-.modal:not(.sign_up_modal) .btn:not(.btn-success):hover,
 .btn-secondary:hover,
 .btn-primary:hover,
 .page-context-header .btn:hover,
@@ -1075,45 +1070,7 @@ body.ccn_context_dashboard {
 table {
   width: 100%;
 }
-.generaltable {
-  width: 100%;
-  margin-bottom: 1rem;
-  background-color: #ffffff;
-  border-radius: 4px 4px 0 0;
-  /* overflow: hidden; */
-}
-.generaltable thead th {
-  background-color: [[setting:color_primary]];
-  padding: 20px 5px !important;
-  border-bottom: transparent !important;
-  color: #ffffff;
-  font-weight: normal;
-  vertical-align: middle !important;
-  line-height: 1.2;
-}
-.generaltable thead th,
-.generaltable thead th a {
-  color: #ffffff;
-}
-@media (min-width:992px) {
-  .generaltable>thead>tr>th:first-child {
-    border-radius: 5px 0 0 4px;
-  }
-  .generaltable>thead>tr>th:last-child {
-    border-radius: 0 5px 4px 0;
-  }
-  .generaltable thead th {
-    border-bottom: 1px solid #fff !important;
-    border-top: 1px solid #fff !important;
-  }
-}
-.generaltable td {
-  padding: 15px 4px !important;
-  /* vertical-align: top!important; */
-  border-top: 1px solid #dee2e6 !important;
-  background: #fff !important;
-  vertical-align: middle !important;
-}
+
 .path-course table .icon {
   margin: 0 !important;
 }
@@ -1131,15 +1088,15 @@ table {
   display: none;
 }
 /* General Table small */
-.course_content .generaltable {
-  font-size: 13px !important;
-}
-.generaltable img.userpicture {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  max-width: 50px;
-}
+/*.course_content .generaltable {*/
+/*  font-size: 13px !important;*/
+/*}*/
+/*.generaltable img.userpicture {*/
+/*  width: 50px;*/
+/*  height: 50px;*/
+/*  display: flex;*/
+/*  max-width: 50px;*/
+/*}*/
 /* MDL general */
 .ccnBlockControls {
   z-index: 9;
@@ -1548,15 +1505,15 @@ body.pagelayout-maintenance .actions .singlebutton,
 .ccnDashBl.block {
   padding: 0;
 }
-.dashbord .generaltable {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-.dashbord .generaltable th,
-.dashbord .generaltable td {
-  padding: 20px 15px !important;
-  font-weight: 400;
-}
+/*.dashbord .generaltable {*/
+/*  margin-top: 20px;*/
+/*  margin-bottom: 20px;*/
+/*}*/
+/*.dashbord .generaltable th,*/
+/*.dashbord .generaltable td {*/
+/*  padding: 20px 15px !important;*/
+/*  font-weight: 400;*/
+/*}*/
 .dashbord .ccn_fav_icon {
   float: left;
   margin: 5px;
@@ -2924,7 +2881,6 @@ body.ccn_context_dashboard.ccnDarkMode.ccn_context_dashboard,
 }
 .ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn-primary:hover,
 .ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn-secondary:hover,
-.ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn:not(.btn-link):hover,
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .btn-primary:hover,
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .btn-secondary:hover,
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .btn:not(.btn-link):hover,

@@ -34,6 +34,7 @@ function theme_edumy_pluginfile($course, $cm, $context, $filearea, $args, $force
     if ($context->contextlevel == CONTEXT_SYSTEM && ( $filearea === 'headerlogo1' ||
                                                       $filearea === 'headerlogo2' ||
                                                       $filearea === 'headerlogo3' ||
+                                                      $filearea === 'headerlogo4' ||
                                                       $filearea === 'headerlogo_mobile' ||
                                                       $filearea === 'footerlogo1' ||
                                                       $filearea === 'heading_bg' ||
@@ -51,7 +52,8 @@ function theme_edumy_pluginfile($course, $cm, $context, $filearea, $args, $force
                                                       $filearea === 'upload_font_secondary_ttf' ||
                                                       $filearea === 'upload_font_secondary_svg' ||
                                                       $filearea === 'videoposter' ||
-                                                      $filearea === 'videofile'
+                                                      $filearea === 'videofile' ||
+                                                      $filearea === 'banner'
                                                     )) {
         $theme = theme_config::load('edumy');
         // By default, theme files must be cache-able by both browsers and proxies.
@@ -643,6 +645,26 @@ function theme_edumy_process_css($css, $theme) {
 function frontpage($theme) {
     global $DB,$PAGE,$CFG;
 
+    $templatecontext['bannerimage'] = $CFG->wwwroot . '/theme/edumy/pix/navid-laptop-3d.png';
+    $templatecontext['bannerlogo'] = $CFG->wwwroot . '/theme/edumy/pix/vums.png';
+    if (!empty(get_config('theme_edumy','bannerimage'))) {
+        $url = $PAGE->theme->setting_file_url('bannerimage', 'banner');
+        if ($url) {
+            // Get a URL suitable for moodle_url.
+            $relativebaseurl = preg_replace('|^https?://|i', '//', $CFG->wwwroot);
+            $url = str_replace($relativebaseurl, '', $url);
+            $templatecontext['bannerimage'] = new moodle_url($url);
+        }
+    }
+    if (!empty(get_config('theme_edumy','bannerlogo'))) {
+        $url = $PAGE->theme->setting_file_url('bannerlogo', 'banner');
+        if ($url) {
+            // Get a URL suitable for moodle_url.
+            $relativebaseurl = preg_replace('|^https?://|i', '//', $CFG->wwwroot);
+            $url = str_replace($relativebaseurl, '', $url);
+            $templatecontext['bannerlogo'] = new moodle_url($url);
+        }
+    }
     if (!empty($theme->settings->videofile)) {
         $url = $theme->setting_file_url('videofile', 'videofile');
         //print_object($fileurl);

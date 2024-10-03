@@ -1704,7 +1704,28 @@ return $output;
 
 
   }
+    public function render_login(\core_auth\output\login $form) {
+        global $SITE, $CFG, $PAGE;
 
+        $context = $form->export_for_template($this);
+
+        $context->errorformatted = $this->error_text($context->error);
+        $logo = null;
+        if (!empty(get_config('theme_edumy','headerlogo4'))) {
+            $url = $PAGE->theme->setting_file_url('headerlogo4', 'headerlogo4');
+            if ($url) {
+                // Get a URL suitable for moodle_url.
+                $relativebaseurl = preg_replace('|^https?://|i', '//', $CFG->wwwroot);
+                $url = str_replace($relativebaseurl, '', $url);
+                $logo = new moodle_url($url);
+            }
+        }
+        $context->logourl = $logo;
+        $context->sitename = format_string($SITE->fullname, true,
+            ['context' => context_course::instance(SITEID), "escape" => false]);
+
+        return $this->render_from_template('core/loginform', $context);
+    }
   /**
    * Render the login signup form into a nice template for the theme.
    *

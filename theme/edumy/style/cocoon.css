@@ -2002,19 +2002,19 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu>li.last {
 }
 .stylehome1 .mm-navbar,
 .stylehome1 .mm-panel {
-  background-color: #0a0a0a;
+  background-color: #fff;
 }
 .stylehome1 a.mm-listitem__text,
 .stylehome1 a.mm-btn.mm-btn_next.mm-listitem__btn.mm-listitem__text {
   font-family: "[[setting:primary_font]]", sans-serif;
-  color: #fff;
+  color: [[setting:primary_color]];
   font-weight: 400;
   font-size: 14px;
   text-transform: uppercase;
 }
 .stylehome1 a.mm-listitem__text:hover,
 .stylehome1 a.mm-btn.mm-btn_next.mm-listitem__btn.mm-listitem__text:hover {
-  background-color: #1c1c1c;
+  background-color: [[setting:color_primary_alternate]];
   color: #ffffff;
 }
 /* .stylehome1.home3 a.mm-listitem__text,
@@ -2064,17 +2064,17 @@ header.header-nav.menu_style_home_seven .ace-responsive-menu>li.last {
 .stylehome1 li.mm-listitem:active,
 .stylehome1 li.mm-listitem:focus {
   color: #ffffff;
-  background-color: #1c1c1c;
+  background-color: [[setting:color_primary_alternate]];
 }
 .stylehome1 .mm-navbar {
   border-color: #545454;
-  background-color: #2d2d2d;
+  background-color: [[setting:color_primary]];
   height: 60px;
   line-height: 40px;
 }
 .stylehome1 .mm-btn_prev:before,
 .stylehome1 .mm-btn_next:after {
-  border-color: rgba(255, 255, 255, .8);
+  border-color: [[setting:color_secondary]];
 }
 /*== Home Css ==*/
 .block_cocoon_slider_1 .home1-mainslider .home-content,

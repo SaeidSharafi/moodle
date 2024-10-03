@@ -25,24 +25,28 @@
                 <section id="banner" class="hero-container pt-5">
                     <div class="row align-items-center justify-content-center h-100">
                         <div class="d-flex justify-content-center align-items-center col-md-6 col-12">
-                            <img src="{{config.wwwroot}}/theme/moove/pix/navid-laptop-3d.png" class="w-100" style="max-width: 600px">
+                            <img src="{{bannerimage}}" class="w-100" style="max-width: 600px">
                         </div>
                         <div class="d-flex justify-content-center align-items-center flex-column col-md-6 col-12">
-                            <img src="{{config.wwwroot}}/theme/moove/pix/vums.png" class="w-100" style="max-width: 150px;">
+                            <img src="{{bannerlogo}}" class="w-100" style="max-width: 150px;">
 
                             <span class="shadowy-text text--title text-center px-2">
-                                {{#str}}university, theme_moove{{/str}}
+                                 {{^bannertext}}
+                                     {{#str}}university, theme_edumy{{/str}}
+                                 {{/bannertext}}
+                                {{whatistitle}}
+
 
                             </span>
                             <a href="/login" class="mt-3 btn btn-primary"
                                style="width: 350px;">
                                 <i aria-hidden="true" class="fa fa-user"></i>
-                                {{#str}}login_btn, theme_moove{{/str}}
+                                {{#str}}login_btn, theme_edumy{{/str}}
                             </a>
                             <a href="/user/contactsitesupport.php" class="mt-3 btn btn-secondary btn-outline-primary" style="width: 350px;">
 
                                 <i aria-hidden="true" class="fa fa-envelope-o"></i>
-                                {{#str}}contact_support, theme_moove{{/str}}
+                                {{#str}}contact_support, theme_edumy{{/str}}
 
                             </a>
 
@@ -57,13 +61,13 @@
                                 <div class="p-0 col-sm-9 col-md-11 col-12">
                                     <div class="liner mt-4">
                                         <h3 class="mx-1 shadowy-text font--20 text-center">
-                                            {{#str}}blog_title, theme_moove{{/str}}
+                                            {{#str}}blog_title, theme_edumy{{/str}}
                                         </h3></div>
                                 </div>
                                 <div class="pa-0 col-sm-3 col-md-1 col-12">
                                     <a href="/blog/index.php" class="px-2 mt-3 font-weight-bold btn view-all" style="height: auto;">
                                         <div class="v-btn__content">
-                                            <span class="flex-shrink-0">{{#str}}view_all, theme_moove{{/str}}</span>
+                                            <span class="flex-shrink-0">{{#str}}view_all, theme_edumy{{/str}}</span>
                                             <i aria-hidden="true" class="fa fa-arrow-left ml-2"></i>
                                         </div>
                                     </a>
@@ -77,7 +81,7 @@
                                         <div class="row justify-center">
                                             <div class="d-none d-sm-flex col-md-5 col-12">
                                                 <div class="v-avatar my-4 mx-auto rounded-0" style="height: 120px; min-width: 120px; width: 120px;">
-                                                    <img src="{{config.wwwroot}}/theme/moove/pix/news.png" class="w-100">
+                                                    <img src="{{config.wwwroot}}/theme/edumy/pix/news.png" class="w-100">
                                                 </div>
                                             </div>
                                             <div class="align-items-center col-12 col-md-6 d-flex mb-5">
@@ -124,7 +128,7 @@
                                 <div class="d-flex justify-content-center">
                                     <div class="stand d-flex flex-column align-items-center" style="--right-before:185px; --right-after:110px;">
                                         <div class="monitor">
-                                            <video controls="controls" poster="{{videoposter}}" __idm_id__="1597441">
+                                            <video controls="controls" poster="{{videoposter}}">
                                                 <source src="{{videofile}}" type="video/mp4">
                                             </video>
                                         </div>
@@ -145,7 +149,7 @@
                                         <h3>
                                             {{{numbersusers}}}
                                         </h3>
-                                        <p>{{#str}}numbersusers, theme_moove{{/str}}</p>
+                                        <p>{{#str}}numbersusers, theme_edumy{{/str}}</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-8 mb-3">
@@ -153,7 +157,7 @@
                                         <h3>
                                             {{{numbersteachers}}}
                                         </h3>
-                                        <p>{{#str}}numbersteachers, theme_moove{{/str}}</p>
+                                        <p>{{#str}}numbersteachers, theme_edumy{{/str}}</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-8 mb-3">
@@ -161,7 +165,7 @@
                                         <h3>
                                             {{{numbersactivties}}}
                                         </h3>
-                                        <p>{{#str}}numbersactivties, theme_moove{{/str}}</p>
+                                        <p>{{#str}}numbersactivties, theme_edumy{{/str}}</p>
                                     </div>
 
                                 </div>
@@ -170,7 +174,7 @@
                                         <h3>
                                             {{{numberscourses}}}
                                         </h3>
-                                        <p>{{#str}}numberscourses, theme_moove{{/str}}</p>
+                                        <p>{{#str}}numberscourses, theme_edumy{{/str}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -189,7 +193,7 @@
                 {{#faqenabled}}
                     <section id="faq" class="scale-up scale-up-show">
                         <div class="moove-container-fluid">
-                            <h2>{{#str}}faq, theme_moove{{/str}}</h2>
+                            <h2>{{#str}}faq, theme_edumy{{/str}}</h2>
 
                             <div class="accordion" id="accordionFaq">
                                 {{#faq}}
