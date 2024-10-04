@@ -17,11 +17,14 @@
 .lightbox{
     z-index: 999 !important;
 }
-@media (min-width: 960px) {
-    .mm-slideout {
-        z-index: 1 !important;
-    }
+/** Styles to fix base theme **/
+.path-mod-assign #page {
+    position: absolute;
 }
+#page-mod-assign-grader #page{
+    position: relative;
+}
+
 @media (min-width: 1200px) {
     .ccn_nav_group {
         display: flex;

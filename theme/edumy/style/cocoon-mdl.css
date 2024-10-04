@@ -325,11 +325,10 @@ body.ccn_context_dashboard {
 .dashboard_main_content input[type=email],
 .dashboard_main_content textarea,
 .dashboard_main_content select,
-.dashboard_main_content .filemanager,
 .modal:not(.sign_up_modal) input[type=text],
 .modal:not(.sign_up_modal) textarea,
 .modal:not(.sign_up_modal) select,
-.modal:not(.sign_up_modal) .filemanager,
+
 /* Additional selects for text, textarea or select input styling */
 #jump-to-activity,
 .ccn-forum-top-selectors select,
@@ -368,13 +367,9 @@ body:not(.path-grade) .dashboard_main_content select,
   max-width: none !important;
 }
 /* E ccnTkRef 3155 */
-.dashboard_main_content .filemanager,
-.modal:not(.sign_up_modal) .filemanager {
-  padding: 20px;
-  margin-bottom: 10px;
-}
+
 .btn-primary,
-.btn-secondary,
+.btn-secondary:not(.btn-sm),
 .page-context-header .btn {
   font-size: 15px;
   font-family: "[[setting:secondary_font]]";
@@ -394,7 +389,7 @@ body:not(.path-grade) .dashboard_main_content select,
   transition: all .3s ease;
 }
 .dashboard_main_content .btn-primary,
-.dashboard_main_content .btn-secondary,
+.dashboard_main_content .btn-secondary:not(.btn-sm),
 .ccn_context_frontend .primary-navigation .moremenu .ccn-activate-more-dropdown>a.dropdown-toggle,
 .modal:not(.sign_up_modal) .btn-primary,
 .modal:not(.sign_up_modal) .btn-secondary,
@@ -432,7 +427,7 @@ body:not(.path-grade) .dashboard_main_content select,
   color: #fff;
 }
 .dashboard_main_content .btn-primary:hover,
-.dashboard_main_content .btn-secondary:hover,
+.dashboard_main_content .btn-secondary:not(.btn-sm):hover,
 .modal:not(.sign_up_modal) .btn-primary:hover,
 .modal:not(.sign_up_modal) .btn-secondary:hover,
 .modal:not(.sign_up_modal) .btn:not(.btn-link):hover,
@@ -465,7 +460,7 @@ body:not(.path-grade) .dashboard_main_content select,
   color: [[setting:color_primary]]
 }
 .dashboard_main_content .btn-group>.btn-group:not(:last-child)>.btn:not(.btn-link),
-.dashboard_main_content .btn-group>.btn:not(:last-child):not(.dropdown-toggle):not(.btn-link),
+.dashboard_main_content .btn-group>.btn:not(:last-child):not(.dropdown-toggle):not(.btn-link):not(.btn-sm),
 .modal:not(.sign_up_modal) .btn-group>.btn-group:not(:last-child)>.btn:not(.btn-link),
 .modal:not(.sign_up_modal) .btn-group>.btn:not(:last-child):not(.dropdown-toggle):not(.btn-link) {
   border-radius: 5px;
@@ -2635,7 +2630,7 @@ body.ccnDarkMode.ccn_context_dashboard,
 .ccnDarkMode.ccn_context_dashboard .admin_colourpicker .previewcolour,
 .ccnDarkMode.ccn_context_dashboard .admin_colourpicker .currentcolour,
 .ccnDarkMode.ccn_context_dashboard .border,
-.ccnDarkMode.ccn_context_dashboard .filemanager-container,
+/*.ccnDarkMode.ccn_context_dashboard .filemanager-container,*/
 .ccnDarkMode.ccn_context_dashboard .filepicker-filelist,
 .ccnDarkMode.ccn_context_dashboard .mform fieldset,
 .ccnDarkMode.ccn_context_dashboard .fp-iconview .fp-thumbnail,
@@ -2830,11 +2825,11 @@ body.ccn_context_dashboard.ccnDarkMode.ccn_context_dashboard,
 .ccnDarkMode.ccn_context_dashboard .dashboard_main_content input[type=email],
 .ccnDarkMode.ccn_context_dashboard .dashboard_main_content textarea,
 .ccnDarkMode.ccn_context_dashboard .dashboard_main_content select,
-.ccnDarkMode.ccn_context_dashboard .dashboard_main_content .filemanager,
+
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) input[type=text],
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) textarea,
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) select,
-.ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .filemanager,
+
 /* Additional selects for text, textarea or select input styling */
 .ccnDarkMode.ccn_context_dashboard #jump-to-activity,
 .ccnDarkMode.ccn_context_dashboard .ccn-forum-top-selectors select,
@@ -2862,7 +2857,7 @@ body.ccn_context_dashboard.ccnDarkMode.ccn_context_dashboard,
   height: 48px;
 }
 .ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn-primary,
-.ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn-secondary,
+.ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn-secondary:not(.btn-sm),
 .ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn:not(.btn-link),
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .btn-primary,
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .btn-secondary,
@@ -2880,7 +2875,7 @@ body.ccn_context_dashboard.ccnDarkMode.ccn_context_dashboard,
   border-color: rgb(36, 65, 231);
 }
 .ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn-primary:hover,
-.ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn-secondary:hover,
+.ccnDarkMode.ccn_context_dashboard .dashboard_main_content .btn-secondary:not(.btn-sm):hover,
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .btn-primary:hover,
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .btn-secondary:hover,
 .ccnDarkMode.ccn_context_dashboard .modal:not(.sign_up_modal) .btn:not(.btn-link):hover,

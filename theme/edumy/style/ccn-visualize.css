@@ -292,15 +292,15 @@ body.ccn_context_visualize {
   padding: 5px 0;
   border: 1px solid rgba(255, 255, 255, .09);
 }
-#ccn_lc_vb--visualize-aside .filemanager-toolbar {
-  overflow: visible;
-}
-#ccn_lc_vb--visualize-aside .filemanager-toolbar .btn {
-  height: 46px;
-  width: 46px;
-  padding: 0;
-  line-height: 44px;
-}
+/*#ccn_lc_vb--visualize-aside .filemanager-toolbar {*/
+/*  overflow: visible;*/
+/*}*/
+/*#ccn_lc_vb--visualize-aside .filemanager-toolbar .btn {*/
+/*  height: 46px;*/
+/*  width: 46px;*/
+/*  padding: 0;*/
+/*  line-height: 44px;*/
+/*}*/
 #ccn_lc_vb--visualize-aside .mform .fdescription {
   margin: 20px 50px;
 }
@@ -318,11 +318,11 @@ body.ccnRefreshActionExecuting #ccn_lc_vb--visualize-aside--controller {
   z-index: 9999999;
   background: rgba(255, 255, 255, .4);
 }
-.filemanager .fp-restrictions {
-  text-align: left;
-  font-size: 10px;
-  margin: 0 0 10px;
-}
+/*.filemanager .fp-restrictions {*/
+/*  text-align: left;*/
+/*  font-size: 10px;*/
+/*  margin: 0 0 10px;*/
+/*}*/
 .fp-iconview .fp-filename-field .fp-filename {
   background: rgba(255, 255, 255, 0);
 }
@@ -463,9 +463,9 @@ fieldset.hidden {
   right: 17px;
   position: absolute;
 }
-.filemanager-container, .filepicker-filelist {
-  border-color: rgba(255, 255, 255, .09) !important;
-}
+/*.filemanager-container, .filepicker-filelist {*/
+/*  border-color: rgba(255, 255, 255, .09) !important;*/
+/*}*/
 ul.form-autocomplete-suggestions>li:empty {
   display: none;
 }

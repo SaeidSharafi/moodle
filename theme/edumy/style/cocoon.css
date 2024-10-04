@@ -13725,6 +13725,7 @@ body.translated {
   line-height: 1.2;
 }
 .card {
+  position: relative;
   border: none;
 }
 .card-header {
