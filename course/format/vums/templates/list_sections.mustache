@@ -39,7 +39,7 @@
    }
 }}
 
-<div id="section-content-{{{index}}}" class="tab-pane fade {{#isfirst}}show active{{/isfirst}}" role="tabpanel" aria-labelledby="section-content-{{index}}">
+<li id="section-content-{{{index}}}" class="tab-pane fade section {{#isfirst}}show active{{/isfirst}}" role="tabpanel" aria-labelledby="section-content-{{index}}">
     <div class="content card-block vums-list-content-border" aria-labelledby="section-{{index}}">
         <div class="card-footer text-muted border-0 " aria-labelledby="section-{{index}} .sectionname a:not(.quickeditlink)" {{#collapsed}}style="display: none;"{{/collapsed}}>
             {{#editing}}
@@ -59,4 +59,4 @@
         </div>
 
     </div>
-</div>
+</li>
