@@ -1120,6 +1120,15 @@ class course_format_data_common_trait {
                         if (!$thismod->is_visible_on_course_page()) {
                             continue;
                         }
+                        if ($thismod->modname === 'forum') {
+                            global $DB;
+                            $forum = $DB->get_record('forum', ['id' => $thismod->instance], 'type');
+                            if ($forum && $forum->type === 'news') {
+                                continue; // Skip forums of type 'news'
+                            }
+
+                        }
+
                         if (isset($sectionmods[$thismod->modname])) {
                             $sectionmods[$thismod->modname]['name'] = current_language() === 'fa' ? $thismod->modfullname : $thismod->modplural;
                             $sectionmods[$thismod->modname]['count']++;
@@ -1130,6 +1139,7 @@ class course_format_data_common_trait {
                     }
                 }
             }
+
             $lastactivitydata = end($sectionmods);
             foreach ($sectionmods as $mod) {
                 $output['activitylist'][] = ['count' => $mod['count'], 'name' => $mod['name'] ];
