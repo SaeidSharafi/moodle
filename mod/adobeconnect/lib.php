@@ -219,7 +219,7 @@ function adobeconnect_add_instance($adobeconnect)
         // If creating the meeting failed, then return false and revert the group role assignments
         if (!$meetingscoid) {
             debugging('error creating meeting', DEBUG_DEVELOPER);
-            return false;
+            throw new \moodle_exception('errorcreatingmeeting', 'adobeconnect');
         }
 
         // Update permissions for meeting

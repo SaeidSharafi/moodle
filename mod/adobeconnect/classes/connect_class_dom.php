@@ -125,6 +125,15 @@ class connect_class_dom extends connect_class
 
         if ($domnodelist->item(0)->hasAttributes()) {
 
+            $invalidcode = $dom->getElementsByTagName('invalid');
+            if ($invalidcode->length > 0) {
+                $invalidNode = $invalidcode->item(0);
+                $subcode = $invalidNode->getAttribute('subcode');
+                if ($subcode === 'duplicate'){
+                    throw new \moodle_exception('duplicatemeeting', 'adobeconnect');
+                }
+            }
+
             $domnode = $domnodelist->item(0)->attributes->getNamedItem('code');
 
             if (!is_null($domnode)) {

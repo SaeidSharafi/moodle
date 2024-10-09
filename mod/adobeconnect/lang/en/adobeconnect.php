@@ -209,3 +209,6 @@ $string['in_offline_queue'] = 'In Offline Queue';
 $string['sync_attendance_not_found']= "There is no attendance";
 $string['sync_attendance_success']= "attendance synchronization was successful";
 $string['sync_attendance_fail']= "attendance synchronization failed, no SCO id provided";
+
+$string['duplicatemeeting']='Class with same name already exists';
+$string['errorcreatingmeeting']='Error creating meeting';

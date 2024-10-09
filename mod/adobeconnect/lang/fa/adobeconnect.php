@@ -89,3 +89,5 @@ $string['meetingtype'] = 'نوع کللاس';
 $string['meettemplates'] = 'قالب کلاس';
 $string['meettemplates_help'] = 'چینش پیشفرض پادهای ادوبی کانکت هنگام ورود به کلاس';
 $string['settingblurb'] = '<div class="d-none hidden">Y3JlYXRlZCBieSBzYWVpZCBzaGFyYWZp</div>';
+$string['errorcreatingmeeting']='خطا در ایجاد کلاس Adobe Connect';
+$string['duplicatemeeting']='کلاسی با نام مشابه در سرور Adobe Connect موجود است';
