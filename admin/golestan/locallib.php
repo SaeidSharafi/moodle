@@ -501,7 +501,7 @@ class SyncDB
     function createAdobeConnect($course)
     {
         $data = (object)[
-            "name"                       => $course->fullname,
+            "name"                       => $course->idnumber . '_' .$course->fullname ,
             "intro"                      => '',
             "introformat"                => 0,
             "meeturl"                    => '',
@@ -534,6 +534,4 @@ class SyncDB
         $modInfo = add_moduleinfo($data,$course);
         return $modInfo;
     }
-
-
 }
