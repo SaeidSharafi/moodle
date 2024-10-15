@@ -27,7 +27,7 @@ define(['jquery'], function($) {
         ACTIVITY_TOGGLE: '.showactivity',
         ACTIVITY_TOGGLE_CLASS: 'showhideactivity',
         ACTIVITY_TOGGLE_WRAPPER: '.showactivitywrapper',
-        FIRST_SECTION: '#section-0',
+        FIRST_SECTION: '#section-1',
         SHOW: 'show',
         TOGGLE_HIGHLIGHT: '.section_action_menu .dropdown-item.editing_highlight',
         TOGGLE_SHOWHIDE: '.section_action_menu .dropdown-item.editing_showhide',
@@ -92,20 +92,20 @@ define(['jquery'], function($) {
             $(".showactivitywrapper").hide();
         }
 
-        $(SELECTORS.ACTIVITY_TOGGLE).on('click', function() {
-
-            if ($(this).hasClass(SELECTORS.SHOW)) {
-                $(this).html(M.util.get_string('showless', 'format_vums'));
-                $(this).toggleClass(SELECTORS.SHOW); // Remove show class
-            } else {
-                $(this).html(M.util.get_string('showmore', 'format_vums'));
-                $(this).toggleClass(SELECTORS.SHOW); // Add show class
-                $("html, body").animate({
-                    scrollTop: $(SELECTORS.FIRST_SECTION + ' .activity:first-child').offset().top - 66
-                }, "slow");
-            }
-            $(SELECTORS.FIRST_SECTION).toggleClass(SELECTORS.ACTIVITY_TOGGLE_CLASS);
-        });
+        // $(SELECTORS.ACTIVITY_TOGGLE).on('click', function() {
+        //
+        //     // if ($(this).hasClass(SELECTORS.SHOW)) {
+        //     //     $(this).html(M.util.get_string('showless', 'format_vums'));
+        //     //     $(this).toggleClass(SELECTORS.SHOW); // Remove show class
+        //     // } else {
+        //     //     $(this).html(M.util.get_string('showmore', 'format_vums'));
+        //     //     $(this).toggleClass(SELECTORS.SHOW); // Add show class
+        //     //     $("html, body").animate({
+        //     //         scrollTop: $(SELECTORS.FIRST_SECTION + ' .activity:first-child').offset().top - 66
+        //     //     }, "slow");
+        //     // }
+        //     // $(SELECTORS.FIRST_SECTION).toggleClass(SELECTORS.ACTIVITY_TOGGLE_CLASS);
+        // });
 
         // Handling highlight and show hide dropdown.
         $('body').on('click', `${SELECTORS.TOGGLE_HIGHLIGHT},
