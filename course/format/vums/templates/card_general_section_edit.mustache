@@ -198,6 +198,14 @@
                 </div>
             </div>
         {{/activityexists}}
+        {{^activityexists}}
+            <div class="activities-wrapper d-flex flex-column">
+                <h4 class="activitieshead m-0">{{#str}} generalactivities, format_vums{{/str}}</h4>
+                <div class="content">
+                    <div class="summary"></div>
+                </div>
+            </div>
+        {{/activityexists}}
         <div class="text-center showactivitywrapper">
             <span class="showactivity text-primary show">
                 {{#str}}showmore, format_vums{{/str}}

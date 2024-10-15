@@ -7695,7 +7695,6 @@ body:not(.ccn_context_dashboard) .ui_kit_select_search button.btn:focus {
   -moz-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.09);
   /* Firefox 3.5 - 3.6 */
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.09);
-  top: .50rem;
 }
 .ui_kit_checkbox .custom-control-input:checked~.custom-control-label::before {
   background-color: [[setting:color_primary]];
