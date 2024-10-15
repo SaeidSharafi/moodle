@@ -7,6 +7,9 @@
  *
  *
  */
+.dropdown-item{
+    line-height: 2rem;
+}
 #page, #page-content {
     background: #f5f8ff;
 }
