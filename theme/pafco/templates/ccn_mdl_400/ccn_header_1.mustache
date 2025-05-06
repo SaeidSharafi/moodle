@@ -1,0 +1,81 @@
+<header class="ccnHeader1 header-nav menu_style_home_one main-menu">
+    <div class="container-fluid">
+        <!-- Ace Responsive Menu -->
+        <nav class="ccn_nav_group justify-content-between">
+            <!-- Menu Toggle btn-->
+            <div class="menu-toggle">
+                <img class="nav_logo_img img-fluid" src="{{{headerlogo1}}}{{!output.get_logo_url}}" alt="{{sitename}}">
+                <button type="button" id="menu-btn">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div>
+                {{#logo}}
+                    <a href="{{{ ccnLogoUrl }}}" class="navbar_brand float-left dn-smd h-100">
+                        {{#logo_image}}
+                            <img class="logo1 img-fluid" src="{{{headerlogo1}}}{{!output.get_logo_url}}" alt="{{sitename}}" {{#logo_styles}}
+                                 style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
+                        {{#logo_image}}
+                            <img class="logo2 img-fluid" src="{{{headerlogo2}}}{{!output.get_logo_url}}" alt="{{sitename}}" {{#logo_styles}}
+                                 style="{{{logo_styles}}}" {{/logo_styles}}>{{/logo_image}}
+                        {{#logotype}}<span>{{{ sitename }}}</span>{{/logotype}}
+                    </a>
+                {{/logo}}
+                <a href="/vums/faq.php" class="alig align-items-center d-flex h-100 text-white">{{#str}}faq, theme_pafco{{/str}}</a>
+            </div>
+            {{#display_library_list}}
+                <ul class="mt20 pull-left mr20 ml10">
+                    <li class="list-inline-item">
+                        <div class="header_top_lang_widget">
+                            <div class="ht-widget-container">
+                                <div class="vertical-wrapper">
+                                    <h2 class="title-vertical home3">
+                                        <span class="text-title">{{#str}}library, theme_pafco{{/str}}</span> <i class="fa fa-angle-down show-down" aria-hidden="true"></i>
+                                    </h2>
+                                    <div class="content-vertical">
+                                        {{{ ccn_librarylist }}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            {{/display_library_list}}
+
+
+            <nav class="navbar navbar-expand" aria-label="{{#str}}sitemenubar, admin{{/str}}">
+                {{#primarymoremenu}}
+                    <div class="primary-navigation">
+                        {{> theme_pafco/ccn_mdl_400/moremenu}}
+                    </div>
+                {{/primarymoremenu}}
+                <ul class="navbar-nav d-none d-md-flex my-1 px-1">
+                    <!-- page_heading_menu -->
+                    {{{ output.page_heading_menu }}}
+                </ul>
+            </nav>
+
+
+            <div class="d-flex" style="gap: 5px">
+                {{#notloggedin}}
+                    <ul class="header_user_notif withlogo notloggedin ccn-frontend-header_user_notif align-items-center d-flex dn-smd">
+
+                        {{#lang_menu_icons}}
+
+                            {{{lang_menu}}}
+
+                        {{/lang_menu_icons}}
+                    </ul>
+                {{/notloggedin}}
+                <ul id="respMenu" class="" data-menu-style="horizontal">
+                    {{> theme_pafco/ccn_navbar_user }}
+                </ul>
+                <ul class="sign_up_btn pull-right dn-smd mt20">
+                    {{> theme_pafco/ccn_navbar_user_popup }}
+                </ul><!-- Button trigger modal -->
+            </div>
+        </nav>
+    </div>
+</header>

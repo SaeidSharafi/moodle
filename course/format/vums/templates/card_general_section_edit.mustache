@@ -1,0 +1,225 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+
+{{!
+    @template format_vums/card_general_section_edit
+
+
+    Example context (json):
+    {
+        "editing: "1",
+        "defaultview: "1/0",
+        "expanded: "1/0",
+        "collapsed: "1/0",
+        "user_id: "1",
+        "courseid: "1",
+        "generalsection": [
+         {
+            "generalsectiontitle": "General Section Title",
+            "activities": [
+                {
+                    "index": "index",
+                    "id": "id",
+                    "completion": "completion",
+                    "viewurl": "viewurl",
+                    "title": "title",
+                    "modulename": "modulename",
+                    "summary": "summary",
+                    "completed": "completed",
+                    "hidden": "hidden",
+                    "availstatus": "availstatus",
+                    "modicons": "modicons",
+                }
+            ],
+            "generalsectionsummary": "General Section Summary",
+         }
+        ],
+        "sections": [
+            {
+                "index": "1",
+                "title": "Section Title",
+                "singlepageurl": "Single Page URL",
+                "hiddenmessage": "Hidden message",
+                "summary": "Summary",
+                "hidden": "1/0",
+                "activityinfostring": "2 Files, 2 Quizzes"
+                "sectionactivities" [
+                    {
+                    }
+                ]
+            }
+        ]
+    }
+}}
+<li id="section-{{{index}}}" class="border-0 section main cards col-lg-12 col-sm-12 p-0">
+    <div class="general-section d-flex flex-column">
+        {{>format_vums/optional_secheader}}
+        <div class="d-none hidden course-prgress-container" data-courseid="{{courseid}}"></div>
+        <div class="section-details">
+            <div class="course-info">
+                <div class="row no-gutters">
+                    <div class="col-md-8 col-lg-8">
+                        <div class="row no-gutters px-5 w-100">
+                            <div class="col-12 col-md-8">
+                                <div class='generalsectioninfo'>
+                                    <p>{{starttime}}</p>
+                                    <h4>{{fullname}}</h4>
+                                    {{#teachers}}
+                                        <div class="instructor-info stat-container">
+                                            <span> {{teacherlabel}}</span>
+                                            <span class="titles h-semibold-6">
+                                                {{#instructors}}
+                                                {{!}}
+                                                    {{#hasanother}},&nbsp;{{/hasanother}}
+                                                    {{name}}
+                                                {{!}}
+                                                {{/instructors}}
+                                            </span>
+                                        </div>
+                                    {{/teachers}}
+                                    <div>
+                                        <i class="fa fa-user-o"></i>
+                                        <span>{{#str}}student, format_vums{{/str}}</span>
+                                        <span>{{studentscount}}</span>
+                                    </div>
+                                    <div class="align-items-center d-flex">
+                                        <div>
+                                            <a class="btn btn-primary" id="course-introduction-button" href="#">
+                                                {{#str}}course_introduction, format_vums{{/str}}
+                                            </a>
+                                            <a class="btn btn-primary d-none" id="course-content-button" href="#">
+                                                {{#str}}course_content, format_vums{{/str}}
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <a class="btn btn-primary" id="course-blocks-button" href="#">
+                                                {{#str}}course_blocks, format_vums{{/str}}
+                                            </a>
+                                            <a class="btn btn-primary d-none" id="course-content-button2" href="#">
+                                                {{#str}}course_content, format_vums{{/str}}
+                                            </a>
+                                        </div>
+                                        {{#announcement}}
+                                            <a class="btn btn-primary" href="{{viewurl}}">
+                                                {{#str}}announcement, format_vums{{/str}}
+                                            </a>
+                                        {{/announcement}}
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 order-first order-md-last">
+                                <div class="course-image mb-3 d-flex justify-content-center">
+                                    <img class="w-100" src="{{coursemainimage}}" alt="{{fullname}}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        <div class="coursedetails">
+                            <div class="d-flex flex-column">
+                                {{#activitylist}}
+                                    <div class="d-flex justify-content-between">
+                                        <span class="flex-shrink-0">{{ name }}</span>
+                                        <div class="align-items-center d-flex px-3 w-100">
+                                            <div class="w-100 border-bottom"></div>
+                                        </div>
+                                        <span class="flex-shrink-0">{{ count }}</span>
+                                    </div>
+                                {{/activitylist}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {{#activityexists}}
+            <div class="activities-wrapper d-flex flex-column">
+                <h4 class="activitieshead m-0">{{#str}} generalactivities, format_vums{{/str}}</h4>
+                <div class="content">
+                    <div class="summary"></div>
+                    <ul class="img-text section general-section-activities  text-center yui3-dd-drop"
+                        data-draggroups="resource">
+                        {{#activities}}
+                            <li class="activity {{{modulename}}} modtype_{{{modulename}}} d-flex flex-column justify-content-between  list-unstyled yui3-dd-drop"
+                                id="module-{{id}}" data-draggroups="resource">
+
+                                <div class="activityinstance p-0 m-0 d-flex h-100 flex-column justify-content-between">
+                                    <div class="title-activity-container text-break w-100 text-left ">
+                                        {{{title}}}
+                                    </div>
+                                    <span class=""><span class="editing_move moodle-core-dragdrop-draghandle"
+                                                         title="{{#str}} moveresource, format_vums {{/str}}" tabindex="0"
+                                                         data-draggroups="resource" role="button" data-sectionreturn="0"
+                                                         style="cursor: move;">{{#pix}} i/move_2d,core {{/pix}}</span></span>
+                                    <div data-region="sectionbadges" class="sectionbadges d-flex align-items-center mt-2">
+                                        {{> core_courseformat/local/content/section/badges }}
+                                    </div>
+                                    {{#modstealth}}
+                                        <div class="mt-2 d-flex align-items-center">
+                                            <span class="badge badge-pill badge-warning">{{#str}}hiddenoncoursepage{{/str}}</span>
+                                        </div>
+                                    {{/modstealth}}
+                                    <div class="contentafterlink">
+                                        {{{summary}}}
+                                    </div>
+                                </div>
+                                <div class="p-0">
+                                    {{#hasopenduedata}}
+                                        <div class="description text-left">
+                                            <div data-region="activity-dates" class="activity-dates small course-description-item">
+                                                <div class="description-inner">
+                                                    {{#opendue}}
+                                                        <div>
+                                                            <strong>{{label}}</strong> {{timestamp}}
+                                                        </div>
+                                                    {{/opendue}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {{/hasopenduedata}}
+                                    {{{availstatus}}}
+                                    <div class="actions">
+                                        {{{completion}}}
+                                        {{{modicons}}}
+                                    </div>
+                                </div>
+
+                            </li>
+                        {{/activities}}
+                    </ul>
+                </div>
+            </div>
+        {{/activityexists}}
+        {{^activityexists}}
+            <div class="activities-wrapper d-flex flex-column">
+                <h4 class="activitieshead m-0">{{#str}} generalactivities, format_vums{{/str}}</h4>
+                <div class="content">
+                    <div class="summary"></div>
+                </div>
+            </div>
+        {{/activityexists}}
+        <div class="text-center showactivitywrapper">
+            <span class="showactivity text-primary show">
+                {{#str}}showmore, format_vums{{/str}}
+            </span>
+        </div>
+    </div>
+</li>

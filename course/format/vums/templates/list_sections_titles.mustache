@@ -1,0 +1,44 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+
+{{!
+    @template format_vums/list_sections
+
+
+    Example context (json):
+    {
+      "sections": [
+         {
+            "index": "1",
+            "title": "Section Title",
+            "singlepageurl": "Single Page URL",
+            "hiddenmessage": "Hidden message",
+            "hidden": "1/0",
+            "summary": "Summary",
+            "activityinfostring": "2 Files, 2 Quizzes"
+            "sectionactivities" [
+               {
+               }
+            ]
+         }
+      ]
+   }
+}}
+
+<li class="nav-item" role="presentation" aria-labelledby="section-title-{{index}}">
+    <a class="nav-link {{#isfirst}}active{{/isfirst}}" href="#section-{{index}}" data-toggle="tab" data-target="#section-{{index}}" role="tab" aria-controls="section-content-{{index}}" aria-selected="true">{{{ title }}}</a>
+</li>

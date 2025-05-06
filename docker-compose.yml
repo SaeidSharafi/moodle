@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  moodle-localhost:
+    image: nginx:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - ./.docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./:/var/www/html
+      - /var/www/moodledata:/var/www/moodledata
+    networks:
+      - moodle
+      - fleet
+    depends_on:
+      - php
+      - mysql
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.moodle-localhost.rule=Host(`moodle.localhost`)
+      - traefik.http.services.moodle-localhost.loadbalancer.server.port=80
+      - traefik.docker.network=fleet
+
+  php:
+    image: php8.1-full
+    volumes:
+      - ./:/var/www/html
+      - /var/www/moodledata:/var/www/moodledata
+      - ./.docker/php/php.ini:/usr/local/etc/php/conf.d/zz.overrides.php.ini
+    networks:
+      - moodle
+
+  mysql:
+    image: mysql/mysql-server:8.0
+    ports:
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - './.docker/create-dev-database.sh:/docker-entrypoint-initdb.d/10-create-dev-database.sh'
+      - ./.docker/mysql:/var/lib/mysql
+    networks:
+      - moodle
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - '-p${DB_PASSWORD}'
+      retries: 3
+      timeout: 5s
+networks:
+  moodle:
+    driver: bridge
+  fleet:
+    external: true

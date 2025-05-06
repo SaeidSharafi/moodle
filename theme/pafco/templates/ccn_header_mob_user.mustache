@@ -1,0 +1,10 @@
+{{#isloggedin}}
+    {{> theme_boost/flat_navigation }}
+    {{{ output.user_menu }}}
+{{/isloggedin}}
+{{#notloggedin}}
+  <li><a href="{{{ config.wwwroot }}}/login/index.php"><span class="ccn-flaticon-user"></span> {{#str}}login, theme_pafco{{/str}}</a></li>
+  {{#signup_is_enabled}}
+   <li><a href="{{{ config.wwwroot }}}/login/signup.php"><span class="ccn-flaticon-login"></span> {{#str}} signup, theme_pafco {{/str}}</a></li>
+  {{/signup_is_enabled}}
+{{/notloggedin}}

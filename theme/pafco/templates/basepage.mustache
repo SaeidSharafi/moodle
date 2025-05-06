@@ -1,0 +1,57 @@
+{{> theme_boost/head }}
+
+<body {{{ bodyattributes }}}>
+{{> theme_pafco/ccn_preloader }}
+<div class="wrapper" id="page-content">
+    {{> theme_pafco/ccn_mdl_400/navbar }}
+    <div id="ccn-page-wrapper">
+        <div id="ccnSettingsMenuContainer">
+            <div id="ccnSettingsMenuInner">{{! @ccnIrrevocable: These container divs #ccnSettingsMenuContainer/Inner must exist unconditionally, only contents can be conditional }}
+                {{#show_settings_controls}}
+                    {{#hasregionmainsettingsmenu}}
+                        <div id="region-main-settings-menu" class="d-print-none {{#hasblocks}}has-blocks{{/hasblocks}}">
+                            <div> {{{ output.region_main_settings_menu }}} </div>
+                        </div>
+                    {{/hasregionmainsettingsmenu}}
+                {{/show_settings_controls}}
+            </div>
+        </div>
+        {{{ output.standard_top_of_body_html }}}
+        <div>
+            {{{ output.full_header }}}
+
+
+            <div id="ccn-main-region">
+                <div class="container">
+                    <div class="d-print-block main-inner">
+                        <div id="region-main" aria-label="{{#str}}content{{/str}}">
+                            <div id="ccn-main">
+                                {{{ output.main_content }}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            {{{ blocks_fullwidth_bottom }}}
+        </div>
+    </div>
+    {{> theme_pafco/ccn_mdl_400/footer }}
+</div>
+{{{ output.standard_after_main_region_html }}}
+
+{{> theme_pafco/ccn_modals }}
+</body>
+
+</html>
+{{#js}}
+    M.util.js_pending('theme_boost/loader');
+    require(['theme_boost/loader'], function() {
+    M.util.js_complete('theme_boost/loader');
+    });
+    M.util.js_pending('theme_boost/drawer');
+    require(['theme_boost/drawer'], function(mod) {
+    mod.init();
+    M.util.js_complete('theme_boost/drawer');
+    });
+{{/js}}

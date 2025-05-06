@@ -1,0 +1,156 @@
+<div class="recordings pb-3" id="records">
+    <h3>{{#str}}recordings, adobeconnect{{/str}}</h3>
+    <table class="w-100 table-adobe-recordings">
+        <thead>
+        <tr>
+
+            <th>{{#str}}title, adobeconnect{{/str}}</th>
+
+            <th>{{#str}}record_createdate, adobeconnect{{/str}}</th>
+            <th>{{#str}}record_duration, adobeconnect{{/str}}</th>
+            <th>{{#str}}link, adobeconnect{{/str}}</th>
+            {{#showoffline}}
+                <th>{{#str}}offline_link, adobeconnect{{/str}}</th>
+            {{/showoffline}}
+            {{#canmanagerecordings}}
+                <th>{{#str}}operations , adobeconnect{{/str}}</th>
+            {{/canmanagerecordings}}
+
+        </tr>
+        </thead>
+        <tbody>
+        {{#records}}
+            <tr id="recording-{{recording_id}}"
+                class="{{^canmanagerecordings}}
+                    {{#hiderow}}hidden{{/hiderow}}
+                {{/canmanagerecordings}}">
+                <td>
+                    {{ name }}
+
+                    {{#deleted}}
+                        <span class="text-danger d-block pl-3">{{#str}}deleted , adobeconnect{{/str}}</span>
+                    {{/deleted}}
+                </td>
+
+                <td> {{ formated_create_date }}</td>
+                <td> {{ formated_duration }}</td>
+                <td>
+
+                    {{#hideonline}}
+                        {{#canmanagerecordings}}
+                            <a href="{{ url }}" target="_blank">{{#str}}view{{/str}}</a>
+
+                            <a href="#" data-action="toggledisplayonline" data-toggle="0"
+                               data-recordingid="{{recording_id}}">
+                                <i class="icon fa fa-eye-slash fa-fw " title="{{#str}}show{{/str}}"
+                                   aria-label="{{#str}}show{{/str}}"></i>
+                            </a>
+                        {{/canmanagerecordings}}
+                    {{/hideonline}}
+                    {{^hideonline}}
+                        <a href="{{ url }}" target="_blank">{{#str}}view{{/str}}</a>
+                        {{#canmanagerecordings}}
+                            <a href="#" class="color3" data-action="toggledisplayonline" data-toggle="1"
+                               data-recordingid="{{recording_id}}">
+                                <i class="icon fa fa-eye fa-fw color1" title="{{#str}}hide{{/str}}"
+                                   aria-label="{{#str}}hide{{/str}}"></i>
+                            </a>
+                        {{/canmanagerecordings}}
+                    {{/hideonline}}
+                </td>
+                {{#showoffline}}
+                    <td>
+                        {{#hideoffline}}
+                            {{#canmanagerecordings}}
+                                {{#url_offline}}
+                                    <a href="{{ url_offline }}" target="_blank">
+                                        {{#adobe_offline}}
+                                            {{#str}}view{{/str}}
+                                        {{/adobe_offline}}
+                                        {{^adobe_offline}}
+                                            {{#str}}download{{/str}}
+                                        {{/adobe_offline}}
+                                    </a>
+                                    <a href="#" data-action="toggledisplayoffline" data-toggle="0"
+                                       data-recordingid="{{recording_id}}">
+                                        <i class="icon fa fa-eye-slash fa-fw " title="{{#str}}show{{/str}}"
+                                           aria-label="{{#str}}show{{/str}}"></i>
+                                    </a>
+                                {{/url_offline }}
+                            {{/canmanagerecordings}}
+                        {{/hideoffline}}
+                        {{^hideoffline}}
+                            {{#url_offline}}
+                                <a href="{{ url_offline }}" target="_blank">
+                                    {{#adobe_offline}}
+                                        {{#str}}view{{/str}}
+                                    {{/adobe_offline}}
+                                    {{^adobe_offline}}
+                                        {{#str}}download{{/str}}
+                                    {{/adobe_offline}}
+                                </a>
+                                {{#canmanagerecordings}}
+                                    <a href="#" class="color3" data-action="toggledisplayoffline" data-toggle="1"
+                                       data-recordingid="{{recording_id}}">
+                                        <i class="icon fa fa-eye fa-fw color1" title="{{#str}}hide{{/str}}"
+                                           aria-label="{{#str}}hide{{/str}}"></i>
+                                    </a>
+                                {{/canmanagerecordings}}
+                            {{/url_offline}}
+                            {{^url_offline}}
+                                {{#canmanagerecordings}}
+                                    {{#in_offline_server}}
+                                        {{#in_offline_queue}}
+                                            {{#str}}in_offline_queue, adobeconnect{{/str}}
+                                        {{/in_offline_queue}}
+                                        {{^in_offline_queue}}
+                                            <a href="#" class="d-inline-block offline-recording"
+                                               data-action="addToOfflineQueue"
+                                               data-recordingid="{{recording_id}}"
+                                               data-recordingscoid="{{recording_scoid}}">
+                                                {{#str}}add_to_offline_queue,adobeconnect{{/str}}
+                                            </a>
+                                        {{/in_offline_queue}}
+                                    {{/in_offline_server}}
+                                {{/canmanagerecordings}}
+                            {{/url_offline}}
+                        {{/hideoffline}}
+                    </td>
+                {{/showoffline}}
+                {{#candeleterecordings}}
+                    <td>
+                        {{#canmanagerecordings}}
+                            {{#hiderow}}
+                                <a href="#" class="d-inline-block" data-action="toggledisplayrow" data-toggle="0"
+                                   data-recordingid="{{recording_id}}">
+                                    <i class="m-0 icon fa fa-eye-slash fa-fw " title="{{#str}}show{{/str}}"
+                                       aria-label="{{#str}}show{{/str}}"></i>
+                                </a>
+                            {{/hiderow}}
+                            {{^hiderow}}
+                                <a href="#" class="d-inline-block" data-action="toggledisplayrow" data-toggle="1"
+                                   data-recordingid="{{recording_id}}">
+                                    <i class="m-0 icon fa fa-eye fa-fw " title="{{#str}}hide{{/str}}"
+                                       aria-label="{{#str}}hide{{/str}}"></i>
+                                </a>
+                            {{/hiderow}}
+                        {{/canmanagerecordings}}
+
+                        <a href="#" class="d-inline-block del-recording" data-action="deleterecording"
+                           data-recordingid="{{recording_id}}"
+                           data-recordingscoid="{{recording_scoid}}">
+                            <i class="icon fa fa-trash fa-fw color1" title="{{#str}}delete{{/str}}"
+                               aria-label="{{#str}}delete{{/str}}"></i>
+                            <i class="spinner-border spinner-border-sm"></i>
+                        </a>
+
+                    </td>
+                {{/candeleterecordings}}
+            </tr>
+        {{/records}}
+        {{^records}}
+
+        {{/records}}
+        </tbody>
+    </table>
+</div>

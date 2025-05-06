@@ -1,0 +1,70 @@
+<div id="meetingsummary" class="box py-3 generalbox">
+    <form method="POST" target="{{from_target}}" id="yui_3_17_2_1_1664092223163_212">
+        <div class="aconfldset">
+            <div class="aconmeetinforow">
+                <div class="aconlabeltitle" id="aconmeetnametitle"><label for="lblmeetingnametitle">
+                    {{#str}}meetingname,adobeconnect {{/str}}
+                </label></div>
+                <div class="aconlabeltext" id="aconmeetnametxt"><label for="lblmeetingname">
+                    {{meetingname}}
+                </label></div>
+            </div>
+            {{#meeturl}}
+                <div class="aconmeetinforow">
+                    <div class="aconlabeltitle" id="aconmeeturltitle"><label for="lblmeetingurltitle">
+                        {{#str}}meeturl,adobeconnect {{/str}}
+                    </label></div>
+                    <div class="aconlabeltext" id="aconmeeturltext"><label for="lblmeetingurl">
+                        {{meeturl}}
+                    </label></div>
+                </div>
+            {{/meeturl}}
+            {{#servermeetinginfo}}
+                <div class="aconmeetinforow">
+                    <div class="aconlabeltitle" id="aconmeeturlinfo"><label for="lblmeetingurlinfo">
+                        {{#str}}meetinfo,adobeconnect {{/str}}
+                    </label>
+                    </div>
+                    <div class="aconlabeltext" id="aconmeeturlinfotext">
+                        <a target="_blank"
+                           href="{{{servermeetinginfo}}}">
+                            {{#str}}meetinfotxt,adobeconnect {{/str}}
+                        </a>
+                    </div>
+                </div>
+            {{/servermeetinginfo}}
+
+            <div class="aconmeetinforow">
+                <div class="aconlabeltitle" id="aconmeetstarttitle"><label for="lblmeetingurl">{{#str}}meetingstart,adobeconnect {{/str}}</label></div>
+                <div class="aconlabeltext" id="aconmeetstarttxt"><label for="lblmeetingstart">{{starttime}}</label></div>
+            </div>
+            <div class="aconmeetinforow" id="yui_3_17_2_1_1664092223163_294">
+                <div class="aconlabeltitle" id="aconmeetendtitle"><label for="lblmeetingendtitle">{{#str}}meetingend,adobeconnect {{/str}}</label></div>
+                <div class="aconlabeltext" id="aconmeetendtxt"><label for="lblmeetingend">{{endtime}}</label></div>
+            </div>
+            <div class="aconmeetinforow">
+                <div class="aconlabeltitle" id="aconmeetsummarytitle"><label for="lblmeetingsummarytitle">{{#str}}meetingintro,adobeconnect {{/str}}</label></div>
+                <div class="aconlabeltext" id="aconmeetsummarytxt"><label for="lblmeetingsummary">
+                    {{{meetingdetail}}}
+                </label></div>
+            </div>
+            <input type="hidden" name="id" value="{{id}}">
+            <input type="hidden" name="group" value="{{group}}">
+            <input type="hidden" name="sesskey" value="{{sesskey}}">
+
+            <div class="aconbtnrow" id="yui_3_17_2_1_1664092223163_210">
+                <div class="aconbtnjoin" id="yui_3_17_2_1_1664092223163_209">
+                    <input type="button" value="{{#str}}joinmeeting,adobeconnect{{/str}}"
+                           class="btn btn-primary btn-success mx-2" name="btnname"
+                           onclick="window.open('{{{joinurl}}}', 0);"
+                           id="yui_3_17_2_1_1664092223163_208">
+                </div>
+                {{#participants}}
+                    <div class="aconbtnroles">
+                        <input type="submit" value="{{#str}}selectparticipants,adobeconnect {{/str}}" class="btn btn-secondary mx-2" name="participants">
+                    </div>
+                {{/participants}}
+            </div>
+        </div>
+    </form>
+</div>

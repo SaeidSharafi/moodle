@@ -1,0 +1,122 @@
+.aconfldset fieldset legend {
+    font-weight: bold;
+    font-size:18px;
+}
+
+.aconmeetinforow {
+    margin-left:auto;
+    margin-right:auto;
+    width:60%;
+  }
+
+.aconmeetinforow .aconlabeltitle {
+    font-weight: bold;
+}
+
+.aconmeetinforow .aconlabeltitle .aconlabeltext  {
+    display: inline;
+}
+
+.aconbtnrow {
+    margin-left:auto;
+    margin-right:auto;
+    width:50%;
+    text-align:center;
+}
+
+.aconbtnrow .aconbtnjoin, .aconbtnrow .aconbtnroles {
+    display: inline;
+
+}
+
+#aconmeetnametitle {
+    margin-right: 30px;
+}
+
+#aconmeeturltitle {
+    margin-right: 40px;
+}
+
+#aconmeetstarttitle {
+    margin-right: 4px;
+}
+
+#aconmeetendtitle {
+    margin-right: 9px;
+}
+
+#aconmeetsummarytitle {
+    margin-right: 3px;
+}
+
+#aconmeetsummarytxt {
+/*    padding-left: 50px;*/
+}
+
+#aconmeeturlinfo {
+    margin-right: 20px;
+}
+.table-adobe-recordings thead th,
+.table-adobe-attendance thead th {
+    color: var(--white, #fff);
+    background: var(--color_secondary, #3c8dbc);
+}
+.table-adobe-recordings thead th,
+.table-adobe-attendance thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
+.table-adobe-recordings th,
+.table-adobe-attendance th {
+    padding: 13px;
+    border-top: 0;
+}
+.table-adobe-recordings tbody tr:nth-of-type(odd),
+.table-adobe-attendance tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+.table-adobe-recordings tbody td,
+.table-adobe-attendance tbody td {
+    padding: 5pt;
+}
+table#attendances td{
+    vertical-align: top;
+}
+.synchronizer span{
+    color:#fff;
+}.synchronizer .spinner-border{
+    border-color: #fff;
+     border-right-color: transparent;
+ }
+.del-recording.loading,
+.synchronizer.loading{
+    pointer-events: none;
+}
+.del-recording.loading .spinner-border,
+.synchronizer.loading .spinner-border{
+    display: inline-block;
+}
+.synchronizer .spinner-border,
+.del-recording .spinner-border{
+    display: none;
+}
+
+.table-adobe-recordings tr.disabled *{
+    pointer-events: none;
+    color: #cccccc;
+}
+div#details-adobe {
+    position: relative;
+}
+.loader-full {
+    background: rgba(255,255,255,0.65);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+.synchronizer.btn:not(:disabled):not(.disabled) {
+    background-color: var(--color_secondary);
+}

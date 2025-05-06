@@ -1,0 +1,30 @@
+<div class="control-group d-flex">
+    {{#recordings}}
+        <div class="controls recording px-2">
+            <a class="synchronizer btn btn-primary bg-info color-white" data-action="syncrecordings" data-scoid="{{scoid}}" data-cmid="{{cmid}} data-groupmode="{{groupmode}}
+               data-usrprincipal="{{usrprincipal}}">
+                <span>{{#str}}sync_recordings , mod_adobeconnect{{/str}}</span>
+                <i class="spinner-border spinner-border-sm"></i>
+            </a>
+            <p class="p-2">
+                {{#str}}last_sync, adobeconnect{{/str}}:&nbsp;
+                <span id="last_sync_record">{{last_sync_record}}</span>
+            </p>
+        </div>
+    {{/recordings }}
+    {{#attendance}}
+        <div class="controls attendance px-2">
+            <a class="synchronizer btn btn-primary bg-info color-white" data-action="syncattendance" data-scoid="{{scoid}}" data-cmid="{{cmid}} data-groupmode="{{groupmode}}
+               data-usrprincipal="{{usrprincipal}}">
+                <span>{{#str}}sync_attendance , mod_adobeconnect{{/str}}</span>
+                <i class="spinner-border spinner-border-sm"></i>
+            </a>
+            <p class="p-2">
+                {{#str}}last_sync, adobeconnect{{/str}}:&nbsp;
+                <span id="last_sync_attendance">{{last_sync_attendance}}</span>
+            </p>
+        </div>
+    {{/attendance }}
+
+
+</div>

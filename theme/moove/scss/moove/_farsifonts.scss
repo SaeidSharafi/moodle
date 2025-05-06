@@ -1,0 +1,51 @@
+@font-face {
+  font-family: 'IRANSans';
+  src: url([[font:theme|IRANSansWeb.eot]]) format('embedded-opentype'),
+  url([[font:theme|IRANSansWeb.woff]]) format('woff'),
+  url([[font:theme|IRANSansWeb.woff2]]) format('woff2'),
+  url([[font:theme|IRANSansWeb.ttf]]) format('truetype'),
+  url([[font:theme|IRANSansWeb.svg]]) format('svg');
+
+}
+@font-face {
+  font-family: 'IRANSansBold';
+  src: url([[font:theme|IRANSansWeb_Bold.eot]]) format('embedded-opentype'),
+  url([[font:theme|IRANSansWeb_Bold.woff]]) format('woff'),
+  url([[font:theme|IRANSansWeb_Bold.woff2]]) format('woff2'),
+  url([[font:theme|IRANSansWeb_Bold.ttf]]) format('truetype'),
+  url([[font:theme|IRANSansWeb_Bold.svg]]) format('svg');
+}
+@font-face {
+  font-family: 'IRANSansFaNum';
+  src: url([[font:theme|IRANSansWeb_FaNum.eot]]) format('embedded-opentype'),
+  url([[font:theme|IRANSansWeb_FaNum.woff]]) format('woff'),
+  url([[font:theme|IRANSansWeb_FaNum.woff2]]) format('woff2'),
+  url([[font:theme|IRANSansWeb_FaNum.ttf]]) format('truetype'),
+  url([[font:theme|IRANSansWeb_FaNum.svg]]) format('svg');
+}
+@font-face {
+  font-family: 'IRANSansFaNumBold';
+  src: url([[font:theme|IRANSansWeb_FaNum_Bold.eot]]) format('embedded-opentype'),
+  url([[font:theme|IRANSansWeb_FaNum_Bold.woff]]) format('woff'),
+  url([[font:theme|IRANSansWeb_FaNum_Bold.woff2]]) format('woff2'),
+  url([[font:theme|IRANSansWeb_FaNum_Bold.ttf]]) format('truetype'),
+  url([[font:theme|IRANSansWeb_FaNum_Bold.svg]]) format('svg');
+}
+@font-face {
+  font-family: 'IRYekan';
+  src: url([[font:theme|WebYekan.eot]]) format('embedded-opentype'),
+  url([[font:theme|WebYekan.woff]]) format('woff'),
+  url([[font:theme|WebYekan.ttf]]) format('truetype'),
+  url([[font:theme|WebYekan.svg]]) format('svg');
+
+}
+.iransansfont {
+  font-family: 'IRANSans', "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+}
+
+.yekanfont {
+  font-family: 'IRYekan', "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}

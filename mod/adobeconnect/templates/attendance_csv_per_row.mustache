@@ -1,0 +1,107 @@
+<div class="recordings pt-2">
+    <button onclick="exportTableToCSV('attendance.csv')">ذخیره به صورت CSV</button>
+
+    <table class="w-100 table-adobe-attendance-hidden">
+        <thead>
+        <tr>
+            <th>{{#str}}email{{/str}}</th>
+            <th>{{#str}}sessain_name, adobeconnect{{/str}}</th>
+            <th>{{#str}}participant_name, adobeconnect{{/str}}</th>
+            {{#shortenddate}}
+                <th>{{#str}}date{{/str}}</th>
+                <th>{{#str}}start_date, adobeconnect{{/str}}</th>
+                <th>{{#str}}end_date, adobeconnect{{/str}}</th>
+            {{/shortenddate}}
+            {{^shortenddate}}
+                <th>{{#str}}start_date, adobeconnect{{/str}}</th>
+                <th>{{#str}}end_date, adobeconnect{{/str}}</th>
+            {{/shortenddate}}
+            <th>{{#str}}duration, adobeconnect{{/str}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#rows}}
+            <tr>
+                <td>{{ email }}</td>
+                <td>{{ session_name }}</td>
+                <td>{{ participant_name }}</td>
+                {{#use_hour}}
+                    <td>
+                        {{join_date }}
+                    </td>
+                    <td>
+                        {{start_hour}}
+                    </td>
+                    <td>
+                        {{end_hour }}
+                    </td>
+                {{/use_hour}}
+                {{^use_hour}}
+                    <td>
+                        {{start_dates }}
+                    </td>
+                    <td>
+                        {{end_dates }}
+                    </td>
+                {{/use_hour}}
+                <td>{{ duration }}</td>
+            </tr>
+        {{/rows}}
+        {{^rows}}
+
+        {{/rows}}
+        </tbody>
+    </table>
+
+</div>
+
+<script>
+    function downloadCSV(csv, filename) {
+        var csvFile;
+        var downloadLink;
+
+        // CSV file
+        var universalBOM = "\uFEFF";
+
+        // var a = window.document.createElement('a');
+        // a.setAttribute('href', 'data:text/csv; charset=utf-8,' + encodeURIComponent(universalBOM+csv));
+        // a.setAttribute('download', 'example.csv');
+
+        csvFile = new Blob([universalBOM+csv], {type: "text/csv; charset=utf-8"});
+
+        // Download link
+        downloadLink = document.createElement("a");
+
+        // File name
+        downloadLink.download = filename;
+
+        // Create a link to the file
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+
+        // Hide download link
+        downloadLink.style.display = "none";
+
+        // Add the link to DOM
+        document.body.appendChild(downloadLink);
+
+        // Click download link
+        downloadLink.click();
+        downloadLink.remove();
+    }
+    function exportTableToCSV(filename) {
+        var csv = [];
+        var rows = document.querySelectorAll("table.table-adobe-attendance-hidden tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+            console.log(row);
+            for (var j = 0; j < cols.length; j++)
+                row.push('"' + cols[j].innerText.trim() + '"');
+
+            csv.push(row.join(","));
+        }
+
+        // Download CSV file
+        downloadCSV(csv.join("\n"), filename);
+    }
+</script>
