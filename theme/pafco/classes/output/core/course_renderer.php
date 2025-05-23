@@ -359,10 +359,17 @@ class course_renderer extends \core_course_renderer {
           }
           $output .= $this->single_button($url, get_string('addnewcourse'), 'get');
         }
-        ob_start();
-        print_course_request_buttons($context);
-        $output .= ob_get_contents();
-        ob_end_clean();
+          if (!empty($CFG->enablecourserequests) && has_capability('moodle/course:request', $context)) {
+              // Create the URL for the request page, passing the current category ID
+              $requestUrl = new moodle_url('/course/request.php', ['categoryid' => $coursecat->id]);
+
+              // Use the theme's existing method to generate a button
+              // (Matches how 'Add new course' button is created nearby)
+              $requestButtonHtml = $this->single_button($requestUrl, get_string('requestcourse'), 'get'); // 'requestcourse' is the standard string key
+
+              // Append the generated button HTML to the output
+              $output .= $requestButtonHtml;
+          }
       }
       $output .= '</div><!-- /.ccn_coursecat_action_btns -->';
 

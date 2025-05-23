@@ -113,11 +113,15 @@ if ($ADMIN->fulltree) {
 
     $settings->add(new admin_setting_configtext('enrol_database/newcourseidnumber', get_string('newcourseidnumber', 'enrol_database'), '', 'idnumber'));
 
-    // ===== Pafco Category fields start ==== //
-    $settings->add(new admin_setting_configtext('enrol_database/newcoursecat0', get_string('newcoursecat0', 'enrol_database'), get_string('newcoursecat0_desc', 'enrol_database'), ''));
+    $settings->add(new admin_setting_configtext(
+        'enrol_database/newcoursestartdate',
+        get_string('newcoursestartdate', 'enrol_database'),
+        get_string('newcoursestartdate_desc', 'enrol_database'), ''));
 
-    $settings->add(new admin_setting_configtext('enrol_database/newcoursecat1', get_string('newcoursecat1', 'enrol_database'), get_string('newcoursecat1_desc', 'enrol_database'), ''));
-    // ===== Pafco Category fields end   ==== //
+    $settings->add(new admin_setting_configtext(
+        'enrol_database/newcourseenddate',
+        get_string('newcourseenddate', 'enrol_database'),
+        get_string('newcourseenddate_desc', 'enrol_database'), ''));
 
     $settings->add(new admin_setting_configtext('enrol_database/newcoursecategory', get_string('newcoursecategory', 'enrol_database'), '', ''));
 

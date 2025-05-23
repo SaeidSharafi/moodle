@@ -24,11 +24,13 @@
 namespace format_vums\output;
 
 
-require_once($CFG->dirroot.'/course/format/renderer.php');
 require_once($CFG->dirroot.'/course/format/vums/classes/mod_stats.php');
 
 use core_courseformat\output\section_renderer;
-
+use core_courseformat\base as course_format;
+use moodle_page;
+use section_info;
+use cm_info;
 class renderer extends section_renderer
 {
     /**
@@ -626,10 +628,22 @@ class renderer extends section_renderer
         // Return.
         return $value;
     }
+    public function course_section_updated_cm_item(
+        course_format $format,
+        section_info $section,
+        cm_info $cm,
+        array $displayoptions = []
+    ) {
 
+        $cmitemclass = $format->get_output_classname('content\\section\\cmitem');
+        die($cmitemclass);
+        $cmitem = new $cmitemclass($format, $section, $cm, $displayoptions);
+        return $this->render($cmitem);
+    }
     public function render_content() {
         $format = course_get_format($this->page->course->id);
         $contentclass = $format->get_output_classname('content');
+        die($contentclass);
         $section = 1; // TODO.
         $displayoptions = [];
         $contentoutput = new $contentclass(

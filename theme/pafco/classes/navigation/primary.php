@@ -75,7 +75,7 @@ class primary extends \core\navigation\output\primary {
      *
      * @return array
      */
-    protected function get_primary_nav(): array {
+    protected function get_primary_nav($parent = null): array {
 
       $ccnMdlHandler = new \ccnMdlHandler();
       $ccnMdlVersion = $ccnMdlHandler->ccnGetCoreVersion();
@@ -84,7 +84,7 @@ class primary extends \core\navigation\output\primary {
       if($ccnMdlVersion >= 400 && $this->page->theme->settings->disable_primary_nav == '1') {
         return [];
       }
-      
+
       $nodes = [];
       foreach ($this->page->primarynav->children as $node) {
           $nodes[] = [

@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+use mod_quiz\question\display_options;
+
 /**
  * Structure step to restore one quiz activity
  *
@@ -40,6 +42,9 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
      */
     protected $legacyshufflequestionsoption = false;
 
+    /** @var stdClass */
+    protected $oldquizlayout;
+
     /**
      * @var array Track old question ids that need to be removed at the end of the restore.
      */
@@ -47,7 +52,7 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
 
     protected function define_structure() {
 
-        $paths = array();
+        $paths = [];
         $userinfo = $this->get_setting_value('userinfo');
 
         $quiz = new restore_path_element('quiz', '/activity/quiz');
@@ -56,6 +61,7 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
         // A chance for access subplugings to set up their quiz data.
         $this->add_subplugin_structure('quizaccess', $quiz);
 
+        $paths[] = new restore_path_element('quiz_grade_item', '/activity/quiz/quiz_grade_items/quiz_grade_item');
         $quizquestioninstance = new restore_path_element('quiz_question_instance',
             '/activity/quiz/question_instances/question_instance');
         $paths[] = $quizquestioninstance;
@@ -167,70 +173,79 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
             $oldreview = $data->review;
 
             $data->reviewattempt =
-                    mod_quiz_display_options::DURING |
+                    display_options::DURING |
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_RESPONSES ?
-                            mod_quiz_display_options::IMMEDIATELY_AFTER : 0) |
+                            display_options::IMMEDIATELY_AFTER : 0) |
                     ($oldreview & QUIZ_OLD_OPEN & QUIZ_OLD_RESPONSES ?
-                            mod_quiz_display_options::LATER_WHILE_OPEN : 0) |
+                            display_options::LATER_WHILE_OPEN : 0) |
                     ($oldreview & QUIZ_OLD_CLOSED & QUIZ_OLD_RESPONSES ?
-                            mod_quiz_display_options::AFTER_CLOSE : 0);
+                            display_options::AFTER_CLOSE : 0);
 
             $data->reviewcorrectness =
-                    mod_quiz_display_options::DURING |
+                    display_options::DURING |
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_SCORES ?
-                            mod_quiz_display_options::IMMEDIATELY_AFTER : 0) |
+                            display_options::IMMEDIATELY_AFTER : 0) |
                     ($oldreview & QUIZ_OLD_OPEN & QUIZ_OLD_SCORES ?
-                            mod_quiz_display_options::LATER_WHILE_OPEN : 0) |
+                            display_options::LATER_WHILE_OPEN : 0) |
                     ($oldreview & QUIZ_OLD_CLOSED & QUIZ_OLD_SCORES ?
-                            mod_quiz_display_options::AFTER_CLOSE : 0);
+                            display_options::AFTER_CLOSE : 0);
 
             $data->reviewmarks =
-                    mod_quiz_display_options::DURING |
+                    display_options::DURING |
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_SCORES ?
-                            mod_quiz_display_options::IMMEDIATELY_AFTER : 0) |
+                            display_options::IMMEDIATELY_AFTER : 0) |
                     ($oldreview & QUIZ_OLD_OPEN & QUIZ_OLD_SCORES ?
-                            mod_quiz_display_options::LATER_WHILE_OPEN : 0) |
+                            display_options::LATER_WHILE_OPEN : 0) |
                     ($oldreview & QUIZ_OLD_CLOSED & QUIZ_OLD_SCORES ?
-                            mod_quiz_display_options::AFTER_CLOSE : 0);
+                            display_options::AFTER_CLOSE : 0);
 
             $data->reviewspecificfeedback =
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_FEEDBACK ?
-                            mod_quiz_display_options::DURING : 0) |
+                            display_options::DURING : 0) |
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_FEEDBACK ?
-                            mod_quiz_display_options::IMMEDIATELY_AFTER : 0) |
+                            display_options::IMMEDIATELY_AFTER : 0) |
                     ($oldreview & QUIZ_OLD_OPEN & QUIZ_OLD_FEEDBACK ?
-                            mod_quiz_display_options::LATER_WHILE_OPEN : 0) |
+                            display_options::LATER_WHILE_OPEN : 0) |
                     ($oldreview & QUIZ_OLD_CLOSED & QUIZ_OLD_FEEDBACK ?
-                            mod_quiz_display_options::AFTER_CLOSE : 0);
+                            display_options::AFTER_CLOSE : 0);
 
             $data->reviewgeneralfeedback =
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_GENERALFEEDBACK ?
-                            mod_quiz_display_options::DURING : 0) |
+                            display_options::DURING : 0) |
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_GENERALFEEDBACK ?
-                            mod_quiz_display_options::IMMEDIATELY_AFTER : 0) |
+                            display_options::IMMEDIATELY_AFTER : 0) |
                     ($oldreview & QUIZ_OLD_OPEN & QUIZ_OLD_GENERALFEEDBACK ?
-                            mod_quiz_display_options::LATER_WHILE_OPEN : 0) |
+                            display_options::LATER_WHILE_OPEN : 0) |
                     ($oldreview & QUIZ_OLD_CLOSED & QUIZ_OLD_GENERALFEEDBACK ?
-                            mod_quiz_display_options::AFTER_CLOSE : 0);
+                            display_options::AFTER_CLOSE : 0);
 
             $data->reviewrightanswer =
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_ANSWERS ?
-                            mod_quiz_display_options::DURING : 0) |
+                            display_options::DURING : 0) |
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_ANSWERS ?
-                            mod_quiz_display_options::IMMEDIATELY_AFTER : 0) |
+                            display_options::IMMEDIATELY_AFTER : 0) |
                     ($oldreview & QUIZ_OLD_OPEN & QUIZ_OLD_ANSWERS ?
-                            mod_quiz_display_options::LATER_WHILE_OPEN : 0) |
+                            display_options::LATER_WHILE_OPEN : 0) |
                     ($oldreview & QUIZ_OLD_CLOSED & QUIZ_OLD_ANSWERS ?
-                            mod_quiz_display_options::AFTER_CLOSE : 0);
+                            display_options::AFTER_CLOSE : 0);
 
             $data->reviewoverallfeedback =
                     0 |
                     ($oldreview & QUIZ_OLD_IMMEDIATELY & QUIZ_OLD_OVERALLFEEDBACK ?
-                            mod_quiz_display_options::IMMEDIATELY_AFTER : 0) |
+                            display_options::IMMEDIATELY_AFTER : 0) |
                     ($oldreview & QUIZ_OLD_OPEN & QUIZ_OLD_OVERALLFEEDBACK ?
-                            mod_quiz_display_options::LATER_WHILE_OPEN : 0) |
+                            display_options::LATER_WHILE_OPEN : 0) |
                     ($oldreview & QUIZ_OLD_CLOSED & QUIZ_OLD_OVERALLFEEDBACK ?
-                            mod_quiz_display_options::AFTER_CLOSE : 0);
+                            display_options::AFTER_CLOSE : 0);
+        }
+
+        // New setting in 4.3 needs to be set if not in the backup.
+        if (!isset($data->reviewmaxmarks)) {
+            $data->reviewmaxmarks =
+                    display_options::DURING |
+                    display_options::IMMEDIATELY_AFTER |
+                    display_options::LATER_WHILE_OPEN |
+                    display_options::AFTER_CLOSE;
         }
 
         // The old popup column from from <= 2.1 need to be mapped to
@@ -286,6 +301,8 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
             $sebsettings->userconfirmquit = null;
             $sebsettings->enableaudiocontrol = null;
             $sebsettings->muteonstartup = null;
+            $sebsettings->allowcapturecamera = null;
+            $sebsettings->allowcapturemicrophone = null;
             $sebsettings->allowspellchecking = null;
             $sebsettings->allowreloadinexam = null;
             $sebsettings->activateurlfiltering = null;
@@ -308,6 +325,21 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
             $params = ['id' => $this->task->get_moduleid()];
             $DB->set_field('course_modules', 'completionpassgrade', $data->completionpass, $params);
         }
+    }
+
+    /**
+     * Process a quiz grade items.
+     *
+     * @param stdClass|array $data
+     */
+    protected function process_quiz_grade_item($data): void {
+        global $DB;
+
+        $data = (object) $data;
+        $data->quizid = $this->get_new_parentid('quiz');
+        $oldid = $data->id;
+        $newitemid = $DB->insert_record('quiz_grade_items', $data);
+        $this->set_mapping('quiz_grade_item', $oldid, $newitemid, true);
     }
 
     /**
@@ -335,12 +367,17 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
 
         if ($question->qtype === 'random') {
             // Set reference data.
-            $questionsetreference = new \stdClass();
+            $questionsetreference = new stdClass();
             $questionsetreference->usingcontextid = context_module::instance(get_coursemodule_from_instance(
                 "quiz", $module->id, $module->course)->id)->id;
             $questionsetreference->component = 'mod_quiz';
             $questionsetreference->questionarea = 'slot';
             $questionsetreference->itemid = $data->id;
+            // If, in the orginal quiz that was backed up, this random question was pointing to a
+            // category in the quiz question bank, then (for reasons explained in {@see restore_move_module_questions_categories})
+            // right now, $question->questioncontextid will incorrectly point to the course contextid.
+            // This will get fixed up later in restore_move_module_questions_categories
+            // as part of moving the question categories to the right place.
             $questionsetreference->questionscontextid = $question->questioncontextid;
             $filtercondition = new stdClass();
             $filtercondition->questioncategoryid = $question->category;
@@ -368,7 +405,7 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
      * @param stdClass|array $data
      */
     protected function process_quiz_question_instance($data) {
-        global $CFG, $DB;
+        global $DB;
 
         $data = (object)$data;
         $oldid = $data->id;
@@ -405,6 +442,10 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
                     $this->get_new_parentid('quiz') . ' but not actually used. ' .
                     'The instance has been ignored.', backup::LOG_INFO);
             return;
+        }
+
+        if (isset($data->quizgradeitemid)) {
+            $data->quizgradeitemid = $this->get_mappingid('quiz_grade_item', $data->quizgradeitemid);
         }
 
         $data->quizid = $this->get_new_parentid('quiz');
@@ -570,7 +611,7 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
 
         $this->process_quiz_attempt($data);
 
-        $quiz = $DB->get_record('quiz', array('id' => $this->get_new_parentid('quiz')));
+        $quiz = $DB->get_record('quiz', ['id' => $this->get_new_parentid('quiz')]);
         $quiz->oldquestions = $this->oldquizlayout;
         $this->process_legacy_quiz_attempt_data($data, $quiz);
     }
@@ -602,10 +643,10 @@ class restore_quiz_activity_structure_step extends restore_questions_activity_st
         $this->add_related_files('mod_quiz', 'feedback', 'quiz_feedback');
 
         if (!$this->sectioncreated) {
-            $DB->insert_record('quiz_sections', array(
+            $DB->insert_record('quiz_sections', [
                     'quizid' => $this->get_new_parentid('quiz'),
                     'firstslot' => 1, 'heading' => '',
-                    'shufflequestions' => $this->legacyshufflequestionsoption));
+                    'shufflequestions' => $this->legacyshufflequestionsoption]);
         }
     }
 

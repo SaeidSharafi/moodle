@@ -105,7 +105,10 @@ if (!isloggedin() or isguestuser()) {
     $referer = get_local_referer(false);
 
     echo $OUTPUT->header();
-    echo $OUTPUT->confirm(get_string('noguestpost', 'forum').'<br /><br />'.get_string('liketologin'), get_login_url(), $referer);
+    echo $OUTPUT->confirm(get_string('noguestpost', 'forum'), get_login_url(), $referer, [
+        'confirmtitle' => get_string('noguestpost:title', 'forum'),
+        'continuestr' => get_string('login')
+    ]);
     echo $OUTPUT->footer();
     exit;
 }
@@ -343,10 +346,7 @@ if (!empty($forum)) {
         $canreplyprivately = forum_user_can_reply_privately($modcontext, $parent);
     }
 
-    // If markdown is used, the parser does the job already, otherwise clean text from arbitrary code that might be dangerous.
-    if ($post->messageformat != FORMAT_MARKDOWN) {
-        $post = trusttext_pre_edit($post, 'message', $modcontext);
-    }
+    $post = trusttext_pre_edit($post, 'message', $modcontext);
 
     // Unsetting this will allow the correct return URL to be calculated later.
     unset($SESSION->fromdiscussion);

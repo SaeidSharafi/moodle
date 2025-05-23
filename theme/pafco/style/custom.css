@@ -714,7 +714,13 @@ body.dir-rtl.format-tiles .section-cm-edit-actions .dropdown-menu {
 #page-site-index.pagelayout-frontpage #ccn-main-region {
     padding-top: 0;
 }
-
+.path-mod-assign.pagelayout-embedded #page-content{
+	height: 100vh;
+	height: 100dvh;
+}
+.path-mod-assign [data-region="grade-actions"]{
+        background: #ffffff;
+}
 @media (min-width: 1200px) {
     #page-site-index.pagelayout-frontpage .ccn_breadcrumb_xs {
         height: 78px;
@@ -851,9 +857,9 @@ body.dir-rtl.format-tiles .section-cm-edit-actions .dropdown-menu {
 .pagelayout-basepage header.ccnHeader1:not(.slideInDown ),
 .mobile-menu .header.stylehome1:not(.slideInDown ),
 .pagelayout-basepage .mobile-menu .header.stylehome1:not(.slideInDown ) {
-    background-image: -moz-linear-gradient(135deg, #001aff 0%, #3452ff 100%);
-    background-image: -webkit-linear-gradient(135deg, #001aff 0%, #3452ff 100%);
-    background-image: -ms-linear-gradient(135deg, #001aff 0%, #3452ff 100%);
+    background-image: -moz-linear-gradient(0deg, #0a2958  0%, #0a2958 100%);
+    background-image: -webkit-linear-gradient(0deg, #0a2958  0%, #0a2958 100%);
+    background-image: -ms-linear-gradient(0deg, #0a2958  0%, #0a2958 100%);
 }
 
 .notloggedin .menu_bar_home2 {
@@ -1149,7 +1155,7 @@ body.pagelayout-login #page-content {
 @media (min-width: 768px) {
     #page-login-index .login-container {
         max-width: 100%;
-        width: 100%;
+        width: 100% !important;
     }
 
     #page-login-index .loginform {
@@ -1308,4 +1314,10 @@ form.mform.form-inline.simplesearchform .input-group>.input-group-append>.btn {
 }
 .context-header-settings-menu{
     display: none !important;
+}
+.activity{
+    border-top: none;
+}
+.activity-grid {
+    column-gap: 5px;
 }

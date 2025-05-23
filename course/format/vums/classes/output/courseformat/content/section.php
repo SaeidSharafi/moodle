@@ -26,6 +26,7 @@ namespace format_topics\output\courseformat\content;
 
 use core_courseformat\base as course_format;
 use core_courseformat\output\local\content\section as section_base;
+use section_info;
 use stdClass;
 
 /**
@@ -45,7 +46,7 @@ class section extends section_base {
 
         $data = parent::export_for_template($output);
 
-        if (!$this->format->get_section_number()) {
+        if (!$this->format->get_sectionnum()) {
             $addsectionclass = $format->get_output_classname('content\\addsection');
             $addsection = new $addsectionclass($format);
             $data->numsections = $addsection->export_for_template($output);
@@ -53,5 +54,11 @@ class section extends section_base {
         }
 
         return $data;
+    }
+
+    public function __construct(course_format $format, section_info $section)
+    {
+        parent::__construct($format, $section);
+        $this->cmlistclass = $format->get_output_classname('format_vums\\classes\\output\\courseformat\\content\\section\\cmlist');
     }
 }

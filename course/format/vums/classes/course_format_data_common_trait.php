@@ -113,6 +113,7 @@ class course_format_data_common_trait {
         if (!$completioninfo->is_enabled()) {
             return $activitydetails;
         }
+
         if ($CFG->branch < 311) {
             $activitydetails->completion = $courserenderer->course_section_cm_completion(
                 $course, $completioninfo, $mod, $displayoptions
@@ -250,7 +251,7 @@ class course_format_data_common_trait {
             $data->isfirst = $section->section == 1;
             $data->bg = get_config('format_vums', 'tilebgcolor');
             $data->id = $section->id;
-            $data->sectionreturnid = course_get_format($course)->get_section_number();
+            $data->sectionreturnid = course_get_format($course)->get_sectionnum();
             $data->insertafter = false;
 
             // Check if the user has permission to view this section or not.
@@ -652,6 +653,7 @@ class course_format_data_common_trait {
         $format = course_get_format($course);
 
         $cmlistclass = $format->get_output_classname('content\\section\\cmlist');
+
         $cmlist = new $cmlistclass(
             $format,
             $section,

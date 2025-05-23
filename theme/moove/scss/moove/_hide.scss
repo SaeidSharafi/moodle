@@ -1,0 +1,111 @@
+.changenumsections {
+    display: none;
+    pointer-events: none;
+}
+
+
+.coursecontentblocks {
+    display: none;
+}
+
+.user-grade {
+    .column-weight,
+    .column-range,
+    .column-feedback,
+    .column-contributiontocoursetotal,
+    {
+        display: none;
+    }
+}
+
+#sortingdropdown {
+    display: none;
+}
+.courseindex-section[data-number="0"]{
+    display: none;
+}
+#id_tagshdr,
+#id_display.collapseable,
+#id_competenciessection {
+    display: none;
+}
+
+#page-mod-quiz-mod {
+    #fitem_id_gradecat,
+    #fitem_id_grademethod,
+    #fitem_id_preferredbehaviour,
+    #fitem_id_attemptonlast,
+    #id_reviewoptionshdr,
+    #id_seb,
+    #id_security,
+    #id_availabilityconditionsheader,
+    #id_activitycompletionheader,
+    #id_competenciessection {
+        display: none;
+    }
+}
+
+#fitem_id_idnumber,
+#fitem_id_showstandardinstruction,
+#id_combinedfeedbackhdr,
+#id_multitriesheader,
+#id_tagsheader {
+    display: none;
+}
+
+#page-mod-assign-mod {
+    #fitem_id_gradingduedate,
+    #fitem_id_assignfeedback_comments_commentinline,
+    #fitem_id_attemptreopenmethod,
+    #fitem_id_maxattempts,
+    #fitem_id_advancedgradingmethod_submissions,
+    #fitem_id_blindmarking,
+    #fitem_id_hidegrader,
+    #fitem_id_markingworkflow,
+    #fitem_id_cmidnumber,
+    #fitem_id_lang,
+    #fitem_id_groupmode,
+    #fitem_id_gradecat,
+    #fitem_id_markingallocation,
+    #fitem_id_groupingid,
+    #fitem_id_restrictgroupbutton,
+    #id_notifications,
+    #id_reviewoptionshdr,
+    #id_seb,
+    #id_groupsubmissionsettings,
+    #id_security,
+    #id_availabilityconditionsheader,
+    {
+        display: none;
+    }
+}
+
+#page-mod-forum-mod {
+    #fitem_id_markingworkflow,
+    #fitem_id_cmidnumber,
+    #fitem_id_lang,
+    #fitem_id_advancedgradingmethod_forum,
+    #fitem_id_gradecat_forum,
+    #fitem_id_sendstudentnotifications_forum,
+    #fitem_id_groupmode,
+    #id_attachmentswordcounthdr,
+    #id_subscriptionandtrackinghdr,
+    #id_discussionlocking,
+    #id_blockafterheader,
+    #id_modstandardratings,
+    #id_availabilityconditionsheader,
+
+    {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    .mycourse-nav-selector {
+        width: 100%;
+
+        button {
+            width: 100%;
+        }
+    }
+}

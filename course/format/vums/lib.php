@@ -90,7 +90,6 @@ class format_vums extends core_courseformat\base
         $PAGE->requires->js_call_amd('format_vums/format', 'init', array($this->availablelayouts));
         if ($PAGE->pagetype === 'course-view-vums') {
             $PAGE->requires->js_call_amd('format_vums/modchooser', 'init', [$courseid]);
-
         }
 
         // Pass constants defined for the formats.
@@ -1128,7 +1127,7 @@ function get_enrolled_teachers_context_formated($courseid = null, $frontlineteac
     $context = array();
     $hasTeachers = false;
     if ($teachers) {
-        $namescount = 2;
+        $namescount = 200;
         $profilecount = 0;
 
         foreach ($teachers as $key => $teacher) {

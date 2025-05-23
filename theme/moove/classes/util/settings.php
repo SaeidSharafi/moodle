@@ -154,7 +154,7 @@ class settings {
     public function frontpage_slideshow() {
         $templatecontext['slidercount'] = $this->slidercount;
 
-        $defaultimage = new \moodle_url('/theme/pafco/pix/default_slide.jpg');
+        $defaultimage = new \moodle_url('/theme/moove/pix/default_slide.jpg');
         for ($i = 1, $j = 0; $i <= $templatecontext['slidercount']; $i++, $j++) {
             $sliderimage = "sliderimage{$i}";
             $slidertitle = "slidertitle{$i}";
@@ -182,7 +182,7 @@ class settings {
             $templatecontext['marketingheading'] = format_text($this->marketingheading, FORMAT_HTML);
             $templatecontext['marketingcontent'] = format_text($this->marketingcontent, FORMAT_HTML);
 
-            $defaultimage = new \moodle_url('/theme/pafco/pix/default_markegingicon.svg');
+            $defaultimage = new \moodle_url('/theme/moove/pix/default_markegingicon.svg');
 
             for ($i = 1, $j = 0; $i < 5; $i++, $j++) {
                 $marketingicon = 'marketing' . $i . 'icon';
@@ -226,7 +226,7 @@ class settings {
         }
 
         return $templatecontext;
-        }
+    }
 
     /**
      * Get config theme slideshow
@@ -245,6 +245,7 @@ class settings {
 
         return $templatecontext;
     }
+
 
     /**
      * Get config theme slideshow
@@ -270,7 +271,7 @@ class settings {
                 ];
             }
 
-            if (count($templatecontext['faq'])) {
+            if ($templatecontext['faq'] && count($templatecontext['faq'])) {
                 $templatecontext['faqenabled'] = true;
             }
         }

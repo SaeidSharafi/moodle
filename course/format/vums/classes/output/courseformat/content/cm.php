@@ -46,4 +46,5 @@ class cm extends core_cm {
     public function __construct(course_format $format, \section_info $section, \cm_info $mod, array $displayoptions = []) {
         parent::__construct($format, $section, $mod, $displayoptions);
     }
+
 }

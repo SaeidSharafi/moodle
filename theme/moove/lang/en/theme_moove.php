@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Moove';
-$string['configtitle'] = 'Moove';
-$string['choosereadme'] = 'Moove is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4.';
+$string['pluginname'] = 'Pafco Classic';
+$string['configtitle'] = 'Pafco Classic';
+$string['choosereadme'] = 'Pafco Classic is a modern highly-customisable theme. This theme is intended to be used directly, or as a parent theme when creating new themes utilising Bootstrap 4. (based on Moove theme)';
 
 $string['currentinparentheses'] = '(current)';
 $string['region-side-pre'] = 'Right';
@@ -199,3 +199,9 @@ $string['frontpagecontentdefault'] = '
 Lorem ipsum dolor sit amet, eum id amet animal ornatus, ea vis velit necessitatibus. Eu pri porro definiebas. Has malis blandit in. Oblique offendit te qui, aliquam voluptatum an his. Audire omittam no pri. Sint harum pri et. Usu eu molestiae liberavisse.<br>
 Qui ea tibique hendrerit. Omnes utinam ea duo, ei partem euismod tibique pro, nam no dolorem praesent. Te his mentitum referrentur, eos ne aeque dissentias, partem mollis dolorem at duo. Ut est admodum voluptua volutpat. In eirmod graecis quo, nec at vero nominati.</p>
 ';
+
+
+//User Edit form
+$string['phoneexists'] = 'This Phone number is already registered.';
+$string['invalidemail'] = 'Invalid phone number';
+$string['userphoneduplicate'] = 'Duplicate phone';

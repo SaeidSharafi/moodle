@@ -30,7 +30,7 @@ use templatable;
 use stdClass;
 use context_course;
 
-require_once($CFG->dirroot.'/course/format/renderer.php');
+
 require_once($CFG->dirroot.'/course/renderer.php');
 require_once($CFG->dirroot.'/course/format/vums/classes/mod_stats.php');
 require_once($CFG->dirroot.'/course/format/vums/classes/course_format_data_common_trait.php');
@@ -107,6 +107,7 @@ class format_vums_list_all_sections implements renderable, templatable {
         unset($output);
         $export = new \stdClass();
         $renderer = $PAGE->get_renderer('format_vums');
+
         $rformat = $this->settings['vumscourseformat'];
 
         // Get necessary default values required to display the UI.

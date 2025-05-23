@@ -127,40 +127,40 @@ class general_action_bar extends action_bar {
                         $viewgroup[$plugin->link->out(false)] = $plugin->string;
                         break;
                     case 'settings':
-                        $setupgroup[$plugin->link->out(false)] = $plugin->string;
+                        //$setupgroup[$plugin->link->out(false)] = $plugin->string;
                         break;
                     case 'scale':
                         // We only need the link to the 'view scales' page, otherwise skip and continue to the next
                         // plugin.
-                        if ($key !== 'view') {
-                            continue 2;
-                        }
-                        $moregroup[$plugin->link->out(false)] = get_string('scales');
+                        //if ($key !== 'view') {
+                        //    continue 2;
+                        //}
+                        //$moregroup[$plugin->link->out(false)] = get_string('scales');
                         break;
                     case 'outcome':
                         // We only need the link to the 'outcomes used in course' page, otherwise skip and continue to
                         // the next plugin.
-                        if ($key !== 'course') {
-                            continue 2;
-                        }
-                        $moregroup[$plugin->link->out(false)] = get_string('outcomes', 'grades');
+                        //if ($key !== 'course') {
+                        //    continue 2;
+                        //}
+                        //$moregroup[$plugin->link->out(false)] = get_string('outcomes', 'grades');
                         break;
                     case 'letter':
                         // We only need the link to the 'view grade letters' page, otherwise skip and continue to the
                         // next plugin.
-                        if ($key !== 'view') {
-                            continue 2;
-                        }
-                        $moregroup[$plugin->link->out(false)] = get_string('gradeletters', 'grades');
+                        //if ($key !== 'view') {
+                        //    continue 2;
+                        //}
+                        //$moregroup[$plugin->link->out(false)] = get_string('gradeletters', 'grades');
                         break;
                     case 'import':
-                        $link = new moodle_url('/grade/import/index.php', ['id' => $courseid]);
-                        // If the link to the grade import options is already added to the group, skip and continue to
-                        // the next plugin.
-                        if (array_key_exists($link->out(false), $moregroup)) {
-                            continue 2;
-                        }
-                        $moregroup[$link->out(false)] = get_string('import', 'grades');
+                        //$link = new moodle_url('/grade/import/index.php', ['id' => $courseid]);
+                        //// If the link to the grade import options is already added to the group, skip and continue to
+                        //// the next plugin.
+                        //if (array_key_exists($link->out(false), $moregroup)) {
+                        //    continue 2;
+                        //}
+                        //$moregroup[$link->out(false)] = get_string('import', 'grades');
                         break;
                     case 'export':
                         $link = new moodle_url('/grade/export/index.php', ['id' => $courseid]);
@@ -179,9 +179,9 @@ class general_action_bar extends action_bar {
             $menu[][get_string('view')] = $viewgroup;
         }
 
-        if (!empty($setupgroup)) {
-            $menu[][get_string('setup', 'grades')] = $setupgroup;
-        }
+        //if (!empty($setupgroup)) {
+            //$menu[][get_string('setup', 'grades')] = $setupgroup;
+        //}
 
         if (!empty($moregroup)) {
             $menu[][get_string('moremenu')] = $moregroup;

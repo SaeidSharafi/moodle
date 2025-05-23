@@ -182,8 +182,8 @@ if((int)$ccnMdlVersion < 400) {
   $ccnSheetsTheme[] = 'bootstrap.min';
 }
 $ccnSheetsTheme[] = 'jquery-ui.min';
-$ccnSheetsTheme[] = 'font-awesome.min';
-$ccnSheetsTheme[] = 'font-awesome-animation.min';
+//$ccnSheetsTheme[] = 'font-awesome.min';
+//$ccnSheetsTheme[] = 'font-awesome-animation.min';
 $ccnSheetsTheme[] = 'line-awesome.min';
 $ccnSheetsTheme[] = 'nouislider.min';
 $ccnSheetsTheme[] = 'menu';

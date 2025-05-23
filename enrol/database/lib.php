@@ -669,26 +669,24 @@ class enrol_database_plugin extends enrol_plugin {
             return 1;
         }
 
+        $courseconfig = get_config('moodlecourse');
+
         $table     = $this->get_config('newcoursetable');
         $fullname  = trim($this->get_config('newcoursefullname'));
         $shortname = trim($this->get_config('newcourseshortname'));
-
-        // Pafco categories for 4m
-        $cat0 = trim($this->get_config('newcoursecat0'));
-        $cat1 = trim($this->get_config('newcoursecat1'));
-
         $idnumber  = trim($this->get_config('newcourseidnumber'));
         $category  = trim($this->get_config('newcoursecategory'));
+
+        $startdate = trim($this->get_config('newcoursestartdate'));
+        $enddate   = trim($this->get_config('newcourseenddate'));
 
         // Lowercased versions - necessary because we normalise the resultset with array_change_key_case().
         $fullname_l  = strtolower($fullname);
         $shortname_l = strtolower($shortname);
-
-        $cat0_l = strtolower($cat0);
-        $cat1_l = strtolower($cat1);
-
         $idnumber_l  = strtolower($idnumber);
         $category_l  = strtolower($category);
+        $startdatelowercased = strtolower($startdate);
+        $enddatelowercased   = strtolower($enddate);
 
         $localcategoryfield = $this->get_config('localcategoryfield', 'id');
         $defaultcategory    = $this->get_config('defaultcategory');
@@ -700,22 +698,20 @@ class enrol_database_plugin extends enrol_plugin {
             $defaultcategory = $first->id;
         }
 
-        //remove shortname check for pafco categories
-        $sqlfields = array($fullname);
-
-        if ($cat0) {
-            $sqlfields[] = $cat0;
-        }
-        if ($cat1) {
-            $sqlfields[] = $cat1;
-        }
-
+        $sqlfields = array($fullname, $shortname);
         if ($category) {
             $sqlfields[] = $category;
         }
         if ($idnumber) {
             $sqlfields[] = $idnumber;
         }
+        if ($startdate) {
+            $sqlfields[] = $startdate;
+        }
+        if ($enddate) {
+            $sqlfields[] = $enddate;
+        }
+
         $sql = $this->db_get_sql($table, array(), $sqlfields, true);
         $createcourses = array();
         if ($rs = $extdb->Execute($sql)) {
@@ -727,75 +723,65 @@ class enrol_database_plugin extends enrol_plugin {
                         $trace->output('error: invalid external course record, shortname and fullname are mandatory: ' . json_encode($fields), 1); // Hopefully every geek can read JS, right?
                         continue;
                     }
-
-                    //Pafco 4m category hierarchy
-                    $level0 = null;
-                    $level1 = null;
-
-                    if ($cat0) {
-                        $trace->output('Creating Category Level 0');
-                        $level0 = $this->check_category($fields[$cat0_l], 0,$trace);
-                    }
-                    if ($cat1) {
-                        $trace->output('Creating Category Level 1');
-                        $level1 = $this->check_category($fields[$cat1_l], $level0,$trace);
-                    }
-                    if ($level1 == null){
-                        $level1 = $level0;
-                    }
-                    $course = null;
-                    //Pafco 4m course shortname format
-                    $course_shortname =  $fields[$fullname_l] . "-" . $fields[$idnumber_l];
-                    if ($DB->record_exists('course', array('shortname'=> $course_shortname))) {
-                        // Already exists, get the record.
-                        require_once("$CFG->dirroot/course/lib.php");
-                        $course = $DB->get_record('course', array('shortname'=> $course_shortname));
-                        if ($category) {
-                            if (empty($fields[$category_l])) {
-                                // Empty category means use default.
-                                $course->category = $defaultcategory;
-                                /** removed elseif for Pafco 4m category system*/
-                            } else {
-                                /** changed for Pafco 4m category system*/
-                                $lesson_category = $this->check_category($fields[$category_l], $level1,$trace);
-                                $course->category = $lesson_category;
-                            }
-                        } else {
-                            $course->category = $defaultcategory;
-                        }
-                        update_course($course);
-                        $trace->output('Course' . $course_shortname. ' Exist. Updating Category to ' .  $course->category);
+                    if ($DB->record_exists('course', array('shortname'=>$fields[$shortname_l]))) {
+                        // Already exists, skip.
                         continue;
                     }
-
                     // Allow empty idnumber but not duplicates.
-                    if ($idnumber and $fields[$idnumber_l] !== '' and $fields[$idnumber_l] !== null
-                            and $DB->record_exists('course', array('idnumber' => $fields[$idnumber_l]))
-                        ) {
-                            $trace->output('error: duplicate idnumber, can not create course: '.$course_shortname.' ['
-                                .$fields[$idnumber_l].']', 1);
+                    if ($idnumber and $fields[$idnumber_l] !== '' and $fields[$idnumber_l] !== null and $DB->record_exists('course', array('idnumber'=>$fields[$idnumber_l]))) {
+                        $trace->output('error: duplicate idnumber, can not create course: '.$fields[$shortname_l].' ['.$fields[$idnumber_l].']', 1);
                         continue;
                     }
-                    $trace->output('Creating course : '.$course_shortname);
                     $course = new stdClass();
                     $course->fullname  = $fields[$fullname_l];
-                    $course->shortname = $course_shortname;
+                    $course->shortname = $fields[$shortname_l];
                     $course->idnumber  = $idnumber ? $fields[$idnumber_l] : '';
-
 
                     if ($category) {
                         if (empty($fields[$category_l])) {
                             // Empty category means use default.
                             $course->category = $defaultcategory;
-                            /** removed elseif for Pafco 4m category system*/
+                        } else if ($coursecategory = $DB->get_record('course_categories', array($localcategoryfield=>$fields[$category_l]), 'id')) {
+                            // Yay, correctly specified category!
+                            $course->category = $coursecategory->id;
+                            unset($coursecategory);
                         } else {
-                            /** changed for Pafco 4m category system*/
-                            $lesson_category = $this->check_category($fields[$category_l], $level1,$trace);
-                            $course->category = $lesson_category;
+                            // Bad luck, better not continue because unwanted ppl might get access to course in different category.
+                            $trace->output('error: invalid category '.$localcategoryfield.', can not create course: '.$fields[$shortname_l], 1);
+                            continue;
                         }
                     } else {
                         $course->category = $defaultcategory;
                     }
+
+                    if ($startdate) {
+                        if (!empty($fields[$startdatelowercased])) {
+                            $course->startdate = is_number($fields[$startdatelowercased])
+                                ? $fields[$startdatelowercased]
+                                : strtotime($fields[$startdatelowercased]);
+
+                            // Broken start date. Stop syncing this course.
+                            if ($course->startdate === false) {
+                                $trace->output('error: invalid external course start date value: ' . json_encode($fields), 1);
+                                continue;
+                            }
+                        }
+                    }
+
+                    if ($enddate) {
+                        if (!empty($fields[$enddatelowercased])) {
+                            $course->enddate = is_number($fields[$enddatelowercased])
+                                ? $fields[$enddatelowercased]
+                                : strtotime($fields[$enddatelowercased]);
+
+                            // Broken end date. Stop syncing this course.
+                            if ($course->enddate === false) {
+                                $trace->output('error: invalid external course end date value: ' . json_encode($fields), 1);
+                                continue;
+                            }
+                        }
+                    }
+
                     $createcourses[] = $course;
                 }
             }
@@ -827,7 +813,6 @@ class enrol_database_plugin extends enrol_plugin {
                 }
             }
             if (!$template) {
-                $courseconfig = get_config('moodlecourse');
                 $template = new stdClass();
                 $template->summary        = '';
                 $template->summaryformat  = FORMAT_HTML;
@@ -856,6 +841,25 @@ class enrol_database_plugin extends enrol_plugin {
                 $newcourse->idnumber  = $fields->idnumber;
                 $newcourse->category  = $fields->category;
 
+                if (isset($fields->startdate)) {
+                    $newcourse->startdate = $fields->startdate;
+                }
+
+                if (isset($fields->enddate)) {
+                    // Validating end date.
+                    if ($fields->enddate > 0 && $newcourse->startdate > $fields->enddate) {
+                        $trace->output(
+                            "can not insert new course, the end date must be after the start date: " . $newcourse->shortname, 1
+                        );
+                        continue;
+                    }
+                    $newcourse->enddate = $fields->enddate;
+                } else {
+                    if ($courseconfig->courseenddateenabled) {
+                        $newcourse->enddate = $newcourse->startdate + $courseconfig->courseduration;
+                    }
+                }
+
                 // Detect duplicate data once again, above we can not find duplicates
                 // in external data using DB collation rules...
                 if ($DB->record_exists('course', array('shortname' => $newcourse->shortname))) {
@@ -880,23 +884,6 @@ class enrol_database_plugin extends enrol_plugin {
         $trace->finished();
 
         return 0;
-    }
-    protected function check_category($catname, $parent,progress_trace $trace)
-    {
-        global $DB;
-
-        $category = $DB->get_record('course_categories', array('name' => $catname, 'parent' => $parent));
-        if (!$category) {
-            $data = new stdClass();
-            $data->parent = $parent;
-            $data->name = $catname;
-            $trace->output('Creating Category ');
-
-            $category =core_course_category::create($data);
-
-        }
-        $trace->output('Category id => ' . $category->id);
-        return $category->id;
     }
 
     protected function db_get_sql($table, array $conditions, array $fields, $distinct = false, $sort = "") {
@@ -1117,9 +1104,7 @@ class enrol_database_plugin extends enrol_plugin {
                 $rs->Close();
 
             } else {
-                $fields_obj = $rs->FetchObj();
-                $columns = array_keys((array)$fields_obj);
-
+                $columns = array_keys($rs->fetchRow());
                 echo $OUTPUT->notification('External enrolment table contains following columns:<br />'.implode(', ', $columns), 'notifysuccess');
                 $rs->Close();
             }
@@ -1136,9 +1121,7 @@ class enrol_database_plugin extends enrol_plugin {
                 $rs->Close();
 
             } else {
-                $fields_obj = $rs->FetchObj();
-                $columns = array_keys((array)$fields_obj);
-
+                $columns = array_keys($rs->fetchRow());
                 echo $OUTPUT->notification('External course table contains following columns:<br />'.implode(', ', $columns), 'notifysuccess');
                 $rs->Close();
             }

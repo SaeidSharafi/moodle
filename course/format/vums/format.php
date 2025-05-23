@@ -65,7 +65,7 @@ $strings = $stringman->load_component_strings('format_vums', 'en');
 $PAGE->requires->strings_for_js(array_keys($strings), 'format_vums');
 
 $section = optional_param('section', 0, PARAM_INT);
-$baserenderer = $renderer->get_base_renderer();
+$baserenderer = $renderer;
 
 // Get current course format.
 $courseformat = course_get_format($course);

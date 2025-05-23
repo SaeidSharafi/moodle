@@ -7,6 +7,7 @@ define(['jquery', 'core/str', 'core/ajax', 'core/modal_factory', 'core/templates
             $('body').on('click', '.add-mod', function(e) {
                 e.preventDefault();
                 var sectionId = $(this).data('sectionid'); // Get the section ID from the button
+                var beforemod = $(this).data('beforemod'); // Get the section ID from the button
                 str.get_string('addresourceoractivity').then(function(langString) {
                     ModalFactory.create({
                         type: ModalFactory.types.DEFAULT,
@@ -28,9 +29,9 @@ define(['jquery', 'core/str', 'core/ajax', 'core/modal_factory', 'core/templates
                             args: {
                                 sectionid: sectionId,
                                 courseid: courseId,
+                                beforemod: beforemod,
                             },
                             done: function (response) {
-
                                 Templates.render('format_vums/activitychooser', response).done(function (html) {
                                     let table = document.querySelector('#activities');
                                     Templates.replaceNode(table, html);

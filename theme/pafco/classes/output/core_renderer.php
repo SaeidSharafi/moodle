@@ -754,7 +754,7 @@ return $output;
                 $ccnMenuItemIcon = '<i class="icon fa fa-fw flaticon-tablet"></i>';
             }
             if(strpos($value->url, '/my/courses.php')){
-              $ccnMenuItemIcon = '<i class="icon fa fa-fw flaticon-book"></i>';
+                $ccnMenuItemIcon = '<i class="icon fa fa-fw flaticon-book"></i>';
             }
             if(strpos($value->url, '/profile.php')){
               $ccnMenuItemIcon = '<i class="icon fa fa-fw flaticon-student"></i>';

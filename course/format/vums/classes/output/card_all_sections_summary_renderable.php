@@ -29,7 +29,7 @@ use renderer_base;
 use templatable;
 use stdClass;
 
-require_once($CFG->dirroot.'/course/format/renderer.php');
+
 require_once($CFG->dirroot.'/course/renderer.php');
 require_once($CFG->dirroot.'/course/format/vums/classes/mod_stats.php');
 require_once($CFG->dirroot.'/course/format/vums/classes/course_format_data_common_trait.php');

@@ -24,21 +24,33 @@
 
 namespace format_vums\output\courseformat\content\section;
 
-
+use core_courseformat\base as course_format;
 use core_courseformat\output\local\content\section\cmlist as cmlist_base;
+use core_courseformat\output\local\content\section\optional;
+use core_courseformat\output\local\content\section\renderer_base;
 
-/**
- * Base class to render a section activity list.
- *
- * @package   core_courseformat
- * @copyright 2020 Ferran Recio <ferran@moodle.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+use section_info;
+
 class cmlist extends cmlist_base
 {
+
+    /**
+     * Constructor.
+     *
+     * @param  course_format  $format  the course format
+     * @param  section_info  $section  the section info
+     * @param  array  $displayoptions  optional extra display options
+     */
+    public function __construct(course_format $format, section_info $section, array $displayoptions = [])
+    {
+        parent::__construct($format, $section, $displayoptions);
+
+        // Get the necessary classes.
+        $this->itemclass = $format->get_output_classname('content\\section\\cmitem');
+    }
+
     public function get_template_name(\renderer_base $renderer): string
     {
-
         return 'format_vums/local/content/section/cmlist';
     }
 }

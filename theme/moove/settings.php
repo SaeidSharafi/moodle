@@ -212,7 +212,6 @@ if ($ADMIN->fulltree) {
 
     $setting = new admin_setting_heading('contentseparator', '', '<hr>');
     $page->add($setting);
-
     // Disable teachers from cards.
     $name = 'theme_moove/disableteacherspic';
     $title = get_string('disableteacherspic', 'theme_moove');

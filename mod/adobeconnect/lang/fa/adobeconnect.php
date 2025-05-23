@@ -47,6 +47,7 @@ $string['private'] = 'خصوصی';
 $string['protected'] = 'با اجازه مدیر';
 $string['view_own_attendance'] = 'مشاهده حضور خود';
 $string['view_own_attendance_desc'] = 'اجازه مشاهده حضور/غیاب خود را به کاربران می‌دهد.';
+$string['selectparticipants'] = 'انتساب نفش';
 
 
 $string['view_own_attendance'] = 'مشاهده حضور/غیاب خود';

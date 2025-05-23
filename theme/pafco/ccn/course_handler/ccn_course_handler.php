@@ -37,7 +37,7 @@ class ccnCourseHandler {
       $courseUpdated = $courseRecord->timemodified;
       $courseRequested = $courseRecord->requested;
       $courseEnrolmentCount = count_enrolled_users($courseContext);
-      $ccnCourseActivities = get_array_of_activities($courseId);
+      $ccnCourseActivities = course_modinfo::get_array_of_activities($courseRecord);
       $ccnCountActivities = count($ccnCourseActivities);
       /* @ccnBreak */
       $categoryId = $courseRecord->category;

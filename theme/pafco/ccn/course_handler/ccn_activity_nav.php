@@ -32,7 +32,7 @@ if ($DB->record_exists('course', array('id' => $COURSE->id))) {
       // print_object('Error');
     }
 
-    $ccnFocusActivities = get_array_of_activities($COURSE->id);
+    $ccnFocusActivities = course_modinfo::get_array_of_activities($COURSE);
 
     $ccnCourseUrl = course_get_url($COURSE->id);
     $ccnCourseSections = array();

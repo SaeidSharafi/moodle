@@ -40,11 +40,12 @@ trait get_filtered_modchooser {
             array(
                 'sectionid' => new external_value(PARAM_INT, 'Section ID'),
                 'courseid' => new external_value(PARAM_INT, 'Course ID'),
+                'beforemod' => new external_value(PARAM_INT, 'Before Mod ID', VALUE_OPTIONAL),
             )
         );
     }
 
-    public static function get_filtered_modchooser($sectionid,$courseid) {
+    public static function get_filtered_modchooser($sectionid,$courseid,$beforemod = null) {
         global $DB, $USER;
 
         $coursecontext = \context_course::instance($courseid);
@@ -52,7 +53,7 @@ trait get_filtered_modchooser {
         $course = get_course($courseid);
         $contentitemservice = \core_course\local\factory\content_item_service_factory::get_content_item_service();
 
-        $contentitems = $contentitemservice->get_content_items_for_user_in_course($USER, $course,['secid' => $sectionid]);
+        $contentitems = $contentitemservice->get_content_items_for_user_in_course($USER, $course,['secid' => $sectionid, 'beforemod' => $beforemod]);
 
         return ['content_items' => $contentitems];
     }

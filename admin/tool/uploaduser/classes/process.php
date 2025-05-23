@@ -110,7 +110,7 @@ class process {
      * @param string|null $progresstrackerclass
      * @throws \coding_exception
      */
-    public function __construct(\csv_import_reader $cir, string $progresstrackerclass = null) {
+    public function __construct(\csv_import_reader $cir, ?string $progresstrackerclass = null) {
         $this->cir = $cir;
         if ($progresstrackerclass) {
             if (!class_exists($progresstrackerclass) || !is_subclass_of($progresstrackerclass, \uu_progress_tracker::class)) {
@@ -234,6 +234,15 @@ class process {
     protected function get_match_on_email(): bool {
         $optype = $this->get_operation_type();
         return (!empty($this->formdata->uumatchemail) && $optype != UU_USER_ADDNEW && $optype != UU_USER_ADDINC);
+    }
+
+    /**
+     * Setting to allow matching user accounts on phone
+     * @return bool
+     */
+    protected function get_match_on_phone(): bool {
+        $optype = $this->get_operation_type();
+        return (!empty($this->formdata->uumatchphone) && $optype != UU_USER_ADDNEW && $optype != UU_USER_ADDINC);
     }
 
     /**
@@ -422,7 +431,7 @@ class process {
         }
 
         // Make sure we really have username.
-        if (empty($user->username) && !$this->get_match_on_email()) {
+        if (empty($user->username) && (!$this->get_match_on_email() || !$this->get_match_on_phone())) {
             $this->upt->track('status', get_string('missingfield', 'error', 'username'), 'error');
             $this->upt->track('username', get_string('error'), 'error');
             $this->userserrors++;
@@ -443,6 +452,10 @@ class process {
             $user->mnethostid = $CFG->mnet_localhost_id;
         }
 
+        if (isset($user->phone1) && !str_starts_with($user->phone1,'0')) {
+            $user->phone1 = '0'.$user->phone1;
+        }
+
         return $user;
     }
 
@@ -461,9 +474,24 @@ class process {
             return;
         }
 
-        $matchparam = $this->get_match_on_email() ? ['email' => $user->email] : ['username' => $user->username];
-        if ($existinguser = $DB->get_records('user', $matchparam + ['mnethostid' => $user->mnethostid])) {
-            if (is_array($existinguser) && count($existinguser) !== 1) {
+        if ($this->get_match_on_email()) {
+            // Case-insensitive query for the given email address.
+            $userselect = $DB->sql_equal('email', ':email', false);
+            $userparams = ['email' => $user->email];
+        }elseif ($this->get_match_on_phone()){
+            $userparams = ['phone1' => $user->phone1];
+        } else {
+            $userselect = 'username = :username';
+            $userparams = ['username' => $user->username];
+        }
+
+        // Match the user, also accounting for multiple records by email.
+        $existinguser = $DB->get_records_select('user', "{$userselect} AND mnethostid = :mnethostid",
+            $userparams + ['mnethostid' => $user->mnethostid]);
+        $existingusercount = count($existinguser);
+
+        if ($existingusercount > 0) {
+            if ($existingusercount !== 1) {
                 $this->upt->track('status', get_string('duplicateemail', 'tool_uploaduser', $user->email), 'warning');
                 $this->userserrors++;
                 return;
@@ -599,7 +627,7 @@ class process {
         // We do not need the deleted flag anymore.
         unset($user->deleted);
 
-        $matchonemailallowrename = $this->get_match_on_email() && $this->get_allow_renames();
+        $matchonemailallowrename = ($this->get_match_on_email() && $this->get_match_on_phone()) && $this->get_allow_renames();
         if ($matchonemailallowrename && $user->username && ($user->username !== $existinguser->username)) {
             $user->oldusername = $existinguser->username;
             $existinguser = false;
@@ -675,6 +703,17 @@ class process {
                 break;
 
             case UU_USER_ADD_UPDATE:
+                if ($this->get_match_on_email()) {
+                    if ($usersbyname = $DB->get_records('user', ['username' => $user->username])) {
+                        foreach ($usersbyname as $userbyname) {
+                            if (strtolower($userbyname->email) != strtolower($user->email)) {
+                                $this->usersskipped++;
+                                $this->upt->track('status', get_string('usernotaddedusernameexists', 'error'), 'warning');
+                                $skip = true;
+                            }
+                        }
+                    }
+                }
                 break;
 
             case UU_USER_UPDATE:
@@ -781,7 +820,18 @@ class process {
                                 $this->upt->track('email', get_string('invalidemail'), 'warning');
                             }
                         }
+                        if ($column === 'phone1') {
+                            $select = $DB->sql_like('phone1', ':phone', false, true, false, '|');
+                            $params = array('phone' => $DB->sql_like_escape($user->phone1, '|'));
+                            if ($DB->record_exists_select('user', $select , $params)) {
 
+                                $this->upt->track('phone1', get_string('userephoneuplicate', 'theme_moove'), 'warning');
+
+                            }
+                            if (!validate_phone($user->phone1)) {
+                                $this->upt->track('phone1', get_string('invalidphone', 'theme_moove'), 'warning');
+                            }
+                        }
                         if ($column === 'lang') {
                             if (empty($user->lang)) {
                                 // Do not change to not-set value.
@@ -907,7 +957,7 @@ class process {
             }
 
             if ($dologout) {
-                \core\session\manager::kill_user_sessions($existinguser->id);
+                \core\session\manager::destroy_user_sessions($existinguser->id);
             }
 
         } else {
@@ -962,6 +1012,19 @@ class process {
             }
             if (!validate_email($user->email)) {
                 $this->upt->track('email', get_string('invalidemail'), 'warning');
+            }
+
+
+            if (empty($user->phone1)) {
+                $this->upt->track('phone1', get_string('invalidephone', 'theme_moove'), 'error');
+                $this->upt->track('status', get_string('usernotaddederror', 'error'), 'error');
+                $this->userserrors++;
+                return;
+
+            } else if ($DB->record_exists('user', ['phone1' => $user->phone1])) {
+                $this->upt->track('phone1', get_string('userphoneduplicate', 'theme_moove'), 'error');
+                $this->upt->track('status', get_string('usernotaddederror', 'error'), 'error');
+                return;
             }
 
             if (empty($user->lang)) {
@@ -1371,8 +1434,14 @@ class process {
                 }
             }
         }
+
+        // Warn user about invalid data values.
         if (($invalid = \core_user::validate($user)) !== true) {
-            $this->upt->track('status', get_string('invaliduserdata', 'tool_uploaduser', s($user->username)), 'warning');
+            $listseparator = get_string('listsep', 'langconfig') . ' ';
+            $this->upt->track('status', get_string('invaliduserdatavalues', 'tool_uploaduser', [
+                'username' => s($user->username),
+                'values' => implode($listseparator, array_keys($invalid)),
+            ]), 'warning');
         }
     }
 
